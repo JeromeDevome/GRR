@@ -8,21 +8,13 @@
  *
  * Date: 2026-01-18T00:20Z
  */
-( function( global, factory ) {
-
-	"use strict";
-
-	if ( typeof module === "object" && typeof module.exports === "object" ) {
-
-		// For CommonJS and CommonJS-like environments where a proper `window`
-		// is present, execute the factory and get jQuery.
-		module.exports = factory( global, true );
-	} else {
-		factory( global );
-	}
-
-// Pass this if window is not defined yet
-} )( typeof window !== "undefined" ? window : this, function( window, noGlobal ) {
+// Expose a factory as `jQueryFactory`. Aimed at environments without
+// a real `window` where an emulated window needs to be constructed. Example:
+//
+//     const jQuery = require( "jquery/factory" )( window );
+//
+// See ticket trac-14549 for more info.
+function jQueryFactoryWrapper( window, noGlobal ) {
 
 "use strict";
 
@@ -9677,4 +9669,12 @@ if ( typeof noGlobal === "undefined" ) {
 
 return jQuery;
 
-} );
+}
+
+function jQueryFactory( window ) {
+	"use strict";
+
+	return jQueryFactoryWrapper( window, true );
+}
+
+module.exports = { jQueryFactory: jQueryFactory };

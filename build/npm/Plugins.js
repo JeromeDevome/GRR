@@ -91,35 +91,27 @@ const jslib = [
     to: 'jslib/datatables'
   },
   {
-    from: 'node_modules/datatables.net-bs4/js',
-    to: 'jslib/datatables-bs4/js'
+    from: 'node_modules/datatables.net-bs5/js',
+    to: 'jslib/datatables-bs5/js'
   },
   {
-    from: 'node_modules/datatables.net-bs4/css',
-    to: 'jslib/datatables-bs4/css'
+    from: 'node_modules/datatables.net-bs5/css',
+    to: 'jslib/datatables-bs5/css'
   },
   {
     from: 'node_modules/datatables.net-autofill/js',
     to: 'jslib/datatables-autofill/js'
   },
   {
-    from: 'node_modules/datatables.net-autofill-bs4/js',
-    to: 'jslib/datatables-autofill/js'
-  },
-  {
-    from: 'node_modules/datatables.net-autofill-bs4/css',
-    to: 'jslib/datatables-autofill/css'
+    from: 'node_modules/datatables.net-buttons-bs5/js',
+    to: 'jslib/datatables-buttons-bs5/js'
   },
   {
     from: 'node_modules/datatables.net-buttons/js',
     to: 'jslib/datatables-buttons/js'
   },
   {
-    from: 'node_modules/datatables.net-buttons-bs4/js',
-    to: 'jslib/datatables-buttons/js'
-  },
-  {
-    from: 'node_modules/datatables.net-buttons-bs4/css',
+    from: 'node_modules/datatables.net-buttons-bs5/css',
     to: 'jslib/datatables-buttons/css'
   },
   {

@@ -1,9 +1,6 @@
 {% extends 'layout.twig' %}
 
 {% block css %}
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
 {% endblock %}
 
@@ -35,8 +32,8 @@
 									<td>{{groupe.2}}</td>
 									<td>{{groupe.3|raw}}</td>
 									<td>
-										<a href="?p=admin_groupe_edit&idgroupe={{groupe.0}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
-										<a href="?p=admin_groupe&groupe_sync={{groupe.0}}" class="btn btn-warning btn-md"><i class="icon fa fa-sync"></i></a> 
+										<a href="?p=admin_groupe_edit&amp;idgroupe={{groupe.0}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
+										<a href="?p=admin_groupe&amp;groupe_sync={{groupe.0}}" class="btn btn-warning btn-md"><i class="icon fa fa-sync"></i></a> 
 										<button type="button" class="btn btn-danger btn-md" data-bs-toggle="modal" data-bs-target="#modalWarningSupUser" data-idsup="{{ groupe.0 }}"><i class="icon fa fa-trash"></i></button>
 									</td>
 								</tr>
@@ -91,18 +88,20 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/jszip/jszip.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-	<script src="../vendor/almasaeed2010/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+	<!-- DataTables -->
+	<script src="../jslib/datatables/dataTables.min.js"></script>
+
+	<!-- Buttons -->
+	<script src="../jslib/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="../jslib/datatables-buttons/js/buttons.html5.min.js"></script>
+	<script src="../jslib/datatables-buttons/js/buttons.print.min.js"></script>
+	<script src="../jslib/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+	<!-- Excel / PDF -->
+	<script src="../js/jszip.min.js"></script>
+	<script src="../jslib/pdfmake/pdfmake.min.js"></script>
+	<script src="../jslib/pdfmake/vfs_fonts.js"></script>
+
 	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
 	<script>
 		$(function () {
@@ -138,10 +137,87 @@
 			})
 		})
 
-		// Table
-		$("#tableuser").DataTable({
-     		 "responsive": true, "lengthChange": false, "autoWidth": false,
-     		 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    	}).buttons().container().appendTo('#tableuser_wrapper .col-md-6:eq(0)')
+		// DataTable
+		var table = $('#tableuser').DataTable({
+			lengthChange: true,
+			lengthMenu: [[10, 25, 50, 100, -1],[10, 25, 50, 100, 'All']],
+			dom:
+				"<'row mb-2'<'col-sm-4 d-flex align-items-center'l<'ms-2'B>><'col-sm-8 d-flex justify-content-end'f>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row mt-2'<'col-sm-5'i><'col-sm-7 d-flex justify-content-end'p>>",
+
+			pagingType: 'full_numbers', // Pagination complète
+			buttons: [
+				{
+					extend: 'copy',
+					className: 'btn btn-primary',
+					exportOptions: {
+						columns: ':visible'
+					}
+				},
+				{
+					extend: 'excel',
+					className: 'btn btn-success',
+					exportOptions: {
+						columns: ':visible'
+					}
+				},
+				{
+					extend: 'csv',
+					className: 'btn btn-info',
+					exportOptions: {
+						columns: ':visible'
+					}
+				},
+				{
+					extend: 'pdfHtml5',
+					className: 'btn btn-danger',
+					orientation: 'landscape',
+					pageSize: 'LEGAL',
+					exportOptions: {
+						columns: ':visible'
+					}
+				},
+				{
+					extend: 'colvis',
+					className: 'btn btn-secondary dropdown-toggle', // style Bootstrap
+					text: 'Colonnes',
+					collectionLayout: 'fixed two-column', // optionnel
+					postfixButtons: [], // aucun bouton supplémentaire
+					collectionTitle: 'Colonnes visibles',
+					init: function(api, node, config) {
+						// Ajouter la classe Bootstrap dropdown-menu à la collection
+						$(node).on('click', function() {
+							setTimeout(() => {
+								$('.dt-button-collection')
+									.addClass('dropdown-menu')
+									.css('display', 'block');
+								$('.dt-button-collection button').each(function() {
+									$(this).addClass('dropdown-item'); // style chaque item
+								});
+							}, 10);
+						});
+					}
+				}
+			],
+			language: {
+				lengthMenu: "_MENU_",
+				search: "",
+				searchPlaceholder: "Rechercher..."
+			},
+			initComplete: function () {
+				$('.dt-input[type="search"]')
+					.addClass('form-control')
+					.css('width', '250px');
+
+				$('.dt-length select')
+					.addClass('form-select')
+					.css('width', 'auto');
+			}
+
+		});
+
+		table.buttons().container().appendTo('#example_wrapper .col-sm-6:eq(0)');
+
 	</script>
 {% endblock %}
