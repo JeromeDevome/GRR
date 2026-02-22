@@ -7,11 +7,11 @@
 		<meta name="Robots" content="noindex" />
 		<title>GRR - {{ settings.company }}</title>
 		<link rel="shortcut icon" href="../favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css?v={{d.versionCache}}" />
+		<link rel="stylesheet" type="text/css" href="../jslib/bootstrap/css/bootstrap.min.css?v={{d.versionCache}}" />
 		<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css?v={{d.versionCache}}" />
 		<link rel="stylesheet" type="text/css" href="../{{ d.sheetcss }}?v={{d.versionCache}}" />
 		{{ d.sheetcssperso|raw }}
-		<link rel="stylesheet" type="text/css" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+		<link rel="stylesheet" type="text/css" href="../jslib/fontawesome-free/css/all.min.css">
 		{% block css %}{% endblock %}
 		{{ d.sheetcsspersocss|raw }}
 	</head>
@@ -70,8 +70,8 @@
 		</section>
 		
 
-		<script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js?v={{d.versionCache}}"></script>
-		<script type="text/javascript" src="../node_modules/bootstrap/dist/js/bootstrap.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="../jslib/jquery/jquery.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="../jslib/bootstrap/js/bootstrap.min.js?v={{d.versionCache}}"></script>
 		<script type="text/javascript" src="../js/popup.js?v={{d.versionCache}}" charset="utf-8"></script>
 		<script type="text/javascript" src="../js/functions.min.js?v={{d.versionCache}}" ></script>
 		{% if d.jsHeure %}

@@ -1049,7 +1049,7 @@ function begin_page($title, $page = "with_session")
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.css?v='.$version_grr.'" />'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css?v='.$version_grr.'" >'.PHP_EOL;
 	$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style par défaut
-	$a .= '<link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">';
+	$a .= '<link rel="stylesheet" type="text/css" href="./jslib/fontawesome-free/css/all.min.css">';
 	if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/print/css/style.css?v='.$version_grr.'" />'.PHP_EOL;
 		$a .= '<link rel="stylesheet" type="text/css" href="themes/'.$sheetcss.'/css/style.css?v='.$version_grr.'" />'.PHP_EOL; // le style couleurs prédéfinis
@@ -1058,8 +1058,8 @@ function begin_page($title, $page = "with_session")
 	if(file_exists("personnalisation/".$gcDossierCss."/perso-css.css"))
 		$a .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"personnalisation/".$gcDossierCss."/perso-css.css?".Settings::get("sp_time")."\" />".PHP_EOL; // style perso via admin
 	
-	$a .= '<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="node_modules/jquery/dist/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="jslib/jquery/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="jslib/jquery-ui/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/popup.js?v='.$version_grr.'" charset="utf-8"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="js/functions.min.js?v='.$version_grr.'" ></script>'.PHP_EOL;

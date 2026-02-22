@@ -7,10 +7,10 @@
 		<meta name="Robots" content="noindex" />
 		<title>GRR - {{ settings.company }}</title>
 		<link rel="shortcut icon" href="favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="./node_modules/bootstrap/dist/css/bootstrap.min.css?v={{d.versionCache}}" />
+		<link rel="stylesheet" type="text/css" href="./jslib/bootstrap/css/bootstrap.min.css?v={{d.versionCache}}" />
 		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css?v={{d.versionCache}}" />
 		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}?v={{d.versionCache}}" />
-		<link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+		<link rel="stylesheet" type="text/css" href="./jslib/fontawesome-free/css/all.min.css">
 		{{ d.sheetcssperso|raw }}
 		{% block css %}{% endblock %}
 		{{ d.sheetcsspersocss|raw }}
@@ -67,10 +67,10 @@
 
 			<div id="popup_name" class="popup_block"></div>
 		</section>
-		<script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js?v={{d.versionCache}}"></script>
-		<script type="text/javascript" src="./node_modules/jquery-ui/dist/jquery-ui.min.js?v={{d.versionCache}}"></script>
-    	<script type="text/javascript" src="./node_modules/floatthead/dist/jquery.floatThead.min.js?v={{d.versionCache}}"></script>
-		<script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/jquery/jquery.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/jquery-ui/jquery-ui.min.js?v={{d.versionCache}}"></script>
+    	<script type="text/javascript" src="./jslib/floatthead/jquery.floatThead.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/bootstrap/js/bootstrap.min.js?v={{d.versionCache}}"></script>
 		<script type="text/javascript" src="./js/popup.js?v={{d.versionCache}}" charset="utf-8"></script>
 		<script type="text/javascript" src="./js/functions.min.js?v={{d.versionCache}}" ></script>
 		{% block javascript %}{% endblock %}

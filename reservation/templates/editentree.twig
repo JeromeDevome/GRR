@@ -4,10 +4,9 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" type="text/css" href="node_modules/select2/dist/css/select2.min.css?v={{d.versionCache}}">
-	<link rel="stylesheet" type="text/css" href="node_modules/clockpicker/dist/bootstrap-clockpicker.min.css?v={{d.versionCache}}">
-	<link rel="stylesheet" type="text/css" href="node_modules/jquery-ui/dist/themes/base/jquery-ui.css?v={{d.versionCache}}">
-	<link rel="stylesheet" type="text/css" href="node_modules/jquery-ui/themes/base/datepicker.css?v={{d.versionCache}}">
+	<link rel="stylesheet" type="text/css" href="jslib/select2/css/select2.min.css?v={{d.versionCache}}">
+	<link rel="stylesheet" type="text/css" href="jslib/clockpicker/bootstrap-clockpicker.min.css?v={{d.versionCache}}">
+	<link rel="stylesheet" type="text/css" href="jslib/jquery-ui/themes/base/jquery-ui.min.css?v={{d.versionCache}}">
 {% endblock %}
 
 {% block content %}
@@ -402,12 +401,11 @@
 
 {% block javascript %}
 <!-- Date & heure -->
-<script src="node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
-<script src="node_modules/jquery-ui/ui/i18n/datepicker-fr.js"></script>
-<script src="node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
-<script src="node_modules/clockpicker/dist/bootstrap-clockpicker.js"></script>
+<script src="jslib/jquery-ui/jquery-ui.min.js"></script>
+<script src="jslib/jquery-ui/ui/i18n/datepicker-fr.js"></script>
+<script src="jslib/clockpicker/bootstrap-clockpicker.min.js"></script>
 <!-- Select2 JS -->
-<script src="node_modules/select2/dist/js/select2.min.js"></script>
+<script src="jslib/select2/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#beneficiaire').select2({
