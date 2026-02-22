@@ -4,7 +4,6 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../bootstrap/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
 	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
 {% endblock %}
 
@@ -58,7 +57,7 @@
 								  <td>
 									<div class="form-group">
 										<div class="custom-control custom-switch">
-										  <input type="checkbox" class="custom-control-input" id="module_jours_cycles" onclick='window.location.assign("?p=admin_config5&jours_cycles=a")' {% if d.dActiveJourCycle == 1 %} checked {% endif %} > 
+										  <input type="checkbox" class="custom-control-input" id="module_jours_cycles" onclick='window.location.assign("?p=admin_config5&amp;jours_cycles=a")' {% if d.dActiveJourCycle == 1 %} checked {% endif %} > 
 										  <label class="custom-control-label" for="module_jours_cycles"></label>
 										</div>
 									</div>
@@ -69,7 +68,7 @@
 								  <td>
 									<div class="form-group">
 										<div class="custom-control custom-switch">
-										  <input type="checkbox" class="custom-control-input" id="module_multisite" onclick='window.location.assign("?p=admin_config5&module_multisite=a")' {% if d.dActiveMultiSite == 1 %} checked {% endif %} > 
+										  <input type="checkbox" class="custom-control-input" id="module_multisite" onclick='window.location.assign("?p=admin_config5&amp;module_multisite=a")' {% if d.dActiveMultiSite == 1 %} checked {% endif %} > 
 										  <label class="custom-control-label" for="module_multisite"></label>
 										</div>
 									</div>
@@ -103,11 +102,11 @@
 										<td>{{ module.copyright|raw }}</td>
 										<td>
 											{% if module.activation == 1 %}<!-- Lien d'installation -->
-												<a href="?p=admin_config5&activation={{ module.lienActivation }}">Installer</a>
+												<a href="?p=admin_config5&amp;activation={{ module.lienActivation }}">Installer</a>
 											{% elseif module.activation == 2 or module.activation == 3 %} <!-- Activation / désactivation -->
 											<div class="form-group">
 												<div class="custom-control custom-switch">
-												  <input type="checkbox" class="custom-control-input" id="{{ module.dossier }}" onclick='window.location.assign("?p=admin_config5&activation={{ module.lienActivation }}")' {% if module.activation == 3 %} checked {% endif %} > 
+												  <input type="checkbox" class="custom-control-input" id="{{ module.dossier }}" onclick='window.location.assign("?p=admin_config5&amp;activation={{ module.lienActivation }}")' {% if module.activation == 3 %} checked {% endif %} > 
 												  <label class="custom-control-label" for="{{ module.dossier }}"></label>
 												</div>
 											  </div>
@@ -145,72 +144,5 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../bootstrap/AdminLTE/bower_components/moment/min/moment.min.js"></script>
-	<script src="../bootstrap/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-	<script src="../bootstrap/AdminLTE/bower_components/ckeditor/ckeditor.js"></script>
 	<script src="../jslib/toastr/toastr.min.js"></script>
-	<script>
-		$(function () {
-			{% if d.enregistrement == 1 %}
-				toastr.success("{{d.msgToast}}")
-			{% elseif d.enregistrement == 3 %}
-				toastr.error("{{d.msgToast}}")
-			{% endif %}
-
-			$('#reservation').daterangepicker({
-			 "locale": {
-					"format": "DD/MM/YYYY",
-					"separator": " - ",
-					"applyLabel": "Valider",
-					"cancelLabel": "Annuler",
-					"fromLabel": "De",
-					"toLabel": "à",
-					"customRangeLabel": "Custom",
-					"daysOfWeek": [
-						"Dim",
-						"Lun",
-						"Mar",
-						"Mer",
-						"Jeu",
-						"Ven",
-						"Sam"
-					],
-					"monthNames": [
-						"Janvier",
-						"Février",
-						"Mars",
-						"Avril",
-						"Mai",
-						"Juin",
-						"Juillet",
-						"Août",
-						"Septembre",
-						"Octobre",
-						"Novembre",
-						"Décembre"
-					],
-					"firstDay": 1
-				}
-			}); 
-
-			// Replace the <textarea id="editor1"> with a CKEditor
-			//CKEDITOR.replace('editor1');
-					//<![CDATA[
-		CKEDITOR.replace( 'editor1',
-		{
-			toolbar :
-			[
-			['Source'],
-			['Cut','Copy','Paste','PasteText','PasteFromWord', 'SpellChecker', 'Scayt'],
-			['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-			['Bold','Italic','Underline','Strike','-','Subscript','Superscript','-','TextColor','BGColor'],
-			['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-			['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-			['Link','Unlink','Anchor'],
-			['Image','Table','HorizontalRule','SpecialChar','PageBreak'],
-			]
-		});
-		//]]>
-		}); 
-	</script>
 {% endblock %}
