@@ -58,7 +58,7 @@ personnalisation/config_ldap.inc.php
 personnalisation/config_CAS.inc.php
 
 # Fichiers en cours de développement à ignorer
-nodes_modules/*
+node_modules/
 /edit_entry_handler.ori.php
 /test_date.php
 /year-dev.php
