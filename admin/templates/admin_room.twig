@@ -3,7 +3,7 @@
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block css %}
-	<link rel="stylesheet" href="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.css">
+	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -169,7 +169,7 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../vendor/almasaeed2010/adminlte/plugins/toastr/toastr.min.js"></script>
+	<script src="../jslib/toastr/toastr.min.js"></script>
 	<script type="text/javascript">
 		{% if d.enregistrement %}
 			{% if d.enregistrement == 1 %}

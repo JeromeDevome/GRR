@@ -17,7 +17,6 @@
         "phpmailer/phpmailer": "^7.0",
         "tecnickcom/tcpdf": "^6.10",
         "apereo/phpcas": "^1.6",
-        "almasaeed2010/adminlte": "~3.2",
         "gregwar/captcha-bundle": "^2.4",
         "psr/container": "^2.0"
     },
