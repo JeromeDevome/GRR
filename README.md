@@ -1,9 +1,6 @@
 
-GRR
+# 🐶 GRR : Gestion et Réservation de Ressources 📅
 
-===================
-
-GRR est un outil de gestion et de réservation de ressources. **GRR** est une adaptation d'une application **MRBS**.
 
 ![GitHub stars](https://img.shields.io/github/stars/JeromeDevome/GRR)
 ![GitHub forks](https://img.shields.io/github/forks/JeromeDevome/GRR)
@@ -42,15 +39,14 @@ GRR est un outil de gestion et de réservation de ressources. **GRR** est une ad
 [![Chat Status](https://img.shields.io/discord/484639573243068417.svg?style=for-the-badge)](https://discord.com/channels/484639573243068417/)
 [![Documentation](https://img.shields.io/badge/Documentation-GRR-success?style=for-the-badge&logo=readthedocs&logoColor=white)](https://devome.com/GRR/DOC/)
 
-```diff
-+ Versions disposant de support et de correctifs: 4.4.X, les versions précédentes doivent être mises à jour.
-```
 
-**Requiert :**
+> [!CAUTION]
+> Pour toute mise en production, merci de ne pas utiliser directement le code issu des branches, celles-ci pouvant contenir des développements en cours de test ainsi que des librairies destinées uniquement à la compilation.
+> Veuillez utiliser exclusivement les versions publiées via les releases.
 
-PHP : >= 8.1.0 && <= 8.3; nécessite au moins les modules php-fileinfo, php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-intl (*)
-MySQL: >= 5.4 && <= 9.4
 
+> [!IMPORTANT]  
+> Versions disposant de support et de correctifs: 4.4.X, les versions précédentes doivent être mises à jour.
 
 
 ----------
@@ -59,6 +55,13 @@ Installation
 -------------
 
 Pour obtenir une description complète de la procédure d'installation, veuillez vous reporter à la [documentation](https://devome.com/GRR/DOC/installation-et-mise-a-jour/installation)
+
+> [!NOTE]  
+>**Requiert :**
+>
+>PHP : >= 8.1.0 && <= 8.3; nécessite au moins les modules php-fileinfo, php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-intl (*)
+> 
+>MySQL: >= 5.4 && <= 9.4
 
 Pour une installation simplifiée, décompressez simplement cette archive sur un serveur, et indiquez l'adresse où se trouvent les fichiers extraits dans un navigateur (ex: http://www.monsite.fr/grr).
 
@@ -82,6 +85,7 @@ Licence
 **GRR** est publié sous les termes de la **GNU General Public Licence**, dont le contenu est disponible dans le fichier "**LICENSE**", en anglais et dans le fichiers "**licence_fr.html**" en français. **GRR** est gratuit, vous pouvez le copier, le distribuer, et le modifier, à condition que chaque partie de **GRR** réutilisée ou modifiée reste sous licence **GNU GPL**. Par ailleurs et dans un soucis d'efficacité, merci de rester en contact avec le développeur de **GRR** pour éventuellement intégrer vos contributions à une distribution ultérieure.
 
 Enfin, **GRR** est livré en l'état sans aucune garantie. Les auteurs de cet outil ne pourront en aucun cas être tenus pour responsables d'éventuels bugs.
+**GRR** est une adaptation d'une application **MRBS**.
 
 
 Remarques concernant la sécurité
