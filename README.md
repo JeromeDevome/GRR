@@ -59,7 +59,7 @@ Pour obtenir une description complète de la procédure d'installation, veuillez
 > [!NOTE]  
 >**Requiert :**
 >
->PHP : >= 8.1.0 && <= 8.3; nécessite au moins les modules php-fileinfo, php-gd, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-intl (*)
+>PHP : >= 8.1.0 && <= 8.3; nécessite au moins les modules php-fileinfo, php-gd, php-intl, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-zip (*)
 > 
 >MySQL: >= 5.4 && <= 9.4
 
