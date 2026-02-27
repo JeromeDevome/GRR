@@ -4,17 +4,20 @@ const jslib = [
   // Clockpicker
   {
     from: 'node_modules/clockpicker/dist/',
-    to: 'jslib/clockpicker'
+    to: 'jslib/clockpicker',
+    filterName: '.min'
   },
   // jQuery
   {
     from: 'node_modules/jquery/dist',
-    to: 'jslib/jquery'
+    to: 'jslib/jquery',
+    filterName: 'jquery.min.js'
   },
   // jQuery-UI
   {
     from: 'node_modules/jquery-ui/dist',
-    to: 'jslib/jquery-ui'
+    to: 'jslib/jquery-ui',
+    filterName: 'jquery-ui.min.'
   },
   {
     from: 'node_modules/jquery-ui/ui/i18n',
@@ -75,7 +78,8 @@ const jslib = [
   // Date Range Picker
   {
     from: 'node_modules/daterangepicker/',
-    to: 'jslib/daterangepicker'
+    to: 'jslib/daterangepicker',
+    filterName: 'daterangepicker.'
   },
   // DataTables
   {
@@ -84,19 +88,23 @@ const jslib = [
   },
   {
     from: 'node_modules/jszip/dist',
-    to: 'jslib/jszip'
+    to: 'jslib/jszip',
+    filterName: '.min'
   },
   {
     from: 'node_modules/datatables.net/js',
-    to: 'jslib/datatables'
+    to: 'jslib/datatables',
+    filterName: '.min'
   },
   {
     from: 'node_modules/datatables.net-bs5/js',
-    to: 'jslib/datatables-bs5/js'
+    to: 'jslib/datatables-bs5/js',
+    filterName: '.min'
   },
   {
     from: 'node_modules/datatables.net-bs5/css',
-    to: 'jslib/datatables-bs5/css'
+    to: 'jslib/datatables-bs5/css',
+    filterName: '.min'
   },
   {
     from: 'node_modules/datatables.net-autofill/js',
@@ -104,15 +112,18 @@ const jslib = [
   },
   {
     from: 'node_modules/datatables.net-buttons-bs5/js',
-    to: 'jslib/datatables-buttons-bs5/js'
+    to: 'jslib/datatables-buttons-bs5/js',
+    filterName: '.min.js'
   },
   {
     from: 'node_modules/datatables.net-buttons/js',
-    to: 'jslib/datatables-buttons/js'
+    to: 'jslib/datatables-buttons/js',
+    filterName: '.min'
   },
   {
     from: 'node_modules/datatables.net-buttons-bs5/css',
-    to: 'jslib/datatables-buttons/css'
+    to: 'jslib/datatables-buttons/css',
+    filterName: '.min'
   },
   {
     from: 'node_modules/datatables.net-colreorder/js',
@@ -255,7 +266,8 @@ const jslib = [
   // inputmask
   {
     from: 'node_modules/inputmask/dist/',
-    to: 'jslib/inputmask'
+    to: 'jslib/inputmask',
+    filterName: '.min'
   },
   // ion-rangeslider
   {
@@ -280,16 +292,14 @@ const jslib = [
   // Select2
   {
     from: 'node_modules/select2/dist/',
-    to: 'jslib/select2'
-  },
-  {
-    from: 'node_modules/@ttskch/select2-bootstrap4-theme/dist/',
-    to: 'jslib/select2-bootstrap4-theme'
+    to: 'jslib/select2',
+    filterName: '.min'
   },
   // Select2 (Bootstrap 5 theme)
   {
     from: 'node_modules/select2-bootstrap-5-theme/dist/',
-    to: 'jslib/select2-bootstrap-5-theme'
+    to: 'jslib/select2-bootstrap-5-theme',
+    filterName: '.min'
   },
   // Sparklines
   {
@@ -299,7 +309,8 @@ const jslib = [
   // Toastr
   {
     from: 'node_modules/toastr/build/',
-    to: 'jslib/toastr'
+    to: 'jslib/toastr',
+    filterName: '.min'
   },
   // jsGrid
   {
@@ -313,7 +324,8 @@ const jslib = [
   // bootstrap4-duallistbox
   {
     from: 'node_modules/bootstrap4-duallistbox/dist',
-    to: 'jslib/bootstrap4-duallistbox/'
+    to: 'jslib/bootstrap4-duallistbox/',
+    filterName: '.min'
   },
   // ekko-lightbox
   {
@@ -360,7 +372,8 @@ const jslib = [
   // Floatthead
   {
     from: 'node_modules/floatthead/dist/',
-    to: 'jslib/floatthead'
+    to: 'jslib/floatthead',
+    filterName: '.min'
   },
   // PDFMake
   {

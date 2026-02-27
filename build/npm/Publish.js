@@ -53,30 +53,23 @@ class Publish {
 
       const fseOptions = {
         filter: (src) => {
-          const basename = path.basename(src)
+          const basename = path.basename(src) // nom du fichier uniquement
 
           // Ignorer les fichiers cachés
-          if (basename.startsWith('.')) {
-            if (this.options.verbose) {
-              console.log(`Skipped hidden file: ${src}`)
-            }
-            return false
-          }
+          if (basename.startsWith('.')) return false
 
           // Ignorer les fichiers .zip
-          if (basename.toLowerCase().endsWith('.zip')) {
-            if (this.options.verbose) {
-              console.log(`Skipped zip file: ${src}`)
-            }
-            return false
-          }
+          if (basename.toLowerCase().endsWith('.zip')) return false
 
           // Ignorer les fichiers summernote-bs*
-          if (basename.toLowerCase().includes('summernote-bs')) {
-            if (this.options.verbose) {
-              console.log(`Skipped summernote-bs file: ${src}`)
-            }
-            return false
+          if (basename.toLowerCase().includes('summernote-bs')) return false
+
+          // Filtre personnalisé par module
+          if (module.filterName) {
+            // Si c'est un dossier, on le laisse passer
+            if (!basename.includes('.') && fse.statSync(src).isDirectory()) return true
+            // Sinon, il doit contenir filterName
+            if (!basename.includes(module.filterName)) return false
           }
 
           return true
@@ -84,18 +77,15 @@ class Publish {
       }
 
       try {
-        if (fse.existsSync(module.from)) {
-          fse.copySync(module.from, module.to, fseOptions)
-        } else {
-          fse.copySync(module.from.replace('node_modules/', '../'), module.to, fseOptions)
-        }
+        const sourcePath = fse.existsSync(module.from) ? module.from : module.from.replace('node_modules/', '../')
+        fse.copySync(sourcePath, module.to, fseOptions)
 
         if (this.options.verbose) {
           console.log(`Copied ${module.from} to ${module.to}`)
         }
 
       } catch (error) {
-        console.error(`Error: ${error}`)
+        console.error(`Error copying ${module.from} to ${module.to}: ${error}`)
       }
     })
   }
