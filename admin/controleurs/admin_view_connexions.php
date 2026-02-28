@@ -3,9 +3,9 @@
  * admin_view_connexions.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-01-31 19:06$
+ * Dernière modification : $Date: 2026-02-28 12:00$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -29,14 +29,8 @@ if (isset($_GET['user_login']))
 	$res = grr_sql_query($sql);
 }
 
-get_vocab_admin('admin_view_connexions');
+$trad = $vocab;
 
-get_vocab_admin('users_connected');
-get_vocab_admin('login_name');
-get_vocab_admin('names');
-get_vocab_admin('sen_a_mail');
-get_vocab_admin('action');
-get_vocab_admin('disconnect2');
 
 $utilisateurConnecte = array();
 
@@ -55,18 +49,6 @@ if ($res)
 		$utilisateurConnecte[] = array('login' => $row[0], 'nomprenom' => $row[1], 'email' => $row[2], 'deconnexion' => $deconnexionPossible );
 	}
 }
-
-// Afficher : Logs
-get_vocab_admin('msg_explain_log');
-get_vocab_admin('login_name');
-get_vocab_admin('names');
-get_vocab_admin('begining_of_session');
-get_vocab_admin('end_of_session');
-get_vocab_admin('ip_adress');
-get_vocab_admin('navigator');
-get_vocab_admin('referer');
-
-get_vocab_admin('users_connected');
 
 $sql = "SELECT u.login, concat(prenom, ' ', nom) utili, l.START, l.SESSION_ID, l.REMOTE_ADDR, l.USER_AGENT, l.REFERER, l.AUTOCLOSE, l.END, u.email FROM ".TABLE_PREFIX."_log l, ".TABLE_PREFIX."_utilisateurs u WHERE l.LOGIN = u.login ORDER by START desc";
 $res = grr_sql_query($sql);

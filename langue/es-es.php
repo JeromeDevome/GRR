@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2026-02-19
+# Last modification : 2026-02-28
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Aceptar la reserva";
@@ -345,6 +345,7 @@ $vocab['delete_booking'] = " suprimió la reserva de ";
 $vocab['delete_up_to'] = "Borrar hasta el";
 $vocab['del_entry_in_conflict'] = "Suprimir la(s) reserva(s) anteriores con el fin de validar la nueva reserva.";
 $vocab['del_user_succeed'] = "Un usuario fue suprimido de la lista.";
+$vocab['demo_info_cache'] = "**DEMO**"; // A traduire
 $vocab['description'] = "Descripción :";
 $vocab['description_complete'] = "Descripción completa (visible en la ficha de presentación)";
 $vocab['deux_points'] = " : ";

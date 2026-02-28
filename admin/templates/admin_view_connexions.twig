@@ -34,7 +34,7 @@
 									<td><a href="mailto:{{ utilisateurCo.email }}" class="btn btn-info btn-md"><i class="icon fa fa-envelope"></i></a></td>
 									<td>
 										{% if utilisateurCo.deconnexion == 1 %}
-											<a href="?p=admin_view_connexions&user_login={{ utilisateurCo.login }} ">{{ trad.disconnect2 }}</a>
+											<a href="?p=admin_view_connexions&amp;user_login={{ utilisateurCo.login }} ">{{ trad.disconnect2 }}</a>
 										{% endif %}
 									</td>
 								</tr>
@@ -79,9 +79,15 @@
 									<td>{{ log.nomprenom }}</td>
 									<td>{{ log.debut }}</td>
 									<td>{{ log.fin }}</td>
-									<td>{{ log.ip }}</td>
-									<td>{{ log.navigateur }}</td>
-									<td>{{ log.provenance }}</td>
+									{% if settings.ActiveModeDemo == 'y' %}
+										<td>{{ trad.demo_info_cache }}</td>
+										<td>{{ trad.demo_info_cache }}</td>
+										<td>{{ trad.demo_info_cache }}</td>
+									{% else %}
+										<td>{{ log.ip }}</td>
+										<td>{{ log.navigateur }}</td>
+										<td>{{ log.provenance }}</td>
+									{% endif %}
 								</tr>
 							{% endfor %}
 						</tbody>

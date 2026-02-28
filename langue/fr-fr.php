@@ -1,7 +1,7 @@
 <?php
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
-# Last modification : 2026-02-19
+# Last modification : 2026-02-28
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Accepter la réservation";
@@ -349,6 +349,7 @@ $vocab['delete_up_to'] = "Effacer jusqu'au";
 $vocab['del_entry_in_conflict'] = "Supprimer la (les) réservation(s) ci-dessus afin de valider la nouvelle réservation.";
 $vocab['del_group_succeed'] = "Le groupe a été supprimé avec succès.";
 $vocab['del_user_succeed'] = "Un utilisateur a été supprimé de la liste.";
+$vocab['demo_info_cache'] = "**DEMO**";
 $vocab['description'] = "Description";
 $vocab['description_complete'] = "Description complète (visible dans la fiche de présentation)";
 $vocab['deux_points'] = " : ";

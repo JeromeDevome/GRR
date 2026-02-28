@@ -2,7 +2,7 @@
 /**
  * AdminFonctions.php
  * Fonctions Général de l'administration
- * Dernière modification : $Date: 2026-02-08 17:30$
+ * Dernière modification : $Date: 2026-02-28 12:20$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -99,6 +99,10 @@ class AdminFonctions
 
        if(file_exists('../installation/')){
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "Le dossier d'installation doit être supprimé pour une installation sécurisée !", 'NomLien' => "", 'lien' => "");
+        }
+
+       if(Settings::get("ActiveModeDemo") == "y"){
+            $alerteTDB[] = array('type' =>"info", 'MessageWarning' => "Ceci est une version de démonstration ! Certaines options sont désactivées.", 'NomLien' => "", 'lien' => "");
         }
 
 		return $alerteTDB;

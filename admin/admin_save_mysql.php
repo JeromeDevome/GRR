@@ -3,9 +3,9 @@
  * admin_save_mysql.php
  * Script de sauvegarde de la base de données mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-07-24 10:00$
+ * Dernière modification : $Date: 2026-02-28 12:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -22,6 +22,7 @@ if ((!isset($_GET['mdp'])) && (!isset($argv[1])) && (!isset($_GET['flag_connect'
 	echo "Il manque des arguments pour executer ce script. Reportez-vous a la documentation.";
 	die();
 }
+
 if ((!isset($_GET['mdp'])) && isset($argv[1]))
 	$_GET['mdp'] = $argv[1];
 if (isset($_GET['mdp']))
@@ -100,6 +101,8 @@ function mysql_version()
 		$match[2] = 0;
 	return $match[0] . "." . $match[1] . "." . $match[2];
 }
+
+VerifyModeDemo();
 
 $nomsql = $dbDb."_le_".date("Y_m_d_\a_H\hi").".sql";
 $now = date('D, d M Y H:i:s') . ' GMT';

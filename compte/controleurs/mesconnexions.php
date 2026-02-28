@@ -3,9 +3,9 @@
  * mesconnexions.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-01-31 19:08$
+ * Dernière modification : $Date: 2026-02-28 12:20$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -69,13 +69,7 @@ else {
 	}
 }
 
-get_vocab_admin('see_connexions_explain');
-
-get_vocab_admin('begining_of_session');
-get_vocab_admin('end_of_session');
-get_vocab_admin('ip_adress');
-get_vocab_admin('navigator');
-get_vocab_admin('referer');
+$trad = $vocab;
 
 
 	echo $twig->render('mesconnexions.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'connexions' => $connexions));

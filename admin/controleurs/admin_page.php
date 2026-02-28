@@ -3,9 +3,9 @@
  * admin_page.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2024-12-14 12:05$
+ * Dernière modification : $Date: 2026-02-28 12:20$
  * @author    JeromeB
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -30,7 +30,7 @@ else
 //
 if ($action == "add")
 {
-
+    VerifyModeDemo();
 	if (isset($_POST["titre"]))
 		$titre = $_POST["titre"];
 	else
@@ -68,6 +68,7 @@ if ($action == "add")
 }
 elseif ($action == "change")
 {
+    VerifyModeDemo();
 	$arearight = false ;
 	if (isset($_POST["nom"]))
 		$nom = $_POST["nom"];
@@ -114,6 +115,7 @@ elseif ($action == "change")
 }
 elseif ($action == "delete")
 {
+    VerifyModeDemo();
     if (isset($_POST["nom"]))
     {
         $nom = $_POST["nom"];

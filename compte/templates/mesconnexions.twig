@@ -25,9 +25,15 @@
 			<tr>
 				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.debut }}</span></td>
 				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.fin }}</span></td>
-				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.ip }}</span></td>
-				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.navigateur }}</span></td>
-				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.provenance }}</span></td>
+				{% if settings.ActiveModeDemo == 'y' %}
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ trad.demo_info_cache }}</span></td>
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ trad.demo_info_cache }}</span></td>
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ trad.demo_info_cache }}</span></td>
+				{% else %}
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.ip }}</span></td>
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.navigateur }}</span></td>
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.provenance }}</span></td>
+				{% endif %}
 			</tr>
 		{% endfor %}
 		</tbody>

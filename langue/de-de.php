@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML Codage de certains caractères particuliers : &#x00DF; -> "double s" allemand http://www.unicode.org/charts/PDF/U0080.pdf
 # GRR : fichier de langue allemande
 # GRR: Traduction by: JeromeB & Karsten Schinkel & Jean-Yves Migeon
-# Last modification : 2026-02-19
+# Last modification : 2026-02-28
 $charset_html = "utf-8";
 $vocab = array();
 $vocab['accepter_resa'] = "Reservierung akzeptieren";
@@ -345,6 +345,7 @@ $vocab['delete_booking'] = " hat folgende Reservierung gelöscht. ";
 $vocab['delete_up_to'] = "Löschen bis";
 $vocab['del_entry_in_conflict'] = "Löschen Sie obige Reservierung(en) damit die neue Reservierung gültig wird.";
 $vocab['del_user_succeed'] = "Ein Benutzer ist von der Liste gestrichen worden.";
+$vocab['demo_info_cache'] = "**DEMO**"; // A traduire
 $vocab['description'] = "Beschreibung:";
 $vocab['description_complete'] = "Komplette Beschreibung (auf dem Steckbrief sichtbar)";
 $vocab['deux_points'] = ": ";
