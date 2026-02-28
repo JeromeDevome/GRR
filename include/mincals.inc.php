@@ -77,7 +77,7 @@
 			$tmp = mktime(0, 0, 0, ($month) + $m, 1, ($year) + $y);
 			$lastmonth = date("m", $tmp);
 			$lastyear = date("Y", $tmp);
-			if (($dmy != 'jour') && ($dmy != 'semaine_all') && ($dmy != 'mois_all') && ($dmy != 'month_all2'))
+			if (($dmy != 'jour') && ($dmy != 'semaine_all') && ($dmy != 'mois_all') && ($dmy != 'mois2_all'))
 				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois&year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$this->area&amp;room=$room';\"><i class=\"$glyph\"></i></button>\n";
 			else
 				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois_all&year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$area';\"><i class=\"$glyph\"></i></button>\n";
@@ -134,7 +134,7 @@
 					$bg_lign = " class=\"week\"";
 				$s .= "<tr ".$bg_lign."><td class=\"calendarcol1\">";
 				$t = "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_area"))."\" href=\"app.php?p=semaine_all&amp;year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area\">".sprintf("%02d",$week)."</a>";
-				if (($this->dmy != 'jour') && ($this->dmy != 'semaine_all') && ($this->dmy != 'mois_all') && ($this->dmy != 'month_all2'))
+				if (($this->dmy != 'jour') && ($this->dmy != 'semaine_all') && ($this->dmy != 'mois_all') && ($this->dmy != 'mois2_all'))
 					$t = "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_room"))."\" href=\"app.php?p=semaine&amp;year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area&amp;room=$this->room\">".sprintf("%02d",$week)."</a>";
 				$s .= $t;
 				$temp = $temp + 7;
@@ -220,7 +220,7 @@
 			$s .= "<div class=\"btn-group\">";
 			$s .= $this->createlink(0, -1, $this->month, $this->year, $this->dmy, $this->room, $this->area, "previous_year", "fa-solid fa-angles-left");
 			$s .= $this->createlink(-1, 0, $this->month, $this->year, $this->dmy, $this->room, $this->area, "monthbefore", "fa-solid fa-angle-left");
-			if (($this->dmy != 'jour') && ($this->dmy != 'semaine_all') && ($this->dmy != 'mois_all') && ($this->dmy != 'month_all2'))
+			if (($this->dmy != 'jour') && ($this->dmy != 'semaine_all') && ($this->dmy != 'mois_all') && ($this->dmy != 'mois2_all'))
 				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_month_for_this_room"))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois&year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area&amp;room=$this->room';\">$monthName $this->year</button>\n";
 			else
 				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_month"))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois_all&year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area';\">$monthName $this->year</button>\n";

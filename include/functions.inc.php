@@ -938,7 +938,7 @@ function protect_data_sql($_value)
 // Traite les données envoyées par la methode GET|POST de la variable $_GET|POST["page"], renvoie "jour" si la page n'est pas définie
 function verif_page()
 {
-  $pages = array("jour", "semaine", "mois", "semaine_all", "mois_all", "mois_all2", "annee", "annee_all");
+  $pages = array("jour", "semaine", "mois", "semaine_all", "mois_all", "mois2_all", "annee", "annee_all");
   $page = (isset($_GET["page"]))? $_GET["page"]:((isset($_POST["page"]))? $_POST["page"]:NULL);
   if (isset($page))
   {
@@ -983,9 +983,9 @@ function page_accueil($param = 'no')
 	else if ($defaultroom == - 3)
 		$page_accueil = 'app.php?p=mois_all&area='.$defaultarea;
 	else if ($defaultroom == -4)
-		$page_accueil = 'app.php?p=mois_all2.php?area='.$defaultarea;
+		$page_accueil = 'app.php?p=mois2_all&area='.$defaultarea;
 	else
-		$page_accueil = 'app.php?p=semaine.php?area='.$defaultarea.'&amp;room='.$defaultroom;
+		$page_accueil = 'app.php?p=semaine&area='.$defaultarea.'&amp;room='.$defaultroom;
 	if ((Settings::get("module_multisite") == "Oui") && ($defaultsite > 0))
 		$page_accueil .= '&amp;id_site='.$defaultsite;
 	if ($param == 'yes')
