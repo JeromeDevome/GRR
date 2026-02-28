@@ -1,3 +1,17 @@
+Version 4.5.3 - En développement
+[Ajout] Possibilité de configurer "SameSite" depuis configperso.inc.php - 8a3e3566b - @JeromeDevome
+[Ajout] Droit pour l'accès à l'édition des ressources - 6ab8c514a -@ynaessens
+[Ajout] Configuration des attributs CAS depuis l'administration - 82336c228 - @JeromeDevome
+[Ajout] Restriction sur le mode démo - ec37f00a2 - @JeromeDevome
+[Correction] Lien sélection vue depuis page jour - 3e09bf29a - @ynaessens
+[Correction] Clic sur l'horloge lors de la création d'une réservation - e84067ba1 - @JeromeDevome
+[Correction] Insertion lien - 7d6f89eb1 - @JeromeDevome
+[Correction] Liens mois mois2_all - f9ee950cd - @JeromeDevome
+[Correction] Enregistrement à l'ouverture de la personnalisation des mails - 8b8f58bc5 - @JeromeDevome
+[Modification] Mise à jour langue anglaise - 1c5af831b - @JeromeDevome
+[Modification] Nettoyage librairies JS - @JeromeDevome
+[Modification] Mise à jours dépendances PHP - 133d84725 - @JeromeDevome
+
 Version 4.5.2 - 17/02/2026 Généré par @JeromeDevome
 [Ajout] Fichier .htaccess pour sécuriser les accès et gérer les erreurs - 3d8607e38 - @JeromeDevome
 [Ajout] Icône trombone pour les réservations comportant des pièves jointe - ff2dbfc3b - @JeromeDevome
