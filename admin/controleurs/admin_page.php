@@ -62,7 +62,7 @@ if ($action == "add")
     else
         $emplacement = 0;
 
-	$sql = "INSERT INTO ".TABLE_PREFIX."_page (nom, titre, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) VALUES ('".uniqid()."', '".protect_data_sql($titre)."', 0, '".protect_data_sql($statutmini)."', '".protect_data_sql($lien)."', $nouveauonglet,  $ordre, '".protect_data_sql($emplacement)."');";
+	$sql = "INSERT INTO ".TABLE_PREFIX."_page (nom, titre, systeme, valeur, statutmini, lien, nouveauonglet, ordre, emplacement) VALUES ('".uniqid()."', '".protect_data_sql($titre)."', 0, '', '".protect_data_sql($statutmini)."', '".protect_data_sql($lien)."', $nouveauonglet,  $ordre, '".protect_data_sql($emplacement)."');";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, "$sql \n\n" . grr_sql_error());
 }
