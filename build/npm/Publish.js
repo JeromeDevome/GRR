@@ -53,23 +53,35 @@ class Publish {
 
       const fseOptions = {
         filter: (src) => {
-          const basename = path.basename(src) // nom du fichier uniquement
 
-          // Ignorer les fichiers cachés
+          const basename = path.basename(src)
+          const isDirectory = fse.statSync(src).isDirectory()
+
+          // Toujours laisser passer les dossiers
+          if (isDirectory) return true
+
+          // ❌ Fichiers cachés
           if (basename.startsWith('.')) return false
 
-          // Ignorer les fichiers .zip
+          // ❌ Fichiers .zip
           if (basename.toLowerCase().endsWith('.zip')) return false
 
-          // Ignorer les fichiers summernote-bs*
-          if (basename.toLowerCase().includes('summernote-bs')) return false
-
-          // Filtre personnalisé par module
+          // ✅ Filtre d'inclusion
           if (module.filterName) {
-            // Si c'est un dossier, on le laisse passer
-            if (!basename.includes('.') && fse.statSync(src).isDirectory()) return true
-            // Sinon, il doit contenir filterName
-            if (!basename.includes(module.filterName)) return false
+            const includes = Array.isArray(module.filterName)
+              ? module.filterName.some(f => basename.includes(f))
+              : basename.includes(module.filterName)
+
+            if (!includes) return false
+          }
+
+          // 🚫 Filtre d'exclusion
+          if (module.excludeName) {
+            const excluded = Array.isArray(module.excludeName)
+              ? module.excludeName.some(f => basename.includes(f))
+              : basename.includes(module.excludeName)
+
+            if (excluded) return false
           }
 
           return true
@@ -77,7 +89,10 @@ class Publish {
       }
 
       try {
-        const sourcePath = fse.existsSync(module.from) ? module.from : module.from.replace('node_modules/', '../')
+        const sourcePath = fse.existsSync(module.from)
+          ? module.from
+          : module.from.replace('node_modules/', '../')
+
         fse.copySync(sourcePath, module.to, fseOptions)
 
         if (this.options.verbose) {
@@ -85,8 +100,9 @@ class Publish {
         }
 
       } catch (error) {
-        console.error(`Error copying ${module.from} to ${module.to}: ${error}`)
+        console.error(`Error copying ${module.from}: ${error}`)
       }
+
     })
   }
 }

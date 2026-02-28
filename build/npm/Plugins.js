@@ -31,12 +31,15 @@ const jslib = [
   // Bootstrap
   {
     from: 'node_modules/bootstrap/dist',
-    to: 'jslib/bootstrap'
+    to: 'jslib/bootstrap',
+    filterName: '.min.',
+    excludeName: '.map'
   },
   // Font Awesome
   {
     from: 'node_modules/@fortawesome/fontawesome-free/css',
-    to: 'jslib/fontawesome-free/css'
+    to: 'jslib/fontawesome-free/css',
+    filterName: '.min'
   },
   {
     from: 'node_modules/@fortawesome/fontawesome-free/webfonts',
@@ -49,8 +52,18 @@ const jslib = [
   },
   // Summernote
   {
+    from: 'node_modules/summernote/dist/font',
+    to: 'jslib/summernote/font',
+  },
+  {
+    from: 'node_modules/summernote/dist/plugin',
+    to: 'jslib/summernote/plugin',
+  },
+  {
     from: 'node_modules/summernote/dist/',
-    to: 'jslib/summernote'
+    to: 'jslib/summernote',
+    filterName: '.min',
+    excludeName: ['.map', 'summernote-bs']
   },
   // Bootstrap Slider
   {
@@ -64,7 +77,9 @@ const jslib = [
   // Moment
   {
     from: 'node_modules/moment/min',
-    to: 'jslib/moment'
+    to: 'jslib/moment',
+    filterName: '.min.',
+    excludeName: '.map'
   },
   {
     from: 'node_modules/moment/locale',
@@ -84,7 +99,8 @@ const jslib = [
   // DataTables
   {
     from: 'node_modules/pdfmake/build',
-    to: 'jslib/pdfmake'
+    to: 'jslib/pdfmake',
+    excludeName: ['pdfmake.js', '.map']
   },
   {
     from: 'node_modules/jszip/dist',
@@ -99,7 +115,8 @@ const jslib = [
   {
     from: 'node_modules/datatables.net-bs5/js',
     to: 'jslib/datatables-bs5/js',
-    filterName: '.min'
+    filterName: '.min',
+    excludeName: ['.map', '.mjs']
   },
   {
     from: 'node_modules/datatables.net-bs5/css',
@@ -118,7 +135,8 @@ const jslib = [
   {
     from: 'node_modules/datatables.net-buttons/js',
     to: 'jslib/datatables-buttons/js',
-    filterName: '.min'
+    filterName: '.min',
+    excludeName: '.mjs'
   },
   {
     from: 'node_modules/datatables.net-buttons-bs5/css',
@@ -374,15 +392,6 @@ const jslib = [
     from: 'node_modules/floatthead/dist/',
     to: 'jslib/floatthead',
     filterName: '.min'
-  },
-  // PDFMake
-  {
-    from: 'node_modules/pdfmake/build/pdfmake.min.js',
-    to: 'jslib/pdfmake/pdfmake.min.js'
-  },
-  {
-    from: 'node_modules/pdfmake/build/vfs_fonts.js',
-    to: 'jslib/pdfmake/vfs_fonts.js'
   },
 ]
 
