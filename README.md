@@ -59,9 +59,9 @@ Pour obtenir une description complète de la procédure d'installation, veuillez
 > [!NOTE]  
 >**Requiert :**
 >
->PHP : >= 8.1.0 && <= 8.3; nécessite au moins les modules php-fileinfo, php-gd, php-intl, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-zip (*)
+>PHP : >= 8.1.0 && <= 8.5; nécessite au moins les modules php-fileinfo, php-gd, php-intl, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-zip (*)
 > 
->MySQL: >= 5.4 && <= 9.4
+>MySQL: >= 5.4 && <= 9.6
 
 Pour une installation simplifiée, décompressez simplement cette archive sur un serveur, et indiquez l'adresse où se trouvent les fichiers extraits dans un navigateur (ex: http://www.monsite.fr/grr).
 

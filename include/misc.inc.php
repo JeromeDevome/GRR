@@ -29,7 +29,7 @@ $grr_devel_url = "https://grr.devome.com/";
 
 // Numéro de version actuel
 # Format X.X.XRCX | exemples : 4.4.0a (alpha) ou 4.4.0b (beta) 4.4.0RC1 (Release Candidate) ou 4.4.0 (version OK)
-$version_grr = "4.5.3b";
+$version_grr = "4.5.3";
 # Version BDD, deux premirs chiffres = version majeur, les deux suivant la version, évolution de GRR, les 3 derniers une incrémentation à chaque changement
 # Ex 0400003 : 3eme modification sur la branche 4.X.X
 $version_bdd = "0400010";
@@ -42,14 +42,14 @@ $versionReposite = "Release-v".$version_grr.$gitHub;
 // Version PHP minimum
 $php_mini = "8.1.0";
 // Version PHP maximum testé et validé par : JeromeB
-$php_max_valide = "8.3.30";
+$php_max_valide = "8.5.3";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
 $php_maxi = "";
 
 // Version MySQL minimum
 $mysql_mini = "5.4.0";
 // Version MySQL maximum testé et validé par : JeromeB
-$mysql_max_valide = "9.4.0";
+$mysql_max_valide = "9.6.0";
 // Version MySQL maximum qui est sensé fonctionné
 $mysql_maxi = "";
 
