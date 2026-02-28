@@ -23,7 +23,7 @@
 					<h3 class="box-title">Etape 3 - Votre GRR</h3>
 				</div>
 			
-				<form action='install_mysql.php' method='get' role="form">
+				<form action='install_mysql.php?etape=4' method='post' role="form">
 					<input type='hidden' name='etape' value='4' />
 					<input type='hidden' name='adresse_db' value='{{ d.adresse_db }}' />
 					<input type='hidden' name='port_db' value='{{ d.port_db }}' />

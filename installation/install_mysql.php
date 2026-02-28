@@ -3,7 +3,7 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-09-09 12:20$
+ * Dernière modification : $Date: 2026-02-28 16:30$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -28,15 +28,15 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
-$nom_fic = "../personnalisation/connect.inc.php";
-$etape = isset($_GET["etape"]) ? $_GET["etape"] : NULL;
-$adresse_db = isset($_GET["adresse_db"]) ? $_GET["adresse_db"] : NULL;
-$port_db = isset($_GET["port_db"]) ? $_GET["port_db"] : NULL;
-$login_db = isset($_GET["login_db"]) ? $_GET["login_db"] : NULL;
-$pass_db = isset($_GET["pass_db"]) ? $_GET["pass_db"] : NULL;
-$choix_db = isset($_GET["choix_db"]) ? $_GET["choix_db"] : NULL;
-$table_new = isset($_GET["table_new"]) ? $_GET["table_new"] : NULL;
-$table_prefix = isset($_GET["table_prefix"]) ? $_GET["table_prefix"] : NULL;
+$nom_fic	= "../personnalisation/connect.inc.php";
+$etape		= isset($_GET["etape"]) ? $_GET["etape"] : NULL;
+$adresse_db = isset($_POST["adresse_db"]) ? $_POST["adresse_db"] : NULL;
+$port_db	= isset($_POST["port_db"]) ? $_POST["port_db"] : NULL;
+$login_db	= isset($_POST["login_db"]) ? $_POST["login_db"] : NULL;
+$pass_db	= isset($_POST["pass_db"]) ? $_POST["pass_db"] : NULL;
+$choix_db	= isset($_POST["choix_db"]) ? $_POST["choix_db"] : NULL;
+$table_new	= isset($_POST["table_new"]) ? $_POST["table_new"] : NULL;
+$table_prefix = isset($_POST["table_prefix"]) ? $_POST["table_prefix"] : NULL;
 
 $d['dbsys']			= $dbsys;
 $d['nom_fic']		= $nom_fic;
@@ -126,16 +126,18 @@ if (@file_exists($nom_fic))
 }
 if ($etape == 4)
 {
+	$mdp1 = isset($_POST["mdp1"]) ? $_POST["mdp1"] : NULL;
+	$mdp2 = isset($_POST["mdp2"]) ? $_POST["mdp2"] : NULL;
 
-	if(isset($_GET['mdp1']) && isset($_GET['mdp2']) && strlen($_GET['mdp1']) > 7 && $_GET['mdp1'] == $_GET['mdp2'] && $_GET['mdp1'] != $_GET['email'] && $_GET['mdp1'] != $_GET['webmaster_email'] && $_GET['mdp1'] != $_GET['technical_support_email']){
+	if(strlen($mdp1) > 7 && $mdp1 == $mdp2 && $mdp1 != $_POST['email'] && $mdp1 != $_POST['webmaster_email'] && $mdp1 != $_POST['technical_support_email']){
 
-		$company = isset($_GET["company"]) ? $_GET["company"] : 'Nom du GRR';
-		$grr_url = isset($_GET["grr_url"]) ? $_GET["grr_url"] : 'https://mygrr.net/';
-		$webmaster_email = isset($_GET["webmaster_email"]) ? $_GET["webmaster_email"] : 'webmaster_grr@test.fr';
-		$support_email = isset($_GET["technical_support_email"]) ? $_GET["technical_support_email"] : 'support_grr@test.fr';
-		$mdp = isset($_GET["mdp1"]) ? $_GET["mdp1"] : 'azerty';
+		$company = isset($_POST["company"]) ? $_POST["company"] : 'Nom du GRR';
+		$grr_url = isset($_POST["grr_url"]) ? $_POST["grr_url"] : 'https://mygrr.net/';
+		$webmaster_email = isset($_POST["webmaster_email"]) ? $_POST["webmaster_email"] : 'webmaster_grr@test.fr';
+		$support_email = isset($_POST["technical_support_email"]) ? $_POST["technical_support_email"] : 'support_grr@test.fr';
+		$mdp = isset($_POST["mdp1"]) ? $_POST["mdp1"] : 'azerty';
 		$mdp = password_hash($mdp, PASSWORD_DEFAULT);
-		$email = isset($_GET["email"]) ? $_GET["email"] : 'testgrr@test.fr';
+		$email = isset($_POST["email"]) ? $_POST["email"] : 'testgrr@test.fr';
 
 
 		$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");

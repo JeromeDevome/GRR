@@ -27,7 +27,7 @@
 					<h3 class="box-title">Etape 2 - Choix de votre base</h3>
 				</div>
 			
-				<form action='install_mysql.php' method='get' role="form">
+				<form action='install_mysql.php?etape=3' method='post' role="form">
 					<input type='hidden' name='etape' value='3' />
 					<input type='hidden' name='adresse_db' value='{{ d.adresse_db }}' />
 					<input type='hidden' name='port_db' value='{{ d.port_db }}' />
