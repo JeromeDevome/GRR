@@ -5,7 +5,7 @@
  * Dernière modification : $Date: 2023-08-24 10:25$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
  * @author    Eric Lemeur pour les champs addiionnels de type checkbox
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

@@ -5,7 +5,7 @@
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2025-10-11 17:45$
  * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

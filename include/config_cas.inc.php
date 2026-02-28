@@ -5,7 +5,7 @@
  * Lire attentivement la documentation avant de modifier ce fichier
  * Dernière modification : $Date: 2026-02-22 11:30$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

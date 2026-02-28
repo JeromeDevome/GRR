@@ -4,7 +4,7 @@
  * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
  * Dernière modification : $Date: 2023-09-13 14:16$
  * @author    JeromeB, Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

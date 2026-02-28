@@ -5,7 +5,7 @@
  * fait partie de l'application GRR
  * Dernière modification : $Date: 2024-06-10 18:01$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & NaldDev
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

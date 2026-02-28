@@ -4,7 +4,7 @@
  * Fichier de configuration de GRR
  * Dernière modification : $Date: 2026-01-18 10:45$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

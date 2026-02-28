@@ -4,7 +4,7 @@
  * interface de purge des comptes et réservations
  * Dernière modification : $Date: 2020-05-03 15:00$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

@@ -4,7 +4,7 @@
  * Fonctions Général de l'administration
  * Dernière modification : $Date: 2023-02-01 10:00$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

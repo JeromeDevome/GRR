@@ -5,7 +5,7 @@
  * Permet l'exportation des ressources au format ics
  * Dernière modification : $Date: 2023-09-24 17:00$
  * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

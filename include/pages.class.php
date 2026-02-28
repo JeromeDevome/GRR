@@ -3,7 +3,7 @@
  * Permet de lire et d'écrire les paramètres dans la BDD (Table setting)
  * Dernière modification : $Date: 2018-02-10 18:00$
  * @author    JeromeB
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

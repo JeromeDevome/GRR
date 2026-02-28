@@ -4,7 +4,7 @@
  * interface de gestion de la correspondance entre profil LDAP et statut GRR
  * Dernière modification : $Date: 2017-12-16 14:00$
  * @author    Laurent Delineau & JeromeB & Christian Daviau
- * @copyright Copyright 2003-2020 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.

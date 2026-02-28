@@ -4,7 +4,7 @@
  * Interface de gestion des droits de gestion des utilisateurs
  * Dernière modification : $Date: 2026-02-08 15:40$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
+ * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
