@@ -104,6 +104,25 @@ class Publish {
       }
 
     })
+
+    // 🔥 Supprimer complètement le dossier node_modules
+    try {
+      if (this.options.verbose) {
+        console.log('Removing node_modules directory...')
+      }
+
+      fse.removeSync(path.resolve('node_modules'))  // ← changement ici
+
+      if (this.options.verbose) {
+        console.log('node_modules directory removed.')
+      }
+
+    } catch (error) {
+      console.error(`Error removing node_modules directory: ${error}`)
+      return
+    }
+
+
   }
 }
 
