@@ -2117,6 +2117,29 @@ function synchro_groupe($idGroupe, $action)
 			}
 		}
 
+		// Ressources restreintes
+		$sql1 = "DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE idgroupes= $idGroupe";
+		if (grr_sql_command($sql1) < 0)
+			fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+
+		$sql2 = "SELECT id_room FROM ".TABLE_PREFIX."_j_group_room WHERE idgroupes = $idGroupe";
+
+		$res2 = grr_sql_query($sql2);
+		if ($res2)
+		{
+			for ($i = 0; ($row2 = grr_sql_row($res2, $i)); $i++)
+			{
+				$sql3 = "SELECT DISTINCT ug.login FROM ".TABLE_PREFIX."_j_group_room jg JOIN ".TABLE_PREFIX."_utilisateurs_groupes ug ON jg.idgroupes = ug.idgroupes WHERE jg.id_room = $row2[0] AND jg.idgroupes = $idGroupe";
+				$res3 = grr_sql_query($sql3);
+
+				for ($i = 0; ($row3 = grr_sql_row($res3, $i)); $i++)
+				{
+					$sql = "INSERT INTO ".TABLE_PREFIX."_j_userbook_room (login, id_room, idgroupes) values ('$row3[0]',$row2[0],$idGroupe)";
+					if (grr_sql_command($sql) < 0)
+						fatal_error(1, "<p>" . grr_sql_error());
+				}
+			}
+		}
 	}
 }
 

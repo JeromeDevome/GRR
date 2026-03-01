@@ -4,6 +4,9 @@ DROP TABLE IF EXISTS grr_calendrier_vacances;
 CREATE TABLE grr_calendrier_vacances (  `DAY` int(11) NOT NULL DEFAULT '0');
 DROP TABLE IF EXISTS grr_j_group_area;
 CREATE TABLE grr_j_group_area (idgroupes int NOT NULL, id_area int NOT NULL DEFAULT '0', PRIMARY KEY (idgroupes,id_area));
+DROP TABLE IF EXISTS grr_j_group_room;
+CREATE TABLE grr_j_group_room (idgroupes int NOT NULL, id_room int NOT NULL DEFAULT '0', PRIMARY KEY (idgroupes,id_room));
+DROP TABLE IF EXISTS grr_j_group_site;
 CREATE TABLE grr_j_group_site (idgroupes int NOT NULL, id_site int NOT NULL DEFAULT '0', PRIMARY KEY (idgroupes,id_site));
 DROP TABLE IF EXISTS grr_j_mailuser_room;
 CREATE TABLE grr_j_mailuser_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', mail_resa tinyint(1) NOT NULL DEFAULT '1', mail_hebdo tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY  (login,id_room) );
@@ -14,7 +17,7 @@ CREATE TABLE grr_j_user_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE u
 DROP TABLE IF EXISTS grr_j_user_site;
 CREATE TABLE grr_j_user_site (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_site int(11) NOT NULL default '0', idgroupes int(11) NOT NULL default '0', PRIMARY KEY  (login,id_site,idgroupes) );
 DROP TABLE IF EXISTS grr_j_userbook_room;
-CREATE TABLE grr_j_userbook_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) );
+CREATE TABLE grr_j_userbook_room (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_room int(11) NOT NULL default '0', idgroupes int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room,idgroupes) );
 DROP TABLE IF EXISTS grr_j_useradmin_area;
 CREATE TABLE grr_j_useradmin_area (login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL default '', id_area int(11) NOT NULL default '0', PRIMARY KEY  (login,id_area) );
 DROP TABLE IF EXISTS grr_log;

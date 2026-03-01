@@ -23,8 +23,9 @@ $ok = NULL;
 $id_room = isset($_POST["id_room"]) ? $_POST["id_room"] : (isset($_GET["id_room"]) ? $_GET["id_room"] : -1);
 $d['id_room'] = intval(clean_input($id_room));
 $reg_user_login = isset($_POST["reg_user_login"]) ? $_POST["reg_user_login"] : NULL;
+$reg_groupe = isset($_POST["reg_groupe"]) ? $_POST["reg_groupe"] : NULL;
 $reg_multi_user_login = isset($_POST["reg_multi_user_login"]) ? $_POST["reg_multi_user_login"] : NULL;
-$test_user =  isset($_POST["reg_multi_user_login"]) ? "multi" : (isset($_POST["reg_user_login"]) ? "simple" : NULL);
+$actionPost =  isset($_POST["action"]) ? $_POST["action"] : NULL;
 $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
 $user_name = getUserName();
 $msg = '';
@@ -32,6 +33,8 @@ $msg = '';
 $ressources = array();
 $userAcces = array();
 $userAjout = array();
+$groupesExep = array();
+$groupesAjoutable = array();
 
 
 $trad = $vocab;
@@ -40,7 +43,7 @@ $trad = $vocab;
 $vocab['user_can_book'] = "peut réserver les ressources restreintes :";
 
 
-if ($test_user == "multi")
+if ($actionPost == "multi")
 {	
     if ($d['id_room'] != -1)
     {
@@ -72,7 +75,7 @@ if ($test_user == "multi")
 	}
 }
 
-if ($test_user == "simple")
+if ($actionPost == "simple")
 {
 	if ($d['id_room'] != -1)
 	{
@@ -95,7 +98,47 @@ if ($test_user == "simple")
 				if (grr_sql_command($sql) < 0)
 					fatal_error(1, "<p>" . grr_sql_error());
 				else
-					$msg = get_vocab("add_user_succeed");
+                {
+					$d['enregistrement'] = 1;
+					$d['msgToast'] = get_vocab("add_user_succeed");
+				}
+			}
+		}
+	}
+}
+
+if ($actionPost == "add_groupe")
+{
+	if ($d['id_room'] != -1)
+	{
+		if (authGetUserLevel(getUserName(), $d['id_room']) < 3)
+		{
+			showAccessDenied($back);
+			exit();
+		}
+        // On commence par vérifier que le groupe n'est pas déjà présent dans cette liste.
+		$sql = "SELECT * FROM ".TABLE_PREFIX."_j_group_room WHERE (idgroupes = '$reg_groupe' and id_room = '".$d['id_room']."')";
+		$res = grr_sql_query($sql);
+		$test = grr_sql_count($res);
+		if ($test > 0)
+		{
+			$d['enregistrement'] = 2;
+			$d['msgToast'] = get_vocab("warning_exist");
+		}
+		else
+		{
+			if ($reg_groupe != '')
+			{
+				$sql = "INSERT INTO ".TABLE_PREFIX."_j_group_room SET idgroupes= '$reg_groupe', id_room = '".$d['id_room']."'";
+				if (grr_sql_command($sql) < 0)
+					fatal_error(1, "<p>" . grr_sql_error());
+				else
+				{
+					$d['enregistrement'] = 1;
+					$d['msgToast'] = get_vocab("add_user_succeed");
+				}
+
+				synchro_groupe($reg_groupe, 1);
 			}
 		}
 	}
@@ -114,9 +157,30 @@ if ($action=='del_user')
 	if (grr_sql_command($sql) < 0)
 		fatal_error(1, "<p>" . grr_sql_error());
 	else
-		$msg = get_vocab("del_user_succeed");
-}
+    {
+		$d['enregistrement'] = 1;
+		$d['msgToast'] = get_vocab("del_user_succeed");
+	}
+} elseif ($action=='del_groupe')
+{
+	if (authGetUserLevel(getUserName(), $d['id_room']) < 3)
+	{
+		showAccessDenied($back);
+		exit();
+	}
+	unset($login_user);
+	$groupe = $_GET["groupe"];
+	$sql = "DELETE FROM ".TABLE_PREFIX."_j_group_room WHERE (idgroupes='$groupe' and id_room = '".$d['id_room']."')";
+	if (grr_sql_command($sql) < 0)
+		fatal_error(1, "<p>" . grr_sql_error());
+	else
+	{
+		$d['enregistrement'] = 1;
+		$d['msgToast'] = get_vocab("del_user_succeed");
+	}
 
+	synchro_groupe($groupe, 1);
+}
 
 // première étape : choisir parmi les ressources restreintes
 $multisite = Settings::get("module_multisite") == "Oui";
@@ -176,6 +240,25 @@ if ($d['id_room'] != -1)
                 $userAjout[] = $row;
         }
 
+    // Groupes ayant accès a la ressource restreinte
+	$sql = "SELECT g.idgroupes, g.nom FROM ".TABLE_PREFIX."_groupes g, ".TABLE_PREFIX."_j_group_room j WHERE (j.id_room='$id_room' and g.idgroupes=j.idgroupes)  order by g.nom";
+	$res = grr_sql_query($sql);
+	$nombre = grr_sql_count($res);
+
+	if ($res)
+		for ($i = 0; ($row2 = grr_sql_row($res, $i)); $i++)
+		{
+			$groupesExep[] = array('id' => $row2[0], 'nom' => $row2[1]);
+		}
+
+	// Groupes pouvant être ajouté
+	$sql = "SELECT idgroupes, nom FROM ".TABLE_PREFIX."_groupes WHERE archive = 0 AND idgroupes NOT IN (SELECT idgroupes FROM ".TABLE_PREFIX."_j_group_room WHERE id_room = '$id_room') order by nom";
+	$res = grr_sql_query($sql);
+	$d['nbUserAjoutable'] = grr_sql_count($res);
+	if ($res)
+		for ($i = 0; ($row3 = grr_sql_row($res, $i)); $i++)
+			$groupesAjoutable[] = array('id' => $row3[0], 'nom' => $row3[1]);
+
 }
 else
 {
@@ -187,5 +270,5 @@ else
 
 
 
-echo $twig->render('admin_book_room.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'ressources' => $ressources, 'userAcces' => $userAcces, 'userAjout' => $userAjout));
+echo $twig->render('admin_book_room.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'ressources' => $ressources, 'userAcces' => $userAcces, 'userAjout' => $userAjout, 'groupesexep' => $groupesExep, 'groupesajoutable' => $groupesAjoutable));
 ?>
