@@ -88,34 +88,27 @@
 								</a>
 							</div>
 
-							<!-- Si hors résa -->
-							{% if cellule.horsResa == true %}
-								<div class="empty_cell">
-									<i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
-								</div>
-							{% else %}
-								{% for resa in cellule.reservations %}
-									<table class="resadrag pleine table-bordered table-striped" data-resa-id="{{resa.idresa}}" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}">
-										<tr>
-											{{resa.td|raw}}
-												<span class="small_planning">
-													{% if resa.lienFiche %}
-														{% if settings.display_level_view_entry == 0 %}
-															<a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois_all',readData);" data-rel="popup_name" class="poplight lienCellule">
-														{% else %}
-															<a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&amp;id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois_all">
-														{% endif %}
-													{% endif %}
-													{{resa.texte|raw}}
-													{% if resa.lienFiche %}
-														</a>
-													{% endif %}
-												</span>
-											</td>
-										</tr>
-									</table>
-								{% endfor %}
-							{% endif %}
+                            {% for resa in cellule.reservations %}
+                                <table class="pleine table-bordered table-striped">
+                                    <tr>
+                                        {{resa.td|raw}}
+                                            <span class="small_planning">
+                                                {% if resa.lienFiche %}
+                                                    {% if settings.display_level_view_entry == 0 %}
+                                                        <a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois_all',readData);" data-rel="popup_name" class="poplight lienCellule">
+                                                    {% else %}
+                                                        <a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois_all">
+                                                    {% endif %}
+                                                {% endif %}
+                                                {{resa.texte|raw}}
+                                                {% if resa.lienFiche %}
+                                                    </a>
+                                                {% endif %}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {% endfor %}
 
 							<!-- Si nb de resa supérieur à 11 -->
 							{% if cellule.autreResa %}
