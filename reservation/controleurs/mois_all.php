@@ -265,10 +265,10 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 }
             }
 
-       /* if (est_hors_reservation(mktime(0,0,0,$month,$cday,$year),$area))
+        if (est_hors_reservation(mktime(0,0,0,$month,$cday,$year),$area))
             $horsResa = true;
         else
-        {*/
+        {
             $horsResa = false;
             $reservations = array();
 
@@ -305,7 +305,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
             */
             }
             $plageLibre = false; // Aujourd'hui on ne le gère pas dans mois_all
-       // }
+        }
         
         // Une cellule par jour (Du 1er au 31)
         $cellulesMois[] = array('numJour' => $name_day, 'class' => $class, 'jourCycle' => intval($jour_cycle), 'horsResa' => $horsResa, 'plageLibre' => $plageLibre, "heure" => $heure, "reservations" => $reservations, 'autreResa' => $autreResa);

@@ -81,34 +81,41 @@
 
 							<div class="monthday {{cellule.class}}">
 								<!-- Numéro du jour -->
-								<a title="{{trad.see_all_the_rooms_for_the_day}}" href="app.php?p=jour&year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;area={{d.area}}">{{cellule.numJour}}
+								<a title="{{trad.see_all_the_rooms_for_the_day}}" href="app.php?p=jour&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;area={{d.area}}">{{cellule.numJour}}
 									{% if settings.jours_cycles_actif == "Oui" and cellule.jourCycle > -1 %}
 										<span class="tiny"> - {% if cellule.jourCycle > 0 %}{{trad.rep_type_6}} {% endif %}{{cellule.jourCycle}}</span>
 									{% endif %}
 								</a>
 							</div>
 
-                            {% for resa in cellule.reservations %}
-                                <table class="pleine table-bordered table-striped">
-                                    <tr>
-                                        {{resa.td|raw}}
-                                            <span class="small_planning">
-                                                {% if resa.lienFiche %}
-                                                    {% if settings.display_level_view_entry == 0 %}
-                                                        <a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois_all',readData);" data-rel="popup_name" class="poplight lienCellule">
-                                                    {% else %}
-                                                        <a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois_all">
-                                                    {% endif %}
-                                                {% endif %}
-                                                {{resa.texte|raw}}
-                                                {% if resa.lienFiche %}
-                                                    </a>
-                                                {% endif %}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            {% endfor %}
+							<!-- Si hors résa -->
+							{% if cellule.horsResa == true %}
+								<div class="empty_cell">
+									<i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
+								</div>
+							{% else %}
+								{% for resa in cellule.reservations %}
+									<table class="pleine table-bordered table-striped">
+										<tr>
+											{{resa.td|raw}}
+												<span class="small_planning">
+													{% if resa.lienFiche %}
+														{% if settings.display_level_view_entry == 0 %}
+															<a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois_all',readData);" data-rel="popup_name" class="poplight lienCellule">
+														{% else %}
+															<a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&amp;id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois_all">
+														{% endif %}
+													{% endif %}
+													{{resa.texte|raw}}
+													{% if resa.lienFiche %}
+														</a>
+													{% endif %}
+												</span>
+											</td>
+										</tr>
+									</table>
+								{% endfor %}
+							{% endif %}
 
 							<!-- Si nb de resa supérieur à 11 -->
 							{% if cellule.autreResa %}
@@ -118,7 +125,7 @@
 							<!-- Il reste une plage libre : On affiche le + -->
 							{% if cellule.plageLibre %}
 								<div class="empty_cell">
-									<a href="app.php?p=editentree&room={{d.room}}&amp;page=mois&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;
+									<a href="app.php?p=editentree&amp;room={{d.room}}&amp;page=mois&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;
 									{% if d.usePeriode == "y" %}
 										period=&amp;
 									{% else %}
