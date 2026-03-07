@@ -492,13 +492,13 @@ function affiche_ressource_empruntee_twig($id_room, $type = "logo")
 		if ($id_resa != -1)
 		{
 			if ($type == "logo")
-				$valeur = '<a href="app.php?p=vuereservation&id='.$id_resa.'"><img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("reservation_en_cours").'" width="30" height="30" class="image" /></a>'.PHP_EOL;
+				$valeur = '<a href="app.php?p=vuereservation&id='.$id_resa.'" style="color: red;" title="'.get_vocab("reservation_en_cours").'"><i class="icone fa-solid fa-hand" title="'.get_vocab("ressource_actuellement_empruntee").'"></i></a>'.PHP_EOL;
 			else if ($type == "texte")
 			{
 				$beneficiaire = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				$beneficiaire_ext = grr_sql_query1("SELECT beneficiaire_ext FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
 				$valeur = '<br /><b><span class="avertissement">'.PHP_EOL;
-				$valeur .= '<img src="img_grr/buzy_big.png" alt="'.get_vocab("ressource_actuellement_empruntee").'" title="'.get_vocab("ressource_actuellement_empruntee").'" width="30" height="30" class="image" />'.PHP_EOL;
+				$valeur .= '<i class="icone fa-solid fa-hand" title="'.get_vocab("ressource_actuellement_empruntee").'"></i>'.PHP_EOL;
 				$valeur .= get_vocab("ressource_actuellement_empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
 				$valeur .= ' <a href="app.php?p=vuereservation&id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
 			}

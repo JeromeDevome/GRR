@@ -55,7 +55,7 @@
                 <td>
                     {{resa.createur|raw}} 
                     {% if resa.emprunte %}
-                      <span class="avertissement">({{trad.reservation_en_cours}}) <img src="img_grr/buzy_big.png" align=middle alt="{{trad.ressource_actuellement_empruntee}}" title="{{trad.ressource_actuellement_empruntee}}" border="0" width="30" height="30" class="print_image" /></span>
+                      <span class="avertissement">({{trad.reservation_en_cours}}) <i class="icone fa-solid fa-hand" title="{{trad.ressource_actuellement_empruntee}}"></i></a></span>
                     {% endif %}
                 </td>
             </tr>
@@ -76,14 +76,14 @@
             {% if resa.clef == 1 %}
             <tr>
                 <th>{{trad.clef}}{{trad.deux_points}}</th>
-                <td><img src="img_grr/key.png" alt="clef"></td>
+                <td><i class="icone fa-solid fa-key"></i></td>
             </tr>
             {% endif %}
 
             {% if resa.courrier == 1 %}
             <tr>
                 <th>{{trad.courrier}}{{trad.deux_points}}</th>
-                <td><img src="img_grr/courrier.png" alt="courrier"></td>
+                <td><i class="fa-solid fa-envelope"></i></td>
             </tr>
             {% endif %}
 
