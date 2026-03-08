@@ -257,12 +257,15 @@
 			<!-- Colonne de droite : Périodicité -->
 			<div class='col-sm-6 col-xs-12'>
 				{% if d.periodiciteAttache == 0 %}
+
+					{% if settings.periodicite == "y" %}
 					<div id="ouvrir" class="CC">
 						<input type="button" class="btn btn-primary" value="{{trad.click_here_for_series_open|raw}}" onclick="clicMenu(1);check_5();" />
-            </div>
-            <div style="display:none" id="fermer" class="CC">
+            		</div>
+					{% endif %}
+          			<div style="display:none" id="fermer" class="CC">
 							<input type="button" class="btn btn-primary" value="{{trad.click_here_for_series_close|raw}}" onclick="clicMenu(1);check_5();" />
-						</div>
+					</div>
 					<div id="menu1" style="display:none;">
 						<p class="F"><b>{{trad.rep_type}}</b></p>
 
