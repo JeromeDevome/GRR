@@ -19,16 +19,9 @@
 require_once("../include/pages.class.php");
 
 
-get_vocab_admin("admin_config1");
-get_vocab_admin("admin_config2");
-get_vocab_admin("admin_config3");
-get_vocab_admin("admin_config4");
-get_vocab_admin("admin_config5");
-get_vocab_admin("admin_config6");
-get_vocab_admin("admin_config7");
+$trad = $vocab;
 
 $msg = '';
-
 
 if (!Pages::load()) {
     die('Erreur chargement pages');
@@ -57,12 +50,21 @@ if (isset($_POST['p'])) { // On a validé le formulaire
 
 // Echange de réservation
     if(isset($_POST['fct_echange_resa']) && $_POST['fct_echange_resa'] = 'on')
-         $fonctionEchangeResa = 'y';
+        $fonctionEchangeResa = 'y';
     else
         $fonctionEchangeResa = 'n';
 
     if (!Settings::set('fct_echange_resa', $fonctionEchangeResa))
-    $msg .= "Erreur lors de l'enregistrement de fct_echange_resa !<br />";
+        $msg .= "Erreur lors de l'enregistrement de fct_echange_resa !<br />";
+
+// Drag & Drop
+    if(isset($_POST['fct_drag_drop']) && $_POST['fct_drag_drop'] = 'on')
+        $fct_drag_drop = 'y';
+    else
+        $fct_drag_drop = 'n';
+
+    if (!Settings::set('fct_drag_drop', $fct_drag_drop))
+        $msg .= "Erreur lors de l'enregistrement de fct_drag_drop !<br />";
 
 // Formulaire de contact pour réservation 
     if (isset($_POST['mail_destinataire'])) {
@@ -171,25 +173,6 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
     $msg = '';
 }
 
-
-
-get_vocab_admin('periodicite_msg');
-get_vocab_admin('courrier_msg');
-get_vocab_admin('swapentry');
-
-get_vocab_admin('display_mail_etat_destinataire');
-get_vocab_admin('display_mail_etat_destinataire_1');
-get_vocab_admin('display_mail_etat_destinataire_2');
-get_vocab_admin('display_mail_etat_destinataire_3');
-get_vocab_admin('display_mail_etat_destinataire_4');
-get_vocab_admin('display_mail_destinataire');
-get_vocab_admin('mail_user_destinataire');
-get_vocab_admin('captcha_utiliser');
-
-get_vocab_admin('YES');
-get_vocab_admin('NO');
-get_vocab_admin('save');
-get_vocab_admin('message_records');
 
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));

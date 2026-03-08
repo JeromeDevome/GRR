@@ -53,11 +53,11 @@
 				</h4>
 
 				{% if d.ficheRessource %}
-					<a href="javascript:centrerpopup('app.php?p=ressourcefiche&id_room={{d.room}}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{trad.fiche_ressource}}"><i class="fa-solid fa-magnifying-glass"></i></a>
+					<a href="javascript:centrerpopup('app.php?p=ressourcefiche&amp;id_room={{d.room}}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{trad.fiche_ressource}}"><i class="fa-solid fa-magnifying-glass"></i></a>
 				{% endif %}
 
 				{% if d.acces_config %}
-					<a href="./admin/admin.php?p=admin_edit_room&room={{d.room}}" title="{{d.editroom}}"><i class="fa-solid fa-gear"></i></a>
+					<a href="./admin/admin.php?p=admin_edit_room&amp;room={{d.room}}" title="{{d.editroom}}"><i class="fa-solid fa-gear"></i></a>
 				{% endif %}
 
 				{% if d.statutRessource == 0 %}
@@ -99,7 +99,7 @@
 					{% else %} <!-- Cellule jour du mois sélectionné-->
 						<td>
 
-							<div class="monthday {{cellule.class}}">
+							<div class="dragdrop monthday {{cellule.class}}" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}" data-plage-libre="{{cellule.plageLibre ? '1' : '0'}}">
 								<!-- Numéro du jour -->
 								<a title="{{trad.see_all_the_rooms_for_the_day}}" href="app.php?p=jour&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;area={{d.area}}">{{cellule.numJour}}
 									{% if settings.jours_cycles_actif == "Oui" and cellule.jourCycle > -1 %}
@@ -115,7 +115,7 @@
 								</div>
 							{% else %}
 								{% for resa in cellule.reservations %}
-									<table class="pleine table-bordered table-striped">
+									<table class="resadrag pleine table-bordered table-striped" data-resa-id="{{resa.idresa}}" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}">
 										<tr>
 											{{resa.td|raw}}
 												<span class="small_planning">
@@ -123,7 +123,7 @@
 														{% if settings.display_level_view_entry == 0 %}
 															<a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois',readData);" data-rel="popup_name" class="poplight lienCellule">
 														{% else %}
-															<a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois">
+															<a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&amp;id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois">
 														{% endif %}
 													{% endif %}
 													{{resa.texte|raw}}
@@ -144,8 +144,8 @@
 
 							<!-- Il reste une plage libre : On affiche le + -->
 							{% if cellule.horsResa == false and cellule.plageLibre %}
-								<div class="empty_cell">
-									<a href="app.php?p=editentree&room={{d.room}}&amp;page=mois&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;
+								<div class="dragdrop empty_cell" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}" data-plage-libre="{{cellule.plageLibre ? '1' : '0'}}">
+									<a href="app.php?p=editentree&amp;room={{d.room}}&amp;page=mois&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;
 									{% if d.usePeriode == "y" %}
 										period=&amp;
 									{% else %}
@@ -190,6 +190,7 @@
 	{% if d.pview != 1 %}
 		{{ planning.erreurMailAuto(settings, trad, d.sessionMessageErreur) }}
 		{{ planning.boutonRetourHaut() }}
+		{{ planning.dragAndDrop(settings, trad, d) }}
 	{% endif %}
 	{% if d.popupMessage %}
 		{{ planning.popupMsg(settings, d.popupMessage, d.popupAffiche) }}

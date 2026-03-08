@@ -1305,6 +1305,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 
 	if (intval($version_old_bdd) < 400011) // Version GRR 4.6.0
 	{
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('fct_drag_drop', 'y');");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_userbook_room DROP PRIMARY KEY;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_userbook_room ADD CONSTRAINT grr_j_userbook_room_pk PRIMARY KEY (login,id_room,idgroupes);");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_group_room (`idgroupes` int NOT NULL, `id_room` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_room`));");

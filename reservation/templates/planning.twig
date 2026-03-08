@@ -122,3 +122,50 @@
     {% endif %}
 
 {% endmacro %}
+
+{% macro dragAndDrop(settings, trad, d) %}
+	{% if settings.fct_drag_drop == 'y' and d.levelUser >= 2 %} <!-- Si le drag&drop est activé et que l'utilisateur est au minimum USAGER -->
+        <script type="text/javascript">
+		$(function(){
+			// Réinitialiser le Drag&Drop dans un bloc propre (l'original peut contenir une erreur de syntaxe)
+			$(".resadrag").draggable({helper:"clone",revert:"invalid",
+				start:function(event,ui){ $(this).css('opacity',0.5); ui.helper.css('width', $(this).width()); },
+				stop:function(){ $(this).css('opacity',1); }
+			});
+			$(".dragdrop").droppable({accept:".resadrag",tolerance:"pointer",
+				drop:function(event,ui){
+					var id      = ui.draggable.data('resa-id');
+					var target  = $(event.target).closest('.dragdrop');
+                    var hour    = target.data('hour') ?? -1;
+					var minute  = target.data('minute') ?? -1;
+                    var day     = target.data('day');
+					var month   = target.data('month');
+					var year    = target.data('year');
+					var ressource = target.data('ressource');
+				    //console.log('drop debug: ', id, day, month, year, ressource,hour,minute);
+					if(id && day && month && year){
+						bougerResa(id,day,month,year,ressource,hour,minute);
+					}
+				}
+			});
+
+			function bougerResa(id,day,month,year,ressource,hour,minute){
+				$.ajax({
+					url: 'app.php?p=dragdrop',
+					data: {id:id,day:day,month:month,year:year,ressource:ressource,hour:hour,minute:minute},
+					success: function(res){
+						var msg = $.trim(res);
+						if(msg == 'ok'){
+							location.reload();
+						} else if (msg == 'conflit'){
+							alert('{{trad.reservation_impossible}} '+day+'/'+month+'/'+year);
+						} else {
+							alert(msg);
+						}
+					}
+				});
+			}
+		});
+        </script>
+	{% endif %}
+{% endmacro %}

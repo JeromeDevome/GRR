@@ -79,6 +79,13 @@
 													<label class="custom-control-label" for="fct_echange_resa">{{ trad.swapentry }}</label>
 												</div>
 											</div>
+											<!-- Drag & Drop -->
+											<div class="form-group row col-sm-12">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="fct_drag_drop" name="fct_drag_drop" {% if settings.fct_drag_drop == 'y' %}checked{% endif %} > 
+													<label class="custom-control-label" for="fct_drag_drop">{{ trad.drag_drop }}</label>
+												</div>
+											</div>
 										</div>
 
 										<!-- Formulaire de contact réservation -->

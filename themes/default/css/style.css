@@ -6199,3 +6199,7 @@ div.ui-datepicker{
     background-image: url('../../../img_grr/flechedroite.png') !important;
         background-position: 0px 0px !important;
 }
+.ui-draggable-dragging {
+    width: auto !important;
+    max-width: 200px;
+}

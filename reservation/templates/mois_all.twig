@@ -79,7 +79,7 @@
 					{% else %} <!-- Cellule jour du mois sélectionné-->
 						<td>
 
-							<div class="monthday {{cellule.class}}">
+							<div class="dragdrop monthday {{cellule.class}}" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}" data-plage-libre="{{cellule.plageLibre ? '1' : '0'}}">
 								<!-- Numéro du jour -->
 								<a title="{{trad.see_all_the_rooms_for_the_day}}" href="app.php?p=jour&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;area={{d.area}}">{{cellule.numJour}}
 									{% if settings.jours_cycles_actif == "Oui" and cellule.jourCycle > -1 %}
@@ -95,7 +95,7 @@
 								</div>
 							{% else %}
 								{% for resa in cellule.reservations %}
-									<table class="pleine table-bordered table-striped">
+									<table class="resadrag pleine table-bordered table-striped" data-resa-id="{{resa.idresa}}" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}">
 										<tr>
 											{{resa.td|raw}}
 												<span class="small_planning">
@@ -170,10 +170,12 @@
 	{% if d.pview != 1 %}
 		{{ planning.erreurMailAuto(settings, trad, d.sessionMessageErreur) }}
 		{{ planning.boutonRetourHaut() }}
+		{{ planning.dragAndDrop(settings, trad, d) }}
 	{% endif %}
 	{% if d.popupMessage %}
 		{{ planning.popupMsg(settings, d.popupMessage, d.popupAffiche) }}
 	{% endif %}
+
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#popup_name").draggable({containment: "#container"});

@@ -396,6 +396,7 @@ $vocab['dlrapportcsv'] = "Fichier CSV des réservations";
 $vocab['dlresumecsv'] = "Fichier CSV du résumé";
 $vocab['domaines_de_type_incompatibles'] = "<b>Remarque : </b> Seule la réservation de journées entières est possible car les ressources sélectionnées appartiennent à des domaines de type différents.";
 $vocab['dont_allow_modify'] = "Ne pas permettre aux utilisateurs (hormis les gestionnaires et les administrateurs) de modifier ou de supprimer leurs propres réservations.";
+$vocab['drag_drop'] = "Glisser-déposer les réservations";
 $vocab['droits_insuffisants_pour_voir_ressources'] = "Vous n'avez pas les droits suffisants pour accéder aux ressources de ce domaine.";
 $vocab['duplique_domaine'] = "Dupliquer le domaine";
 $vocab['duplique_ressource'] = "Dupliquer la ressource";

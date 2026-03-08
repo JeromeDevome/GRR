@@ -64,8 +64,8 @@
                     <!--Modération-->{% if d.moderationResa != 0 %}<br><span class="texte_ress_moderee">{{trad.reservations_moderees}}</span>{% endif %}
                     <!--Commentaire-->{% if d.afficherCommentaire == "y" and d.commentaireRessource != "" %}<br>{{ressource.ress.10|raw}}{% endif %}
                     <br>
-                    <!--FicheRessource-->{% if d.ficheRessource %}<a href="javascript:centrerpopup('app.php?p=ressourcefiche&id_room={{d.room}}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{trad.fiche_ressource}}"><i class="fa-solid fa-magnifying-glass"></i></a> {% endif %}
-                    <!--Accès à la conf de la ress-->{% if d.acces_config %}<a href="./admin/admin.php?p=admin_edit_room&room={{d.room}}"><i class="fa-solid fa-gear"></i></a>{% endif %}
+                    <!--FicheRessource-->{% if d.ficheRessource %}<a href="javascript:centrerpopup('app.php?p=ressourcefiche&amp;id_room={{d.room}}',600,480,'scrollbars=yes,statusbar=no,resizable=yes')" title="{{trad.fiche_ressource}}"><i class="fa-solid fa-magnifying-glass"></i></a> {% endif %}
+                    <!--Accès à la conf de la ress-->{% if d.acces_config %}<a href="./admin/admin.php?p=admin_edit_room&amp;room={{d.room}}"><i class="fa-solid fa-gear"></i></a>{% endif %}
                     <!--Ressource emprunté-->{{d.ressourceEmpruntee|raw}}
 				{% endif %}
 			</div>
@@ -82,50 +82,53 @@
 			</tr>
 		</thead>
 		<tbody>
-    {% for ligne in lignesHoraires %}
-      <tr>
-        <td class="{{ligne.classHoraire}}">{{ligne.horairePeriode}}</td>
-        {% for cellule in ligne.cellulesJours %}
-          {% if cellule.statut == 0 and cellule.class != ''%}
-            <td >
-            {{cellule.descr|raw}}
-            </td>
-          {% endif %}
-          {% if cellule.statut > 0 %}
-            <td  rowspan="{{cellule.rowspan}}" class="{{cellule.class}}">
-            {% if cellule.statut == 1 %} <!-- Réservable -->
-              <a href="app.php?p=editentree&room={{cellule.ressource}}&amp;year={{cellule.annee}}&amp;month={{cellule.mois}}&amp;day={{cellule.jour}}&amp;page=semaine&amp;room_back={{cellule.ressource}}&amp;{% if d.usePeriode == "y" %}period={{ligne.periode}}{% else %}hour={{ligne.heure}}&amp;minute={{ligne.minute}}{% endif %}" title="{{trad.cliquez_pour_effectuer_une_reservation}}">
-              <i class="fa-solid fa-plus"></i>
-              </a>
-            {% elseif cellule.statut == 2 %} <!-- Possède une réservation -->
-              {% if cellule.ficheResa %}
-                {% if settings.display_level_view_entry == 0 %}
-                  <a title="{{cellule.titre}}" data-width="675" onclick="request({{cellule.idresa}},{{d.gDay}},{{d.gMonth}},{{d.gYear}},{{d.room}},'semaine',readData);" data-rel="popup_name" class="poplight lienCellule">
-                {% else %}
-                  <a class="lienCellule" title="{{cellule.titre}}" href="app.php?p=vuereservation&id={{cellule.idresa}}&amp;day={{d.gDay}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=semaine">
-                {% endif %}
-                {{cellule.descr|raw}}
-                </a>
-              {% else %}
-                {{cellule.descr|raw}}
-              {% endif %}
-            {% elseif cellule.statut == 3 %} <!-- Hors résa -->
-              <i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
-            {% endif %}
-            </td>
-          {% endif %}
-        {% endfor %}
-      </tr>
-    {% endfor %}
+			{% for ligne in lignesHoraires %}
+			<tr>
+				<td class="{{ligne.classHoraire}}">{{ligne.horairePeriode}}</td>
+				{% for cellule in ligne.cellulesJours %}
+					{% if cellule.statut == 0 and cellule.class != ''%}
+						<td >
+						{{cellule.descr|raw}}
+						</td>
+					{% endif %}
+					{% if cellule.statut > 0 %}
+						
+						{% if cellule.statut == 1 %} <!-- Réservable -->
+							<td rowspan="{{cellule.rowspan}}" class="dragdrop empty_cell {{cellule.class}}" data-hour="{{ligne.heure}}" data-minute="{{ligne.minute}}" data-day="{{cellule.jour}}" data-month="{{cellule.mois}}" data-year="{{cellule.annee}}" data-ressource="{{d.room}}" data-plage-libre="{{cellule.plageLibre ? '1' : '0'}}">
+							<a href="app.php?p=editentree&amp;room={{cellule.ressource}}&amp;year={{cellule.annee}}&amp;month={{cellule.mois}}&amp;day={{cellule.jour}}&amp;page=semaine&amp;room_back={{cellule.ressource}}&amp;{% if d.usePeriode == "y" %}period={{ligne.periode}}{% else %}hour={{ligne.heure}}&amp;minute={{ligne.minute}}{% endif %}" title="{{trad.cliquez_pour_effectuer_une_reservation}}">
+								<i class="fa-solid fa-plus"></i>
+							</a>
+						{% elseif cellule.statut == 2 %} <!-- Possède une réservation -->
+							<td rowspan="{{cellule.rowspan}}" class="resadrag {{cellule.class}}" data-resa-id="{{cellule.idresa}}" data-hour="{{ligne.heure}}" data-minute="{{ligne.minute}}" data-day="{{cellule.jour}}" data-month="{{cellule.mois}}" data-year="{{cellule.annee}}" data-plage-libre="{{cellule.plageLibre ? '1' : '0'}}">
+							{% if cellule.ficheResa %}
+								{% if settings.display_level_view_entry == 0 %}
+									<a title="{{cellule.titre}}" data-width="675" onclick="request({{cellule.idresa}},{{d.gDay}},{{d.gMonth}},{{d.gYear}},{{d.room}},'semaine',readData);" data-rel="popup_name" class="poplight lienCellule">
+								{% else %}
+									<a class="lienCellule" title="{{cellule.titre}}" href="app.php?p=vuereservation&amp;id={{cellule.idresa}}&amp;day={{d.gDay}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=semaine">
+								{% endif %}
+									{{cellule.descr|raw}}
+								</a>
+							{% else %}
+								{{cellule.descr|raw}}
+							{% endif %}
+						{% elseif cellule.statut == 3 %} <!-- Hors résa -->
+							<td rowspan="{{cellule.rowspan}}" class="{{cellule.class}}">
+								<i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
+						{% endif %}
+							</td>
+						{% endif %}
+				{% endfor %}
+     		</tr>
+    		{% endfor %}
 		</tbody>
 
 	</table>
 
-		{% if d.pview != 1 %}
-			<div id="toTop">
-				<b>{{trad.top_of_page}}</b>
-			</div>
-		{% endif %}
+	{% if d.pview != 1 %}
+		<div id="toTop">
+			<b>{{trad.top_of_page}}</b>
+		</div>
+	{% endif %}
 
 	</div>
 	<div id="popup_name" class="popup_block"></div>
@@ -138,6 +141,7 @@
 	{% if d.pview != 1 %}
 		{{ planning.erreurMailAuto(settings, trad, d.sessionMessageErreur) }}
 		{{ planning.boutonRetourHaut() }}
+		{{ planning.dragAndDrop(settings, trad, d) }}
 	{% endif %}
 	{% if d.popupMessage %}
 		{{ planning.popupMsg(settings, d.popupMessage, d.popupAffiche) }}

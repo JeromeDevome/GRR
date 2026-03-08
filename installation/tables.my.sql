@@ -140,6 +140,8 @@ INSERT INTO grr_setting VALUES ('display_type_gr', '1');
 INSERT INTO grr_setting VALUES ('display_type_ad', '1');
 INSERT INTO grr_setting VALUES ('end_bookings', '1798757999');
 INSERT INTO grr_setting VALUES ('envoyer_email_avec_formulaire', 'no');
+INSERT INTO grr_setting VALUES ('fct_drag_drop', 'y');
+INSERT INTO grr_setting VALUES ('fct_echange_resa', 'y');
 INSERT INTO grr_setting VALUES ('file', '1');
 INSERT INTO grr_setting VALUES ('firstversion', 'VariableInstal07');
 INSERT INTO grr_setting VALUES ('gestion_lien_aide', 'ext');

@@ -72,7 +72,7 @@ $form_vars = array(
   'option_reservation' => 'int',
   'moderate'           => 'int',
   'courrier'           => 'string',
-  'keys'               => 'string',
+  'clef'               => 'string',
   'oldRessource'       => 'int', 
   'areas'              => 'int', 
   'rep_month'          => 'int', 
@@ -97,7 +97,11 @@ $form_vars = array(
   'skip_entry_in_conflict' => 'string',
   'nbparticipantmax'   => 'int',
   'vacances'           => 'int', // 0: ts les jours, 1: jours de vacances scolaires, 2: jours hors vacances
-  'feries'             => 'int'  // 0: ts les jours, 1: jours fériés, 2: jours ouvrés
+  'feries'             => 'int',  // 0: ts les jours, 1: jours fériés, 2: jours ouvrés
+  'start_hour'         => 'int',
+  'start_minute'       => 'int',
+  'end_hour'           => 'int',
+  'end_minute'         => 'int'
 );
 // tableau à compléter autant que nécessaire
 // récupération des valeurs des variables passées en paramètres
@@ -113,6 +117,56 @@ foreach($form_vars as $var => $var_type)
     }
 }
 // traiter aussi les champs additionnels (addon_x)!
+// si appelé depuis drag&drop, on n'a transmis que les paramètres modifiés ;
+// compléter le reste avec les données de l'entrée existante
+if (isset($_REQUEST['dragdrop']) && isset($id) && $id) {
+    $sql = "SELECT * FROM " . TABLE_PREFIX . "_entry WHERE id=".intval($id);
+    $res2 = grr_sql_query($sql);
+    if ($res2 && ($row2 = grr_sql_row_keyed($res2,0))) {
+
+        foreach ($row2 as $colonne => $valeur) {
+            if (!isset($$colonne)) {
+                $$colonne = $valeur;
+            }
+        }
+/*        // copie des valeurs manquantes
+        $name        = isset($name)        ? $name        : $row2['name'];
+        $description = isset($description) ? $description : $row2['description'];
+        $type        = isset($type)        ? $type        : $row2['type'];
+        $beneficiaire = isset($beneficiaire)? $beneficiaire : $row2['beneficiaire'];
+        if (empty($beneficiaire) && !empty($row2['beneficiaire_ext'])) {
+            // cas bénéficiaire externe : on conserve la chaîne brute
+            $beneficiaire_ext = $row2['beneficiaire_ext'];
+        }
+        if (!isset($rooms) || empty($rooms) || intval($rooms[0]) == 0) {
+            $rooms = array(intval($row2['room_id']));
+        }
+        // horaires d'origine si l'appel ne fournit pas de nouvelles heures
+        if (!isset($start_day))   $start_day   = date('d',$row2['start_time']);
+        if (!isset($start_month)) $start_month = date('m',$row2['start_time']);
+        if (!isset($start_year))  $start_year  = date('Y',$row2['start_time']);
+        if (!isset($start_hour))  $start_hour  = date('G',$row2['start_time']);
+        if (!isset($start_minute))$start_minute= date('i',$row2['start_time']);
+        if (!isset($end_day))     $end_day     = date('d',$row2['end_time']);
+        if (!isset($end_month))   $end_month   = date('m',$row2['end_time']);
+        if (!isset($end_year))    $end_year    = date('Y',$row2['end_time']);
+        if (!isset($end_hour))    $end_hour    = date('G',$row2['end_time']);
+        if (!isset($end_minute))  $end_minute  = date('i',$row2['end_time']);
+        // période si nécessaire
+        if (!isset($period))
+            $period = $start_minute;
+        // et charger les champs additionnels existants
+        $areaDrag = mrbsGetRoomArea($rooms[0]);
+        if ($areaDrag) {
+            $overload_fields_drag = mrbsOverloadGetFieldslist($areaDrag);
+            foreach ($overload_fields_drag as $fld) {
+                $fid = $fld['id'];
+                $val = grrExtractValueFromOverloadDesc($row2['overload_desc'], $fid);
+                ${"addon_".$fid} = $val;
+            }
+        }*/
+    }
+}
 // vérification
 /*echo "<br>vérification<br>";
 foreach($form_vars as $var => $var_type)
@@ -360,8 +414,8 @@ try {
     // ici on doit avoir start_time et end_time validés
     $end_hour = date("H",$end_time);
     $end_minute = date("i",$end_time);
-    $keys = (isset($keys) && ($keys == 'y'))? 1 : 0;
-    $courrier = (isset($courrier) &&($courrier == 'y'))? 1 : 0;
+    $clef = (isset($clef) && ($clef == '1'))? 1 : 0;
+    $courrier = (isset($courrier) &&($courrier == '1'))? 1 : 0;
     $duration = str_replace(",", ".", "$duration ");
     $statut_entry = isset($statut_entry)? $statut_entry : "-";
     $rep_jour_c = isset($rep_jour_)? $rep_jour_ : 0;
@@ -679,7 +733,7 @@ try {
 			$entry_moderate = 0;
 			$send_mail_moderate = 0;
 		}
-		if ($rep_type != 0)
+		if ($rep_type != 0) // Réservation périodique
 		{
 			$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $ignore);
 			if (Settings::get("automatic_mail") == 'yes' && $envoyer_notif == 1)
@@ -704,15 +758,15 @@ try {
 			}
             mrbsDelEntry(getUserName(), $id, 1, 1);
 		}
-		else
+		else // Réservation unique
 		{
 			if ($repeat_id > 0)
 				$entry_type = 2;
 			else
 				$entry_type = 0;
 			if($id > 0)
-				$differenceAvAp = compareEntrys($id, $start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
-			mrbsCreateSingleEntry($id, $start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $keys, $courrier,$nbparticipantmax);
+				$differenceAvAp = compareEntrys($id, $start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $clef, $courrier,$nbparticipantmax);
+			mrbsCreateSingleEntry($id, $start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $clef, $courrier,$nbparticipantmax);
 			if($id == 0 || $id == NULL)
 			{
 				$id = grr_sql_insert_id();
@@ -747,6 +801,16 @@ try {
         if (!empty($_FILES) && is_array($_FILES) && isset($id_for_import) && $id_for_import > 0){
             include "./include/import.class.php";
             Import::DocumentResa($id_for_import);
+        }
+
+        // drag&drop caller wants a simple response, not a redirect
+        if (isset($_REQUEST['dragdrop'])) {
+            if (isset($d['err_type']) && $d['err_type'] !== '') {
+                echo $d['err_type'];
+            } else {
+                echo 'ok';
+            }
+            exit;
         }
 
 	$area = mrbsGetRoomArea($room_id);
@@ -832,6 +896,17 @@ catch (Exception $e){
         $d['htmlConflit'] .= "<input class='btn btn-primary' type='submit' value='".get_vocab('returnprev')."' />";
         $d['htmlConflit'] .= '</form>';
     }
+}
+
+// if we were invoked by drag&drop, output a simple status string instead of rendering the full page
+aftersubmit:
+if (isset($_REQUEST['dragdrop'])) {
+    if (isset($d['err_type']) && $d['err_type'] !== '') {
+        echo $d['err_type'];
+    } else {
+        echo 'ok';
+    }
+    exit;
 }
 
 echo $twig->render('editentreetrt.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));

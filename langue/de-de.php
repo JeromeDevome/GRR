@@ -683,6 +683,7 @@ $vocab["domaines_de_type_incompatibles"] = "Bemerkung : Nur die Reservierung von
 $vocab["donner_droits"] = "und ihr ausreichende Rechte zuweisen.";
 $vocab["dontDisplay"] = "Nicht anzeigen";
 $vocab["dont_allow_modify"] = "den Benutzern (ausser Verwalter und Administrators) ihren eigenen Reservierungen ändern oder löschen verboten";
+$vocab['drag_drop'] = "Buchungen per Drag & Drop verschieben";
 $vocab["droits_insuffisants_pour_voir_ressources"] = "Sie haben nicht die erforderlichen Rechte, um auf die Ressourcen dieser Domain zuzugreifen.";
 $vocab["duplicate_field"] = "Ein Feld mit demselben Namen existiert bereits in diesem Bereich.";
 $vocab["duplicate_sitecode_name"] = "Code und Site-Name müssen eindeutig sein";

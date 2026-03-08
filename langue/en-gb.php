@@ -397,6 +397,7 @@ $vocab['dlrapportcsv'] = "CSV file of the reservations";
 $vocab['dlresumecsv'] = "CSV file of the summary";
 $vocab['domaines_de_type_incompatibles'] = "<b>Comment: </b> Only the reservation of full days is possible because the selected resources belong to different types of areas.";
 $vocab['dont_allow_modify'] = "Don't allow to users (except managers and administrators) to modify or delete their own reservations;";
+$vocab['drag_drop'] = "Drag and drop bookings";
 $vocab['droits_insuffisants_pour_voir_ressources'] = "You don not have the rights to access the resources in this area."; 
 $vocab['duplique_domaine'] = "Duplicate the area"; 
 $vocab['duplique_ressource'] = "Duplicate the resource"; 
