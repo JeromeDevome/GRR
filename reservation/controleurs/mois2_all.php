@@ -334,6 +334,8 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
 							} elseif(plages_libre_semaine_ressource($row["id"], $month, $cday, $year))
 							{
 								$statutCellule = 1;
+							} else {
+								$statutCellule = 2;
 							}
 					}
 				} else
