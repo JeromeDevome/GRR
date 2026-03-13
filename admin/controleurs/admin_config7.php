@@ -112,14 +112,14 @@ if (isset($_POST['p'])) { // On a validé le formulaire
         $fct_crea_cpt_captcha = "n";
     if (!Settings::set("fct_crea_cpt_captcha", $fct_crea_cpt_captcha))
         $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_captcha !<br />";       
-}
+
 
 /* Page formaulaire contactresa */
-if (isset($_POST['textecontactresa'])) {
-	VerifyModeDemo();
-    if (!Pages::set("contactresa", "contactresa", $_POST['textecontactresa']))
-        $msg .= "Erreur lors de l'enregistrement du texte contactresa !<br />";
-}
+    if (isset($_POST['textecontactresa'])) {
+        VerifyModeDemo();
+        if (!Pages::set("contactresa", "contactresa", $_POST['textecontactresa']))
+            $msg .= "Erreur lors de l'enregistrement du texte contactresa !<br />";
+    }
 
 // Calcul plage libre vue semaine_all
     if(isset($_POST['calcul_plus_semaine_all']) && $_POST['calcul_plus_semaine_all'] = 'on')
@@ -147,6 +147,7 @@ if (isset($_POST['textecontactresa'])) {
 
     if (!Settings::set('calcul_plus_mois2_all', $calcul_plus_mois2_all))
         $msg .= "Erreur lors de l'enregistrement de calcul_plus_mois2_all !<br />";
+}
 
 if (!Settings::load()) {
     die('Erreur chargement settings');
