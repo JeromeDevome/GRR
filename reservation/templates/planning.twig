@@ -1,4 +1,4 @@
-{% macro menuHaut(settings, trad, selecteur, miniCalentrier, selectionDateDirecte, legende) %}
+{% macro menuHaut(settings, trad, selecteur, miniCalentrier, selectionDateDirecte, legende, area, room) %}
     <div id ="menuHaut" class="row">
 
         <!-- Sites, domaine et ressources -->
@@ -10,6 +10,8 @@
         {% if settings.select_date_directe == "y" %}
             <form method="GET" action="app.php" style="text-align: left;">
                 <input type="hidden" name="p" value="jour">
+                <input type='hidden' name='area' value='{{area}}'>
+                <input type='hidden' name='room' value='{{room}}'>
                 {{selectionDateDirecte|raw}}
                 <button class="btn btn-default btn-sm" type="submit">
                     <i class="fa-solid fa-angles-right"></i>
@@ -34,13 +36,15 @@
     </div>
 {% endmacro %}
 
-{% macro menuGauche(settings, trad, selecteur, miniCalentrier, selectionDateDirecte, legende) %}
+{% macro menuGauche(settings, trad, selecteur, miniCalentrier, selectionDateDirecte, legende, area, room) %}
     <div id ="menuGauche2">
 
         <!-- Sélection date directe -->
         {% if settings.select_date_directe == "y" %}
             <form method="GET" action="app.php">
                 <input type="hidden" name="p" value="jour">
+                <input type='hidden' name='area' value='{{area}}'>
+                <input type='hidden' name='room' value='{{room}}'>
                 <center>
                     {{selectionDateDirecte|raw}}
                     <button class="btn btn-default btn-sm" type="submit">
