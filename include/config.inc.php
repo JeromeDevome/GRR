@@ -153,7 +153,21 @@ $nbMaxJoursLogEmail = 365;
 $algoPwd = 'ripemd320';
 
 # Alerte dans l'administration si backup > 30jours, nous déconseillons de le désactiver sauf si les sauvegardes sont effectués via un autre moyen
+# 0: alerte inactive ; 1: alerte active - Defaut 1
 $warningBackup = 1;
+
+# Alerte dans l'administration si le dossier d'installation est accessible, nous déconseillons de le désactiver sauf si vous avez mis en place une protection d'accès à ce dossier
+# 0: alerte inactive ; 1: alerte active - Defaut 1
+$gWarningDossierInstall = 1;
+
+# Alerte dans l'administration si la version de test est utilisée, nous déconseillons de le désactiver sauf si vous êtes un utilisateur avancé et que vous comprenez les risques liés à l'utilisation d'une version de test en production
+# 0: alerte inactive ; 1: alerte active - Defaut 1
+$gWarningVersionTest = 1;
+
+# Alerte dans l'administration si la connexion n'est pas sécurisée, nous déconseillons de le désactiver sauf si vous êtes un utilisateur avancé et que vous comprenez les risques liés à l'utilisation d'une connexion non sécurisée
+# 0: alerte inactive ; 1: alerte active - Defaut 1
+$gWarningSSL = 1;
+
 
 ##############################
 # ANTI-FLOOD - ENVOIS DE MAIL #

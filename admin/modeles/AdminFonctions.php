@@ -73,11 +73,11 @@ class AdminFonctions
 
 	public static function Warning() // Alerte
 	{
-        global $versionReposite, $version_grr, $warningBackup;
+        global $versionReposite, $version_grr, $warningBackup, $gWarningDossierInstall, $gWarningVersionTest, $gWarningSSL;
 
         $alerteTDB = array();
 
-        if ( stristr($version_grr, 'a') || stristr($version_grr, 'b') || stristr($version_grr, 'RC') || stristr($versionReposite, 'github') || stristr($versionReposite, 'alpha')|| stristr($versionReposite, 'beta') || stristr($versionReposite, 'RC') ){
+        if ($gWarningVersionTest == 1 && (stristr($version_grr, 'a') || stristr($version_grr, 'b') || stristr($version_grr, 'RC') || stristr($versionReposite, 'github') || stristr($versionReposite, 'alpha')|| stristr($versionReposite, 'beta') || stristr($versionReposite, 'RC') )){
             $alerteTDB[] = array('type' =>"danger", 'MessageWarning' => "Version de développement, ne pas utiliser en production !", 'NomLien' => "Trouver une autre version", 'lien' => "https://github.com/JeromeDevome/GRR/releases");
 		}
 
@@ -93,11 +93,11 @@ class AdminFonctions
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "La dernière sauvegarde de la BDD date de plus d'un mois !", 'NomLien' => "Faire une sauvegarde", 'lien' => "admin_save_mysql.php?flag_connect=yes");
 		}
 
-        if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') {
+        if ($gWarningSSL == 1 && (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off')) {
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "La connexion n'est pas sécurisée !", 'NomLien' => "Configurer le HTTPS", 'lien' => "?p=admin_config4");
         }
 
-       if(file_exists('../installation/')){
+       if($gWarningDossierInstall == 1 && file_exists('../installation/')){
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "Le dossier d'installation doit être supprimé pour une installation sécurisée !", 'NomLien' => "", 'lien' => "");
         }
 
