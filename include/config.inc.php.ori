@@ -2,9 +2,9 @@
 /**
  * config.inc.php
  * Fichier de configuration de GRR
- * Dernière modification : $Date: 2024-12-16 10:11$
+ * Dernière modification : $Date: 2026-02-25 10:20$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -109,9 +109,13 @@ $restaureBBD = 1;
 #Mode debug || 0: non ; 1: oui - Defaut 0
 $debug_flag = 0;
 
+# Sécurité cookies "None", "Lax" ou "Strict" - Defaut "Strict"
+# Peut être nécessaire de mettre "None" si GRR est utilisé dans un contexte de cross-site (ex: GRR intégré dans une iframe sur un autre site), ou "Lax pour une connexion SSO
+$gSameSite = "Strict"; 
+
 #Envoi données stat sur le GRR sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
 # Les données envoyées sont la version de GRR, la langue par défaut, aucune donnée personnelle n'est envoyée (pas d'ip, pas de mail...), elles sont anomymes et ne peuvent faire le lien avec votre GRR
-# Vous avez le choix de le désactiver mais le laisser actif nous permet de savoir comment nous pouvont maintenir les versions
+# Vous avez le choix de le désactiver mais le laisser actif nous permet de savoir comment nous pouvons maintenir les versions
 $gEnvoisStatGRR = 1;
 #Envoi données stat du serveur sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
 # Les données envoyées sont la version php, la version sql, l'os, aucune donnée personnelle n'est envoyée (pas d'ip, pas de mail...), elles sont anomymes et ne peuvent faire le lien avec votre GRR
