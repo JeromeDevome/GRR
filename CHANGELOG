@@ -65,6 +65,19 @@ Sous-version 3.5.2d
     correctifs : liens dans edit_entry
     mise à jour, conséquence de la mise à jour de twig dans la version 4.4.2 [Readme]
     modification : droit d'accès pour les gestionnaires de ressources restreintes
+Sous-version 3.5.2e
+    ajout : trombone dans la cellule si fichier joint
+    amélioration : sécurité des cookies
+    amélioration : internationalisation de la page admin_type_area
+    amélioration : droit d'accès à la configuration d'une ressource
+    correctif : fonction sur un tableau
+    correctif : syntaxe html dans admin_import_users_csv
+    correctif : module php pré-requis pour l'installation de modules externes
+    correctif : troncature du nom de fichier importé à 50 caractères (pièces jointes)
+    correctif : nom du paramètre lu
+    modification : présentation de la page admin_user_modify
+    modification : pop-up pour les utilisateurs
+    modification : paramétrage de la sécurité des cookies de session (permet d'utiliser GRR dans un iframe ou en authentification CAS)
 
 -----
 --
