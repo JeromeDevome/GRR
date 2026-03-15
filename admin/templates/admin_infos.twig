@@ -29,12 +29,13 @@
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.prefixe }}</p><b>{{ d.prefixe }}</b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.maj_bdd }}</p><b>{{ d.maj_bdd |raw }} </b></div></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">{{ trad.maj_recherche_grr }}</p><b>{{ d.maj_SiteGRR |raw }}&nbsp;</b></div></li>
-							<li class="list-group-item"><p class="col col-sm-6"><b>Infos support </b><i>(A fournir pour toute demande d'aide)</i> :</p><textarea id="to-copy" rows="8" cols="40">
-{{ trad.num_version }} : {{ d.num_version }}
+							<li class="list-group-item"><p class="col col-sm-6"><b>Infos support </b><i>(A fournir pour toute demande d'aide)</i> :</p><textarea id="to-copy" rows="8" cols="60">
+{{ trad.num_version }} {{ d.num_version }}
 {{ trad.num_versionbdd }} {{ d.num_versionbdd }}
-{% if d.gInfosServeur %}{{ trad.system }} : {{ d.system }}
+{% if d.gInfosServeur %}{{ trad.system }} {{ d.system }}
 Version PHP : {{ d.versionPHP }}
 {{ trad.database }} {{ d.database }} => {{ d.versionBDD }}{% endif %}
+
 Time : {{ d.time }}
 Timezone : {{ d.timezone }}</textarea></li>
 						</ul>
