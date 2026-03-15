@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-20 18:26$
+ * Dernière modification : $Date: 2026-02-25 10:27$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -35,7 +35,7 @@ if (!$settings)
  */
 function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_login = array(), $tab_groups = array())
 {
-  global $motDePasseConfig;
+  global $motDePasseConfig, $gSameSite;
   // Initialisation de $auth_ldap
   $auth_ldap = 'no';
   // Initialisation de $auth_imap
@@ -633,7 +633,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
       'lifetime' => Settings::get("sessionMaxLength")*60,  // Durée de vie du cookie
       'secure' => $isSecure,    // Transmettre via HTTPS si disponible
       'httponly' => true,  // Inaccessible à JavaScript (protection XSS)
-      'samesite' => 'Strict' // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site
+      'samesite' => $gSameSite // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site, sauf cas dérogatoires (iframe ou SSO)
     ]);
     @session_start();
     // Is this user already connected ?
@@ -845,6 +845,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
  */
 function grr_resumeSession()
 {
+  global $gSameSite;
     // Resuming session
   @session_name(SESSION_NAME); // palliatif aux changements introduits dans php 7.2
   // Configurer les paramètres de sécurité du cookie : durée d'expiration, secure, httponly et SameSite pour CSRF
@@ -853,7 +854,7 @@ function grr_resumeSession()
     'lifetime' => Settings::get("sessionMaxLength")*60,  // Durée de vie du cookie
     'secure' => $isSecure,    // Transmettre via HTTPS si disponible
 		'httponly' => true,  // Inaccessible à JavaScript (protection XSS)
-		'samesite' => 'Strict' // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site
+		'samesite' => $gSameSite // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site, sauf cas dérogatoires (iframe ou SSO)
 	]);
   @session_start();
   if ((Settings::get('sso_statut') == 'lcs') and (!isset($_SESSION['est_authentifie_sso'])) and ($_SESSION['source_login'] == "ext"))
