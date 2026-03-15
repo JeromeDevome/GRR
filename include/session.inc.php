@@ -3,9 +3,9 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-10-17 18:26$
+ * Dernière modification : $Date: 2026-01-20 18:26$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -627,6 +627,14 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     //
     // Session starts now
     @session_name(SESSION_NAME);
+    // Configurer les paramètres de sécurité du cookie avant session_start()
+    $isSecure = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+    @session_set_cookie_params([
+      'lifetime' => Settings::get("sessionMaxLength")*60,  // Durée de vie du cookie
+      'secure' => $isSecure,    // Transmettre via HTTPS si disponible
+      'httponly' => true,  // Inaccessible à JavaScript (protection XSS)
+      'samesite' => 'Strict' // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site
+    ]);
     @session_start();
     // Is this user already connected ?
     $sql = "SELECT SESSION_ID from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and LOGIN = '" . protect_data_sql($_login) . "' and now() between START and END";
@@ -658,6 +666,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     $_SESSION['statut'] = $row['statut'];
     $_SESSION['start'] = date("Y-m-d H:i:s");
     $_SESSION['maxLength'] = Settings::get("sessionMaxLength");
+    
+    // Régénérer l'ID de session pour prévenir les attaques par Session Fixation
+    session_regenerate_id(true);
+    
     if ($row['default_area'] > 0)
         $_SESSION['default_area'] = $row['default_area'];
     else
@@ -742,13 +754,13 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     // It's a new connection, insert into log
     $sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END) values (
         '" . protect_data_sql($_SESSION['login']) . "',
-        '" . $_SESSION['start'] . "',
+        '" . protect_data_sql($_SESSION['start']) . "',
         '" . session_id() . "',
-        '" . $_SERVER['REMOTE_ADDR'] . "',
-        '" . $useragent . "',
-        '" . $httpreferer . "',
+        '" . protect_data_sql($_SERVER['REMOTE_ADDR']) . "',
+        '" . protect_data_sql($useragent) . "',
+        '" . protect_data_sql($httpreferer) . "',
         '1',
-        '" . $_SESSION['start'] . "' + interval " . Settings::get("sessionMaxLength") . " minute
+        '" . protect_data_sql($_SESSION['start']) . "' + interval " . Settings::get("sessionMaxLength") . " minute
         )
     ;";
     grr_sql_query($sql);
@@ -835,6 +847,14 @@ function grr_resumeSession()
 {
     // Resuming session
   @session_name(SESSION_NAME); // palliatif aux changements introduits dans php 7.2
+  // Configurer les paramètres de sécurité du cookie : durée d'expiration, secure, httponly et SameSite pour CSRF
+  $isSecure = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+  @session_set_cookie_params([
+    'lifetime' => Settings::get("sessionMaxLength")*60,  // Durée de vie du cookie
+    'secure' => $isSecure,    // Transmettre via HTTPS si disponible
+		'httponly' => true,  // Inaccessible à JavaScript (protection XSS)
+		'samesite' => 'Strict' // Protection CSRF : envoyer le cookie uniquement pour les requêtes du même site
+	]);
   @session_start();
   if ((Settings::get('sso_statut') == 'lcs') and (!isset($_SESSION['est_authentifie_sso'])) and ($_SESSION['source_login'] == "ext"))
     return (false);
@@ -902,6 +922,8 @@ function grr_closeSession(&$_auto)
   settype($_auto,"integer");
   @session_name(SESSION_NAME);
   @session_start();
+	// Régénérer l'ID de session et détruire l'ancien cookie pour prévenir la réutilisation
+	session_regenerate_id(true);
     // Sometimes 'start' may not exist, because the session was previously closed by another window
     // It's not necessary to ".TABLE_PREFIX."_log this, then
   if (isset($_SESSION['start']))

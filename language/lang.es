@@ -1,12 +1,13 @@
 <?php
 # GRR : fichier de langue espagnole
-# Last modification : 2026-01-05
+# Last modification : 2026-02-19
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
-$vocab['a acces au domaine'] = "Este usuario tiene acceso a este campo limitado";
+$vocab['a_acces_au_domaine'] = "Este usuario tiene acceso a este campo limitado";
 $vocab['accepter_resa'] = "Aceptar la reserva";
 $vocab['accepter_resa_serie'] = "Aceptar la reserva y todas las reservas todavía no moderadas unidas por periodicidad.";
+$vocab['acces_config_msg'] = "¿Quién puede acceder a la página de edición de un recurso?";
 $vocab['access'] = "Acceso limitado";
 $vocab['accessdenied'] = "Acceso rechazado";
 $vocab['accessdeniedtoomanybooking'] = "Acceso rechazado : ¡se rechaza su solicitud de reserva ya que superaría el máximo de reservas autorizado!";
@@ -315,6 +316,7 @@ $vocab['days'] = "día(s)";
 $vocab['debut_Jours_Cycles'] = "Número del día iniciando el primer ciclo de días";
 $vocab['declarer_ressource_indisponible'] = "Declarar este recurso temporalmente indisponible. Entonces las reservas son imposibles.";
 $vocab['deconnect_changing_pwd'] = "Desconectar cambiando la contraseña";
+$vocab["def_type_non_valide"] = "¡Debes definir al menos un tipo válido!";
 $vocab['default_area'] = "Campo por defecto : ";
 $vocab['default_parameter_values_title'] = "Elección de los parámetros de visualización por defecto";
 $vocab['default_report_days_explain'] = "Valor por defecto del intervalo de tiempo entre la fecha de principio de búsqueda y la fecha de fin (en número de días)";

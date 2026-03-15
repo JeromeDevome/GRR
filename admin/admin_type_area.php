@@ -3,9 +3,9 @@
  * admin_type_area.php
  * interface de gestion des types de réservations pour un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-11-06 10:36$
+ * Dernière modification : $Date: 2026-01-26 16:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -76,7 +76,7 @@ if($res){
     {
       // Aucun type n'a été sélectionné. Dans ce cas, on impose au moins un type :
       $del = grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_type_area WHERE id_area=? AND id_type =? ","ii",[$id_area,$type_si_aucun]);
-      $msg = "Vous devez au définir au moins un type valide !";
+      $msg = get_vocab("def_type_non_valide");
     }
     // Type par défaut :
     // On enregistre le nouveau type par défaut :

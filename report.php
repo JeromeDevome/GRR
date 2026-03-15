@@ -3,9 +3,9 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-05-27 18:43$
+ * Dernière modification : $Date: 2026-01-19 16:43$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -77,10 +77,7 @@ if (isset($_GET['champ'][0]))
   }
 }
 $summarize = isset($_GET["summarize"]) ? $_GET["summarize"] : NULL;
-if (!isset($_GET["sumby"]))
-  $_GET["sumby"] = -6;
-else
-  $_GET["sumby"]=intval($_GET["sumby"]);
+$sumBy = isset($_GET["sumby"])? intval($_GET["sumby"]) : -6 ;
 $sortby = isset($_GET["sortby"])? $_GET["sortby"] : "d";
 // Si la table j_user_area est vide, il faut modifier la requête
 $test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_j_user_area"));
@@ -180,13 +177,13 @@ function reporton(&$row, $dformat)
 // Cela va devenir la colonne et la ligne d'entête de la table de statistique.'
 function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_hash, &$breve_description_hash, $csv = "n")
 {
-  global $vocab;
-  if ($_GET["sumby"] == -5)
-    $temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter =?","s",[$row[-$_GET["sumby"]]]);
-  else if (($_GET["sumby"] == -3) || ($_GET["sumby"] == -6))
-    $temp = $row[-$_GET["sumby"]];
+  global $vocab,$sumBy;
+  if ($sumBy == -5)
+    $temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter =?","s",[$row[-$sumBy]]);
+  else if (($sumBy == -3) || ($sumBy == -6))
+    $temp = $row[-$sumBy];
   else
-    $temp = grrExtractValueFromOverloadDesc($row[12],$_GET["sumby"]);
+    $temp = grrExtractValueFromOverloadDesc($row[12],$sumBy);
   if ($temp == "")
     $temp = "(Autres)";
   if ($csv == "n")
@@ -217,14 +214,14 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 // Identique à la fonction accumulate mais adapté au cas où $enable_periode = 'y'
 function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end, &$room_hash, &$breve_description_hash, $csv = "n")
 {
-  global $vocab, $periods_name;
+  global $vocab, $periods_name,$sumBy;
   $max_periods = count($periods_name);
-  if ($_GET["sumby"] == -5)
-    $temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter =?","s",[$row[-$_GET["sumby"]]]);
-  else if (($_GET["sumby"] == -3) or ($_GET["sumby"] == -6))
-    $temp = $row[-$_GET["sumby"]];
+  if ($sumBy == -5)
+    $temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter =?","s",[$row[-$sumBy]]);
+  else if (($sumBy == -3) or ($sumBy == -6))
+    $temp = $row[-$sumBy];
   else
-    $temp = grrExtractValueFromOverloadDesc($row[12],$_GET["sumby"]);
+    $temp = grrExtractValueFromOverloadDesc($row[12],$sumBy);
   if ($temp == "")
     $temp = "(Autres)";
   if ($csv == "n")
@@ -266,7 +263,7 @@ function cell($count, $hours, $csv = "n", $decompte = "heure")
 // $room_hash & $breve_description_hash are arrays with indexes naming unique rooms and names.
 function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $enable_periods, $decompte, $csv = "n")
 {
-  global $vocab;
+  global $vocab,$sumBy;
   if ($csv != "n")
     echo" ;";
   // Make a sorted array of area/rooms, and of names, to use for column
@@ -281,14 +278,14 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
   // On affiche uniquement pour une sortie HTML
   if ($csv == "n")
   {
-    if ($_GET["sumby"] == -6)
+    if ($sumBy == -6)
       $premiere_cellule = get_vocab("sum_by_creator");
-    else if ($_GET["sumby"] == -3)
+    else if ($sumBy == -3)
       $premiere_cellule = get_vocab("sum_by_descrip");
-    else if ($_GET["sumby"] == -5)
+    else if ($sumBy == -5)
       $premiere_cellule = get_vocab("type");
     else
-      $premiere_cellule = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id=?","i",[$_GET["sumby"]]);
+      $premiere_cellule = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id=?","i",[$sumBy]);
     if ($enable_periods == 'y')
       echo "<hr /><h1>".get_vocab("summary_header_per")."</h1><table class=\"table table-bordered table-striped\">\n";
     else
@@ -539,15 +536,15 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
         // [12]  les champs additionnels -> e.overload_desc
     echo "<select class=\"form-control\" name=\"sumby\" size=\"1\">\n";
     echo "<option value= '-6' ";
-    if ($_GET["sumby"] == -6)
+    if ($sumBy == -6)
       echo " selected=\"selected\"";
     echo ">".get_vocab("sum_by_creator")."</option>\n";
     echo "<option value='-3' ";
-    if ($_GET["sumby"] == -3)
+    if ($sumBy == -3)
       echo " selected=\"selected\"";
     echo ">".get_vocab("sum_by_descrip")."</option>\n";
     echo "<option value='-5' ";
-    if ($_GET["sumby"] == -5)
+    if ($sumBy == -5)
       echo " selected=\"selected\"";
     echo ">".get_vocab("type")."</option>\n";
     // Boucle sur tous les champs additionnels
@@ -558,7 +555,7 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
       if (($fielddata["confidentiel"] == 'n')||($fielddata['affichage'] == 'y')||(authGetUserLevel($user_id,-1,'area') > 3))
       {
         echo "<option value='".$fieldid."' ";
-        if ($_GET["sumby"] == $fieldid)
+        if ($sumBy == $fieldid)
           echo " selected=\"selected\" ";
         echo ">".$fielddata['name']."</option>\n";
       }
@@ -730,10 +727,10 @@ if (isset($_GET["is_posted"]))
         $param .= "&amp;champ[".$m."]=".$champ[$m]."&amp;texte[".$m."]=".$texte[$m]."&amp;type_recherche[".$m."]=".$type_recherche[$m];
         $m++;
       }
-      $param .= "&amp;condition_et_ou=".$_GET["condition_et_ou"]."&amp;sumby=".$_GET["sumby"];
+      $param .= "&amp;condition_et_ou=".$_GET["condition_et_ou"]."&amp;sumby=".$sumBy;
       if ($sortby != "a")
       {
-        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$_GET["sumby"]."&amp;sortby=a&amp;is_posted=y";
+        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$sumBy."&amp;sortby=a&amp;is_posted=y";
         if ($_GET['pview'] != 0)
           echo "&amp;pview=1";
         echo "'>".get_vocab("match_area")."</a>";
@@ -745,7 +742,7 @@ if (isset($_GET["is_posted"]))
       echo "<td>";
       if ($sortby != "r")
       {
-        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$_GET["sumby"]."&amp;sortby=r&amp;is_posted=y";
+        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$sumBy."&amp;sortby=r&amp;is_posted=y";
         if ($_GET['pview'] != 0)
             echo "&amp;pview=1";
         echo "'>".get_vocab("room")."</a>";
@@ -757,7 +754,7 @@ if (isset($_GET["is_posted"]))
       echo "<td>";
       if ($sortby != "b")
       {
-        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$_GET["sumby"]."&amp;sortby=b&amp;is_posted=y";
+        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$sumBy."&amp;sortby=b&amp;is_posted=y";
         if ($_GET['pview'] != 0)
           echo "&amp;pview=1";
         echo "'>".get_vocab("namebooker")."</a>";
@@ -769,7 +766,7 @@ if (isset($_GET["is_posted"]))
       echo "<td>";
       if ($sortby != "d")
       {
-        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$_GET["sumby"]."&amp;sortby=d&amp;is_posted=y";
+        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$sumBy."&amp;sortby=d&amp;is_posted=y";
         if ($_GET['pview'] != 0)
           echo "&amp;pview=1";
         echo "'>".get_vocab("start_date")."</a>";
@@ -787,7 +784,7 @@ if (isset($_GET["is_posted"]))
       echo "<td>";
       if ($sortby != "t")
       {
-        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$_GET["sumby"]."&amp;sortby=t&amp;is_posted=y";
+        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$sumBy."&amp;sortby=t&amp;is_posted=y";
         if ($_GET['pview'] != 0)
           echo "&amp;pview=1";
         echo "'>".get_vocab("type")."</a>";
@@ -799,7 +796,7 @@ if (isset($_GET["is_posted"]))
       echo "<td>";
       if ($sortby != "c")
       {
-        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$_GET["sumby"]."&amp;sortby=c&amp;is_posted=y";
+        echo "<a href='report.php?From_day=$From_day&amp;From_month=$From_month&amp;From_year=$From_year&amp;To_day=$To_day&amp;To_month=$To_month&amp;To_year=$To_year$param&amp;summarize=$summarize&amp;sumby=".$sumBy."&amp;sortby=c&amp;is_posted=y";
         if ($_GET['pview'] != 0)
           echo "&amp;pview=1";
         echo "'>".get_vocab("sum_by_creator")."</a>";
@@ -980,15 +977,15 @@ if (isset($_GET["is_posted"]))
       }
       else
       {
-        if ($_GET["sumby"] == -6)
+        if ($sumBy == -6)
           echo html_entity_decode($vocab["summarize_by"])." " .html_entity_decode($vocab["sum_by_creator"])." - $day $month $year;";
-        else if ($_GET["sumby"] == -3)
+        else if ($sumBy == -3)
           echo html_entity_decode($vocab["summarize_by"])." " .html_entity_decode($vocab["sum_by_descrip"])." - $day $month $year;";
-        else if ($_GET["sumby"] == -5)
+        else if ($sumBy == -5)
           echo html_entity_decode($vocab["summarize_by"])." " .html_entity_decode($vocab["type"])." - $day $month $year;";
         else
         {
-          $fieldname = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id=?","i",[$_GET["sumby"]]);
+          $fieldname = grr_sql_query1("SELECT fieldname FROM ".TABLE_PREFIX."_overload WHERE id=?","i",[$sumBy]);
           echo html_entity_decode($vocab["summarize_by"])." " .html_entity_decode($fieldname)." - $day $month $year;";
         }
         echo "\r\n";

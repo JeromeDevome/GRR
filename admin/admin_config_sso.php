@@ -3,9 +3,9 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-15 14:28$
+ * Dernière modification : $Date: 2025-05-28 15:44$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -358,7 +358,7 @@ if (Settings::get("sso_statut") == 'http_utilisateur')
 	echo " checked=\"checked\" ";
 echo "/>".get_vocab("statut_user")."<br /></div>\n";
 //ajout des champs de recherche perso :
-echo "<div><br />".get_vocab("explain_champs recherche")."<br />\n";
+echo "<div><br />".get_vocab("explain_champs_recherche")."<br />\n";
 echo get_vocab("name").get_vocab("deux_points")."<input type=\"text\" name=\"http_champ_nom\"";
 if (Settings::get("http_champ_nom"))
 	echo "value=\"".Settings::get("http_champ_nom")."\"";

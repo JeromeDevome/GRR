@@ -3,9 +3,9 @@
  * changepwd.php
  * Interface permettant à l'utilisateur de gérer son mot de passe dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-11-03 10:39$
+ * Dernière modification : $Date: 2026-01-26 16:34$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -83,7 +83,7 @@ if ($valid == 'pwd')
 
 start_page_w_header('','','',$type_session="no_session");
 
-affiche_pop_up($msg,'admin');
+affiche_pop_up($msg);
 echo '<div class="container">';
 echo "<h3><span class='avertissement'>".get_vocab('user_change_pwd_obligatoire')."</span></h3>";
 echo '<script type="text/javascript" src="./js/pwd_strength.js"></script>';

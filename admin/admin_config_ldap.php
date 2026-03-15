@@ -3,9 +3,9 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-04 18:23$
+ * Dernière modification : $Date: 2025-05-28 15:19$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -387,11 +387,11 @@ elseif ($etape == 1)
     echo "<div>\n<input type=\"radio\" name=\"use_tls\" value=\"y\" ";
     if ($use_tls)
         echo " checked=\"checked\" ";
-    echo "/>".get_vocab('Oui')."\n";
+    echo "/>".get_vocab('YES')."\n";
     echo "<input type=\"radio\" name=\"use_tls\" value=\"n\" ";
     if (!($use_tls))
         echo " checked=\"checked\" ";
-    echo "/>".get_vocab('Non')."\n";
+    echo "/>".get_vocab('NO')."\n";
     if (isset($ldap_filter))
         echo "<input type=\"hidden\" name=\"ldap_filter\" value=\"$ldap_filter\" />";
     if (isset($ldap_base))

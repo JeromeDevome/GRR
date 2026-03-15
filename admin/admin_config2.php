@@ -3,9 +3,9 @@
  * admin_config2.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (accès et droits)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-22 09:13$
+ * Dernière modification : $Date: 2026-02-19 15:49$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -54,6 +54,12 @@ if (isset($_GET['acces_fiche_reservation']))
 {
     if (!Settings::set("acces_fiche_reservation", $_GET['acces_fiche_reservation']))
         $erreur.= get_vocab('save_err')." acces_fiche_reservation !<br />";
+}
+// Accès à la page d'édition d'une ressource
+if (isset($_GET['acces_config']))
+{
+  if(!Settings::set("acces_config", $_GET['acces_config']))
+    $erreur.=get_vocab("save_err")." acces_config !<br />";
 }
 // Accès à l'outil de recherche/rapport/stat
 if (isset($_GET['allow_search_level']))
@@ -203,6 +209,38 @@ if (Settings::get("module_multisite") == "Oui") {
 }
 echo "<input type='radio' name='acces_fiche_reservation' value='6' ";
 if (Settings::get("acces_fiche_reservation") == '6')
+    echo "checked=\"checked\"";
+echo " />&nbsp";
+echo get_vocab("visu_fiche_description6");
+echo "</div>\n";
+###########################################################
+# Accès à la page de configuration d'une ressource.
+###########################################################
+# acces_config = 3 : Il faut obligatoirement se connecter et être au moins gestionnaire d'une ressource
+# acces_config = 4 : Il faut obligatoirement se connecter et être au moins administrateur du domaine
+# acces_config = 5 : Il faut obligatoirement se connecter et être administrateur de site
+# acces_config = 6 : Il faut obligatoirement se connecter et être administrateur général
+echo "<hr /><h3>".get_vocab("acces_config_msg")."</h3>\n";
+echo "<div>\n";
+echo "<input type='radio' name='acces_config' value='3' ";
+if (Settings::get("acces_config") == '3')
+    echo "checked=\"checked\"";
+echo " />&nbsp";
+echo get_vocab("visu_fiche_description3")."<br/>";
+echo "<input type='radio' name='acces_config' value='4' ";
+if (Settings::get("acces_config") == '4')
+    echo "checked=\"checked\"";
+echo " />&nbsp";
+echo get_vocab("visu_fiche_description4")."<br/>";
+if (Settings::get("module_multisite") == "Oui") {
+  echo "<input type='radio' name='acces_config' value='5' ";
+  if (Settings::get("acces_config") == '5')
+    echo "checked=\"checked\"";
+  echo " />&nbsp";
+  echo get_vocab("visu_fiche_description5")."<br/>";
+}
+echo "<input type='radio' name='acces_config' value='6' ";
+if (Settings::get("acces_config") == '6')
     echo "checked=\"checked\"";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description6");

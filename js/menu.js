@@ -1,7 +1,7 @@
 function setCookie(e,t,n){
     var r=new Date;
     r.setDate(r.getDate()+n);
-    var i=escape(t)+(n==null?"":"; expires="+r.toUTCString())+"; SameSite=Lax";
+    var i=escape(t)+(n==null?"":"; expires="+r.toUTCString())+"; SameSite=Strict";
     document.cookie=e+"="+i
 }
 function getCookie(e){

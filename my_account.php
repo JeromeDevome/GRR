@@ -3,9 +3,9 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-05-06 17:40$
+ * Dernière modification : $Date: 2026-01-26 16:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -478,7 +478,7 @@ function menu_resa($login,$span,$dformat){
 }
 
 start_page_w_header();
-affiche_pop_up($msg,'admin');
+affiche_pop_up($msg);
 // print_r($_POST);
 ?>
 <script type="text/javascript" >
