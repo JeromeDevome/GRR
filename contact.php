@@ -3,9 +3,9 @@
  * contact.php
  * Formulaire d'envoi de mail
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-11-03 11:02$
+ * Dernière modification : $Date: 2026-03-16 18:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -132,6 +132,7 @@ echo '<!DOCTYPE html>
 		<meta charset="utf-8">
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="fonts/fontawesome-free/css/all.min.css">
 	</head>
 	<body>';
 if(isset($alerte) && ($alerte !='')){
@@ -166,12 +167,12 @@ else {
     echo '</div></div>'.PHP_EOL;
     echo '<div class="form-group">';
     echo '<div class="input-group">';
-    echo '<span class="input-group-addon"><span class="glyphicon glyphicon-header"></span>  '.get_vocab("Objet du message").'</span>';
+    echo '<span class="input-group-addon"><span class="fas fa-heading"></span>  '.get_vocab("Objet du message").'</span>';
     echo '<input class="form-control" type="text" id="objet_message" name="objet_message" maxlength="256" required />';
     echo '</div></div>'.PHP_EOL;
     echo '<div class="form-group">';
     echo '<div class="input-group">';
-    echo '<span class="input-group-addon"><span class="glyphicon glyphicon-align-left"></span></span>';
+    echo '<span class="input-group-addon"><span class="fas fa-align-left"></span></span>';
     echo '<textarea class="form-control" name="corps_message" placeholder="'.get_vocab('Votre_message').'" cols="50" rows="5" required >'.$corps_message.'</textarea>';
     echo '</div></div>';
     echo "<br />\n";

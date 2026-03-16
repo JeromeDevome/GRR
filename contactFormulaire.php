@@ -3,7 +3,7 @@
  * contactFormulaire.php
  * Formulaire d'envoi de mail demandant une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-19 16:35$
+ * Dernière modification : $Date: 2026-03-16 18:14$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -78,13 +78,13 @@ bouton_retour_haut ();
 				<div class="col col-md-6 col-xs-12">
 					<div class="form-group">
 						<div class="input-group">
-							<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+							<div class="input-group-addon"><span class="fas fa-user-alt"></span></div>
 							<input class="form-control" type="text" id="nom"  size="8" name="nom" placeholder="Votre nom" required />
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+							<div class="input-group-addon"><span class="fas fa-user-alt"></span></div>
 							<input class="form-control" type="text" size="8" id="prenom"  name="prenom" placeholder="Votre prénom" />
 						</div>
 					</div>
@@ -98,7 +98,7 @@ bouton_retour_haut ();
 					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<div class="input-group-addon"><span class="glyphicon glyphicon-earphone"></span></div>
+							<div class="input-group-addon"><span class="fas fa-phone"></span></div>
 							<input class="form-control" type="text" size="8" maxlength="14" id="telephone" name="telephone" placeholder="Votre numéro de téléphone" />
 						</div>
 					</div>

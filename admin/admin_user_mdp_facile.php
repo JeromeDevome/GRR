@@ -2,9 +2,9 @@
 /**
  * admin_user_mdp_facile.php
  * interface de gestion des utilisateurs de l'application GRR
- * Dernière modification : $Date: 2024-11-06 11:17$
+ * Dernière modification : $Date: 2026-03-16 18:12$
  * @author    JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -99,7 +99,7 @@ if ($res)
         if ((authGetUserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur")))
           $lien_modifier = '';
         else
-          $lien_modifier = "<a href=\"admin_user_modify.php?user_login=".urlencode($user_login)."&amp;display=$display\"><span class='glyphicon glyphicon-edit'></span></a>";
+          $lien_modifier = "<a href=\"admin_user_modify.php?user_login=".urlencode($user_login)."&amp;display=$display\"><span class='fas fa-edit'></span></a>";
         $data[] = array($user_login,$user_nom." ".$user_prenom,$user_statut_text,$color,$user_etat_text,$fond,$lien_modifier);
 
       }

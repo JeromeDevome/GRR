@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-01-19 16:35$
+ * Dernière modification : $Date: 2026-03-16 18:17$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2068,6 +2068,7 @@ function pageHead2($title, $page = "with_session")
     $a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
     $a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
     $a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
+    $a .= '<link rel="stylesheet" type="text/css" href="../fonts/fontawesome-free/css/all.min.css">';
     $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
     $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
         //$a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation
@@ -2114,6 +2115,7 @@ function pageHead2($title, $page = "with_session")
     $a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.min.css" />'.PHP_EOL;
     $a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery.timepicker.min.css" />';
     //$a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+    $a .= '<link rel="stylesheet" type="text/css" href="fonts/fontawesome-free/css/all.min.css">';
     $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
     $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
     //$a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/types.css" />'.PHP_EOL; // les couleurs des types de réservation        
@@ -2313,7 +2315,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
       }
       echo '</div>'.PHP_EOL;
       echo '</div>'.PHP_EOL;
-      echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
+      echo '<a id="open" class="open" href="#"><span class="fas fa-arrow-up"><span class="fas fa-arrow-down"></span></span></a>'.PHP_EOL;
     }
   }
 }
@@ -2988,7 +2990,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
       echo '</tr>'.PHP_EOL;
       echo '</table>'.PHP_EOL;
       echo '</div>'.PHP_EOL;
-      echo '<a id="open" class="open" href="#"><span class="glyphicon glyphicon-arrow-up"><span class="glyphicon glyphicon-arrow-down"></span></span></a>'.PHP_EOL;
+      echo '<a id="open" class="open" href="#"><span class="fas fa-arrow-up"><span class="fas fa-arrow-down"></span></span></a>'.PHP_EOL;
       echo '</div>'.PHP_EOL;
     }
   }
@@ -3231,6 +3233,7 @@ function begin_page($title, $page = "with_session")
     $a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
     $a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-multiselect.css">'.PHP_EOL;
     $a .= '<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap-clockpicker.min.css">'.PHP_EOL;
+    $a .= '<link rel="stylesheet" type="text/css" href="../fonts/fontawesome-free/css/all.min.css">';
     $a .= '<link rel="stylesheet" type="text/css" href="../themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
     $a .= '<link rel="stylesheet" type="text/css" href="../'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
     if ((isset($_GET['pview'])) && ($_GET['pview'] == 1))
@@ -3271,6 +3274,7 @@ function begin_page($title, $page = "with_session")
     }
     $a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui.min.css" />'.PHP_EOL;
     $a .= '<link rel="stylesheet" type="text/css" href="bootstrap/css/jquery-ui-timepicker-addon.css" >'.PHP_EOL;
+    $a .= '<link rel="stylesheet" type="text/css" href="fonts/fontawesome-free/css/all.min.css">';
     $a .= '<link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />'.PHP_EOL; // le style par défaut
     $a .= '<link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />'.PHP_EOL; // le style personnalisé
     if (isset($use_admin))
@@ -3435,7 +3439,7 @@ function jQuery_TimePicker2($typeTime, $start_hour, $start_min,$resolution,$morn
     <div class="input-group timepicker">';
   echo '<input id="'.$typeTime.'" name="'.$typeTime.'" type="text" class="form-control time" value="'.$hour.':'.$minute. '" >
     <span class="input-group-addon btn" id="'.$typeTime.'clock'.'">
-      <span class="glyphicon glyphicon-time" ></span>
+      <span class="far fa-clock" ></span>
     </span>
   </div>';
   echo '<script type="text/javascript">

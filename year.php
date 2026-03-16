@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 15:43$
+ * Dernière modification : $Date: 2026-03-16 18:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -489,10 +489,10 @@ while ($month_indice < $month_end)
                 if (verif_display_fiche_ressource($user_name, $row['id']) && $_GET['pview'] != 1)
                 {
                     echo '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$row['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'">'.PHP_EOL;
-                    echo '<span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
+                    echo '<span class="fas fa-search"></span></a>'.PHP_EOL;
                 }
                 if ((authGetUserLevel($user_name,$row['id']) >= $acces_config_level) && ($_GET['pview'] != 1))
-                    echo '<a href="./admin/edit_room.php?room='.$row['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a>'.PHP_EOL;
+                    echo '<a href="./admin/edit_room.php?room='.$row['id'].'"><span class=" fas fa-cog"></span></a>'.PHP_EOL;
                 if ($row['show_comment'] == "y" && $_GET['pview'] != 1 && ($row['comment_room'] != "") && ($row['comment_room'] != -1))
                     echo '<div class="center">',$row['comment_room'],'</div>',PHP_EOL;
                 echo  "</th>\n";

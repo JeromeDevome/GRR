@@ -3,9 +3,9 @@
  * ./admin/edit_room.php
  * Interface de creation/modification des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-12-23 15:34$
+ * Dernière modification : $Date: 2026-03-16 18:16$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -566,7 +566,7 @@ echo "<h2>".get_vocab("match_area").get_vocab('deux_points')." ".$area_name."<br
   echo "<tr><td>".get_vocab("montrer_fiche_presentation_ressource")."</td><td><input type=\"checkbox\" name=\"show_fic_room\" ";
   if ($Room['show_fic_room'] == "y")
     echo " checked ";
-  echo "/><a href='javascript:centrerpopup(\"../view_room.php?id_room=$room\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("fiche_ressource")."\"><span class=\"glyphicon glyphicon-search\"></span></a></td></tr>\n";
+  echo "/><a href='javascript:centrerpopup(\"../view_room.php?id_room=$room\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("fiche_ressource")."\"><span class=\"fas fa-search\"></span></a></td></tr>\n";
   // Choix de l'image de la ressource
   echo "<tr><td>".get_vocab("choisir_image_ressource")."</td><td><input type=\"file\" name=\"doc_file\" accept='.jpg,.png,.gif' size=\"30\" /></td></tr>\n";
   echo "<tr><td>".get_vocab("supprimer_image_ressource").get_vocab("deux_points");

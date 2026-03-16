@@ -3,7 +3,7 @@
  * month_all.php
  * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-19 16:37$
+ * Dernière modification : $Date: 2026-03-16 18:19$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -352,11 +352,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='month_all.php?year=$yy&amp;month=$ym&amp;area=$area';\" \"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='month_all.php?year=$yy&amp;month=$ym&amp;area=$area';\" \"><span class=\"fas fa-backward\"></span> ".get_vocab("monthbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='month_all.php?year=$ty&amp;month=$tm&amp;area=$area';\" \">".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='month_all.php?year=$ty&amp;month=$tm&amp;area=$area';\" \">".get_vocab('monthafter')." <span class=\"fas fa-forward\"></span></button>
 		</div>
 	</div>";
 }
@@ -367,13 +367,13 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
     echo "<div class=\"left\"> "; // afficher ou cacher le menu
     $mode = Settings::get("menu_gauche");
     $alt = ($mode != 0)? $mode : 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
-    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
-    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"fas fa-bars fa-2x\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"fas fa-bars fa-2x fa-rotate-90\"></span></button></div> "; 
 	echo "</div>";
 }    
 echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.get_vocab("all_areas").'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php?area='.$area.'" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
 if ($_GET['pview'] != 1)
-    echo " <a href=\"month_all2.php?year=$year&amp;month=$month&amp;area=$area\" title=\" ".get_vocab('default_room_month_all_bis')."\"><span class='glyphicon glyphicon-refresh'></span></a>";
+    echo " <a href=\"month_all2.php?year=$year&amp;month=$month&amp;area=$area\" title=\" ".get_vocab('default_room_month_all_bis')."\"><span class='fas fa-sync'></span></a>";
 echo "</div>";
 echo "</caption>";
 	if (isset($_GET['precedent']))

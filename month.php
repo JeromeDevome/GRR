@@ -3,7 +3,7 @@
  * month.php
  * Interface d'accueil avec affichage par mois pour une ressource
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 15:38$
+ * Dernière modification : $Date: 2026-03-16 18:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -329,11 +329,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='month.php?year=$yy&amp;month=$ym&amp;room=$room';\" ><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("monthbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='month.php?year=$yy&amp;month=$ym&amp;room=$room';\" ><span class=\"fas fa-backward\"></span> ".get_vocab("monthbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='month.php?year=$ty&amp;month=$tm&amp;room=$room';\">".get_vocab('monthafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='month.php?year=$ty&amp;month=$tm&amp;room=$room';\">".get_vocab('monthafter')." <span class=\"fas fa-forward\"></span></button>
 		</div>
 	</div>";
 }
@@ -344,8 +344,8 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
     echo "<div class=\"left\"> "; // afficher ou cacher le menu
     $mode = Settings::get("menu_gauche");
     $alt = ($mode != 0)? $mode : 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
-    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
-    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"fas fa-bars fa-2x\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"fas fa-bars fa-2x fa-rotate-90\"></span></button></div> "; 
 	echo "</div>";
 }    
 $maxCapacite = "";
@@ -353,9 +353,9 @@ if ($this_room_max  && $_GET['pview'] != 1)
 	$maxCapacite = '('.$this_room_max.' '.($this_room_max > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')'.PHP_EOL;
 echo '<h4 class="titre"> '. ucfirst($this_area_name).' - '.$this_room_name.' '.$this_room_name_des.' '.$maxCapacite.'<br>'.ucfirst(utf8_strftime("%B ", $month_start)).'<a href="year.php?area='.$area.'" title="'.get_vocab('see_all_the_rooms_for_several_months').'">'.ucfirst(utf8_strftime("%Y", $month_start)).'</a></h4>'.PHP_EOL;
 if (verif_display_fiche_ressource($user_name, $room) && $_GET['pview'] != 1)
-	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',get_vocab("fiche_ressource"),'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>';
+	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',get_vocab("fiche_ressource"),'"><span class=" fas fa-search"></span></a>';
 if (($auth_user_level >= $acces_config_level) && ($_GET['pview'] != 1))
-	echo "<a href=\"./admin/edit_room.php?room=$room\" title='".get_vocab('editroom')."'><span class=\"glyphcolor glyphicon glyphicon-cog\"></span></a>";
+	echo "<a href=\"./admin/edit_room.php?room=$room\" title='".get_vocab('editroom')."'><span class=\" fas fa-cog\"></span></a>";
 affiche_ressource_empruntee($room);
 if ($this_statut_room == "0")
 	echo '<br><span class="texte_ress_tempo_indispo">',get_vocab("ressource_temporairement_indisponible"),'</span>';
@@ -481,9 +481,9 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                     && $_GET['pview'] != 1)
                 {
                     if ($enable_periods == 'y')
-                        echo '<a href="edit_entry.php?room=',$room,'&amp;period=&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
+                        echo '<a href="edit_entry.php?room=',$room,'&amp;period=&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="fas fa-plus"></span></a>',PHP_EOL;
                     else
-                        echo '<a href="edit_entry.php?room=',$room,'&amp;hour=',$hour,'&amp;minute=0&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="glyphicon glyphicon-plus"></span></a>',PHP_EOL;
+                        echo '<a href="edit_entry.php?room=',$room,'&amp;hour=',$hour,'&amp;minute=0&amp;year=',$year,'&amp;month=',$month,'&amp;day=',$cday,'&amp;page=month" title="',get_vocab("cliquez_pour_effectuer_une_reservation"),'"><span class="fas fa-plus"></span></a>',PHP_EOL;
                 }
                 echo '</div>'.PHP_EOL;
             }

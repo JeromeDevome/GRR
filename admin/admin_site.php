@@ -3,9 +3,9 @@
  * admin_site.php
  * Interface d'accueil de Gestion des sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-11-02 16:19$
+ * Dernière modification : $Date: 2026-03-16 18:11$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -187,8 +187,8 @@ if($action == 'read'){ // afficher la table des sites
 			{
 				echo '<tr>
 				<td>
-					<a href="admin_site.php?action=update&amp;id='.$s['id'].'" title='.get_vocab('edit').' ><span class=\'glyphicon glyphicon-edit\'></span></a>
-					<a href="admin_site.php?action=delete&amp;id='.$s['id'].'" title='.get_vocab('delete').' ><span class=\'glyphicon glyphicon-trash\'></span></a>
+					<a href="admin_site.php?action=update&amp;id='.$s['id'].'" title='.get_vocab('edit').' ><span class=\'fas fa-edit\'></span></a>
+					<a href="admin_site.php?action=delete&amp;id='.$s['id'].'" title='.get_vocab('delete').' ><span class=\'far fa-trash-alt\'></span></a>
 					<a href="javascript:centrerpopup(\'../view_rights_site.php?site_id='.$s['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')"><img class="image" title="'.get_vocab('privileges').'" alt="'.get_vocab('privileges').'" src="../img_grr/rights.png" /></a>
         </td>
         <td>'.$s['sitecode'].'</td>

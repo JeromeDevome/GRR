@@ -3,9 +3,9 @@
  * admin_room.php
  * Interface d'accueil de Gestion des domaines et ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-09-30 18:58 $
+ * Dernière modification : $Date: 2026-03-16 18:10 $
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -261,7 +261,7 @@ if (count($Areas) != 0)
     {
       echo "<tr>";
       if ($row['access'] == 'r') // domaine restreint ?
-        echo "<td><a href='admin_access_area.php?id_area=".$row['id']."' title='".get_vocab('admin_access_area.php')."'><span class='glyphicon glyphicon-lock'></span></a></td>\n";
+        echo "<td><a href='admin_access_area.php?id_area=".$row['id']."' title='".get_vocab('admin_access_area.php')."'><span class='fas fa-lock'></span></a></td>\n";
       else
         echo "<td> </td>\n";
       if (isset($id_area) && ($id_area == $row['id'])) // domaine sélectionné ?
@@ -273,11 +273,11 @@ if (count($Areas) != 0)
         echo "<td><a href=\"admin_room.php?id_site=".$id_site."&amp;id_area=".$row['id']."\">".htmlspecialchars($row['area_name'])."</a> ";
       }
       echo "</td>\n";
-      echo "<td><a href=\"edit_area.php?id_area=".$row['id']."\"><span class='glyphicon glyphicon-edit'></span></a></td>\n";
+      echo "<td><a href=\"edit_area.php?id_area=".$row['id']."\"><span class='fas fa-edit'></span></a></td>\n";
       if (authGetUserLevel($user,$row['id'],'area') >= 5)
       {
         echo "<td><a href=\"edit_area.php?id_area=".$row['id']."&amp;action=dupliquer\"><img src=\"../img_grr/duplique.png\" alt=\"".get_vocab('duplique_domaine')."\" title=\"".get_vocab('duplique_domaine')."\" class=\"image\" /></a></td>\n";
-        echo "<td><a href=\"admin_room_del.php?id_site=".$id_site."&amp;type=area&amp;id_area=".$row['id']."\"><span class='glyphicon glyphicon-trash'></span></a></td>\n";
+        echo "<td><a href=\"admin_room_del.php?id_site=".$id_site."&amp;type=area&amp;id_area=".$row['id']."\"><span class='far fa-trash-alt'></span></a></td>\n";
       }
       echo "<td><a href=\"admin_type_area.php?id_area=".$row['id']."\"><img src=\"../img_grr/type.png\" alt=\"".get_vocab('edittype')."\" title=\"".get_vocab('edittype')."\" class=\"image\" /></a></td>\n";
       echo "<td><a href='javascript:centrerpopup(\"../view_rights_area.php?area_id=".$row['id']."\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("privileges")."\">
@@ -303,9 +303,9 @@ if (count($Areas) != 0)
           echo "<tr><td ".$color.">" . htmlspecialchars($row['room_name']) . "<i> - " . htmlspecialchars($row['description']);
           if ($row['capacity'] > 0)
             echo " (".$row['capacity']." max.)";
-          echo "</i></td>\n<td><a href=\"edit_room.php?room=".$row['id']."\"><span class='glyphicon glyphicon-edit'></span></a></td>\n";
+          echo "</i></td>\n<td><a href=\"edit_room.php?room=".$row['id']."\"><span class='fas fa-edit'></span></a></td>\n";
           echo "<td><a href=\"edit_room.php?room=".$row['id']."&amp;action=dupliquer\"><img src=\"../img_grr/duplique.png\" alt=\"".get_vocab('duplique_ressource')."\" title=\"".get_vocab('duplique_ressource')."\" class=\"image\" /></a></td>";
-          echo "<td><a href=\"admin_room_del.php?type=room&amp;room=".$row['id']."&amp;id_area=$id_area\"><span class='glyphicon glyphicon-trash'></span></a></td>";
+          echo "<td><a href=\"admin_room_del.php?type=room&amp;room=".$row['id']."&amp;id_area=$id_area\"><span class='far fa-trash-alt'></span></a></td>";
           echo "<td><a href='javascript:centrerpopup(\"../view_rights_room.php?id_room=".$row['id']."\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("privileges")."\"><img src=\"../img_grr/rights.png\" alt=\"".get_vocab("privileges")."\" class=\"image\" /></a></td>";
           echo "<td><a href='javascript:centrerpopup(\"../view_room.php?id_room=".$row['id']."\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("fiche_ressource")."\"><img src=\"../img_grr/details_s.png\" alt=\"d&eacute;tails\" class=\"image\" /></a></td>";
           echo "</tr>\n";
@@ -322,16 +322,16 @@ if (count($Areas) != 0)
     {
       echo "<tr><td><table class='table'><tr>";
       if ($area['access'] == 'r') // domaine restreint ?
-        echo "<td><a href='admin_access_area.php?id_area=".$area['id']."' title='".get_vocab('admin_access_area.php')."'><span class='glyphicon glyphicon-lock'></span></a></td>\n";
+        echo "<td><a href='admin_access_area.php?id_area=".$area['id']."' title='".get_vocab('admin_access_area.php')."'><span class='fas fa-lock'></span></a></td>\n";
       else
         echo "<td> </td>\n";
       echo "<td><a href=\"admin_room.php?id_site=".$id_site."&amp;id_area=".$area['id']."\">".htmlspecialchars($area['area_name'])."</a> ";
       echo "</td>\n";
-      echo "<td><a href=\"edit_area.php?id_area=".$area['id']."\"><span class='glyphicon glyphicon-edit'></span></a></td>\n";
+      echo "<td><a href=\"edit_area.php?id_area=".$area['id']."\"><span class='fas fa-edit'></span></a></td>\n";
       if (authGetUserLevel($user,$area['id'],'area') >= 5)
       {
         echo "<td><a href=\"edit_area.php?id_area=".$area['id']."&action=dupliquer\"><img src=\"../img_grr/duplique.png\" alt=\"".get_vocab('duplique_domaine')."\" title=\"".get_vocab('duplique_domaine')."\" class=\"image\" /></a></td>\n";
-        echo "<td><a href=\"admin_room_del.php?id_site=".$id_site."&amp;type=area&amp;id_area=".$area['id']."\"><span class='glyphicon glyphicon-trash'></span></a></td>\n";
+        echo "<td><a href=\"admin_room_del.php?id_site=".$id_site."&amp;type=area&amp;id_area=".$area['id']."\"><span class='far fa-trash-alt'></span></a></td>\n";
       }
       echo "<td><a href=\"admin_type_area.php?id_area=".$area['id']."\"><img src=\"../img_grr/type.png\" alt=\"".get_vocab('edittype')."\" title=\"".get_vocab('edittype')."\" class=\"image\" /></a></td>\n";
       echo "<td><a href='javascript:centrerpopup(\"../view_rights_area.php?area_id=".$area['id']."\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("privileges")."\">
@@ -348,9 +348,9 @@ if (count($Areas) != 0)
           echo "<tr><td ".$color.">" . htmlspecialchars($room['room_name']) . "<i> - " . htmlspecialchars($room['description']);
           if ($room['capacity'] > 0)
             echo " (".$room['capacity']." max.)";
-          echo "</i></td>\n<td><a href=\"edit_room.php?room=".$room['id']."\"><span class='glyphicon glyphicon-edit'></span></a></td>\n";
+          echo "</i></td>\n<td><a href=\"edit_room.php?room=".$room['id']."\"><span class='fas fa-edit'></span></a></td>\n";
           echo "<td><a href=\"edit_room.php?room=".$room['id']."&amp;action=dupliquer\"><img src=\"../img_grr/duplique.png\" alt=\"".get_vocab('duplique_ressource')."\" title=\"".get_vocab('duplique_ressource')."\" class=\"image\" /></a></td>";
-          echo "<td><a href=\"admin_room_del.php?type=room&amp;room=".$room['id']."&amp;id_area=".$area['id']."\"><span class='glyphicon glyphicon-trash'></span></a></td>";
+          echo "<td><a href=\"admin_room_del.php?type=room&amp;room=".$room['id']."&amp;id_area=".$area['id']."\"><span class='far fa-trash-alt'></span></a></td>";
           echo "<td><a href='javascript:centrerpopup(\"../view_rights_room.php?id_room=".$room['id']."\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("privileges")."\"><img src=\"../img_grr/rights.png\" alt=\"".get_vocab("privileges")."\" class=\"image\" /></a></td>";
           echo "<td><a href='javascript:centrerpopup(\"../view_room.php?id_room=".$room['id']."\",600,480,\"scrollbars=yes,statusbar=no,resizable=yes\")' title=\"".get_vocab("fiche_ressource")."\"><img src=\"../img_grr/details_s.png\" alt=\"d&eacute;tails\" class=\"image\" /></a></td>";
           echo "</tr>\n";

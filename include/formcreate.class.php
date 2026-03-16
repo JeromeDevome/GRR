@@ -2,9 +2,9 @@
 /*
  * formcreate.class.php
  *
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-03-16 18:17$
  * @author    JeromeB & Laurent Delineau
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -59,7 +59,7 @@ class Form {
 		<div class="input-group date datepicker">
 			<input type="text" id="'.$name.'" class="form-control" data-date-format="DD/MM/YYYY"/>
 			<span class="input-group-addon">
-				<span class="glyphicon glyphicon-calendar"></span>
+				<span class="far fa-calendar-alt"></span>
 			</span>
 		</div>
 	</div>'.PHP_EOL;

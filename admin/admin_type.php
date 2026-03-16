@@ -3,9 +3,9 @@
  * admin_type.php
  * Interface de gestion des types de réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-11-03 18:37$
+ * Dernière modification : $Date: 2026-03-16 18:12$
  * @author    JeromeB & Laurent Delineau & Yan Naessens & J.-P. Gay
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -150,7 +150,7 @@ if ($nb_lignes > 0)
                 echo get_vocab("only_administrators");
             echo "</td>\n";
             $themessage = get_vocab("confirm_del");
-            echo "<td><a href='admin_type.php?&amp;type_del=".$row['id']."&amp;action_del=yes' onclick='return confirmlink(this, \"".$row['type_name']."\", \"$themessage\")'><span class='glyphicon glyphicon-trash'></span></a></td>";
+            echo "<td><a href='admin_type.php?&amp;type_del=".$row['id']."&amp;action_del=yes' onclick='return confirmlink(this, \"".$row['type_name']."\", \"$themessage\")'><span class='far fa-trash-alt'></span></a></td>";
             echo "</tr>";
         }
     echo "</table>";

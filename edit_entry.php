@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-19 16:35$
+ * Dernière modification : $Date: 2026-03-16 18:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -63,6 +63,7 @@ function pageHead($title,$locale) // $locale est la langue utilisée
   <link rel="stylesheet" href="./bootstrap/css/select2-bootstrap.css" />
   <link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery-ui.min.css" />
   <link rel="stylesheet" type="text/css" href="./bootstrap/css/jquery.timepicker.min.css" >
+  <link rel="stylesheet" type="text/css" href="./fonts/fontawesome-free/css/all.min.css" >
   <link rel="stylesheet" type="text/css" href="themes/default/css/style.css" />
   <link rel="stylesheet" type="text/css" href="'.$sheetcss.'/style.css" />';
   echo '
@@ -148,7 +149,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
     echo '>';
     echo '<div class="form-group col-sm-6">'.PHP_EOL;
     echo '    <div class="input-group">'.PHP_EOL;
-    echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>'.PHP_EOL;
+    echo '      <div class="input-group-addon"><span class="fas fa-user-alt"></span></div>'.PHP_EOL;
     echo '      <input class="form-control" type="text" name="benef_ext_nom" value="'.$benef_ext_nom.'" placeholder="'.get_vocab("nom_beneficiaire").'" required onchange="check_4()">'.PHP_EOL;
     echo '    </div>'.PHP_EOL;
     echo '  </div>'.PHP_EOL;
@@ -156,7 +157,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
     {
       echo '<div class="form-group col-sm-6">'.PHP_EOL;
       echo '    <div class="input-group">'.PHP_EOL;
-      echo '      <div class="input-group-addon"><span class="glyphicon glyphicon-envelope" ></span></div>'.PHP_EOL;
+      echo '      <div class="input-group-addon"><span>@</span></div>'.PHP_EOL;
       echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.$benef_ext_email.'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
       echo '    </div>'.PHP_EOL;
       echo '</div>'.PHP_EOL;

@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-26 16:35$
+ * Dernière modification : $Date: 2026-03-16 18:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -722,7 +722,7 @@ if ($id != 0 && $droit_acces >= $user_right && $access_file==1){
     foreach($attached_files as $fRow){
       echo "<tr>";
       echo "<td class='center'><a href=\"./images/".$fRow['file_name']."\" download='".$fRow['public_name']."'>".$fRow['public_name']."</a></td>";
-      echo "<td class='center'><a href=\"./deleteFile.php?id=".$fRow['id']." \"><span class='glyphicon glyphicon-trash'></span></a></td>";
+      echo "<td class='center'><a href=\"./deleteFile.php?id=".$fRow['id']." \"><span class='far fa-trash-alt'></span></a></td>";
       echo "</tr>";
       }
     echo "</table>";

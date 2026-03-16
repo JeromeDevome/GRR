@@ -3,9 +3,9 @@
  * admin_config_calend3.php
  * interface permettant la configuration des jours-cycles (étape 3)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-02 17:05$
+ * Dernière modification : $Date: 2026-03-16 18:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -223,7 +223,7 @@ if (!isset($_GET['pview']))
 	echo "</table>";
 	if (!isset($_GET['pview']))
 	{
-		echo "\n<div class=\"center\"><a href=\"admin_calend_jour_cycle.php?page_calend=3&amp;pview=1\" title=\"Format Imprimable\"><span class='glyphicon glyphicon-print'></span></a></div>\n";
+		echo "\n<div class=\"center\"><a href=\"admin_calend_jour_cycle.php?page_calend=3&amp;pview=1\" title=\"Format Imprimable\"><span class='fa  fa-print'></span></a></div>\n";
 	}
 echo "</div>";	// fin de l'affichage de la colonne de droite    
 ?>

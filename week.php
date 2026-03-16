@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 15:47$
+ * Dernière modification : $Date: 2026-03-16 18:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -552,11 +552,11 @@ if ((!isset($_GET['pview'])) or ($_GET['pview'] != 1))
 	echo "\n
 	<div class='ligne23'>
 		<div class=\"left\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='week.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;room=$room';\"><span class=\"glyphicon glyphicon-backward\"></span> ".get_vocab("weekbefore")." </button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='week.php?year=$yy&amp;month=$ym&amp;day=$yd&amp;room=$room';\"><span class=\"fas fa-backward\"></span> ".get_vocab("weekbefore")." </button>
 		</div>";
 		include "./include/trailer.inc.php";
 		echo "<div class=\"right\">
-			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='week.php?year=$ty&amp;month=$tm&amp;day=$td&amp;room=$room';\">".get_vocab('weekafter')." <span class=\"glyphicon glyphicon-forward\"></span></button>
+			<button class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='week.php?year=$ty&amp;month=$tm&amp;day=$td&amp;room=$room';\">".get_vocab('weekafter')." <span class=\"fas fa-forward\"></span></button>
 		</div>
 	</div>";
 }
@@ -566,18 +566,18 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
     echo "<div class=\"left\"> "; // afficher ou cacher le menu
     $mode = Settings::get("menu_gauche");
     $alt = ($mode != 0)? $mode : 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
-    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
-    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"fas fa-bars fa-2x\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"fas fa-bars fa-rotate-90 fa-2x\"></span></button></div> "; 
 	echo "</div>";
 }
 if (verif_display_fiche_ressource($user_name, $room) && $_GET['pview'] != 1)
 {
 	echo '<a href="javascript:centrerpopup(\'view_room.php?id_room=',$room,'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="',
-	get_vocab("fiche_ressource"),'"><span class="glyphcolor glyphalign glyphicon glyphicon-search"></span></a>',PHP_EOL;
+	get_vocab("fiche_ressource"),'"><span class=" glyphalign fas fa-search"></span></a>',PHP_EOL;
 }
 if (($authGetUserLevel >= $acces_config_level) && ($_GET['pview'] != 1))
 {
-	echo "<a href='./admin/edit_room.php?room=$room'><span class=\"glyphcolor glyphalign glyphicon glyphicon-cog\"></span></a>";
+	echo "<a href='./admin/edit_room.php?room=$room'><span class=\" glyphalign fas fa-cog\"></span></a>";
 }
 affiche_ressource_empruntee($room);
 if ($this_statut_room == "0" && $_GET['pview'] != 1)
@@ -798,18 +798,18 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
                         {
                             /*echo "<a href=\"edit_entry.php?room=$room"
                             . "&amp;period=$time_t_stripped&amp;year=$wyear&amp;month=$wmonth"
-                            . "&amp;day=$wday&amp;page=week\" title=\"".get_vocab("cliquez_pour_effectuer_une_reservation")."\"><span class=\"glyphicon glyphicon-plus\"></span>";
+                            . "&amp;day=$wday&amp;page=week\" title=\"".get_vocab("cliquez_pour_effectuer_une_reservation")."\"><span class=\"fas fa-plus\"></span>";
                             echo "</a>";*/
                             echo "<a href=\"edit_entry.php?room=$room"
                             . "&amp;period=$slot&amp;year=$wyear&amp;month=$wmonth"
-                            . "&amp;day=$wday&amp;page=week\" title=\"".get_vocab("cliquez_pour_effectuer_une_reservation")."\"><span class=\"glyphicon glyphicon-plus\"></span>";
+                            . "&amp;day=$wday&amp;page=week\" title=\"".get_vocab("cliquez_pour_effectuer_une_reservation")."\"><span class=\"fas fa-plus\"></span>";
                             echo "</a>";
                         }
                         else
                         {
                             echo "<a href=\"edit_entry.php?room=$room"
                             . "&amp;hour=$hour&amp;minute=$minute&amp;year=$wyear&amp;month=$wmonth"
-                            . "&amp;day=$wday&amp;page=week\" title=\"".get_vocab("cliquez_pour_effectuer_une_reservation")."\"><span class=\"glyphicon glyphicon-plus\"></span>";
+                            . "&amp;day=$wday&amp;page=week\" title=\"".get_vocab("cliquez_pour_effectuer_une_reservation")."\"><span class=\"fas fa-plus\"></span>";
                             echo "</a>";
                         }
                     }

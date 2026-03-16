@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 15:32$
+ * Dernière modification : $Date: 2026-03-16 18:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -321,13 +321,13 @@ else{
                                     {
                                         $time_t = date("i", $t);
                                         $time_t_stripped = preg_replace( "/^0/", "", $time_t );
-                                        $temp = '<a href="edit_entry.php?room='.$room_id.'&amp;period='.$time_t_stripped.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day&amp;room_back='.$room_back.'" title="'.get_vocab("cliquez_pour_effectuer_une_reservation").'" ><span class="glyphicon glyphicon-plus"></span></a>'.PHP_EOL;
+                                        $temp = '<a href="edit_entry.php?room='.$room_id.'&amp;period='.$time_t_stripped.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day&amp;room_back='.$room_back.'" title="'.get_vocab("cliquez_pour_effectuer_une_reservation").'" ><span class="fas fa-plus"></span></a>'.PHP_EOL;
                                     }
                                     else
                                     {
                                         $hour = date("H", $t);
                                         $minute = date("i", $t);
-                                        $temp = '<a href="edit_entry.php?room='.$room_id.'&amp;hour='.$hour.'&amp;minute='.$minute.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day&amp;room_back='.$room_back.'" title="'.get_vocab("cliquez_pour_effectuer_une_reservation").'" ><span class="glyphicon glyphicon-plus"></span></a>'.PHP_EOL;
+                                        $temp = '<a href="edit_entry.php?room='.$room_id.'&amp;hour='.$hour.'&amp;minute='.$minute.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;page=day&amp;room_back='.$room_back.'" title="'.get_vocab("cliquez_pour_effectuer_une_reservation").'" ><span class="fas fa-plus"></span></a>'.PHP_EOL;
                                     }
                                 }
                                 else
@@ -367,9 +367,9 @@ else{
                     if ($ress['capacity']  && $_GET['pview'] != 1)
                         $dcell .= '<span class="small">('.$ress["capacity"].' '.($ress["capacity"] > 1 ? get_vocab("number_max2") : get_vocab("number_max")).')</span><br />'.PHP_EOL;
                     if (verif_display_fiche_ressource($user_name, $ress['id']) && $_GET['pview'] != 1)
-                        $dcell .= '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$ress['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'"><span class="glyphcolor glyphicon glyphicon-search"></span></a>'.PHP_EOL;
+                        $dcell .= '<a href="javascript:centrerpopup(\'view_room.php?id_room='.$ress['id'].'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.get_vocab("fiche_ressource").'"><span class=" fas fa-search"></span></a>'.PHP_EOL;
                     if ((authGetUserLevel($user_name,$ress['id']) >= $acces_config_level) && ($_GET['pview'] != 1))
-                        $dcell .= '<a href="./admin/edit_room.php?room='.$ress['id'].'"><span class="glyphcolor glyphicon glyphicon-cog"></span></a><br/>'.PHP_EOL;
+                        $dcell .= '<a href="./admin/edit_room.php?room='.$ress['id'].'"><span class=" fas fa-cog"></span></a><br/>'.PHP_EOL;
                     $temp = html_ressource_empruntee($ress['id']);
                     if($temp != "")
                         $dcell .= $temp;
@@ -455,17 +455,17 @@ if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 { // menu de navigation dans les jours avant/après en tête du planning
     echo "<div class='ligne23'>";
     if ($room_back == 'all'){
-        echo '<div class="left">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'\';"> <span class="glyphicon glyphicon-backward"></span> ',get_vocab("daybefore"),'</button>','</div>',PHP_EOL;
+        echo '<div class="left">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'\';"> <span class="fas fa-backward"></span> ',get_vocab("daybefore"),'</button>','</div>',PHP_EOL;
     }
     else {
-        echo '<div class="left">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'&amp;room='.$room_back.'\';"> <span class="glyphicon glyphicon-backward"></span> ',get_vocab("daybefore"),'</button>','</div>',PHP_EOL;
+        echo '<div class="left">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="javascript: location.href=\'day.php?year='.$yy.'&amp;month='.$ym.'&amp;day='.$yd.'&amp;area='.$area.'&amp;room='.$room_back.'\';"> <span class="fas fa-backward"></span> ',get_vocab("daybefore"),'</button>','</div>',PHP_EOL;
     }    
     include "include/trailer.inc.php";
     if ($room_back == 'all'){
-        echo '<div class="right">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'\';">  '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>','</div>',PHP_EOL;
+        echo '<div class="right">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'\';">  '.get_vocab('dayafter').'  <span class="fas fa-forward"></span></button>','</div>',PHP_EOL;
     }
     else{
-        echo '<div class="right">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'&amp;room='.$room_back.'\';">  '.get_vocab('dayafter').'  <span class="glyphicon glyphicon-forward"></span></button>','</div>',PHP_EOL;
+        echo '<div class="right">',PHP_EOL,'<button class="btn btn-default btn-xs" onclick="javascript: location.href=\'day.php?year='.$ty.'&amp;month='.$tm.'&amp;day='.$td.'&amp;area='.$area.'&amp;room='.$room_back.'\';">  '.get_vocab('dayafter').'  <span class="fas fa-forward"></span></button>','</div>',PHP_EOL;
     }
     echo "</div>".PHP_EOL;
 }
@@ -473,8 +473,8 @@ echo "<div>".PHP_EOL;
 if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
 { // afficher ou cacher le menu
     echo "<div class=\"left\"> ";
-    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"glyphicon glyphicon-chevron-right\"></span></button></div> ";
-    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"glyphicon glyphicon-chevron-left\"></span></button></div> "; 
+    echo "<div id='voir'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG($alt)\" title='".get_vocab('show_left_menu')."'><span class=\"fas fa-bars fa-2x\"></span></button></div> ";
+    echo "<div id='cacher'><button class=\"btn btn-default btn-sm\" onClick=\"afficheMenuHG(0)\" title='".get_vocab('hide_left_menu')."'><span class=\"fas fa-bars fa-2x fa-rotate-90\"></span></button></div> "; 
     echo "</div>";
 }
 echo '<h4>' . ucfirst($this_area_name).' - '.get_vocab("all_areas");

@@ -3,9 +3,9 @@
  * admin_accueil
  * Interface d'accueil de l'administration des domaines et des ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-07-27 16:26$
+ * Dernière modification : $Date: 2026-03-16 18:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -69,7 +69,7 @@ if ($nbAModerer > 0)
         echo "<tr><td>".$resa['room']."</td>";
         echo "<td>".time_date_string($resa['start_time'], $dformat)."</td>";
         echo "<td>".$resa['beneficiaire']."</td>";
-        echo "<td><a href='".$racine."view_entry.php?id=".$resa['id']."&mode=page'><span class='glyphicon glyphicon-new-window'></span></a></td></tr>";
+        echo "<td><a href='".$racine."view_entry.php?id=".$resa['id']."&mode=page'><span class='fas fa-external-link-alt'></span></a></td></tr>";
     }
     echo "</tbody>";
 	echo '</table>';

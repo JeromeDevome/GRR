@@ -3,7 +3,7 @@
  * swap_entry.php
  * Interface d'échange d'une réservation avec une autre, à choisir
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-19 16:44$
+ * Dernière modification : $Date: 2026-03-16 18:19$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -212,7 +212,7 @@ if ($etape == 1){
                 echo "<th>".get_vocab('type')."</th>";
             echo "</tr>";
             echo "<tr>";
-                echo "<th><span class='glyphicon glyphicon-arrow-down'></span></th>"; // colonne pour les choix
+                echo "<th><span class='fas fa-arrow-down'></span></th>"; // colonne pour les choix
                 echo "<th>".$info['name']."</th>";
                 echo "<th>".time_date_string($info['start_time'],$dformat)."</th>";
                 echo "<th>".time_date_string($info['end_time'],$dformat)."</th>";

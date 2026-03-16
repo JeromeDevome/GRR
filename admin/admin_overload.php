@@ -3,10 +3,10 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-27 15:02$
+ * Dernière modification : $Date: 2026-03-16 18:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -253,7 +253,7 @@ echo "<input type=\"hidden\" name=\"action\" value=\"add\" /></span>\n";
 echo "<span class='td CC'> ";
 echo "<input type=\"checkbox\" id=\"confidentiel\" name=\"confidentiel\" value=\"y\" /></span>\n";
 echo "<span class='td CC'><input type=\"text\" name=\"mail_spec\" size=\"20\" /></span>\n";
-echo "<span class='td CC'><button type=\"submit\" data-toggle=\"tooltip\" title=\"".get_vocab('add')."\" name=\"add\" ><span class='glyphicon glyphicon-plus'></span></button></span>\n";
+echo "<span class='td CC'><button type=\"submit\" data-toggle=\"tooltip\" title=\"".get_vocab('add')."\" name=\"add\" ><span class='fas fa-plus'></span></button></span>\n";
 echo "</div></div></form>\n"; // fin de la table "ajouter"
 echo "<p class='small'>(1)".get_vocab("cas_fonctionnalite_mail_actif")."<br />";
 echo "(2)".get_vocab("envoie_mail_spec_exp")."</p>";
@@ -326,9 +326,9 @@ if(!empty($ovlfdata)){ // il existe des champs additionnels déjà définis
         echo  '<span class="td CC"><input type="text" name="mail_spec" size="20" value="'.$row['mail_spec'].'" /></span>';
         echo  "<span class='td CC'>\n";
         echo  "<div><input type=\"hidden\" name=\"id_overload\" value=\"".$row['id']."\" />\n";
-        echo  "<button type=\" submit\" data-toggle=\"tooltip\" title=\"".get_vocab('change')."\" name=\"change\"><span class='glyphicon glyphicon-edit'></span></button>";
+        echo  "<button type=\" submit\" data-toggle=\"tooltip\" title=\"".get_vocab('change')."\" name=\"change\"><span class='fas fa-edit'></span></button>";
         echo  "</div>";
-        echo  "<div><button type=\"submit\" data-toggle=\"tooltip\" title=\"".get_vocab('del')."\" name=\"delete\" onclick=\"return confirmlink(this, '".addslashes(get_vocab("avertissement_suppression_champ_additionnel"))."', '".get_vocab("confirm_del")."')\"><span class='glyphicon glyphicon-trash'></span></button>\n";
+        echo  "<div><button type=\"submit\" data-toggle=\"tooltip\" title=\"".get_vocab('del')."\" name=\"delete\" onclick=\"return confirmlink(this, '".addslashes(get_vocab("avertissement_suppression_champ_additionnel"))."', '".get_vocab("confirm_del")."')\"><span class='far fa-trash-alt'></span></button>\n";
         echo  "</div>";
         echo "</span>\n";
         echo "</form>\n";
