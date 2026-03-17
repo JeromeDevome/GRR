@@ -1016,6 +1016,7 @@ $vocab["maj_go_www"] = "Besuchen Sie mal wieder die GRR-Webseite, um mehr über 
 $vocab["maj_good"] = "Das Update ist durchgeführt worden. (Bitte lesen Sie aufmerksam das Ergebnis des Updates auf der Seite unten.)";
 $vocab["maj_impossible_rechercher"] = "Aktualisierung kann nicht gesucht werden.";
 $vocab["maj_no_update_to_do"] = "Sie brauchen kein Update Ihrer Datenbank vorzunehmen.";
+$vocab['maj_recherche_desactive'] = "Die Suche nach Updates ist deaktiviert.";
 $vocab["maj_recherche_grr"] = "Suche nach Updates mit dem offiziellen GRR-Server";
 $vocab["maj_submit_update"] = "Updaten";
 $vocab["maj_version_bdd"] = "Seriennummer der Datenbankversion:";

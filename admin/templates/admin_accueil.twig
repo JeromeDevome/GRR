@@ -15,7 +15,7 @@
 
 					<div class="info-box-content">
 						<span class="info-box-text">{{ trad.users_connected }}</span>
-						<span class="info-box-number"><a href="?p=admin_view_connexions">{{ trad.dNombreConnecte }} / {{ trad.dNombreUtilisateur }}</a></span>
+						<span class="info-box-number"><a href="?p=admin_view_connexions">{{ d.nombreConnecte }} / {{ d.nombreUtilisateur }}</a></span>
 					</div>
 					<!-- /.info-box-content -->
 				</div>
@@ -29,15 +29,15 @@
 
 					<div class="info-box-content">
 						<span class="info-box-text">{{ trad.admin_user_mdp_facile }}</span>
-						<span class="info-box-number"><a href="?p=admin_user_mdp_facile">{{ trad.dNombreMDPFacile }}</a></span>
+						<span class="info-box-number"><a href="?p=admin_user_mdp_facile">{{ d.nombreMDPFacile }}</a></span>
 					</div>
 				</div>
 				<!-- /.info-box -->
 			</div>
 
 			<!-- Actions rapide -->
-			<div class="col col-md-4 col-sm-6 col-xs-12">
-				{% if trad.dLevel >=6 %}
+			<div class="col col-md-2 col-sm-2 col-xs-12">
+				{% if d.level >=6 %}
 					<a  href="admin_save_mysql.php?flag_connect=yes" class="btn btn-app">
 						<i class="fa fa-save"></i> Backup
 					</a>
@@ -78,6 +78,28 @@
 
 			</div>
 		</div>
+
+		{% if d.gRecherche_MAJ == 1 %}
+		<div class ="row">
+			<div class="col-lg-3 col-3">
+				<!-- small card -->
+				<div class="small-box {% if d.maj_SiteGRR_Num == 2 %}bg-success{% elseif d.maj_SiteGRR_Num == 3 %}bg-warning{% else %}bg-disabled{% endif %}">
+					<div class="inner">
+						<h3>{{ d.maj_SiteGRR_Version }}</h3>
+
+						<p>{{ d.version }}</p>
+					</div>
+					<div class="icon">
+						<i class="fa-solid fa-arrow-rotate-right"></i>
+					</div>
+					<a href="?p=admin_infos" class="small-box-footer">
+						{{ trad.num_version_title }} <i class="fas fa-arrow-circle-right"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+
 		<div class="row">
 
 			
@@ -114,7 +136,7 @@
 											<th>{{ trad.login_name }}</th>
 											<th>{{ trad.begining_of_session }}</th>
 										</tr>
-										{% for log in trad.dDernieresConnexions %}
+										{% for log in d.dernieresConnexions %}
 											<tr {% if log.clos == 0 %}class="success"{% endif %}>
 												{% if log.clos == 0 %}
 													<td><span class="badge bg-green">O</span></td>
@@ -138,7 +160,7 @@
 					<div class="card-header">
 						<h3 class="card-title">
 						<i class="fas fa-th mr-1"></i>
-						{{ trad.dNombreModeration }} réservation(s) à modérer
+						{{ d.nombreModeration }} réservation(s) à modérer
 						</h3>
 					</div><!-- /.card-header -->
 					<div class="card-body">
@@ -154,7 +176,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										{% for resaMode in trad.dListeModeration %}
+										{% for resaMode in d.listeModeration %}
 											<tr>
 												<td>{{ resaMode.ressource }}</td>
 												<td>{{ resaMode.debut }}</td>

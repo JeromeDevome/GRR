@@ -73,7 +73,7 @@ class AdminFonctions
 
 	public static function Warning() // Alerte
 	{
-        global $versionReposite, $version_grr, $warningBackup, $gWarningDossierInstall, $gWarningVersionTest, $gWarningSSL;
+        global $versionReposite, $version_grr, $gWarningBackup, $gWarningDossierInstall, $gWarningVersionTest, $gWarningSSL;
 
         $alerteTDB = array();
 
@@ -89,7 +89,7 @@ class AdminFonctions
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "Les dates d'ouverture des réservations seront prochainement fermées.", 'NomLien' => "Configurer les dates", 'lien' => "?p=admin_config");
 		}
 
-		if ( $warningBackup == 1  && (time() - 2592000) > Settings::get("backup_date") ){
+		if ($gWarningBackup == 1  && (time() - 2592000) > Settings::get("backup_date") ){
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "La dernière sauvegarde de la BDD date de plus d'un mois !", 'NomLien' => "Faire une sauvegarde", 'lien' => "admin_save_mysql.php?flag_connect=yes");
 		}
 
@@ -164,6 +164,56 @@ class AdminFonctions
         return array($nbAModerer, $listeModeration);
     }
 
+    // Recharche Maj GRR
+    public static function RechercheMajGRR() {
+        global $version_grr, $grr_devel_url, $gRecherche_MAJ;
+
+        $resultText = "";
+        $resultNum = 0; // 0 : pas de résultat, 1 : pas de recherche, 2 : maj à jour, 3 :  maj dispo
+        $derniereVersion = "";
+
+
+        if($gRecherche_MAJ == 1)
+        {
+
+            $url = "https://grr.devome.com/API/majgrr.php";
+            $opts = [
+                    'http' => [
+                            'method' => 'GET',
+                            'timeout' => 2,
+                            'header' => [
+                                    'User-Agent: PHP'
+                            ]
+                    ]
+            ];
+            
+            $ctx = stream_context_create($opts);
+            $json = @file_get_contents( $url, 0, $ctx );
+            
+            $myObj = json_decode($json);
+
+            if($json === FALSE) {
+                $resultText = "<span class=\"label label-info\">".get_vocab("maj_impossible_rechercher")."</span>". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
+                $resultNum = 0;
+            } else{
+
+                $derniereVersion = substr($myObj->tag_name,1);
+
+                if (version_compare($version_grr, $derniereVersion, '<')) {
+                    $resultText = "<span class=\"label label-warning\">".get_vocab("maj_dispo")." : ".$myObj->tag_name." - ".$myObj->published_at."</span>";
+                    $resultNum = 3;
+                } else{
+                    $resultText = "<span class=\"label label-success\">".get_vocab("maj_dispo_aucune")."</span>";
+                    $resultNum = 2;
+                }
+            }
+        } else {
+            $resultText = "<span class=\"label label-info\">".get_vocab("maj_recherche_desactive")."</span> ". get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a>";
+            $resultNum = 1;
+        }
+
+        return array($resultText, $resultNum, $derniereVersion);
+    }
 }
 
 ?>

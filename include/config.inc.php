@@ -129,7 +129,7 @@ $gEnvoisStatGRR = 1;
 $gEnvoisServeur = 1;
 
 #Rechercher des MAJ sur le serveur grr.devome.com || 0: non ; 1: oui - Defaut 1
-$recherche_MAJ = 1;
+$gRecherche_MAJ = 1;
 
 # Identifiant du flux de news || Defaut Hkq45qzeuy74cw54sdf7
 $gFluxNewsDevome = "Hkq45qzeuy74cw54sdf7";
@@ -154,7 +154,7 @@ $algoPwd = 'ripemd320';
 
 # Alerte dans l'administration si backup > 30jours, nous déconseillons de le désactiver sauf si les sauvegardes sont effectués via un autre moyen
 # 0: alerte inactive ; 1: alerte active - Defaut 1
-$warningBackup = 1;
+$gWarningBackup = 1;
 
 # Alerte dans l'administration si le dossier d'installation est accessible, nous déconseillons de le désactiver sauf si vous avez mis en place une protection d'accès à ce dossier
 # 0: alerte inactive ; 1: alerte active - Defaut 1
@@ -167,7 +167,6 @@ $gWarningVersionTest = 1;
 # Alerte dans l'administration si la connexion n'est pas sécurisée, nous déconseillons de le désactiver sauf si vous êtes un utilisateur avancé et que vous comprenez les risques liés à l'utilisation d'une connexion non sécurisée
 # 0: alerte inactive ; 1: alerte active - Defaut 1
 $gWarningSSL = 1;
-
 
 ##############################
 # ANTI-FLOOD - ENVOIS DE MAIL #
