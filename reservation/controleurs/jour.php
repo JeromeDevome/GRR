@@ -133,9 +133,15 @@ grr_sql_free($res);
 
 // Détermination des ressources à afficher
 if($room != 0) // Une seul ressrouce
+{
+	$ressRetour = $room;
 	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room, confidentiel_resa FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($room)."' ";
+}
 else // Toute les ressources du domaine
+{
+	$ressRetour = "all";
 	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room, confidentiel_resa FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($area)."' ORDER BY order_display, room_name";
+}
 $ressources = grr_sql_query($sql);
 if (!$ressources)
 	fatal_error(0, grr_sql_error());
@@ -349,7 +355,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 						$ficheResa = false;
 				}
 
-            	$cellulesJours[] = array('statut' => $statutCellule, 'class' => $c, 'rowspan' => $rowspan, 'ressource' => $room, 'idresa' => $id, 'titre' => $titre, 'descr' => $descr, 'ficheResa' => $ficheResa);
+            	$cellulesJours[] = array('statut' => $statutCellule, 'class' => $c, 'rowspan' => $rowspan, 'ressource' => $room, 'idresa' => $id, 'titre' => $titre, 'descr' => $descr, 'ficheResa' => $ficheResa, 'ressRetour' => $ressRetour);
 		
 			}
 		}
