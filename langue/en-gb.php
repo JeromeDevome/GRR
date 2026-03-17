@@ -5,7 +5,6 @@
 # Last modification : 2026-02-28
 $charset_html = "utf-8";
 $vocab = array();
-//$vocab['display_info_bulle_msg'] = "Display of the tooltips of the reservations in the views days, week, and month.";
 $vocab['a_acces_au_domaine'] = "This user has access to this restricted area.";
 $vocab['a_acces_au_site'] = "This user has access to this restricted site.";
 $vocab['accepter_resa_serie'] = "Accept the reservation and all reservations bound by periodicity which are not moderated yet.";
@@ -617,6 +616,7 @@ $vocab['maj_do_update'] = "Click on the following button to update towards GRR v
 $vocab['maj_go_www'] = "Go to GRR website to know the latest version: ";
 $vocab['maj_impossible_rechercher'] = "Impossible to check for updates."; 
 $vocab['maj_no_update_to_do'] = "Database needn\'t be updated.";
+$vocab['maj_recherche_desactive'] = "The update check is disabled.";
 $vocab['maj_recherche_grr'] = "Checking for updates on the official GRR server";
 $vocab['maj_submit_update'] = "Update";
 $vocab['maj_version_bdd'] = "Database version number: ";
@@ -1112,4 +1112,5 @@ $vocab["no_restricted_room"] = "No restricted room has been defined";
 $vocab["no_room_selected"] = "No room has been selected";
 $vocab["no_userbook_room"] = "No user can book this room";
 $vocab["user_book_room_list"] = "Users authorized to book this room";
+//$vocab['display_info_bulle_msg'] = "Display of the tooltips of the reservations in the views days, week, and month.";
 ?>

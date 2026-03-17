@@ -608,6 +608,7 @@ $vocab['maj_do_update'] = "Haga clic en el siguiente botón para efectuar la act
 $vocab['maj_go_www'] = "Vayase en el sitio de GRR para conocer la última versión : ";
 $vocab['maj_impossible_rechercher'] = "Impossible de rechercher une mise à jour."; // A traduire
 $vocab['maj_no_update_to_do'] = "Usted no tiene que efectuar actualización de la base de datos.";
+$vocab['maj_recherche_desactive'] = "La búsqueda de actualizaciones está desactivada.";
 $vocab['maj_recherche_grr'] = "Recherche de mises à jour avec le serveur officiel de GRR"; // A traduire
 $vocab['maj_submit_update'] = "Poner al día";
 $vocab['maj_version_bdd'] = "Número de versión de la base de datos : ";
