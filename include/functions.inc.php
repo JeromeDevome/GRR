@@ -645,37 +645,107 @@ function nb_connecte() {
  * Description : si c'est un admin ou un gestionnaire de ressource qui est connecté, retourne un tableau contenant, pour chaque réservation à modérer, [id,room_id,start_time]
 */
 function resaToModerate($user)
-{   
+{
     $resas = array();
-    $res = false;
+
     if (authGetUserLevel($user,-1) > 5) // admin général
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1 AND e.supprimer = 0 ";
-        $res = grr_sql_query($sql);
+        if (Settings::get("module_multisite") == "Oui")
+        {
+            $sql = "SELECT e.id,r.room_name,e.start_time,e.create_by,e.beneficiaire,a.area_name,s.sitename FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id JOIN ".TABLE_PREFIX."_j_site_area jsa ON a.id = jsa.id_area JOIN ".TABLE_PREFIX."_site s ON jsa.id_site = s.id WHERE e.moderate = 1 AND e.supprimer = 0 ";
+            $res = grr_sql_query($sql);
+            if ($res)
+            {
+                $i = 0;
+                while (($a = grr_sql_row($res, $i++)))
+                {
+                    $resas[$i] = array('id' => $a[0],'room' => $a[1],'start_time' => $a[2],'create_by' => $a[3],'beneficiaire' => $a[4],'area' => $a[5],'site' => $a[6]);
+                }
+                grr_sql_free($res);
+            }
+        }
+        else
+        {
+            $sql = "SELECT e.id,r.room_name,e.start_time,e.create_by,e.beneficiaire,a.area_name FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE e.moderate = 1 AND e.supprimer = 0 ";
+            $res = grr_sql_query($sql);
+            if ($res)
+            {
+                $i = 0;
+                while (($a = grr_sql_row($res, $i++)))
+                {
+                    $resas[$i] = array('id' => $a[0],'room' => $a[1],'start_time' => $a[2],'create_by' => $a[3],'beneficiaire' => $a[4],'area' => $a[5]);
+                }
+                grr_sql_free($res);
+            }
+        }
+        return $resas;
     }
-    elseif (isset($_GET['id_site']) && (authGetUserLevel($user,intval($_GET['id_site']),'site') > 4)) // admin du site
+
+    // Requête optimisée qui récupère directement les réservations à modérer
+    // sans charger toutes les ressources en mémoire
+    if (Settings::get("module_multisite") == "Oui")
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".intval($_GET['id_site'])." AND e.moderate = 1  AND e.supprimer = 0)";
-        $res = grr_sql_query($sql);
+        $sql = "
+            SELECT DISTINCT e.id, r.room_name, e.start_time, e.create_by, e.beneficiaire, a.area_name, s.sitename
+            FROM ".TABLE_PREFIX."_entry e
+            JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id
+            JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id
+            JOIN ".TABLE_PREFIX."_j_site_area jsa ON a.id = jsa.id_area
+            JOIN ".TABLE_PREFIX."_site s ON jsa.id_site = s.id
+            WHERE e.moderate = 1 AND e.supprimer = 0
+            AND (
+                e.room_id IN (SELECT id_room FROM ".TABLE_PREFIX."_j_user_room WHERE login = '".protect_data_sql($user)."')
+                OR
+                r.area_id IN (SELECT id_area FROM ".TABLE_PREFIX."_j_user_area WHERE login = '".protect_data_sql($user)."')
+                OR
+                r.area_id IN (
+                    SELECT jsa2.id_area
+                    FROM ".TABLE_PREFIX."_j_site_area jsa2
+                    WHERE jsa2.id_site IN (SELECT id_site FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login = '".protect_data_sql($user)."')
+                )
+            )
+        ";
     }
-    elseif (isset($_GET['area']) && (authGetUserLevel($user,intval($_GET['area']),'area') > 3)) // admin du domaine
+    else
     {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".intval($_GET['area'])." AND e.moderate = 1 AND e.supprimer = 0)";
-        $res = grr_sql_query($sql);
+        $sql = "
+            SELECT DISTINCT e.id, r.room_name, e.start_time, e.create_by, e.beneficiaire, a.area_name
+            FROM ".TABLE_PREFIX."_entry e
+            JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id
+            JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id
+            WHERE e.moderate = 1 AND e.supprimer = 0
+            AND (
+                e.room_id IN (SELECT id_room FROM ".TABLE_PREFIX."_j_user_room WHERE login = '".protect_data_sql($user)."')
+                OR
+                r.area_id IN (SELECT id_area FROM ".TABLE_PREFIX."_j_user_area WHERE login = '".protect_data_sql($user)."')
+                OR
+                r.area_id IN (
+                    SELECT jsa.id_area
+                    FROM ".TABLE_PREFIX."_j_site_area jsa
+                    WHERE jsa.id_site IN (SELECT id_site FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login = '".protect_data_sql($user)."')
+                )
+            )
+        ";
     }
-    elseif (isset($_GET['room']) && (authGetUserLevel($user,intval($_GET['room']),'room') > 2)) // gestionnaire de la ressource
-    {
-        $sql = "SELECT e.id,r.room_name,e.start_time FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.moderate = 1 AND e.supprimer = 0 AND e.room_id = ".intval($_GET['room']).") ";
-        $res = grr_sql_query($sql);
-    }
+
+    $res = grr_sql_query($sql);
     if ($res)
     {
-        $i = 0; 
-        while (($a = grr_sql_row($res, $i++))) 
+        $i = 0;
+        while (($a = grr_sql_row($res, $i++)))
         {
-            $resas[$i] = array('id' => $a[0],'room' => $a[1],'start_time' => $a[2]);
+            if (Settings::get("module_multisite") == "Oui")
+            {
+                $resas[$i] = array('id' => $a[0],'room' => $a[1],'start_time' => $a[2],'create_by' => $a[3],'beneficiaire' => $a[4],'area' => $a[5],'site' => $a[6]);
+            }
+            else
+            {
+                $resas[$i] = array('id' => $a[0],'room' => $a[1],'start_time' => $a[2],'create_by' => $a[3],'beneficiaire' => $a[4],'area' => $a[5]);
+            }
         }
+        grr_sql_free($res);
     }
+
     return $resas;
 }
 /** fonction plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_week)
