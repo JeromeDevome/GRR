@@ -3079,6 +3079,7 @@ Pour les utilisateurs :
 		$repondre = $user_email;
 		$templateSujet1 = Pages::get('mails_resacreation_'.$locale);
 		$templateMail1 = Pages::get('mails_resacreation_'.$locale);
+		$codes['%urldetail%'] = "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 	}
 	elseif ($action == 2){ // Modification
 		//$sujet1 .= $vocab["subject_mail_modify"];
@@ -3090,6 +3091,7 @@ Pour les utilisateurs :
 		
 		$templateSujet1 = Pages::get('mails_resamodification_'.$locale);
 		$templateMail1 = Pages::get('mails_resamodification_'.$locale);
+		$codes['%urldetail%'] = "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
 	}
 	elseif ($action == 3){ // Suppression
 		//$sujet1 .= $vocab["subject_mail_delete"];
