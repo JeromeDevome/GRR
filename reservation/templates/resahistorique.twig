@@ -1,0 +1,264 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<style>
+		/* Timeline styling */
+		.timeline {
+			position: relative;
+			padding: 20px 0;
+		}
+
+		.timeline::before {
+			content: '';
+			position: absolute;
+			left: 40px;
+			top: 0;
+			bottom: 0;
+			width: 4px;
+			background: linear-gradient(to bottom, #007bff, #28a745, #ffc107, #dc3545);
+		}
+
+		.time-label {
+			margin-bottom: 15px;
+			position: relative;
+			z-index: 2;
+		}
+
+		.time-label span {
+			padding: 8px 15px;
+			border-radius: 4px;
+			font-weight: 600;
+			font-size: 13px;
+			display: inline-block;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+		}
+
+		.timeline-item {
+			margin-bottom: 25px;
+			position: relative;
+			padding-left: 100px;
+			min-height: 60px;
+		}
+
+		.timeline-item i {
+			position: absolute;
+			left: 15px;
+			top: 15px;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			font-size: 20px;
+			z-index: 3;
+			box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+		}
+
+		.bg-green {
+			background: #28a745;
+		}
+
+		.bg-orange {
+			background: #fd7e14;
+		}
+
+		.bg-purple {
+			background: #6f42c1;
+		}
+
+		.bg-blue {
+			background: #007bff;
+		}
+
+		.bg-red {
+			background: #dc3545;
+		}
+
+		.bg-info {
+			background: #17a2b8;
+		}
+
+		.bg-gray {
+			background: #6c757d;
+		}
+
+		.timeline-header {
+			margin-top: 0;
+			margin-bottom: 10px;
+			font-size: 16px;
+			font-weight: 600;
+			color: #333;
+		}
+
+		.timeline-header a {
+			color: #007bff;
+			text-decoration: none;
+		}
+
+		.timeline-header a:hover {
+			text-decoration: underline;
+		}
+
+		.timeline-body {
+			background: #f8f9fa;
+			border-left: 3px solid #007bff;
+			padding: 15px;
+			border-radius: 4px;
+			font-size: 14px;
+			color: #555;
+			line-height: 1.6;
+		}
+
+		.time {
+			font-size: 12px;
+			color: #999;
+			font-weight: 500;
+			margin-bottom: 8px;
+			display: inline-block;
+		}
+
+		.time i {
+			width: auto !important;
+			height: auto !important;
+			border-radius: 0 !important;
+			background: none !important;
+			margin-right: 5px;
+			font-size: 12px !important;
+			color: #999;
+			box-shadow: none !important;
+		}
+
+		/* Responsive */
+		@media (max-width: 768px) {
+			.timeline {
+				padding-left: 20px;
+			}
+
+			.timeline::before {
+				left: 20px;
+			}
+
+			.timeline-item {
+				padding-left: 80px;
+			}
+
+			.timeline-item i {
+				left: 0;
+				width: 40px;
+				height: 40px;
+				font-size: 16px;
+			}
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+
+		<div class="col col-md-12">
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title">Réservation n° {{resa.id}}</h3>
+					<div class="box-tools pull-right">
+						<a href="javascript:history.back();" class="btn btn-sm btn-default">
+							<i class="fa fa-arrow-left"></i> {{trad.return}}
+						</a>
+					</div>
+				</div>
+				<div class="box-body no-padding">
+				  <table class="table table-striped">
+					<tr>
+						<th>{{resa.name}}</th>
+						<th>Crée par {{resa.create_by}}</th>
+					</tr>
+					<tr>
+						<td>
+							<p>{{resa.description}}</p>
+							<p>{{resa.area_name}} / {{resa.room_name}}</p>
+							<p>Début : {{resa.start_time|date('d/m/Y H:i:s')}}</p>
+							<p>Fin : {{resa.end_time|date('d/m/Y H:i:s')}}</p>
+						</td>
+						<td>
+							<p>Beneficiaire : {{resa.beneficiaire}} {{resa.beneficiaire_ext}}</p>
+							{% if resa.active_cle == 'y' %}<p>Clé : {% if resa.clef == '1' %}Empruntée{% else %}Non empruntée{% endif %}</p>{% endif %}
+							<p>Courrier : {{resa.courrier}}</p>
+							{% if resa.active_ressource_empruntee == 'y' %}<p>Statut : {% if resa.statut_entry == '-' %}La ressource est restituée{% elseif resa.statut_entry == 'y' %}Ressource empruntée{% elseif resa.statut_entry == 'e' %}Ressource empruntée et retard{% endif %}</p>{% endif %}
+							<p>Participants max : {{resa.nbparticipantmax}}</p>
+						</td>
+					</tr>
+					<tr>
+						<td> </td>
+                        <td> </td>
+					</tr>
+				  </table>
+				</div>
+			</div>
+		
+		</div>
+
+
+		<div class="col col-md-12">
+
+			<div class="timeline">
+				{% for log in logsresa %}
+					<!-- Date -->
+					{% if log.date|date('d/m/Y') != dateprecedente %}
+						<div class="time-label">
+							<span class="bg-info">
+								{{ log.date|date('d/m/Y') }}
+							</span>
+						</div>
+						{% set dateprecedente = log.date|date('d/m/Y') %}
+					{% endif %}
+					<!-- Logs -->
+					<div class="timeline-item">
+						{% if log.action == 1 %}
+							<i class="fa fa-plus bg-green"></i>
+						{% elseif log.action == 2 %}
+							<i class="fa fa-edit bg-orange"></i>
+						{% elseif log.action == 3 %}
+							<i class="fa fa-check bg-purple"></i>
+						{% elseif log.action == 4 %}
+							<i class="fa fa-id-badge bg-blue"></i>
+						{% elseif log.action == 5 %}
+							<i class="fa fa-trash bg-red"></i>
+						{% elseif log.action == 6 %}
+							<i class="fa fa-bars bg-orange"></i>
+						{% elseif log.action == 7 %}
+							<i class="fa fa-key bg-orange"></i>
+						{% elseif log.action == 8 %}
+							<i class="fa fa-envelope bg-orange"></i>
+						{% endif %}
+
+						<span class="time"><i class="fa fa-clock-o"></i> {{ log.date|date('H:i:s') }}</span>
+
+						<h3 class="timeline-header"><a href="#">{{ log.identifiant }}</a></h3>
+
+						<div class="timeline-body">
+							{{ log.infos |raw }}
+						</div>
+					</div>
+				{% endfor %}
+				<div style="position: relative; padding-left: 100px;">
+					<i class="fas fa-clock bg-gray" style="position: absolute; left: 15px; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; z-index: 3; box-shadow: 0 4px 8px rgba(0,0,0,0.15);"></i>
+				</div>
+			</div>
+
+			<div style="text-align: center; margin-top: 30px;">
+				<a href="javascript:history.back();" class="btn btn-primary btn-lg">
+					<i class="fa fa-arrow-left"></i> {{trad.return}}
+				</a>
+			</div>
+
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
