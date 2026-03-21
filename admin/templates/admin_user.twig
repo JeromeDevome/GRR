@@ -84,7 +84,10 @@
 	</div>	
 
 	<div class="modal fade" id="modalWarningSupUser" style="display: none;" aria-hidden="true">
-		<form action="?p=admin_user">
+		<form action="?p=admin_user" method="post">
+			<input type="hidden" name="user_del" id="modal_user_del" value="">
+			<input type="hidden" name="action_del" value="yes">
+			<input type="hidden" name="js_confirmed" value="1">
           <div class="modal-dialog">
 			<div class="modal-content bg-warning">
               <div class="modal-header">
@@ -133,6 +136,7 @@
 		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 		    var modal = $(this)
 		    modal.find('.modalidsup').text(idasup)
+		    modal.find('#modal_user_del').val(idasup)
 		})
 
 		$(function() {
