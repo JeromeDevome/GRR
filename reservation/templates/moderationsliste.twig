@@ -23,6 +23,11 @@
 								<table class="table table-condensed">
 									<thead>
 										<tr>
+											{% if settings.module_multisite == 'Oui' %}
+											<th>Site</th>
+											{% else %}
+											<th>Domaine</th>
+											{% endif %}
 											<th>{{ trad.room }}</th>
 											<th>{{ trad.start_date }}</th>
 											<th>{{ trad.created_by }}</th>
@@ -33,6 +38,11 @@
 									<tbody>
 										{% for resaMode in resas %}
 											<tr>
+												{% if settings.module_multisite == 'Oui' %}
+												<td>{{ resaMode.site }}</td>
+												{% else %}
+												<td>{{ resaMode.domaine }}</td>
+												{% endif %}
 												<td>{{ resaMode.ressource }}</td>
 												<td>{{ resaMode.debut }}</td>
 												<td>{{ resaMode.createur }}</td>
