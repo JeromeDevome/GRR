@@ -3319,6 +3319,17 @@ Mail pour le gestionnaire, ou l'admin
 		$templateMail3 = Pages::get('mails_resamoderation5_'.$locale);
 		$envoi3 = true;
     }
+	elseif ( ($action == 2) && ($moderate > 0) && (count($mail_admin) > 0) )// Modification d'une réservation en attente de modération ou modérée, mail pour le modérateur
+	{
+		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_moderation"];
+		$codes['%urldetail%'] = traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
+		$repondre3 = Settings::get("webmaster_email");
+		if ($expediteur =='')
+			$expediteur = $repondre3;
+		
+		$templateMail3 = Pages::get('mails_resamoderation_'.$locale);
+		$envoi3 = true;
+	}
 	elseif ( ($action == 5) && (count($mail_admin) > 0) )// Réservation en attente de modération, mail pour le modérateur
 	{
 		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_moderation"];
