@@ -2872,7 +2872,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
  * $action = 6 -> Résultat d'une décision de modération
  * $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 */
-function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '')
+function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array())
 {
 	global $vocab, $grrSettings, $locale, $weekstarts, $enable_periods, $periods_name;
 
@@ -2966,21 +2966,33 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 
 	if ($repeat_id != 0)
 	{
-		$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks FROM ".TABLE_PREFIX."_repeat WHERE id='".protect_data_sql($repeat_id)."'");
-		if (!$res)
-			fatal_error(0, grr_sql_error());
-		$test = grr_sql_count($res);
-		if ($test > 1)
-			fatal_error(0, "Deux reservations ont le même ID.");
+		// Utiliser les informations de périodicité fournies si disponibles, sinon les récupérer depuis la base
+		if (!empty($rep_info) && isset($rep_info['rep_type']))
+		{
+			$rep_type = $rep_info['rep_type'];
+			$rep_end_date = isset($rep_info['rep_end_date']) ? time_date_string($rep_info['rep_end_date'], $dformat) : '';
+			$rep_opt = isset($rep_info['rep_opt']) ? $rep_info['rep_opt'] : '';
+			$rep_num_weeks = isset($rep_info['rep_num_weeks']) ? $rep_info['rep_num_weeks'] : 1;
+		}
 		else
 		{
-			$row2 = grr_sql_row($res, 0);
-			$rep_type     = $row2[0];
-			$rep_end_date = time_date_string($row2[1],$dformat);
-			$rep_opt      = $row2[2];
-			$rep_num_weeks = $row2[3];
+			// Récupération depuis la base (comportement par défaut)
+			$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks FROM ".TABLE_PREFIX."_repeat WHERE id='".protect_data_sql($repeat_id)."'");
+			if (!$res)
+				fatal_error(0, grr_sql_error());
+			$test = grr_sql_count($res);
+			if ($test > 1)
+				fatal_error(0, "Deux reservations ont le même ID.");
+			else
+			{
+				$row2 = grr_sql_row($res, 0);
+				$rep_type     = $row2[0];
+				$rep_end_date = time_date_string($row2[1],$dformat);
+				$rep_opt      = $row2[2];
+				$rep_num_weeks = $row2[3];
+			}
+			grr_sql_free($res);
 		}
-		grr_sql_free($res);
 	}
 	if ($enable_periods == 'y')
 		toPeriodString($start_period, $duration, $dur_units);
