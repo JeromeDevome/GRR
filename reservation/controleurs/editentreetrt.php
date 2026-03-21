@@ -687,7 +687,12 @@ try {
                 if (isset($id_first_resa) && ($id_first_resa != 0))
                 {
                     if (isset($id) && ($id != 0)) // modification d'une résa existante
-                        $message_error = send_mail($id, 2, $dformat, array(), $oldRessource);
+                        $message_error = send_mail($id, 2, $dformat, array(), $oldRessource, array(
+                            'rep_type' => $rep_type,
+                            'rep_end_date' => $rep_enddate,
+                            'rep_opt' => $rep_opt,
+                            'rep_num_weeks' => $rep_num_weeks
+                        ));
                     else // création
                         if ($send_mail_moderate)
                             $message_error = send_mail($id_first_resa, 5, $dformat); // à modérer
@@ -733,7 +738,7 @@ try {
 					if ($send_mail_moderate)
 						$message_error = send_mail($id,5,$dformat);
 					else
-						$message_error = send_mail($id,2,$dformat, array(), $oldRessource);
+						$message_error = send_mail($id,2,$dformat, array(), $oldRessource, array());
 				}
             }
             }

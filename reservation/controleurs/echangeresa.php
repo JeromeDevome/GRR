@@ -101,8 +101,8 @@ if (isset($idAlt)){ // les paramètres sont connus
                     if ($res4){
                         $d['etape'] = 3; // échange réussi, envoyer un mail si programmé
                         if (Settings::get("automatic_mail") == 'yes'){
-                            $_SESSION['session_message_error'] = send_mail($data1[0],2,$dformat,array(),$data1[5]);
-                            $_SESSION['session_message_error'] = send_mail($data2[0],2,$dformat,array(),$data2[5]);
+                            $_SESSION['session_message_error'] = send_mail($data1[0],2,$dformat,array(),$data1[5], array());
+                            $_SESSION['session_message_error'] = send_mail($data2[0],2,$dformat,array(),$data2[5], array());
                         }
                     }
                 }
