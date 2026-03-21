@@ -71,7 +71,7 @@ if (grr_sql_count($res) >= 1)
     $day = date ('d', $row1['0']);
 }
 grr_sql_free($res);
-if (strstr ($back, 'view_entry.php'))
+if (strstr ($back, 'p=vuereservation'))
 {
     if (isset($year)&&isset($month)&&isset($day)){
         $page = (isset($_GET['page']))? clean_input($_GET['page']) : "day";
@@ -204,6 +204,8 @@ else
 $msg='';
 
 $d['room_back'] = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+
+$d['droitRessource'] = authGetUserLevel($userName, $room_id);
 
 // traitement du formulaire d'inscription d'un autre participant
 if(isset($_GET["reg_part"]))
