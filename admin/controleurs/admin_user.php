@@ -27,7 +27,7 @@ if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName()
 	showAccessDenied($back);
 	exit();
 }
-if ((isset($_GET['action_del'])) && isset($_GET['js_confirmed']) && ($_GET['js_confirmed'] == 1))
+if ((isset($_REQUEST['action_del'])) && isset($_REQUEST['js_confirmed']) && ($_REQUEST['js_confirmed'] == 1))
 {
 	VerifyModeDemo();
 }
@@ -35,9 +35,9 @@ if ((isset($_GET['action_del'])) && isset($_GET['js_confirmed']) && ($_GET['js_c
 //
 // Supression d'un utilisateur
 //
-if ((isset($_GET['action_del'])) and (isset($_GET['js_confirmed'])) and ($_GET['js_confirmed'] == 1))
+if ((isset($_REQUEST['action_del'])) and (isset($_REQUEST['js_confirmed'])) and ($_REQUEST['js_confirmed'] == 1))
 {
-	$temp = $_GET['user_del'];
+	$temp = $_REQUEST['user_del'];
 	// un gestionnaire d'utilisateurs ne peut pas supprimer un administrateur général ou un gestionnaire d'utilisateurs
 	$can_delete = "yes";
 	if (authGetUserLevel(getUserName(), -1,'user') ==  1)
@@ -106,7 +106,6 @@ get_vocab_admin("activ_user");
 get_vocab_admin("authentification");
 get_vocab_admin("action");
 
-get_vocab_admin("confirm_del");
 get_vocab_admin("cancel");
 get_vocab_admin("delete");
 
