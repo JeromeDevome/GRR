@@ -2,7 +2,7 @@
 /**
  * misc.inc.php
  * fichier de variables diverses
- * Dernière modification : $Date: 2026-02-26 20:30$
+ * Dernière modification : $Date: 2026-03-22 11:10$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -29,7 +29,7 @@ $grr_devel_url = "https://grr.devome.com/";
 
 // Numéro de version actuel
 # Format X.X.XRCX | exemples : 4.4.0a (alpha) ou 4.4.0b (beta) 4.4.0RC1 (Release Candidate) ou 4.4.0 (version OK)
-$version_grr = "4.5.3";
+$version_grr = "4.5.4";
 # Version BDD, deux premirs chiffres = version majeur, les deux suivant la version, évolution de GRR, les 3 derniers une incrémentation à chaque changement
 # Ex 0400003 : 3eme modification sur la branche 4.X.X
 $version_bdd = "0400010";
@@ -42,7 +42,7 @@ $versionReposite = "Release-v".$version_grr.$gitHub;
 // Version PHP minimum
 $php_mini = "8.1.0";
 // Version PHP maximum testé et validé par : JeromeB
-$php_max_valide = "8.5.3";
+$php_max_valide = "8.5.4";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
 $php_maxi = "";
 
