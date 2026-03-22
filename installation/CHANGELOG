@@ -1,3 +1,24 @@
+Version 4.5.4 - 22/03/2026 Généré par @JeromeDevome
+[Ajout] Variables pour désactiver les alertes serveurs - f50371694 - @JeromeDevome
+[Ajout] Widget de tableau de bord pour le contrôle des mises à jour - 5b5b6fe9a - @JeromeDevome
+[Ajout] Envoi d’un mail au modérateur lors de la modification d’une réservation - 66d912782 - @JeromeDevome
+[Ajout] Détails de l’historique sur les réservations pour les gestionnaires de ressources - 9f1e1780f - @JeromeDevome
+[Ajout] Accès à une vue des réservations à modérer pour les gestionnaires - 228f585d4 - @JeromeDevome
+[Correction] Affichage hors réservation dans mois_all - 94d24cafa - @JeromeDevome
+[Correction] Désactivation de la fonction de périodicité - e34405c94 - @JeromeDevome
+[Correction] Affichage des journées pleines dans mois2_all - fbd32644d - @JeromeDevome
+[Correction] Redirection vers la même vue lors d’un accès direct par date - 61aec07f0 - @JeromeDevome
+[Correction] Enregistrement des paramètres de performance - 9adec4c2d - @JeromeDevome
+[Correction] Vue de retour après création d’une réservation - 651393591 - @JeromeDevome
+[Correction] Erreur d’intitulé dans la personnalisation des mails - 95b7c27ba - @JeromeDevome
+[Correction] Suppression d’un utilisateur - ea81829e8 - @JeromeDevome
+[Correction] Variable %urldetail% lors de la création ou modification d’une réservation - 3395ad907 - @JeromeDevome
+[Correction] Informations de périodicité dans les mails lors d’une modification - a646de627 - @JeromeDevome
+[Modification] Mise à jour des fichiers langues - e1b6d59e9 & 6aa7269a2 & 674db6b1a - @JeromeDevome & @ynaessens & Paul Friedli
+[Modification] Mise à jour de Symfony et TCPDF - b455caaa4 - @JeromeDevome
+[Modification] Mise à jour de Twig - 8f76fe800 - @JeromeDevome
+[Modification] Mise à jour de PDF Make - eab7da017 - 670af02c6 - @JeromeDevome
+
 Version 4.5.3 - 28/02/2026 Généré par @JeromeDevome
 [Ajout] Possibilité de configurer "SameSite" depuis configperso.inc.php - 8a3e3566b - @JeromeDevome
 [Ajout] Droit pour l'accès à l'édition des ressources - 6ab8c514a -@ynaessens
