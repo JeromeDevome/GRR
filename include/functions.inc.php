@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-01-24 10:20$
+ * Dernière modification : $Date: 2026-03-30 13:53$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -615,7 +615,7 @@ function how_many_connected() {
                 }
                 echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>$nb_connect</a>".PHP_EOL;
                 if (verif_version()) {
-                  affiche_pop_up(get_vocab("maj_bdd_not_update").get_vocab("please_go_to_admin_maj.php"),"force");
+                  affiche_pop_up(get_vocab("maj_bdd_not_update").get_vocab("please_go_to_admin_maj"),"force");
                 }
         }
 }  

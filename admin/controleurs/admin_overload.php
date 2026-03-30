@@ -2,7 +2,7 @@
 /**
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
- * Dernière modification : $Date: 2023-08-24 10:25$
+ * Dernière modification : $Date: 2026-03-30 13:53$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX
  * @author    Eric Lemeur pour les champs addiionnels de type checkbox
  * @copyright Since 2003 Team DEVOME - JeromeB
@@ -213,7 +213,7 @@ get_vocab_admin("champ_obligatoire");
 get_vocab_admin("affiche_dans_les_vues");
 get_vocab_admin("affiche_dans_les_mails");
 get_vocab_admin("champ_confidentiel");
-get_vocab_admin("envoy_mail_specifique");
+get_vocab_admin("envoie_mail_specifique");
 get_vocab_admin("action");
 
 get_vocab_admin("type_text");

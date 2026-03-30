@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-08 15:15$
+ * Dernière modification : $Date: 2026-03-30 13:53$
  * @author    Laurent Delineau & JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -609,7 +609,7 @@ $dAdministrateurSite = "";
 							$dAdministrateurSite .= "<li>".get_vocab("a_acces_au_site")."</li>";
 						if ($is_gestionnaire != '')
 						{
-							$dAdministrateurSite .= "<li>".get_vocab("gestionnaire_des_resources_suivantes")."<br />";
+							$dAdministrateurSite .= "<li>".get_vocab("gestionnaire_des_ressources_suivantes")."<br />";
 							$dAdministrateurSite .= $is_gestionnaire;
 							$dAdministrateurSite .= "</li>";
 						}
@@ -698,7 +698,7 @@ $dAdministrateurSite = "";
 						$dAdministrateurDomaine .= "<li>".get_vocab("a_acces_au_domaine")."</li>";
 					if ($is_gestionnaire != '')
 					{
-						$dAdministrateurDomaine .= "<li>".get_vocab("gestionnaire_des_resources_suivantes")."<br />";
+						$dAdministrateurDomaine .= "<li>".get_vocab("gestionnaire_des_ressources_suivantes")."<br />";
 						$dAdministrateurDomaine .= $is_gestionnaire;
 						$dAdministrateurDomaine .= "</li>";
 					}
