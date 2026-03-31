@@ -2,7 +2,7 @@
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
 # GRR: Traduction by JeromeB & Yan Naessens
-# Last modification : 2026-03-30
+# Last modification : 2026-03-31
 $charset_html = "utf-8";
 $vocab = array();
 $vocab["a_acces_au_domaine"] = "Cet utilisateur a accès à ce domaine restreint.";
@@ -28,7 +28,6 @@ $vocab["Activer_export_xml"] = "Activer la fonctionnalité \"Export XML\"";
 $vocab["activer_fonctionalite_gestion_cle"] = "Activer la fonctionnalité \"gestion des clés\"";
 $vocab["activer_fonctionalite_participant"] = "Qui peut utiliser la fonctionnalité \"participant\" lors de la création d'une réservation";
 $vocab["activer_fonctionalite_ressource_empruntee_restituee"] = "Activer la fonctionnalité \"ressource empruntée/restituée\"";
-$vocab["activer_fonctionnalite_participant"] = "Qui peut utiliser la fonctionnalité \"participant\"";
 $vocab["Activer_log_email"] = "Activer les logs sur les mails";
 $vocab["Activer_module_jours_cycles"] = "Jours cycle";
 $vocab["Activer_module_multisite"] = "Multisite";
@@ -61,9 +60,7 @@ $vocab["admin_admin_site"] = "Administration des sites";
 $vocab["admin_admin_site_explain"] = "En plus de ses droits normaux, l'administrateur d'un site a la possibilité de gérer entièrement un site : création, suppression, modification d'un domaine ou d'une ressource, ajout et suppression de gestionnaires des réservations, d'administrateurs de domaines, gestion des mails automatiques.";
 $vocab["admin_backup_recommande"] = "Nous recommandons de faire une sauvegarde de la base de données au préalable";
 $vocab["admin_book_room"] = "Accès à la réservation des ressources restreintes";
-$vocab["admin_book_room.php"] = "Accès à la réservation des ressources restreintes";
-$vocab["admin_calend"] = "Réservation en blocs";
-$vocab["admin_calend2.php"] = "Réservation/Suppression en blocs";
+$vocab["admin_calend"] = "Réservation/Suppression en blocs";
 $vocab["admin_calend_ignore"] = "Calendrier hors réservation";
 $vocab["admin_calend_ignore_feries"] = "Cocher tous les jours fériés ";
 $vocab["admin_calend_ignore_vacances"] = "Cocher tous les jours de vacances ";
@@ -445,7 +442,6 @@ $vocab["confirm_del"] = "Confirmez la suppression";
 $vocab["confirm_pwd"] = "Mot de passe (à confirmer)";
 $vocab["confirmdel"] = "Etes-vous sûr de vouloir effectuer l'action suivante ?";
 $vocab["confirmer"] = "Confirmer";
-$vocab["confirmer reservation"] = "Cocher la case pour confirmer la réservation";
 $vocab["confirmer_reservation"] = "Cocher la case pour confirmer la réservation";
 $vocab["conflict"] = "La nouvelle réservation entre en conflit avec la(les) réservation(s) suivante(s) :";
 $vocab["conn"] = "Mes connexions";
@@ -1190,7 +1186,6 @@ $vocab["periodicite_msg"] = "Autoriser la périodicité dans les réservations";
 $vocab["periodicite_msg1"] = "Cocher pour activer la périodicité";
 $vocab["periods"] = "créneau(x)";
 $vocab["personne"] = "personne";
-$vocab["personne exterieure"] = "(personne extérieure)";
 $vocab["personne_exterieure"] = "(personne extérieure)";
 $vocab["pl2_cell"] = "Cellule planning";
 $vocab["pl2_entete"] = "Entête planning";
