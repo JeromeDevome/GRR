@@ -3,9 +3,9 @@
  * admin_view_connexions.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-11-06 15:43$
+ * Dernière modification : $Date: 2026-04-02 11:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -93,7 +93,7 @@ foreach($data as list($u_login,$u_name,$u_mail,$u_link)){
   echo "<li>";
   echo $u_name." | <a href=\"mailto:".$u_mail."\">".get_vocab('send_a_mail')."</a>";
   if($u_link) 
-    echo " | <a href=\"admin_change_pwd.php?user_login=" . $row[0] . "\">".get_vocab("deconnect_changing_pwd")."</a>";
+    echo " | <a href=\"admin_change_pwd.php?user_login=" . $u_login . "\">".get_vocab("deconnect_changing_pwd")."</a>";
   echo "</li>";
 }
 echo '	</ul>';
