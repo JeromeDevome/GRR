@@ -3,7 +3,7 @@
  * session.inc.php
  * Bibliothèque de fonctions gérant les sessions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-25 10:27$
+ * Dernière modification : $Date: 2026-04-02 11:17$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -924,7 +924,7 @@ function grr_closeSession(&$_auto)
   @session_name(SESSION_NAME);
   @session_start();
 	// Régénérer l'ID de session et détruire l'ancien cookie pour prévenir la réutilisation
-	session_regenerate_id(true);
+	// session_regenerate_id(true);
     // Sometimes 'start' may not exist, because the session was previously closed by another window
     // It's not necessary to ".TABLE_PREFIX."_log this, then
   if (isset($_SESSION['start']))
