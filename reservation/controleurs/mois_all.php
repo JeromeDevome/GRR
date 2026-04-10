@@ -1,7 +1,7 @@
 <?php
 /**
  * mois_all.php
- * Interface d'accueil avec affichage par mois des réservation de toutes les ressources d'un domaine
+ * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2026-04-03 14:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
@@ -89,7 +89,7 @@ ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
     $row[12]: beneficiaire_ext
     $row[13]: clef
     $row[14]: courrier
-	$row[15]: Type_name
+    $row[15]: Type_name
     $row[16]: overload fields description
     $row[17]: room_id
     $row[18]: nbparticipantmax
