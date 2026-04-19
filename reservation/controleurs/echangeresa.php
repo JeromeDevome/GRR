@@ -167,7 +167,7 @@ else { // Etape 1: on connaît $id de la réservation à échanger, on va en che
         // définit l'adresse de retour, à passer à swap_entry et à cancel
         $room_back = isset($_GET['room_back'])? $_GET['room_back'] : $room_id ;
         $_SESSION['ret_page'] = "app.php?p=".$page."&amp;year=".$year."&amp;month=".$month."&amp;day=".$day."&amp;area=".$area;
-        if ((!strpos($page,"all"))&&($room_back != 'all')){
+        if ((!strpos($page,"all"))&&($room_back != '0')){
            $_SESSION['ret_page'] .= "&amp;room=".$room_back;
         }
         // recherche les réservations qui ont les mêmes heures de début et de fin

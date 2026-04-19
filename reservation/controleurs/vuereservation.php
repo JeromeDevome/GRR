@@ -203,7 +203,7 @@ else
 	$option_affiche_nom_prenom_email = "nomail";
 $msg='';
 
-$d['room_back'] = isset($_GET['room_back']) ? $_GET['room_back'] : $room_id ;
+$d['room_back'] = isset($_GET['room_back']) ? $_GET['room_back'] : '0' ;
 
 $d['droitRessource'] = authGetUserLevel($userName, $room_id);
 

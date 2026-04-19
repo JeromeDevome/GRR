@@ -78,7 +78,7 @@ if ($info = mrbsGetEntryInfo($id))
         $room_back = isset($_GET['room_back']) ? clean_input($_GET['room_back']) : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
         $ress = '';
-        if ($room_back != 'all')  {$ress = "&room=".$room_back;}
+        if ($room_back != '0')  {$ress = "&room=".$room_back;}
 		Header("Location: app.php?p=".$page."&day=$day&month=$month&year=$year&area=$area".$ress);
 		exit();
 	}

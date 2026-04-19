@@ -85,7 +85,7 @@ $form_vars = array(
   'rep_jour_'          => 'int',
   'cycle_cplt'         => 'string',
   'page'               => 'string', // récupérable dans page_ret, à filtrer parmi celles qui sont acceptables (plannings)
-  'room_back'          => 'string', // pallie l'absence de day_all
+  'room_back'          => 'int', // pallie l'absence de day_all
   'page_ret'           => 'string',
   'type_affichage_reser' => 'int',
   'duration'           => 'string',
@@ -449,8 +449,8 @@ try {
     if ($rep_type != 0)
         $reps = mrbsGetRepeatEntryList($start_time, isset($rep_enddate)? $rep_enddate : 0, $rep_type, $rep_opt, $max_rep_entrys, $rep_num_weeks, $rep_jour_c, $area, $rep_month_abs1, $rep_month_abs2, array($vacances,$feries));
     $create_by = isset($create_by)? clean_input($create_by) : $user;
-    if (isset($room_back) && ($room_back != 'all'))
-        $room_back = ''; // room_back c'est NULL, '' ou 'all'
+    if (isset($room_back) && ($room_back != '0'))
+        $room_back = ''; // room_back c'est NULL, '' ou '0'
     if (!isset($option_reservation))
         $option_reservation = -1;
     if (isset($confirm_reservation))
@@ -823,14 +823,14 @@ try {
 	if ($message_error != "") // si erreur, retour à la page d'appel
     {
         $_SESSION['session_message_error'] = $message_error;
-            if (($room_back != 'all')&&(strpos($page, 'all') === false)){
+            if (($room_back != '0')&&(strpos($page, '0') === false)){
                 Header("Location: app.php?p=$page&year=$year&month=$month&day=$day&area=$area&room=$room_back");
             }
             else Header("Location: app.php?p=$page&year=$year&month=$month&day=$day&area=$area");
     }
 	else // sinon, retour sur la page de la réservation validée
     {
-        if (($room_back != 'all')&&(strpos($page, 'all') === false))
+        if (($room_back != '0')&&(strpos($page, '0') === false))
         {
             Header("Location: app.php?p=$page&year=$start_year&month=$start_month&day=$start_day&area=$area&room=$room");
         }

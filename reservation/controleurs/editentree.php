@@ -77,7 +77,7 @@ $form_vars = array(
   'rep_jour_'          => 'int',
   'cycle_cplt'         => 'string',
   'page'               => 'string', // page du planning, pour le lien de retour en cas de succès
-  'room_back'          => 'string', // pallie l'absence de day_all
+  'room_back'          => 'int', // pallie l'absence de day_all
   'page_ret'           => 'string', // page d'appel, pour le retour en cas d'échec
   'type_affichage_reser' => 'int',
   'duration'           => 'int',
@@ -150,13 +150,13 @@ if (!isset($page_ret) || ($page_ret == ''))
             ];
             if (isset($room))
                 $queryRet[ 'room' ] = $room;
-            elseif ((!strpos($page,"all"))&&($room_back != 'all'))
+            elseif ((!strpos($page,"all"))&&($room_back != '0'))
                 $queryRet[ 'room' ] = $room_back;
             elseif (isset($area))
                 $queryRet[ 'area' ] = $area;
-            elseif (($room_back !='')&&($room_back != 'all'))
+            elseif (($room_back !='')&&($room_back != '0'))
                 $queryRet[ 'area' ] = mrbsGetRoomArea($room_back);
-            elseif (($room_back == 'all')&&(isset($id))){
+            elseif (($room_back == '0')&&(isset($id))){
                 $area = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_entry e ON r.id = e.room_id WHERE e.id=".$id."");
                 if ($area != -1)
                     $queryRet[ 'area' ] = $area;
@@ -203,7 +203,7 @@ elseif(isset($areas)){ // récupéré dans le formulaire
 else{
   Definition_ressource_domaine_site(); // rend éventuellement $room -> NULL ce qui pose problème ensuite
     if (!isset($room)){ 
-        $room_back = 'all';
+        $room_back = '0';
         $room_id = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_room WHERE area_id='".$area."' ORDER BY order_display,room_name");
         $room = $room_id; // à voir
     }
