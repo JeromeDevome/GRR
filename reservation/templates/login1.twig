@@ -35,7 +35,7 @@
             {% if settings.login_nom == 1 %}
                 <h2>{{settings.company}}</h2>
             {% endif %}
-            <p>{{settings.message_home_page}}</p>
+            <p>{{settings.message_home_page|raw}}</p>
 
             {% if settings.disable_login == "yes" %}
                 <br><br><p><span class="avertissement">{{trad.msg_login3}}</span></p>
