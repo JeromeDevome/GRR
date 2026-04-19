@@ -7,63 +7,109 @@
 {% endblock %}
 
 {% block content %}
-		<div id="container">
+        <div id="container">
 
-			{% if d.acces == 1 %}
-			<div class="col col-md-12 col-sm-12 col-xs-12">
-				<div class="card">
-					<div class="card-header">
-						<h3 class="card-title">
-						<i class="fas fa-th mr-1"></i>
-						{{ d.nbResaAModerer }} réservation(s) à modérer
-						</h3>
-					</div><!-- /.card-header -->
-					<div class="card-body">
-						<div class="tab-content p-0">
-								<table class="table table-condensed">
-									<thead>
-										<tr>
-											{% if settings.module_multisite == 'Oui' %}
-											<th>Site</th>
-											{% else %}
-											<th>Domaine</th>
-											{% endif %}
-											<th>{{ trad.room }}</th>
-											<th>{{ trad.start_date }}</th>
-											<th>{{ trad.created_by }}</th>
-											<th>{{ trad.nom_beneficiaire }}</th>
-											<th></th>
-										</tr>
-									</thead>
-									<tbody>
-										{% for resaMode in resas %}
-											<tr>
-												{% if settings.module_multisite == 'Oui' %}
-												<td>{{ resaMode.site }}</td>
-												{% else %}
-												<td>{{ resaMode.domaine }}</td>
-												{% endif %}
-												<td>{{ resaMode.ressource }}</td>
-												<td>{{ resaMode.debut }}</td>
-												<td>{{ resaMode.createur }}</td>
-												<td>{{ resaMode.beneficiaire }}</td>
-												<td><a href='{{ resaMode.lien }}'><span class='fa fa-eye'></span></a></td>
-											</tr>
-										{% endfor %}
-									</tbody>
-								</table>
-						</div>
-					</div><!-- /.card-body -->
-				</div>
-			</div>
-			{% else %}
-				<div class="alert alert-danger" role="alert">
-					Accès réservé
-				</div>
-			{% endif %}
+            {% if d.acces == 1 %}
+            <div class="col col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                        <i class="fas fa-th mr-1"></i>
+                        {{ d.nbResaAModerer }} réservation(s) à modérer
+                        </h3>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content p-0">
+                            <form method="POST" id="moderationForm">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30px;">
+                                                <input type="checkbox" id="selectAll" title="Sélectionner tout">
+                                            </th>
+                                            {% if settings.module_multisite == 'Oui' %}
+                                            <th>Site</th>
+                                            {% else %}
+                                            <th>Domaine</th>
+                                            {% endif %}
+                                            <th>{{ trad.room }}</th>
+                                            <th>{{ trad.start_date }}</th>
+                                            <th>{{ trad.created_by }}</th>
+                                            <th>{{ trad.nom_beneficiaire }}</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for resaMode in resas %}
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" name="moderation_ids[]" value="{{ resaMode.id }}" class="moderation-checkbox">
+                                                </td>
+                                                {% if settings.module_multisite == 'Oui' %}
+                                                <td>{{ resaMode.site }}</td>
+                                                {% else %}
+                                                <td>{{ resaMode.domaine }}</td>
+                                                {% endif %}
+                                                <td>{{ resaMode.ressource }}</td>
+                                                <td>{{ resaMode.debut }}</td>
+                                                <td>{{ resaMode.createur }}</td>
+                                                <td>{{ resaMode.beneficiaire }}</td>
+                                                <td><a href='{{ resaMode.lien }}'><span class='fa fa-eye'></span></a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
 
-		</div>
+                                <div class="form-group mt-3">
+                                    <button type="submit" name="action_moderation" value="accepter" class="btn btn-success" onclick="return confirmAction('accepter');">
+                                        <i class="fas fa-check mr-1"></i> Accepter sélection
+                                    </button>
+                                    <button type="submit" name="action_moderation" value="refuser" class="btn btn-danger" onclick="return confirmAction('refuser');">
+                                        <i class="fas fa-times mr-1"></i> Refuser sélection
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div>
+            {% else %}
+                <div class="alert alert-danger" role="alert">
+                    Accès réservé
+                </div>
+            {% endif %}
+
+        </div>
 {% endblock %}
 
 {% block javascript %}
+<script>
+    // Sélectionner/Désélectionner tous les éléments
+    document.getElementById('selectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.moderation-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+
+    // Mettre à jour le bouton "Sélectionner tout" si une case est décochée
+    document.querySelectorAll('.moderation-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const allChecked = document.querySelectorAll('.moderation-checkbox:checked').length === 
+                                document.querySelectorAll('.moderation-checkbox').length;
+            document.getElementById('selectAll').checked = allChecked;
+        });
+    });
+
+    // Fonction de confirmation avant action
+    function confirmAction(action) {
+        const selected = document.querySelectorAll('.moderation-checkbox:checked').length;
+        if (selected === 0) {
+            alert('Veuillez sélectionner au moins une réservation.');
+            return false;
+        }
+        const actionText = action === 'accepter' ? 'accepter' : 'refuser';
+        return confirm('Êtes-vous sûr de vouloir ' + actionText + ' ' + selected + ' réservation(s) ?');
+    }
+</script>
 {% endblock %}

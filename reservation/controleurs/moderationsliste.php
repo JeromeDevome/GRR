@@ -20,9 +20,31 @@ $grr_script_name = "moderationsliste.php";
 
 $trad = $vocab;
 
-
 $acces = false;
 $listeModeration = array();
+
+// Traitement des actions de modération en masse
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_moderation'])) {
+    $selectedIds = isset($_POST['moderation_ids']) ? $_POST['moderation_ids'] : array();
+    $action = $_POST['action_moderation'];
+    
+    if (!empty($selectedIds) && in_array($action, array('accepter', 'refuser'))) {
+        $countProcessed = 0;
+        foreach($selectedIds as $resaId) {
+            // Utiliser la fonction existante moderate_entry_do
+            if ($action === 'accepter') {
+                // Accepter la réservation (1 = acceptée)
+                moderate_entry_do($resaId, 1, "", "yes");
+                $countProcessed++;
+            } elseif ($action === 'refuser') {
+                // Refuser la réservation (0 = refusée)
+                moderate_entry_do($resaId, 0, "", "yes");
+                $countProcessed++;
+            }
+        }
+        $d['message'] = $countProcessed . " modération(s) " . ($action === 'accepter' ? 'acceptée(s)' : 'refusée(s)');
+    }
+}
 
 // Utiliser la fonction resaToModerate() optimisée
 $resasAModerer = resaToModerate($d['gNomUser']);
@@ -36,6 +58,7 @@ if (!empty($resasAModerer)) {
         if (Settings::get("module_multisite") == "Oui")
         {
             $listeModeration[] = array(
+                'id' => $resa['id'],
                 'site' => $resa['site'],
                 'ressource' => $resa['room'],
                 'debut' => time_date_string($resa['start_time'], $dformat),
@@ -47,6 +70,7 @@ if (!empty($resasAModerer)) {
         else
         {
             $listeModeration[] = array(
+                'id' => $resa['id'],
                 'domaine' => $resa['area'],
                 'ressource' => $resa['room'],
                 'debut' => time_date_string($resa['start_time'], $dformat),
@@ -59,8 +83,6 @@ if (!empty($resasAModerer)) {
 
     $d['nbResaAModerer'] = count($listeModeration);
 }
-
-
 
 echo $twig->render('moderationsliste.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'resas' => $listeModeration));
 ?>
