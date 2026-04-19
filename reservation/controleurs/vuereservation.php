@@ -230,7 +230,7 @@ if(isset($_GET["reg_part"]))
         $new_users = array_diff($reg_participant, $reg_users); // à inscrire, ne sont pas inscrits
         foreach ($new_users as $user)
         {
-            $sql = "INSERT INTO ".TABLE_PREFIX."_participants (idresa, beneficiaire) values ('$id','$user')";
+            $sql = "INSERT INTO ".TABLE_PREFIX."_participants (idresa, cree_par, beneficiaire) values ('$id','$userName','$user')";
             if (grr_sql_command($sql) < 0)
                 fatal_error(1, "<p>" . grr_sql_error());
             else
