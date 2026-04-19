@@ -3,7 +3,7 @@
  * semaine.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 17:47$
+ * Dernière modification : $Date: 2026-04-10 10:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -117,16 +117,23 @@ $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $room);
 // Teste si l'utilisateur a la possibilité d'effectuer une réservation, compte tenu des limitations éventuelles de la ressource et du nombre de réservations déjà effectuées.
 $UserRoomMaxBooking = UserRoomMaxBooking($user_name, $room, 1);
 // calcul des cellules du planning
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
-FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name, type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.nbparticipantmax,
+COALESCE(participants_count.nbparticipants, 0) AS nbparticipants,
+".TABLE_PREFIX."_room.confidentiel_resa
+FROM ".TABLE_PREFIX."_entry
+INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
+INNER JOIN ".TABLE_PREFIX."_area ON ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id
+INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type
+LEFT JOIN (
+    SELECT idresa, COUNT(*) AS nbparticipants
+    FROM ".TABLE_PREFIX."_participants
+    GROUP BY idresa
+) AS participants_count ON participants_count.idresa = ".TABLE_PREFIX."_entry.id
 WHERE
-".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id AND
-".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id AND
 ".TABLE_PREFIX."_room.id = '".$room."' AND
-".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type AND
 start_time <= $week_end AND
 end_time > $week_start AND
-".TABLE_PREFIX."_entry.supprimer = 0 
+supprimer = 0 
 ORDER by start_time";
 /* contenu de la réponse si succès :
     $row[0] : start_time
@@ -144,12 +151,14 @@ ORDER by start_time";
     $row[12]: beneficiaire_ext
     $row[13]: clef
     $row[14]: courrier
-	$row[15]: Type_name
+    $row[15]: Type_name
     $row[16]: overload fields description
-    $row[17]: room_id
+    $row[17]: room id
     $row[18]: nbparticipantmax
-    $row[19]: confidentiel_resa
+    $row[19]: nbparticipants
+    $row[20]: confidentiel_resa
 */
+
 if ($enable_periods == 'y')
 {
     $first_slot = 0;
@@ -207,6 +216,8 @@ else
         {
           $d[$weekday][$slot]["beneficiaire"] = $row["beneficiaire"];
           $d[$weekday][$slot]["color"] = $row["type"];
+          $d[$weekday][$slot]["nbparticipantmax"] = (int)$row['18'];
+          $d[$weekday][$slot]["nbparticipants"] = (int)$row['19'];
           if (($end_t) > mktime(24, 0, 0, date('m',$t), date('d',$t), date('Y',$t))) // fin de réservation dépassant la fin de journée
           {
             if (date("d", $t) == $firstday) // Premier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée - nb bloc vides)
@@ -281,6 +292,8 @@ else
         {
           $d[$weekday][$slot]["beneficiaire"] = $row["beneficiaire"];
           $d[$weekday][$slot]["color"] = $row["type"];
+          $d[$weekday][$slot]["nbparticipantmax"] = (int)$row['18'];
+          $d[$weekday][$slot]["nbparticipants"] = (int)$row['19'];
           if (($end_t) > mktime($eveningends, $eveningends_minutes, 0, date('m',$t), date('d',$t), date('Y',$t))) // fin de réservation dépassant la fin de journée
           {
             if (date("d", $t) == $firstday) // Premier jour de réservation, Hdebut = Heure debut résa / Hfin = heure fin de journée / duree = (nb bloc d'une journée - nb bloc vides)
@@ -568,6 +581,8 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
                         $titre = $d[$weekday][$slot - $decale_slot * $nb_case]["who"];
                         $descr = $d[$weekday][$slot - $decale_slot * $nb_case]["data"];
                         $beneficiaire = $d[$weekday][$slot - $decale_slot * $nb_case]["beneficiaire"];
+                        if (isset($d[$weekday][$slot - $decale_slot * $nb_case]["nbparticipantmax"]) && isset($d[$weekday][$slot - $decale_slot * $nb_case]["nbparticipants"]) && ((int)$d[$weekday][$slot - $decale_slot * $nb_case]["nbparticipantmax"] > 0) && ((int)$d[$weekday][$slot - $decale_slot * $nb_case]["nbparticipants"] >= (int)$d[$weekday][$slot - $decale_slot * $nb_case]["nbparticipantmax"]))
+                          $c = " quota-atteint";
                     }
                 }
             }
@@ -583,7 +598,6 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
             if($resa_confidentiel == 1 && getUserName() != $beneficiaire && $authGetUserLevel < 3)
                 $ficheResa = false;
         }
-
 
         $cellulesJours[] = array('statut' => $statutCellule, 'class' => $c, 'rowspan' => $rowspan, 'ressource' => $room, 'idresa' => $id, 'titre' => $titre, 'descr' => $descr, 'ficheResa' => $ficheResa, 'annee' => $wyear, 'mois' => $wmonth, 'jour' => $wday);
     } // Fin colonne du jour

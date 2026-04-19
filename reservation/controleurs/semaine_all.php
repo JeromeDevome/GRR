@@ -3,7 +3,7 @@
  * semaine_all.php
  * Permet l'affichage du planning des réservations d'une semaine pour toutes les ressources d'un domaine.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 17:56$
+ * Dernière modification : $Date: 2026-04-03 11:31$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -80,13 +80,20 @@ $d['tm'] = date("m", $i);
 $d['td'] = date("d", $i);
 
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
-FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
-where
-".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id and
-".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id and
-".TABLE_PREFIX."_area.id = '".$area."' and
-".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type AND
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name, type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.nbparticipantmax,
+COALESCE(participants_count.nbparticipants, 0) AS nbparticipants,
+".TABLE_PREFIX."_room.confidentiel_resa
+FROM ".TABLE_PREFIX."_entry
+INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
+INNER JOIN ".TABLE_PREFIX."_area ON ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id
+INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type
+LEFT JOIN (
+    SELECT idresa, COUNT(*) AS nbparticipants
+    FROM ".TABLE_PREFIX."_participants
+    GROUP BY idresa
+) AS participants_count ON participants_count.idresa = ".TABLE_PREFIX."_entry.id
+WHERE
+".TABLE_PREFIX."_area.id = '".$area."' AND
 start_time <= $date_end AND
 end_time > $date_start AND
 supprimer = 0 
@@ -137,6 +144,8 @@ else
 				$da[$day_num]["id"][] = $row['2'];
 				$da[$day_num]["id_room"][]=$row['17'] ;
 				$da[$day_num]["color"][]=$row['6'];
+				$da[$day_num]["nbparticipantmax"][] = (int)$row['18'];
+				$da[$day_num]["nbparticipants"][] = (int)$row['19'];
 
 				$midnight_tonight = $midnight + 86400;
 				if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
@@ -367,7 +376,11 @@ foreach($ressources as $row)
 									$ficheResa = false;
 							}
 
-                        	$reservationsJour[] = array('idresa' => $da[$cday]["id"][$i], 'class' => $da[$cday]["color"][$i], 'texte' => $da[$cday]["resa"][$i], 'bulle' => $da[$cday]["infobulle"][$i], 'lienFiche' => $ficheResa);
+	                        	$classeReservation = $da[$cday]["color"][$i];
+							if (isset($da[$cday]["nbparticipantmax"][$i]) && isset($da[$cday]["nbparticipants"][$i]) && ((int)$da[$cday]["nbparticipantmax"][$i] > 0) && ((int)$da[$cday]["nbparticipants"][$i] >= (int)$da[$cday]["nbparticipantmax"][$i]))
+								$classeReservation = " quota-atteint";
+
+	                        	$reservationsJour[] = array('idresa' => $da[$cday]["id"][$i], 'class' => $classeReservation, 'texte' => $da[$cday]["resa"][$i], 'bulle' => $da[$cday]["infobulle"][$i], 'lienFiche' => $ficheResa);
 						}
 					}
 

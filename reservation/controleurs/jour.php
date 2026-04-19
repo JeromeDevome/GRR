@@ -3,7 +3,7 @@
  * jour.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 16:41$
+ * Dernière modification : $Date: 2026-04-03 11:25$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -53,10 +53,19 @@ $am7 = mktime($morningstarts, 0, 0, $month, $day, $year);
 $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day, $year);
 $d['nomDomaine'] = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".protect_data_sql($area)."'"); // nom du domaine
 // les réservations associées à notre recherche, ce jour dans ce domaine
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
-FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area, ".TABLE_PREFIX."_type_area
-WHERE
-".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id";
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name, type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.nbparticipantmax,
+COALESCE(participants_count.nbparticipants, 0) AS nbparticipants,
+".TABLE_PREFIX."_room.confidentiel_resa
+FROM ".TABLE_PREFIX."_entry
+INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
+INNER JOIN ".TABLE_PREFIX."_area ON ".TABLE_PREFIX."_area.id = ".TABLE_PREFIX."_room.area_id
+INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_type_area.type_letter = ".TABLE_PREFIX."_entry.type
+LEFT JOIN (
+    SELECT idresa, COUNT(*) AS nbparticipants
+    FROM ".TABLE_PREFIX."_participants
+    GROUP BY idresa
+) AS participants_count ON participants_count.idresa = ".TABLE_PREFIX."_entry.id
+WHERE 1=1";
 if (isset($room) && $room != 0) 
     $sql .= " AND ".TABLE_PREFIX."_room.id = '".$room."' ";
 else 
@@ -84,7 +93,8 @@ ORDER BY start_time";
     $row[16]: overload fields description
     $row[17]: room_id
 	$row[18]: nbparticipantmax
-	$row[19]: confidentiel_resa
+	$row[19]: nbparticipants
+	$row[20]: confidentiel_resa
 */
 $res = grr_sql_query($sql);
 if (!$res)
@@ -108,6 +118,8 @@ else
 			$today[$row["room_id"]][$t]["data"]			    = "";
 			$today[$row["room_id"]][$t]["who"]			    = "";
 			$today[$row["room_id"]][$t]["beneficiaire"]		= $row["beneficiaire"];
+			$today[$row["room_id"]][$t]["nbparticipants"]	= (int)$row["nbparticipants"];
+			$today[$row["room_id"]][$t]["nbparticipantmax"] = (int)$row["nbparticipantmax"];
 		}
         $horaires = "";
         if ($enable_periods != 'y') {
@@ -266,6 +278,8 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 			$titre = "";
 			$descr = "";
 			$beneficiaire = "";
+			$nbparticipants = 0;
+			$nbparticipantmax = 0;
 			$rowspan = 1;
             $authLevel = authGetUserLevel($user_name,$room);
             $user_can_book = $who_can_book[$room] || ($authLevel > 2) || (authBooking($user_name,$room));
@@ -277,12 +291,18 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 				$color = $today[$room][$t]["color"];
 				$descr = $today[$room][$t]["data"];
 				$beneficiaire = $today[$room][$t]["beneficiaire"];
+				$nbparticipants = isset($today[$room][$t]["nbparticipants"]) ? (int)$today[$room][$t]["nbparticipants"] : 0;
+				$nbparticipantmax = isset($today[$room][$t]["nbparticipantmax"]) ? (int)$today[$room][$t]["nbparticipantmax"] : 0;
 			}
 			else
 				$id = 0;
 
 			if ($id > 0 && (!est_hors_reservation(mktime(0, 0, 0, $month, $day, $year), $area)))
+			{
 				$c = "type".$color;
+				if ($nbparticipantmax > 0 && $nbparticipants >= $nbparticipantmax)
+					$c = " quota-atteint";
+			}
 			else if ($statut_room[$room] == "0")
 				$c = "avertissement";
 			else

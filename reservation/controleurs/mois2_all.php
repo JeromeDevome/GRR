@@ -3,7 +3,7 @@
  * mois2_all.php
  * Interface d'accueil avec affichage par mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-30 17:15$
+ * Dernière modification : $Date: 2026-04-10 09:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -59,9 +59,16 @@ $d['tm'] = date("n",$i);
 
 $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
 //Get all meetings for this month in the area that we care about
-$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
-FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
-  INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name, type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.nbparticipantmax,
+COALESCE(participants_count.nbparticipants, 0) AS nbparticipants,
+".TABLE_PREFIX."_room.confidentiel_resa
+FROM ((".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id)
+  INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type = ".TABLE_PREFIX."_type_area.type_letter)
+LEFT JOIN (
+    SELECT idresa, COUNT(*) AS nbparticipants
+    FROM ".TABLE_PREFIX."_participants
+    GROUP BY idresa
+) AS participants_count ON participants_count.idresa = ".TABLE_PREFIX."_entry.id
 WHERE (start_time <= $month_end AND end_time > $month_start AND area_id='".$area."' AND supprimer = 0)
 ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
 /* contenu de la réponse si succès :
@@ -80,11 +87,12 @@ ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
     $row[12]: beneficiaire_ext
     $row[13]: clef
     $row[14]: courrier
-	$row[15]: Type_name
+    $row[15]: Type_name
     $row[16]: overload fields description
-	$row[17]: room_id
+    $row[17]: room_id
     $row[18]: nbparticipantmax
-    $row[19]: confidentiel_resa
+    $row[19]: nbparticipants
+    $row[20]: confidentiel_resa
 */
 $res = grr_sql_query($sql);
 if (!$res)
@@ -113,6 +121,8 @@ else
 				$dr[$day_num]["lien"][] = lien_compact($row);
 				$dr[$day_num]["room"][] = $row["room_name"] ;
 				$dr[$day_num]["color"][] = $row["type"];
+        $dr[$day_num]["nbparticipantmax"][] = (int)$row[18];
+        $dr[$day_num]["nbparticipants"][] = (int)$row[19];
 				$midnight_tonight = $midnight + 86400;
 				if ($enable_periods == 'y')
 				{
@@ -181,7 +191,7 @@ else
 						break;
 					}
 				}
-				$dr[$day_num]["resa_confidentielle"][] = $row[19];
+				$dr[$day_num]["resa_confidentielle"][] = $row[20];
 				$dr[$day_num]["beneficiaire"][] = $row[4];
 				$dr[$day_num]["infobulle"][] = titre_compact($overloadFieldList, $row, $horaires);
                 if ($row[1] <= $midnight_tonight)
@@ -312,7 +322,14 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
 									}
 								}
 
-                                $reservationsJour[] = array('idresa' => $dr[$cday]["id"][$i], 'class' => $dr[$cday]["color"][$i], 'texte' => $dr[$cday]["lien"][$i], 'bulle' => $dr[$cday]["infobulle"][$i], 'lienFiche' => $ficheResa);
+                        $classeReservation = $dr[$cday]["color"][$i];
+                        $nbParticipants = isset($dr[$cday]["nbparticipants"][$i]) ? (int)$dr[$cday]["nbparticipants"][$i] : 0;
+                        $nbParticipantsMax = isset($dr[$cday]["nbparticipantmax"][$i]) ? (int)$dr[$cday]["nbparticipantmax"][$i] : 0;
+
+                        if ($nbParticipantsMax > 0 && $nbParticipants >= $nbParticipantsMax)
+                            $classeReservation = " quota-atteint";
+                          
+                                $reservationsJour[] = array('idresa' => $dr[$cday]["id"][$i], 'class' => $classeReservation, 'texte' => $dr[$cday]["lien"][$i], 'bulle' => $dr[$cday]["infobulle"][$i], 'lienFiche' => $ficheResa);
                             }
                         }
                     }
