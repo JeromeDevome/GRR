@@ -556,8 +556,8 @@ else
 
 $area_id = mrbsGetAreaIdFromRoomId($room_id);
 
-$d['resaBreveDescription'] = htmlspecialchars($name); // brève description
-$d['resaDescription'] = htmlspecialchars ( $description );
+$d['resaBreveDescription'] = $name;
+$d['resaDescription'] = $description;
 $d['moderate'] = isset($Room['moderate'])? $Room['moderate']: -1;
 $d['domaine'] = $area_id;
 $d['roomid'] = $room_id;
