@@ -261,6 +261,7 @@ $gcDossierCss = "css";
 $gcDossierImg = "images";
 $gcDossierXml = "xml";
 $gcDossierDoc = "docresa";
+$gcDossierLangue = "langue";
 
 # Infos dans la partie admin
 $gInfosServeur = true;

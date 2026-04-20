@@ -1072,15 +1072,6 @@ function begin_page($title, $page = "with_session")
 
 		else
 			$sheetcss = "default"; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
 	}
 	else
 	{
@@ -1088,16 +1079,18 @@ function begin_page($title, $page = "with_session")
 			$sheetcss = Settings::get("default_css");
 		else
 			$sheetcss = "default";
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
 	}
+
+	if (isset($_GET['default_language']))
+	{
+		$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
+		if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+			header("Location: ".$_SESSION['chemin_retour']);
+		else
+			header("Location: ".traite_grr_url());
+		die();
+	}
+
 	global $vocab, $charset_html, $clock_file, $gcDossierCss, $version_grr;
 	header('Content-Type: text/html; charset=utf-8');
 
@@ -1182,15 +1175,6 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 		}
 		else
 			$d['sheetcss'] = 'themes/default/css/style.css'; // utilise le thème par défaut s'il n'a pas été défini... à voir YN le 11/04/2018
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = alphanum($_GET['default_language']);
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
 	}
 	else
 	{
@@ -1203,15 +1187,16 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 		}
 		else
 			$d['sheetcss'] = 'themes/default/css/style.css';
-		if (isset($_GET['default_language']))
-		{
-			$_SESSION['default_language'] = alphanum($_GET['default_language']);
-			if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-				header("Location: ".$_SESSION['chemin_retour']);
-			else
-				header("Location: ".traite_grr_url());
-			die();
-		}
+	}
+
+	if (isset($_GET['default_language']))
+	{
+		$_SESSION['default_language'] = alphanum($_GET['default_language']);
+		if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
+			header("Location: ".$_SESSION['chemin_retour']);
+		else
+			header("Location: ".traite_grr_url());
+		die();
 	}
 
 	if (!isset($_COOKIE['open']))

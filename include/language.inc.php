@@ -26,6 +26,7 @@ if (function_exists("Settings::get"))
 	$defaultlanguage = Settings::get("default_language");
 else
 	$defaultlanguage = false;
+
 if (isset($_SESSION['default_language']))
 {
 	// si l'utilisateur a défini sa propre langue
@@ -52,28 +53,18 @@ if (isset($fichier_mysql_inc_est_present))
 $prefixeChemin = cheminDetermination($niveauDossier);
 // Fichier de traduction
 if (@file_exists($prefixeChemin."langue/".$locale.".php"))
-	$lang_file = $prefixeChemin."langue/" . $locale.".php";
+	$lang_file = $prefixeChemin."langue/".$locale.".php";
 else
 	$lang_file =  $prefixeChemin."langue/fr-fr.php";
 
-/*
-if (@file_exists("langue/".$locale.".php"))
-	$lang_file = "langue/" . $locale.".php";
-elseif (@file_exists("../langue/".$locale.".php"))
-	$lang_file = "../langue/".$locale.".php";
-elseif (@file_exists("../langue/fr-fr.php"))
-	$lang_file = "../langue/fr-fr.php";
-else
-	$lang_file = "langue/fr-fr.php";*/
 // Dans le cas où le script verif_auto_grr.php est utilisé en tâche cron, il faut ici, donner le chemin complet.
 if (defined("CHEMIN_COMPLET_GRR"))
 	chdir(CHEMIN_COMPLET_GRR);
 include $lang_file;
+
 // Fichiers de personnalisation de langue
-if (@file_exists("../personnalisation/langue/lang_subst." . $locale.".php"))
-	include "../personnalisation/langue/lang_subst." . $locale.".php";
-elseif (@file_exists("../../personnalisation/langue/lang_subst." . $locale.".php"))
-	include "../../personnalisation/langue/lang_subst." . $locale.".php";
+if (@file_exists($prefixeChemin."personnalisation/".$gcDossierLangue."/lang_subst.".$locale.".php"))
+	include $prefixeChemin."personnalisation/".$gcDossierLangue."/lang_subst.".$locale.".php";
 // Fichiers de personnalisation de langue par domaine
 if (isset($_GET['area']))
 {
@@ -87,8 +78,8 @@ else if (isset($_GET['room']))
 }
 if (isset($subst_id_area))
 {
-	if (@file_exists("../personnalisation/langue/lang_subst_".$subst_id_area."_".$locale.".php"))
-		include "../personnalisation/langue/lang_subst_".$subst_id_area."_".$locale.".php";
+	if (@file_exists($prefixeChemin."personnalisation/".$gcDossierLangue."/lang_subst_".$subst_id_area."_".$locale.".php"))
+		include $prefixeChemin."personnalisation/".$gcDossierLangue."/lang_subst_".$subst_id_area."_".$locale.".php";
 }
 // Pour l'affichage de la pendule javascript
 $clock_file = "clock_".$locale.".js";

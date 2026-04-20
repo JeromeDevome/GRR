@@ -43,11 +43,11 @@ require_once("./include/settings.class.php");
 if (!Settings::load())
 	die("Erreur chargement settings");
 require_once("./include/session.inc.php");
-include "./include/language.inc.php";
 
 if($page != "deconnexion")
 	grr_resumeSession();
 
+include "./include/language.inc.php";
 // pour le traitement des modules
 include "./include/hook.class.php";
 
