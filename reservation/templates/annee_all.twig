@@ -50,7 +50,7 @@
     {% for mois in domaineMois.lesDomaines %}
         <table class="mois table-bordered table-striped">
             <caption>
-                <h4><a href="app.php?p=mois2_all&month={{domaineMois.numMois}}&year={{domaineMois.annee}}&area={{d.area}}">{{mois.nomMois}}{{mois.nomDomaine}}</a></h4>
+                <h4><a href="app.php?p=mois2_all&amp;month={{domaineMois.numMois}}&amp;year={{domaineMois.annee}}&amp;area={{d.area}}">{{mois.nomMois}}{{mois.nomDomaine}}</a></h4>
             </caption>
             <thead>
                 <tr>
@@ -89,12 +89,12 @@
                                     <td class="type{{resa.type}}">
                                         {% if resa.lienFiche %}
                                             {% if settings.display_level_view_entry == 0 %}
-                                                <a title="{{resa.titre|raw}}" data-width="675" onclick="request({{resa.idresa}},{{jour.jour}},{{mois.numMois}},{{mois.annee}},{{d.room}},'annee_all',readData);" data-rel="popup_name" class="poplight lienCellule">
+                                                <a title="{{resa.bulle|raw}}" data-width="675" onclick="request({{resa.idresa}},{{jour.jour}},{{mois.numMois}},{{mois.annee}},{{d.room}},'annee_all',readData);" data-rel="popup_name" class="poplight lienCellule">
                                             {% else %}
-                                                <a class="lienCellule" title="{{resa.titre|raw}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{jour.jour}}&amp;month={{mois.numMois}}&amp;year={{mois.annee}}&amp;page=annee">
+                                                <a class="lienCellule" title="{{resa.bulle|raw}}" href="app.php?p=vuereservation&amp;id={{resa.idresa}}&amp;day={{jour.jour}}&amp;month={{mois.numMois}}&amp;year={{mois.annee}}&amp;page=annee">
                                             {% endif %}
                                         {% endif %}
-                                        {{resa.titre|raw}}
+                                        {{resa.lien|raw}}
                                         {% if resa.lienFiche %}
                                             </a>
                                         {% endif %}
