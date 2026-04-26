@@ -262,39 +262,37 @@
                        if (isset($da[$cday][$cmonth][$cyear]["id"][0]))
                        {
                            $n = count($da[$cday][$cmonth][$cyear]["id"]);
-                               //If there are 12 or fewer, show them, else show 11 and "...".
-                           for ($i = 0; $i < $n; $i++)
-                           {
-                               if ($i == 11 && $n > 12)
-                               {
-                                   $autreResa = true;
-                                   break;
-                               }
-                               for ($i = 0; $i < $n; $i++)
-                               {
-                                   if ($da[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
-                                   {
-                                       $id = $da[$cday][$cmonth][$cyear]["id"][$i];
-                                       $type = $da[$cday][$cmonth][$cyear]["color"][$i];
-                                       $lien = $da[$cday][$cmonth][$cyear]["lien"][$i];
-                                       $data = $da[$cday][$cmonth][$cyear]["data"][$i];
 
-                                       	// On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
-                                        $ficheResa = $acces_fiche_reservation;
-                                        if($acces_fiche_reservation)
+                            for ($i = 0; $i < $n; $i++)
+                            {
+                                if ($i == Settings::get("max_resa_affiche") && $n >= Settings::get("max_resa_affiche"))
+                                {
+                                    $autreResa = true;
+                                    break;
+                                }
+                                if ($da[$cday][$cmonth][$cyear]["room"][$i] == $row[0]) // test peu fiable car c'est l'id qui est unique YN le 26/02/2018
+                                {
+                                    $id = $da[$cday][$cmonth][$cyear]["id"][$i];
+                                    $type = $da[$cday][$cmonth][$cyear]["color"][$i];
+                                    $lien = $da[$cday][$cmonth][$cyear]["lien"][$i];
+                                    $data = $da[$cday][$cmonth][$cyear]["data"][$i];
+
+                                    // On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
+                                    $ficheResa = $acces_fiche_reservation;
+                                    if($acces_fiche_reservation)
+                                    {
+                                        $authGetUserLevel = authGetUserLevel(getUserName(), $row[2]);
+                                        if($da[$cday][$cmonth][$cyear]["confidentiel_resa"][$i] == 1 && getUserName() != $da[$cday][$cmonth][$cyear]["beneficiaire"][$i] && $authGetUserLevel < 3)
                                         {
-                                            $authGetUserLevel = authGetUserLevel(getUserName(), $row[2]);
-                                            if($da[$cday][$cmonth][$cyear]["confidentiel_resa"][$i] == 1 && getUserName() != $da[$cday][$cmonth][$cyear]["beneficiaire"][$i] && $authGetUserLevel < 3)
-                                            {
-                                                $ficheResa = false;
-                                                $lien = $id;
-                                            }
+                                            $ficheResa = false;
+                                            $lien = $id;
                                         }
-   
-                                       $reservationsJours[] = array('idresa' => $id, 'type' => $type, 'lien' => $lien, 'bulle' => $data, 'lienFiche' => $ficheResa);
-                                   }
-                               }
-                           }
+                                    }
+
+                                    $reservationsJours[] = array('idresa' => $id, 'type' => $type, 'lien' => $lien, 'bulle' => $data, 'lienFiche' => $ficheResa);
+                                }
+                            }
+                           
                        }
                        $joursRessource[] = array('jour' => $cday, 'horsResa' => $horsResa, 'autreResa' => $autreResa, 'reservationsJours' => $reservationsJours);
                    } // fin condition "on n'affiche pas tous les jours de la semaine"

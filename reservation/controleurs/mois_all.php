@@ -294,7 +294,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
 
                     if ($verif_acces_ressource[$da[$cday]["id_room"][$i]]) // On n'affiche pas les réservations des ressources non visibles pour l'utilisateur.
                     {	
-                        if ($i == 11 && $n > 12)
+                        if ($i == Settings::get("max_resa_affiche") && $n >= Settings::get("max_resa_affiche"))
                         {
                             $autreResa = true;
                             break;

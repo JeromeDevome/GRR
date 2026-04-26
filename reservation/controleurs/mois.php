@@ -316,7 +316,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 {
                     $ficheResa = $acces_fiche_reservation;
 					// On a plus de 11 résa dans le jour, on n'affiche pas tout
-                    if ($i == 11 && $n > 12)
+                    if ($i == Settings::get("max_resa_affiche") && $n >= Settings::get("max_resa_affiche"))
                     {
 						$autreResa = true;
                         break;

@@ -299,40 +299,40 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
                 if (isset($dr[$cday]["id"][0])) // il y a une réservation au moins à afficher
                 {
                     $n = count($dr[$cday]["id"]);
-                    for ($i = 0; $i < $n; $i++)
+
+					for ($i = 0; $i < $n; $i++)
                     {
-                        if ($i == 11 && $n > 12)
+
+                        if ($i == Settings::get("max_resa_affiche") && $n >= Settings::get("max_resa_affiche"))
                         {
                             $autreResa = true;
                             break;
                         }
-                        
-                        for ($i = 0; $i < $n; $i++)
-                        {
-                            if ($dr[$cday]["room"][$i] == $row["room_name"])
-                            {
-								// On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
-								$ficheResa = $acces_fiche_reservation;
-								if($acces_fiche_reservation)
+
+						if ($dr[$cday]["room"][$i] == $row["room_name"])
+						{
+							// On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
+							$ficheResa = $acces_fiche_reservation;
+							if($acces_fiche_reservation)
+							{
+								if($dr[$cday]["resa_confidentielle"][$i] == 1 && getUserName() != $dr[$cday]["beneficiaire"][$i] && $authGetUserLevel < 3)
 								{
-									if($dr[$cday]["resa_confidentielle"][$i] == 1 && getUserName() != $dr[$cday]["beneficiaire"][$i] && $authGetUserLevel < 3)
-									{
-										$ficheResa = false;
-										$dr[$cday]["lien"][$i] = $dr[$cday]["id"][$i];
-									}
+									$ficheResa = false;
+									$dr[$cday]["lien"][$i] = $dr[$cday]["id"][$i];
 								}
+							}
 
-                        $classeReservation = $dr[$cday]["color"][$i];
-                        $nbParticipants = isset($dr[$cday]["nbparticipants"][$i]) ? (int)$dr[$cday]["nbparticipants"][$i] : 0;
-                        $nbParticipantsMax = isset($dr[$cday]["nbparticipantmax"][$i]) ? (int)$dr[$cday]["nbparticipantmax"][$i] : 0;
+							$classeReservation = $dr[$cday]["color"][$i];
+							$nbParticipants = isset($dr[$cday]["nbparticipants"][$i]) ? (int)$dr[$cday]["nbparticipants"][$i] : 0;
+							$nbParticipantsMax = isset($dr[$cday]["nbparticipantmax"][$i]) ? (int)$dr[$cday]["nbparticipantmax"][$i] : 0;
 
-                        if ($nbParticipantsMax > 0 && $nbParticipants >= $nbParticipantsMax)
-                            $classeReservation = " quota-atteint";
-                          
-                                $reservationsJour[] = array('idresa' => $dr[$cday]["id"][$i], 'class' => $classeReservation, 'texte' => $dr[$cday]["lien"][$i], 'bulle' => $dr[$cday]["infobulle"][$i], 'lienFiche' => $ficheResa);
-                            }
-                        }
+							if ($nbParticipantsMax > 0 && $nbParticipants >= $nbParticipantsMax)
+								$classeReservation = " quota-atteint";
+						
+							$reservationsJour[] = array('idresa' => $dr[$cday]["id"][$i], 'class' => $classeReservation, 'texte' => $dr[$cday]["lien"][$i], 'bulle' => $dr[$cday]["infobulle"][$i], 'lienFiche' => $ficheResa);
+						}
                     }
+                    
                 }
                 // la ressource est-elle accessible en réservation ? on affiche le lien vers edit_entry
                 $date_booking = mktime(23,59,0,$month,$k,$year) ; // le jour courant à presque minuit
