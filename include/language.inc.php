@@ -541,7 +541,7 @@ function get_vocab($tag)
 	}
 
 	if (!isset($vocab[$tag]))
-		return "<b><span style=\"color:#FF0000;\"><i>(".$tag.")</i></span></b>";
+		return "(".$tag.")";
     else {
 		if ($unicode_encoding)
 		{
