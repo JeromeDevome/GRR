@@ -87,6 +87,7 @@ if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 
 
 // Utilisateurs
+$liste = array();
 if ((authGetUserLevel(getUserName(), -1, 'area') >= 6) || (authGetUserLevel(getUserName(), -1, 'user') == 1))
 	$liste[] = 'admin_user';
 if ( ((authGetUserLevel(getUserName(), -1, 'area') >= 6) || (authGetUserLevel(getUserName(), -1, 'user') == 1)) && (Settings::get('fct_crea_cpt') == 'y'))
@@ -115,13 +116,25 @@ foreach ($menuAdminComplNiv2User as list($droit, $lien, $icone)) {
 
 afficheLienNiveau2("admin_menu_user", "fa fa-users",$liste,$iN2++);
 
-
-// Divers
+// Mails
 $liste = array();
+if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_mail_serveur';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 	$liste[] = 'admin_email_manager';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_mails';
+if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_view_emails';
+foreach ($menuAdminComplNiv2Mail as list($droit, $lien, $icone)) {
+	if(authGetUserLevel(getUserName(), -1, 'area') >= $droit)
+		$liste[] = $lien;
+}
+
+afficheLienNiveau2("admin_menu_mail", "fa fa-envelope",$liste,$iN2++);
+
+// Divers
+$liste = array();
 if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_view_connexions';
 if (authGetUserLevel(getUserName(), -1, 'area') >= 6)

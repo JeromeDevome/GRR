@@ -1,0 +1,158 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <div class="col col-sm-12">
+            <div class="card card-primary card-outline card-tabs">
+              <div class="card-body">
+				  <div class="tab-pane active" id="fa-icons">
+					<form action="?p=admin_mail_serveur" id="nom_formulaire" method="get">
+						<input type="hidden" name="p" value="admin_mail_serveur" />
+
+						<section id="mailauto">
+							<h4 class="page-header">{{ trad.title_automatic_mail }}</h4>
+							<p><i>{{ trad.warning_message_mail }}</i></p>
+							<p>{{ trad.explain_automatic_mail }}</p>
+							<input type="radio" name="automatic_mail" value="yes" id="label_1a" {% if settings.automatic_mail == 'yes' %} checked {% endif %} /> <label for="label_1a">{{ trad.admin_email_manager }}</label> - <a href="?p=admin_email_manager">{{ trad.admin_email_manager }}</a><br>
+							<input type="radio" name="automatic_mail" value="no" id="label_1b" {% if settings.automatic_mail == 'no' %} checked {% endif %} /> <label for="label_1b">{{ trad.mail_admin_off }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="configsmtp">
+							<h4 class="page-header">{{ trad.Parametres_configuration_envoi_automatique_mails }}</h4>
+							<input type="radio" name="grr_mail_method" value="bloque" id="label_3a" onchange="afficherOptionsSMTP();" {% if settings.grr_mail_method == 'bloque' %} checked {% endif %} /> <label for="label_3a">{{ trad.methode_mail_bloque }}</label><br>
+							<input type="radio" name="grr_mail_method" value="mail" id="label_3b" onchange="afficherOptionsSMTP();" {% if trad.dFctMailRestriction == true %} disabled {% elseif settings.grr_mail_method == 'mail' %} checked{% endif %} /> <label for="label_3b">{{ trad.methode_mail }}{% if trad.dFctMailRestriction == true %} - <font color='red'>{{trad.methode_mail_desactive}}</font> {% endif %}</label><br>
+							
+							
+							{% set mail_from = d.gMailExpediteur != '' ? d.gMailExpediteur : settings.mail_serveur_from %}
+							{% set is_disabled = d.gMailExpediteur != '' %}
+
+							<div class="card card-warning" id="card-mailserveur" style="display: none;">
+								<div class="card-header">
+									<h3 class="card-title">{{ trad.Explications_methode_mail_1 }}</h3>
+								</div>
+								{{ form.input(
+									'mail_serveur_from',
+									trad.Email_expediteur_messages_automatiques,
+									mail_from,
+									{
+										classGroup: 'col col-sm-12',
+										classLabel: 'col col-sm-6',
+										classInput: 'col col-sm-6 control-label',
+										disabled: is_disabled
+									}
+								) }}
+								<br>
+							</div>
+
+							<input type="radio" name="grr_mail_method" value="smtp" id="label_3c" onchange="afficherOptionsSMTP();" {% if settings.grr_mail_method == 'smtp' %} checked {% endif %} /> <label for="label_3c">{{ trad.methode_smtp }}</label><br>
+							<br>
+
+							<!-- Options SMTP -->
+							<div class="card card-warning" id="card-smtp" style="display: none;">
+								<div class="card-header">
+									<h3 class="card-title">{{ trad.Explications_methode_smtp_1 }}</h3>
+								</div>
+
+								{{ form.input('grr_mail_smtp', trad.Explications_methode_smtp_1, settings.grr_mail_smtp, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('grr_mail_Username', trad.utilisateur_smtp, settings.grr_mail_Username, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('grr_mail_Password', trad.pwd, settings.grr_mail_Password, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label', type: 'password'}) }}<br>
+								{{ form.input('grr_mail_from', trad.Email_expediteur_messages_automatiques, settings.grr_mail_from, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('grr_mail_fromname', trad.Nom_expediteur_messages_automatiques, settings.grr_mail_fromname, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('smtp_secure', trad.smtp_secure, settings.smtp_secure, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('smtp_port', trad.smtp_port, settings.smtp_port, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label', type: 'number'}) }}<br>
+					
+								<h5>{{ trad.smtp_param_sup }}</h5>
+								<div class="form-group row col col-sm-12">
+									<label class="col col-sm-6" for="smtp_verify_peer">{{ trad.smtp_verify_peer }}</label>
+										<div class="col col-sm-6">
+											<select class="form-control" id="smtp_verify_peer" name="smtp_verify_peer">
+												<option value="1" {% if settings.smtp_verify_peer == '1' %} selected {% endif %}>True</option>
+												<option value="0" {% if settings.smtp_verify_peer == '0' %} selected {% endif %}>False</option>
+											</select>
+										</div>
+								</div>
+								{{ form.input('smtp_verify_depth', trad.smtp_verify_depth, settings.smtp_verify_depth, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+								<div class="form-group row col col-sm-12">
+									<label class="col col-sm-6" for="smtp_allow_self_signed">{{ trad.smtp_allow_self_signed }}</label>
+										<div class="col col-sm-6">
+											<select class="form-control" id="smtp_allow_self_signed" name="smtp_allow_self_signed">
+												<option value="1" {% if settings.smtp_allow_self_signed == '1' %} selected {% endif %}>True</option>
+												<option value="0" {% if settings.smtp_allow_self_signed == '0' %} selected {% endif %}>False</option>
+											</select>
+										</div>
+								</div>
+								<div class="form-group row col col-sm-12">
+									<label class="col col-sm-6" for="smtp_verify_peer_name">{{ trad.smtp_verify_peer_name }}</label>
+										<div class="col col-sm-6">
+											<select class="form-control" id="smtp_verify_peer_name" name="smtp_verify_peer_name">
+												<option value="1" {% if settings.smtp_verify_peer_name == '1' %} selected {% endif %}>True</option>
+												<option value="0" {% if settings.smtp_verify_peer_name == '0' %} selected {% endif %}>False</option>
+											</select>
+										</div>
+								</div><br>
+
+							</div>
+
+							{{ form.input('mail_test', trad.mail_test, '', {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+
+							<label><input type="checkbox" name="grr_mail_Bcc" value="y"  {% if settings.grr_mail_Bcc == 'y' %} checked {% endif %} /> {{ trad.copie_cachee }}</label>
+							
+						</section>
+
+						<div style="text-align:center;">
+							<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
+						</div>
+					</form>
+				  </div><!-- /.tab-pan -->
+			  </div><!-- /.card-body -->
+
+			</div><!-- /.card-primary -->
+		</div><!-- /.col -->
+	</div><!-- /.row -->
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../jslib/toastr/toastr.min.js"></script>
+	<script>
+		$(function () {
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
+		}); 
+
+
+		afficherOptionsSMTP();label_3c
+
+		function afficherOptionsSMTP(){
+			
+			var afficherMailServeur = document.getElementById('label_3b').checked;
+			var afficherMailSmtp = document.getElementById('label_3c').checked;
+
+			if(afficherMailServeur){
+				document.getElementById("card-mailserveur").style.display = "block";
+				document.getElementById('card-smtp').style.display = "none";
+			}
+			else if(afficherMailSmtp){
+				document.getElementById('card-mailserveur').style.display = "none";
+				document.getElementById("card-smtp").style.display = "block";
+			} else{
+				document.getElementById('card-mailserveur').style.display = "none";
+				document.getElementById('card-smtp').style.display = "none";
+			}		
+		}
+	</script>
+{% endblock %}

@@ -292,6 +292,7 @@ $menuAdminComplNiv1 = [
 
 $menuAdminComplNiv1 = [];
 $menuAdminComplNiv2User = [];
+$menuAdminComplNiv2Mail = [];
 $menuAdminComplNiv2Divers = [];
 $menuAdminComplNiv2Connexions = [];
 
