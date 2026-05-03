@@ -204,29 +204,29 @@ final class ProxyHelper
                 if ('get' === $hook) {
                     $ref = ($method->returnsReference() ? '&' : '');
                     $hooks .= <<<EOPHP
-                            {$ref}get {
-                                if (isset(\$this->lazyObjectState)) {
-                                    return (\$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)())->{$p->name};
+                                {$ref}get {
+                                    if (isset(\$this->lazyObjectState)) {
+                                        return (\$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)())->{$p->name};
+                                    }
+
+                                    return parent::\${$p->name}::get();
                                 }
 
-                                return parent::\${$p->name}::get();
-                            }
-
-                    EOPHP;
+                        EOPHP;
                 } elseif ('set' === $hook) {
                     $parameters = self::exportParameters($method, true);
                     $arg = '$'.$method->getParameters()[0]->name;
                     $hooks .= <<<EOPHP
-                            set({$parameters}) {
-                                if (isset(\$this->lazyObjectState)) {
-                                    \$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)();
-                                    \$this->lazyObjectState->realInstance->{$p->name} = {$arg};
+                                set({$parameters}) {
+                                    if (isset(\$this->lazyObjectState)) {
+                                        \$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)();
+                                        \$this->lazyObjectState->realInstance->{$p->name} = {$arg};
+                                    }
+
+                                    parent::\${$p->name}::set({$arg});
                                 }
 
-                                parent::\${$p->name}::set({$arg});
-                            }
-
-                    EOPHP;
+                        EOPHP;
                 } else {
                     throw new LogicException(\sprintf('Cannot generate lazy proxy: hook "%s::%s()" is not supported.', $class->name, $method->name));
                 }
@@ -281,12 +281,12 @@ final class ProxyHelper
                 $body = "        $parentCall;";
             } elseif (str_ends_with($signature, '): never') || str_ends_with($signature, '): void')) {
                 $body = <<<EOPHP
-                        if (isset(\$this->lazyObjectState)) {
-                            (\$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)())->{$method->name}({$args});
-                        } else {
-                            {$parentCall};
-                        }
-                EOPHP;
+                            if (isset(\$this->lazyObjectState)) {
+                                (\$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)())->{$method->name}({$args});
+                            } else {
+                                {$parentCall};
+                            }
+                    EOPHP;
             } else {
                 if (!$methodsHaveToBeProxied && !$method->isAbstract()) {
                     // Skip proxying methods that might return $this
@@ -303,12 +303,12 @@ final class ProxyHelper
                 }
 
                 $body = <<<EOPHP
-                        if (isset(\$this->lazyObjectState)) {
-                            return (\$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)())->{$method->name}({$args});
-                        }
+                            if (isset(\$this->lazyObjectState)) {
+                                return (\$this->lazyObjectState->realInstance ??= (\$this->lazyObjectState->initializer)())->{$method->name}({$args});
+                            }
 
-                        return {$parentCall};
-                EOPHP;
+                            return {$parentCall};
+                    EOPHP;
             }
             $methods[$lcName] = "    {$signature}\n    {\n{$body}\n    }";
         }
@@ -335,10 +335,10 @@ final class ProxyHelper
         ) {
             // fix contravariance type problem when $class declares a `__unserialize()` method without typehint.
             $lazyProxyTraitStatement = <<<EOPHP
-            use \Symfony\Component\VarExporter\LazyProxyTrait {
-                    __unserialize as private __doUnserialize;
-                }
-            EOPHP;
+                use \Symfony\Component\VarExporter\LazyProxyTrait {
+                        __unserialize as private __doUnserialize;
+                    }
+                EOPHP;
 
             $body .= <<<EOPHP
 
@@ -350,8 +350,8 @@ final class ProxyHelper
                 EOPHP;
         } else {
             $lazyProxyTraitStatement = <<<EOPHP
-            use \Symfony\Component\VarExporter\LazyProxyTrait;
-            EOPHP;
+                use \Symfony\Component\VarExporter\LazyProxyTrait;
+                EOPHP;
         }
 
         return <<<EOPHP
@@ -516,7 +516,7 @@ final class ProxyHelper
 
         $regexp = '/([\[\( ]|^)([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*+(?:\\\\[a-zA-Z0-9_\x7f-\xff]++)*+)(\(?)(?!: )/';
         $callback = (false !== strpbrk($default, "\\:('") && $class = $param->getDeclaringClass())
-            ? fn ($m) => $m[1].match ($m[2]) {
+            ? static fn ($m) => $m[1].match ($m[2]) {
                 'new', 'false', 'true', 'null' => $m[2],
                 'NULL' => 'null',
                 'self' => '\\'.$class->name,
@@ -524,13 +524,13 @@ final class ProxyHelper
                 'parent' => ($parent = $class->getParentClass()) ? '\\'.$parent->name : 'parent',
                 default => self::exportSymbol($m[2], '(' !== $m[3], $namespace),
             }.$m[3]
-            : fn ($m) => $m[1].match ($m[2]) {
+            : static fn ($m) => $m[1].match ($m[2]) {
                 'new', 'false', 'true', 'null', 'self', 'parent' => $m[2],
                 'NULL' => 'null',
                 default => self::exportSymbol($m[2], '(' !== $m[3], $namespace),
             }.$m[3];
 
-        return implode('', array_map(fn ($part) => match ($part[0]) {
+        return implode('', array_map(static fn ($part) => match ($part[0]) {
             '"' => $part, // for internal classes only
             "'" => false !== strpbrk($part, "\\\0\r\n") ? '"'.substr(str_replace(['$', "\0", "\r", "\n"], ['\$', '\0', '\r', '\n'], $part), 1, -1).'"' : $part,
             default => preg_replace_callback($regexp, $callback, $part),

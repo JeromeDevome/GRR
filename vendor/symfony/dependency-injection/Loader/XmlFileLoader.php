@@ -761,16 +761,16 @@ class XmlFileLoader extends FileLoader
         }
 
         $source = <<<EOF
-<?xml version="1.0" encoding="utf-8" ?>
-<xsd:schema xmlns="http://symfony.com/schema"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://symfony.com/schema"
-    elementFormDefault="qualified">
+            <?xml version="1.0" encoding="utf-8" ?>
+            <xsd:schema xmlns="http://symfony.com/schema"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                targetNamespace="http://symfony.com/schema"
+                elementFormDefault="qualified">
 
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
-$imports
-</xsd:schema>
-EOF
+                <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+            $imports
+            </xsd:schema>
+            EOF
         ;
 
         if ($this->shouldEnableEntityLoader()) {
@@ -844,7 +844,7 @@ EOF
 
             // can it be handled by an extension?
             if (!$this->container->hasExtension($node->namespaceURI)) {
-                $extensionNamespaces = array_filter(array_map(fn (ExtensionInterface $ext) => $ext->getNamespace(), $this->container->getExtensions()));
+                $extensionNamespaces = array_filter(array_map(static fn (ExtensionInterface $ext) => $ext->getNamespace(), $this->container->getExtensions()));
                 throw new InvalidArgumentException(\sprintf('There is no extension able to load the configuration for "%s" (in "%s"). Looked for namespace "%s", found "%s".', $node->tagName, $file, $node->namespaceURI, $extensionNamespaces ? implode('", "', $extensionNamespaces) : 'none'));
             }
         }

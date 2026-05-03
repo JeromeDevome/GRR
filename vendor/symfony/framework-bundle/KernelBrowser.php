@@ -142,7 +142,7 @@ class KernelBrowser extends HttpKernelBrowser
         $session->set('_security_'.$firewallContext, serialize($token));
         $session->save();
 
-        $domains = array_unique(array_map(fn (Cookie $cookie) => $cookie->getName() === $session->getName() ? $cookie->getDomain() : '', $this->getCookieJar()->all())) ?: [''];
+        $domains = array_unique(array_map(static fn (Cookie $cookie) => $cookie->getName() === $session->getName() ? $cookie->getDomain() : '', $this->getCookieJar()->all())) ?: [''];
         foreach ($domains as $domain) {
             $cookie = new Cookie($session->getName(), $session->getId(), null, null, $domain);
             $this->getCookieJar()->set($cookie);
@@ -223,25 +223,25 @@ class KernelBrowser extends HttpKernelBrowser
         $profilerCode = '';
         if ($this->profiler) {
             $profilerCode = <<<'EOF'
-$container = $kernel->getContainer();
-$container = $container->has('test.service_container') ? $container->get('test.service_container') : $container;
-$container->get('profiler')->enable();
-EOF;
+                $container = $kernel->getContainer();
+                $container = $container->has('test.service_container') ? $container->get('test.service_container') : $container;
+                $container->get('profiler')->enable();
+                EOF;
         }
 
         $code = <<<EOF
-<?php
+            <?php
 
-error_reporting($errorReporting);
+            error_reporting($errorReporting);
 
-$requires
+            $requires
 
-\$kernel = unserialize($kernel);
-\$kernel->boot();
-$profilerCode
+            \$kernel = unserialize($kernel);
+            \$kernel->boot();
+            $profilerCode
 
-\$request = unserialize($request);
-EOF;
+            \$request = unserialize($request);
+            EOF;
 
         return $code.$this->getHandleScript();
     }
