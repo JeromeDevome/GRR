@@ -729,6 +729,7 @@ $vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "G
 
 2) Il metodo \"mail\", quando il server di posta è locale.
 Il metodo \"smtp\" può essere utilizzato anche con un server locale, ma è preferibile utilizzare il metodo \"mail\" perché è più veloce.";
+$vocab["Explications_methode_mail_1"] = "Server Mail";
 $vocab["Explications_methode_smtp_1"] = "Server SMTP";
 $vocab["Explications_methode_smtp_2"] = "Se si sceglie il metodo \"smtp\" e il server richiede l'autenticazione, specificare nome utente e password.";
 $vocab["explications_signaler_reservation_en_cours"] = "È possibile segnalare che una risorsa è in prestito. Selezionando la 2ª o la 3ª opzione, il gestore segnala che la risorsa è in prestito e non è quindi stata restituita.";
@@ -959,10 +960,12 @@ $vocab["mail_type_adm_test"] = "Test";
 $vocab["mail_type_compte_demande"] = "Richiesta account";
 $vocab["mail_type_resa_creation"] = "Creazione prenotazione";
 $vocab["mail_type_resa_moderation"] = "Prenotazione e Moderazione";
+$vocab["mail_type_resa_moderation_decision"] = "Decisione di moderazione";
 $vocab["mail_type_resa_modif"] = "Modifica prenotazione";
 $vocab["mail_type_resa_resultat"] = "Risultato";
 $vocab["mail_type_resa_retard"] = "Ritardo";
 $vocab["mail_type_resa_sup"] = "Cancellazione prenotazione";
+$vocab["mail_type_resa_sup_auto"] = "Cancellazione automatica prenotazione";
 $vocab["mail_user"] = "Email";
 $vocab["mail_user_destinataire"] = "Inviare una copia all'utente";
 $vocab["mail_user_list"] = "Elenco degli utenti avvisati via email:";

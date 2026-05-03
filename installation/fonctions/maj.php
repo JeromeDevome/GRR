@@ -1310,6 +1310,120 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_userbook_room DROP PRIMARY KEY;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_userbook_room ADD CONSTRAINT grr_j_userbook_room_pk PRIMARY KEY (login,id_room,idgroupes);");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_group_room (`idgroupes` int NOT NULL, `id_room` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_room`));");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD template VARCHAR(50) NULL DEFAULT NULL AFTER message;");
+
+		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='webmaster_email'");
+		if ($req == -1)
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('mail_serveur_from', '".$req."');");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_1_fr-fr' WHERE nom = 'mails_resacreation_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_1_de-de' WHERE nom = 'mails_resacreation_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_1_en-gb' WHERE nom = 'mails_resacreation_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_1_it-it' WHERE nom = 'mails_resacreation_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_1_es-es' WHERE nom = 'mails_resacreation_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_1_fr-fr' WHERE nom = 'mails_resamodification_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_1_de-de' WHERE nom = 'mails_resamodification_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_1_en-gb' WHERE nom = 'mails_resamodification_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_1_it-it' WHERE nom = 'mails_resamodification_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_1_es-es' WHERE nom = 'mails_resamodification_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_1_fr-fr' WHERE nom = 'mails_resasuppression_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_1_de-de' WHERE nom = 'mails_resasuppression_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_1_en-gb' WHERE nom = 'mails_resasuppression_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_1_it-it' WHERE nom = 'mails_resasuppression_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_1_es-es' WHERE nom = 'mails_resasuppression_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_4_1_fr-fr' WHERE nom = 'mails_resasuppression3_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_4_1_de-de' WHERE nom = 'mails_resasuppression3_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_4_1_en-gb' WHERE nom = 'mails_resasuppression3_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_4_1_it-it' WHERE nom = 'mails_resasuppression3_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_4_1_es-es' WHERE nom = 'mails_resasuppression3_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_1_fr-fr' WHERE nom = 'mails_resamoderation_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_1_de-de' WHERE nom = 'mails_resamoderation_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_1_en-gb' WHERE nom = 'mails_resamoderation_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_1_it-it' WHERE nom = 'mails_resamoderation_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_1_es-es' WHERE nom = 'mails_resamoderation_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_1_fr-fr' WHERE nom = 'mails_resamoderation2_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_1_de-de' WHERE nom = 'mails_resamoderation2_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_1_en-gb' WHERE nom = 'mails_resamoderation2_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_1_it-it' WHERE nom = 'mails_resamoderation2_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_1_es-es' WHERE nom = 'mails_resamoderation2_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_1_fr-fr' WHERE nom = 'mails_retardrestitution_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_1_de-de' WHERE nom = 'mails_retardrestitution_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_1_en-gb' WHERE nom = 'mails_retardrestitution_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_1_it-it' WHERE nom = 'mails_retardrestitution_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_1_es-es' WHERE nom = 'mails_retardrestitution_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_2_fr-fr' WHERE nom = 'mails_resacreation2_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_2_de-de' WHERE nom = 'mails_resacreation2_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_2_en-gb' WHERE nom = 'mails_resacreation2_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_2_it-it' WHERE nom = 'mails_resacreation2_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_1_2_es-es' WHERE nom = 'mails_resacreation2_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_2_fr-fr' WHERE nom = 'mails_resamodification2_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_2_de-de' WHERE nom = 'mails_resamodification2_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_2_en-gb' WHERE nom = 'mails_resamodification2_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_2_it-it' WHERE nom = 'mails_resamodification2_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_2_2_es-es' WHERE nom = 'mails_resamodification2_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_2_fr-fr' WHERE nom = 'mails_resasuppression2_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_2_de-de' WHERE nom = 'mails_resasuppression2_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_2_en-gb' WHERE nom = 'mails_resasuppression2_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_2_it-it' WHERE nom = 'mails_resasuppression2_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_2_es-es' WHERE nom = 'mails_resasuppression2_es-es';");
+
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_4_2_fr-fr', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_4_1_fr-fr';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_4_2_de-de', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_4_1_fr-de';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_4_2_en-gb', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_4_1_fr-gb';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_4_2_it-it', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_4_1_fr-it';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_4_2_es-es', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_4_1_fr-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_2_fr-fr' WHERE nom = 'mails_resamoderation3_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_2_de-de' WHERE nom = 'mails_resamoderation3_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_2_en-gb' WHERE nom = 'mails_resamoderation3_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_2_it-it' WHERE nom = 'mails_resamoderation3_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_2_es-es' WHERE nom = 'mails_resamoderation3_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_2_fr-fr' WHERE nom = 'mails_resamoderation4_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_2_de-de' WHERE nom = 'mails_resamoderation4_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_2_en-gb' WHERE nom = 'mails_resamoderation4_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_2_it-it' WHERE nom = 'mails_resamoderation4_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_6_2_es-es' WHERE nom = 'mails_resamoderation4_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_2_fr-fr' WHERE nom = 'mails_retardrestitution2_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_2_de-de' WHERE nom = 'mails_retardrestitution2_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_2_en-gb' WHERE nom = 'mails_retardrestitution2_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_2_it-it' WHERE nom = 'mails_retardrestitution2_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_7_2_es-es' WHERE nom = 'mails_retardrestitution2_es-es';");
+
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_2_3_fr-fr', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_5_1_fr-fr';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_2_3_de-de', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_5_1_fr-de';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_2_3_en-gb', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_5_1_fr-gb';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_2_3_it-it', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_5_1_fr-it';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_2_3_es-es', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_5_1_fr-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_3_fr-fr' WHERE nom = 'mails_resamoderation5_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_3_de-de' WHERE nom = 'mails_resamoderation5_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_3_en-gb' WHERE nom = 'mails_resamoderation5_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_3_it-it' WHERE nom = 'mails_resamoderation5_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_3_3_es-es' WHERE nom = 'mails_resamoderation5_es-es';");
+
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_3_fr-fr' WHERE nom = 'mails_resamoderation6_fr-fr';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_3_de-de' WHERE nom = 'mails_resamoderation6_de-de';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_3_en-gb' WHERE nom = 'mails_resamoderation6_en-gb';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_3_it-it' WHERE nom = 'mails_resamoderation6_it-it';");
+		$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_page SET nom = 'mails_resa_5_3_es-es' WHERE nom = 'mails_resamoderation6_es-es';");
+
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_7_3_fr-fr', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_7_1_fr-fr';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_7_3_de-de', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_7_1_fr-de';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_7_3_en-gb', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_7_1_fr-gb';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_7_3_it-it', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_7_1_fr-it';");
+		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_7_3_es-es', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_7_1_fr-es';");
+
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

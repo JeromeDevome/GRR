@@ -13,315 +13,218 @@
       <form action="?p=admin_mails" id="nom_formulaire" method="post">
         <div class="card card-primary card-outline card-tabs">
           <div class="card-header p-0 pt-1 border-bottom-0">
-            <!-- Onglets pour les différents mails -->
+            <!-- Onglets pour les différentes langues -->
             <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" id="custom-tabs-three-mailtest-tab" data-bs-toggle="pill" href="#custom-tabs-three-mailtest" role="tab" aria-controls="custom-tabs-three-mailtest" aria-selected="true">{{trad.mail_type_adm_test}}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-resacreation-tab" data-bs-toggle="pill" href="#custom-tabs-three-resacreation" role="tab" aria-controls="custom-tabs-three-resacreation" aria-selected="false">{{trad.mail_type_resa_creation}}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-resamodification-tab" data-bs-toggle="pill" href="#custom-tabs-three-resamodification" role="tab" aria-controls="custom-tabs-three-resamodification" aria-selected="false">{{trad.mail_type_resa_modif}}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-resasuppression-tab" data-bs-toggle="pill" href="#custom-tabs-three-resasuppression" role="tab" aria-controls="custom-tabs-three-resasuppression" aria-selected="false">{{trad.mail_type_resa_sup}}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-resamoderation-tab" data-bs-toggle="pill" href="#custom-tabs-three-resamoderation" role="tab" aria-controls="custom-tabs-three-resamoderation" aria-selected="false">{{trad.mail_type_resa_moderation}}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-retardrestitution-tab" data-bs-toggle="pill" href="#custom-tabs-three-retardrestitution" role="tab" aria-controls="custom-tabs-three-retardrestitution" aria-selected="false">{{trad.mail_type_resa_retard}}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="custom-tabs-three-demandecompte-tab" data-bs-toggle="pill" href="#custom-tabs-three-demandecompte" role="tab" aria-controls="custom-tabs-three-demandecompte" aria-selected="false">{{trad.mail_type_compte_demande}}</a>
-              </li>
+              {% for langue in liste_language %}
+                <li class="nav-item">
+                  <a class="nav-link {% if loop.first %}active{% endif %}" id="custom-tabs-three-{{langue}}-tab" data-bs-toggle="pill" href="#custom-tabs-three-{{langue}}" role="tab" aria-controls="custom-tabs-three-{{langue}}" aria-selected="{% if loop.first %}true{% else %}false{% endif %}">{{trad['langue_'~ langue]}} ({{langue}})</a>
+                </li>
+              {% endfor %}
             </ul>
           </div>
           <div class="card-body">
             <div class="tab-content" id="custom-tabs-three-tabContent">
-              <!-- Mails Test -->
-              <div class="tab-pane fade show active" id="custom-tabs-three-mailtest" role="tabpanel" aria-labelledby="custom-tabs-three-mailtest-tab">
+              <!-- Contenu par langue -->
+              {% for langue in liste_language %}
+              <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="custom-tabs-three-{{langue}}" role="tabpanel" aria-labelledby="custom-tabs-three-{{langue}}-tab">
                 <div class="row">
-                  <!-- Onglets des langues -->
+                  <!-- Navigation verticale des types de mails -->
                   <div class="col-2 col-sm-2">
-                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-                      {% for langue in liste_language %}
-                        {% set namform = 'mails_test_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
-                      {% endfor %}
+                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-{{langue}}-tab" role="tablist" aria-orientation="vertical">
+                      <a class="nav-link active" id="vert-tabs-{{langue}}-mailtest-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-mailtest" role="tab" aria-controls="vert-tabs-{{langue}}-mailtest" aria-selected="true">{{trad.mail_type_adm_test}}</a>
+                      <a class="nav-link" id="vert-tabs-{{langue}}-resacreation-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-resacreation" role="tab" aria-controls="vert-tabs-{{langue}}-resacreation" aria-selected="false">{{trad.mail_type_resa_creation}}</a>
+                      <a class="nav-link" id="vert-tabs-{{langue}}-resamodification-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-resamodification" role="tab" aria-controls="vert-tabs-{{langue}}-resamodification" aria-selected="false">{{trad.mail_type_resa_modif}}</a>
+                      <a class="nav-link" id="vert-tabs-{{langue}}-resasuppression-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-resasuppression" role="tab" aria-controls="vert-tabs-{{langue}}-resasuppression" aria-selected="false">{{trad.mail_type_resa_sup}}</a>
+                      <a class="nav-link" id="vert-tabs-{{langue}}-resasuppressionauto-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-resasuppressionauto" role="tab" aria-controls="vert-tabs-{{langue}}-resasuppressionauto" aria-selected="false">{{trad.mail_type_resa_sup_auto}}</a>
+                      <a class="nav-link" id="vert-tabs-{{langue}}-resamoderation-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-resamoderation" role="tab" aria-controls="vert-tabs-{{langue}}-resamoderation" aria-selected="false">{{trad.mail_type_resa_moderation}}</a>
+                      <a class="nav-link" id="vert-tabs-{{langue}}-resamoderationdecision-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-resamoderationdecision" role="tab" aria-controls="vert-tabs-{{langue}}-resamoderationdecision" aria-selected="false">{{trad.mail_type_resa_moderation_decision}}</a>
+                      <a class="nav-link" id="vert-tabs-{{langue}}-retardrestitution-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-retardrestitution" role="tab" aria-controls="vert-tabs-{{langue}}-retardrestitution" aria-selected="false">{{trad.mail_type_resa_retard}}</a>
+                      <a class="nav-link" id="vert-tabs-{{langue}}-demandecompte-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-demandecompte" role="tab" aria-controls="vert-tabs-{{langue}}-demandecompte" aria-selected="false">{{trad.mail_type_compte_demande}}</a>
                     </div>
                   </div>
-                  <!-- Contenu des onglets -->
+                  <!-- Contenu des types de mails -->
                   <div class="col-10 col-sm-10">
-                    <div class="tab-content" id="vert-tabs-tabContent">
-                      {% for langue in liste_language %}
+                    <div class="tab-content" id="vert-tabs-{{langue}}-tabContent">
+                      
+                      <!-- Mail Test -->
+                      <div class="tab-pane fade show active" id="vert-tabs-{{langue}}-mailtest" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-mailtest-tab">
+                        <h3>{{trad.mail_type_adm_test}}</h3>
                         {% set titreform = 'mails_test_titre_'~ langue %}
                         {% set namform = 'mails_test_'~ langue %}
-                          <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                            <p>{{trad.mail_desc_admin_test}}</p>
-                            {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                            {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
-                          </div>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Mails création réservation -->
-              <div class="tab-pane fade" id="custom-tabs-three-resacreation" role="tabpanel" aria-labelledby="custom-tabs-three-resacreation-tab">
-                <div class="row">
-                  <!-- Onglets des langues -->
-                  <div class="col-2 col-sm-2">
-                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-                      {% for langue in liste_language %}
-                        {% set namform = 'mails_resacreation_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                  <!-- Contenu des onglets -->
-                  <div class="col-10 col-sm-10">
-                    <div class="tab-content" id="vert-tabs-tabContent">
-                      {% for langue in liste_language %}
-                        {% set titreform = 'mails_resacreation_titre_'~ langue %}
-                        {% set titreform2 = 'mails_resacreation2_titre_'~ langue %} 
-                        {% set namform = 'mails_resacreation_'~ langue %}
-                        {% set namform2 = 'mails_resacreation2_'~ langue %}
-                         <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                            <p>{{trad.mail_desc_dest_adm}}</p>
-                            {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                            {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
-                           
-                            <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                            {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                            {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
-                          </div>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Mails modification réservation -->
-              <div class="tab-pane fade" id="custom-tabs-three-resamodification" role="tabpanel" aria-labelledby="custom-tabs-three-resamodification-tab">
-                <div class="row">
-                  <!-- Onglets des langues -->
-                  <div class="col-2 col-sm-2">
-                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-                      {% for langue in liste_language %}
-                        {% set namform = 'mails_resamodification_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                  <!-- Contenu des onglets -->
-                  <div class="col-10 col-sm-10">
-                    <div class="tab-content" id="vert-tabs-tabContent">
-                      {% for langue in liste_language %}
-                        {% set titreform = 'mails_resamodification_titre_'~ langue %}
-                        {% set titreform2 = 'mails_resamodification2_titre_'~ langue %}
-                        {% set namform = 'mails_resamodification_'~ langue %}
-                        {% set namform2 = 'mails_resamodification2_'~ langue %}
-                        <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                          <p>{{trad.mail_desc_dest_adm}}</p>
-                          {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
-                          
-                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                          {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
-                        </div>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Mails suppression réservation -->
-              <div class="tab-pane fade" id="custom-tabs-three-resasuppression" role="tabpanel" aria-labelledby="custom-tabs-three-resasuppression-tab">
-                <div class="row">
-                  <!-- Onglets des langues -->
-                  <div class="col-2 col-sm-2">
-                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-                      {% for langue in liste_language %}
-                        {% set namform = 'mails_resasuppression_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                  <!-- Contenu des onglets -->
-                  <div class="col-10 col-sm-10">
-                    <div class="tab-content" id="vert-tabs-tabContent">
-                      {% for langue in liste_language %}
-                        {% set titreform = 'mails_resasuppression_titre_'~ langue %}
-                        {% set titreform2 = 'mails_resasuppression2_titre_'~ langue %}
-                        {% set titreform3 = 'mails_resasuppression3_titre_'~ langue %}
-                        {% set namform = 'mails_resasuppression_'~ langue %}
-                        {% set namform2 = 'mails_resasuppression2_'~ langue %}
-                        {% set namform3 = 'mails_resasuppression3_'~ langue %}
-                        <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                          <p>{{trad.mail_desc_dest_adm}}</p>
-                          {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
-                          
-                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                          {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
-                          
-                          <p>{{trad.mail_desc_dest_supauto}}</p>
-                          {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
-                        </div>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Mails réservation & modération -->
-              <div class="tab-pane fade" id="custom-tabs-three-resamoderation" role="tabpanel" aria-labelledby="custom-tabs-three-resamoderation-tab">
-                <div class="row">
-                  <!-- Onglets des langues -->
-                  <div class="col-2 col-sm-2">
-                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-                      {% for langue in liste_language %}
-                        {% set namform = 'mails_resamoderation_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                  <!-- Contenu des onglets -->
-                  <div class="col-10 col-sm-10">
-                    <div class="tab-content" id="vert-tabs-tabContent">
-                      {% for langue in liste_language %}
-                        {% set titreform = 'mails_resamoderation_titre_'~ langue %}
-                        {% set titreform2 = 'mails_resamoderation2_titre_'~ langue %}
-                        {% set titreform3 = 'mails_resamoderation3_titre_'~ langue %}
-                        {% set titreform4 = 'mails_resamoderation4_titre_'~ langue %}
-                        {% set titreform5 = 'mails_resamoderation5_titre_'~ langue %}
-                        {% set titreform6 = 'mails_resamoderation6_titre_'~ langue %}
-                        {% set namform = 'mails_resamoderation_'~ langue %}
-                        {% set namform2 = 'mails_resamoderation2_'~ langue %}
-                        {% set namform3 = 'mails_resamoderation3_'~ langue %}
-                        {% set namform4 = 'mails_resamoderation4_'~ langue %}
-                        {% set namform5 = 'mails_resamoderation5_'~ langue %}
-                        {% set namform6 = 'mails_resamoderation6_'~ langue %}
-                        <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
 
-                          <!-- Création de la réservation à modérer -->
-                          <h2>{{trad.mail_type_resa_creation}}</h2>
+                        <p>{{trad.mail_desc_admin_test}}</p>
+                        {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
+                      </div>
 
-                          <p>{{trad.mail_desc_dest_adm}}</p>
-                          {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
+                      <!-- Mail Création réservation -->
+                      <div class="tab-pane fade" id="vert-tabs-{{langue}}-resacreation" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-resacreation-tab">
+                        <h3>{{trad.mail_type_resa_creation}}</h3>
+                        {% set titreform1 = 'mails_resa_1_1_titre_'~ langue %}
+                        {% set titreform2 = 'mails_resa_1_2_titre_'~ langue %}
+                        {% set namform1 = 'mails_resa_1_1_'~ langue %}
+                        {% set namform2 = 'mails_resa_1_2_'~ langue %}
 
-                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                          {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
+                        <p>{{trad.mail_desc_dest_adm}}</p>
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        
+                        <p>{{trad.mail_desc_dest_beneficiaire}}</p>
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                      </div>
 
-                          <!-- Résultat de la réservation à modérer -->
-                          <h2>{{trad.mail_type_resa_resultat}}</h2>
+                      <!-- Mail Modification réservation -->
+                      <div class="tab-pane fade" id="vert-tabs-{{langue}}-resamodification" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-resamodification-tab">
+                        <h3>{{trad.mail_type_resa_modif}}</h3>
+                        {% set titreform1 = 'mails_resa_2_1_titre_'~ langue %}
+                        {% set titreform2 = 'mails_resa_2_2_titre_'~ langue %}
+                        {% set titreform3 = 'mails_resa_2_3_titre_'~ langue %}
+                        {% set namform1 = 'mails_resa_2_1_'~ langue %}
+                        {% set namform2 = 'mails_resa_2_2_'~ langue %}
+                        {% set namform3 = 'mails_resa_2_3_'~ langue %}
 
-                          <p>{{trad.mail_desc_dest_adm}}</p>
-                          {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        <p>{{trad.mail_desc_dest_adm}}</p>
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        
+                        <p>{{trad.mail_desc_dest_beneficiaire}}</p>
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
 
-                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                          {{ form.input(titreform4, "", pages[namform4][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform4, '', pages[namform4][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform4}) }}
+                        <p>{{trad.mail_desc_dest_gestionnaire}}</p>
+                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
+                      </div>
 
-                          <p>{{trad.mail_desc_dest_gestionnaire}}</p>
-                          {{ form.input(titreform6, "", pages[namform6][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform6, '', pages[namform6][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform6}) }}
+                      <!-- Mail Suppression réservation -->
+                      <div class="tab-pane fade" id="vert-tabs-{{langue}}-resasuppression" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-resasuppression-tab">
+                        <h3>{{trad.mail_type_resa_sup}}</h3>
+                        {% set titreform1 = 'mails_resa_3_1_titre_'~ langue %}
+                        {% set titreform2 = 'mails_resa_3_2_titre_'~ langue %}
+                        {% set titreform3 = 'mails_resa_3_3_titre_'~ langue %}
+                        {% set namform1 = 'mails_resa_3_1_'~ langue %}
+                        {% set namform2 = 'mails_resa_3_2_'~ langue %}
+                        {% set namform3 = 'mails_resa_3_3_'~ langue %}
 
-                          <!-- Supression de la réservation à modérer -->
-                          <h2>{{trad.mail_type_resa_sup}}</h2>
+                        <p>{{trad.mail_desc_dest_adm}}</p>
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        
+                        <p>{{trad.mail_desc_dest_beneficiaire}}</p>
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        
+                        <p>{{trad.mail_desc_dest_gestionnaire}}</p>
+                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
+                      </div>
 
-                          <p>{{trad.mail_desc_dest_gestionnaire}}</p>
-                          {{ form.input(titreform5, "", pages[namform5][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform5, '', pages[namform5][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform5}) }}
+                      <!-- Mail Suppression automatique -->
+                      <div class="tab-pane fade" id="vert-tabs-{{langue}}-resasuppressionauto" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-resasuppressionauto-tab">
+                        <h3>{{trad.mail_type_resa_sup_auto}}</h3>
+                        {% set titreform1 = 'mails_resa_4_1_titre_'~ langue %}
+                        {% set titreform2 = 'mails_resa_4_2_titre_'~ langue %}
+                        {% set namform1 = 'mails_resa_4_1_'~ langue %}
+                        {% set namform2 = 'mails_resa_4_2_'~ langue %}
 
-                        </div>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Mails retard restitution -->
-              <div class="tab-pane fade" id="custom-tabs-three-retardrestitution" role="tabpanel" aria-labelledby="custom-tabs-three-retardrestitution-tab">
-                <div class="row">
-                  <!-- Onglets des langues -->
-                  <div class="col-2 col-sm-2">
-                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-                      {% for langue in liste_language %}
-                        {% set namform = 'mails_retardrestitution_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                  <!-- Contenu des onglets -->
-                  <div class="col-10 col-sm-10">
-                    <div class="tab-content" id="vert-tabs-tabContent">
-                      {% for langue in liste_language %}
-                        {% set titreform = 'mails_retardrestitution_titre_'~ langue %}
-                        {% set titreform2 = 'mails_retardrestitution2_titre_'~ langue %}
-                        {% set namform = 'mails_retardrestitution_'~ langue %}
-                        {% set namform2 = 'mails_retardrestitution2_'~ langue %}
-                        <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                          <p>{{trad.mail_desc_dest_adm}}</p>
-                          {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
+                        <p>{{trad.mail_desc_dest_adm}}</p>
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        
+                        <p>{{trad.mail_desc_dest_beneficiaire}}</p>
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                      </div>
 
-                          <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                          {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
-                        </div>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Demande de compte -->
-              <div class="tab-pane fade" id="custom-tabs-three-demandecompte" role="tabpanel" aria-labelledby="custom-tabs-three-demandecompte-tab">
-                <div class="row">
-                  <!-- Onglets des langues -->
-                  <div class="col-2 col-sm-2">
-                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-                      {% for langue in liste_language %}
-                        {% set namform = 'mails_demandecompte_'~ langue %}
-                        <a class="nav-link" id="vert-tabs-formresa-tab" data-bs-toggle="pill" href="#vert-tabs-{{namform}}" role="tab" aria-controls="vert-tabs-{{namform}}" aria-selected="true">{{trad['langue_'~ langue]}} ({{langue}})</a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                  <!-- Contenu des onglets -->
-                  <div class="col-10 col-sm-10">
-                    <div class="tab-content" id="vert-tabs-tabContent">
-                      {% for langue in liste_language %}
+                      <!-- Mail Réservation & modération -->
+                      <div class="tab-pane fade" id="vert-tabs-{{langue}}-resamoderation" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-resamoderation-tab">
+                        <h3>{{trad.mail_type_resa_moderation}}</h3> 
+                        {% set titreform1 = 'mails_resa_5_1_titre_'~ langue %}
+                        {% set titreform2 = 'mails_resa_5_2_titre_'~ langue %}
+                        {% set titreform3 = 'mails_resa_5_3_titre_'~ langue %}
+                        {% set namform1 = 'mails_resa_5_1_'~ langue %}
+                        {% set namform2 = 'mails_resa_5_2_'~ langue %}
+                        {% set namform3 = 'mails_resa_5_3_'~ langue %}
+
+                        <p>{{trad.mail_desc_dest_adm}}</p>
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+
+                        <p>{{trad.mail_desc_dest_beneficiaire}}</p>
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+
+                        <p>{{trad.mail_desc_dest_gestionnaire}}</p>
+                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
+                      </div>
+
+                      <!-- Mail Décision modération -->
+                      <div class="tab-pane fade" id="vert-tabs-{{langue}}-resamoderationdecision" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-resamoderationdecision-tab">
+                        <h3>{{trad.mail_type_resa_moderation_decision}}</h3>
+                        {% set titreform1 = 'mails_resa_6_1_titre_'~ langue %}
+                        {% set titreform2 = 'mails_resa_6_2_titre_'~ langue %}
+                        {% set namform1 = 'mails_resa_6_1_'~ langue %}
+                        {% set namform2 = 'mails_resa_6_2_'~ langue %}
+                        
+                        <p>{{trad.mail_desc_dest_adm}}</p>
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+
+                        <p>{{trad.mail_desc_dest_beneficiaire}}</p>
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                      </div>
+
+                      <!-- Mail Retard restitution -->
+                      <div class="tab-pane fade" id="vert-tabs-{{langue}}-retardrestitution" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-retardrestitution-tab">
+                        <h3>{{trad.mail_type_resa_retard}}</h3>
+                        {% set titreform1 = 'mails_resa_7_1_titre_'~ langue %}
+                        {% set titreform2 = 'mails_resa_7_2_titre_'~ langue %}
+                        {% set namform1 = 'mails_resa_7_1_'~ langue %}
+                        {% set namform2 = 'mails_resa_7_2_'~ langue %}
+
+                        <p>{{trad.mail_desc_dest_adm}}</p>
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+
+                        <p>{{trad.mail_desc_dest_beneficiaire}}</p>
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                      </div>
+
+                      <!-- Demande de compte -->
+                      <div class="tab-pane fade" id="vert-tabs-{{langue}}-demandecompte" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-demandecompte-tab">
+                        <h3>{{trad.mail_type_compte_demande}}</h3>
                         {% set titreform = 'mails_demandecompte_titre_'~ langue %}
                         {% set titreform2 = 'mails_demandecompte2_titre_'~ langue %}
                         {% set titreform3 = 'mails_demandecompte3_titre_'~ langue %}
                         {% set namform = 'mails_demandecompte_'~ langue %}
                         {% set namform2 = 'mails_demandecompte2_'~ langue %}
                         {% set namform3 = 'mails_demandecompte3_'~ langue %}
-                        <div class="tab-pane fade" id="vert-tabs-{{namform}}" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
-                          <p>{{trad.mail_desc_compte_creation}}</p>
-                          {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
 
-                          <p>{{trad.mail_desc_compte_decision1}}</p>
-                          {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        <p>{{trad.mail_desc_compte_creation}}</p>
+                        {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
 
-                          <p>{{trad.mail_desc_compte_decision2}}</p>
-                          {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                          {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
-                        </div>
-                      {% endfor %}
+                        <p>{{trad.mail_desc_compte_decision1}}</p>
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+
+                        <p>{{trad.mail_desc_compte_decision2}}</p>
+                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
+                      </div>
+
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- -->
+              {% endfor %}
             </div>
           </div>
+
  					<div style="text-align:center;">
 						<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
 					</div>

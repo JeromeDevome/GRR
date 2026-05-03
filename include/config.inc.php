@@ -111,6 +111,9 @@ $connexionAdminMAJ = 1;
 #L'admin peut restaurer une base depuis l'administration || 0: non ; 1: oui - Defaut 1
 $restaureBBD = 1;
 
+# Définition de l'adresse mail expéditeur, prioritaire sur configuration || Defaut vide
+$gMailExpediteur = "";
+
 #Mode debug || 0: non ; 1: oui - Defaut 0
 $debug_flag = 0;
 

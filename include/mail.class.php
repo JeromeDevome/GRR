@@ -18,13 +18,18 @@
 
 class Email{
 
-	public static function Envois ($A, $sujet, $message, $DE, $cc1='', $cc2='') {
-		global $gNbMail, $gMaxMail;
+	public static function Envois ($A, $sujet, $message, $DE, $cc1='', $cc2='', $repondre='', $template='') {
+		global $gNbMail, $gMaxMail, $gMailExpediteur;
 
 		if($gNbMail < $gMaxMail || $gMaxMail == -1){
 
 			mb_internal_encoding('utf-8');
 
+			// Définition $DE par paramètre fonction sinon settings webmaster_email
+			if($DE == '' && !empty($webmaster_email))
+				$DE = $webmaster_email;
+
+		/**  Envois via serveur SMTP **/
 			if (Settings::get('grr_mail_method') == 'smtp') {
 
 				$smtp1				= Settings::get('grr_mail_smtp');
@@ -37,9 +42,15 @@ class Email{
 				$verify_peer_name	= Settings::get('smtp_verify_peer_name');
 				$verify_peer		= Settings::get('smtp_verify_peer');
 				$verify_depth		= Settings::get('smtp_verify_depth');
+				$webmaster_email	= Settings::get("webmaster_email");
+
+				
 
 				if(!empty($mailDe))
 					$DE = $mailDe;
+
+				if($repondre == '')
+					$repondre = $DE;
 
 				$mail = new PHPMailer\PHPMailer\PHPMailer;
 				$mail->CharSet = 'UTF-8';
@@ -51,7 +62,7 @@ class Email{
 				$mail->SMTPSecure = $smtpsecure; // '', tls, ssl
 				$mail->Port = $port;
 				$mail->setFrom($DE, 'GRR');
-				$mail->addReplyTo($DE, 'GRR');
+				$mail->addReplyTo($repondre, 'GRR');
 				$mail->isHTML(true);
 				$mail->Subject = $sujet;
 				$mail->Body = nl2br($message);
@@ -82,28 +93,46 @@ class Email{
 				);
 
 				if(!$mail->send()) {
-					echo 'Message could not be sent.';
-					echo 'Mailer Error: ' . $mail->ErrorInfo;
+					return array(
+						'success' => false,
+						'error' => $mail->ErrorInfo
+					);
 				}
 
+		/**  Envois via méthode mail **/
 			} elseif (Settings::get('grr_mail_method') == 'mail') {
+
+				// Définition $DE, prioritaire sur configuration, sinon settings, sinon via paramètre fonction
+				if($gMailExpediteur != ''){
+					$DE = $gMailExpediteur;
+				} else{
+					$mail_serveur_from = Settings::get('mail_serveur_from');
+					if(!empty($mail_serveur_from))
+						$DE = $mail_serveur_from;
+				}
+
+				// Définition $repondre, via paramètre fonction, sinon $DE
+				if($repondre == '')
+					$repondre = $DE;
+
        			$headers  = 'MIME-Version: 1.0' . "\r\n";
       			$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
 				$headers .= "From: {$DE}" . "\r\n" .
-					"Reply-To: {$DE}" . "\r\n" .
+					"Reply-To: {$repondre}" . "\r\n" .
 					'X-Mailer: PHP/' . phpversion();
 
 				mail(str_replace(";",",",$A), $sujet, utf8_decode(utf8_encode(str_replace("<br>","",$message))), $headers); //YN selon Rapace sur le forum
 			}
 
-			//Log mail
+		/** Log email **/
 			if (Settings::get('grr_mail_method') != 'bloque') {
-				$sql = "INSERT INTO ".TABLE_PREFIX."_log_mail ( date, de, a, sujet, message) values (
+				$sql = "INSERT INTO ".TABLE_PREFIX."_log_mail ( date, de, a, sujet, message, template) values (
 					'" . time() . "',
 					'" . protect_data_sql($DE) . "',
 					'" . protect_data_sql($A) . "',
 					'" . protect_data_sql($sujet) . "',
-					'" . protect_data_sql($message) . "'
+					'" . protect_data_sql($message) . "',
+					'" . protect_data_sql($template) . "'
 					)
 				;";
 				grr_sql_query($sql);
@@ -111,6 +140,7 @@ class Email{
 
 			$gNbMail++;
 		}
+		return array('success' => true);
 	}
 }
 ?>

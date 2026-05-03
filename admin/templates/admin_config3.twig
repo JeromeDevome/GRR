@@ -63,6 +63,30 @@
 							<h4 class="page-header">{{ trad.Parametres_configuration_envoi_automatique_mails }}</h4>
 							<input type="radio" name="grr_mail_method" value="bloque" id="label_3a" onchange="afficherOptionsSMTP();" {% if settings.grr_mail_method == 'bloque' %} checked {% endif %} /> <label for="label_3a">{{ trad.methode_mail_bloque }}</label><br>
 							<input type="radio" name="grr_mail_method" value="mail" id="label_3b" onchange="afficherOptionsSMTP();" {% if trad.dFctMailRestriction == true %} disabled {% elseif settings.grr_mail_method == 'mail' %} checked{% endif %} /> <label for="label_3b">{{ trad.methode_mail }}{% if trad.dFctMailRestriction == true %} - <font color='red'>{{trad.methode_mail_desactive}}</font> {% endif %}</label><br>
+							
+							
+							{% set mail_from = d.gMailExpediteur != '' ? d.gMailExpediteur : settings.mail_serveur_from %}
+							{% set is_disabled = d.gMailExpediteur != '' %}
+
+							<div class="card card-warning" id="card-mailserveur" style="display: none;">
+								<div class="card-header">
+									<h3 class="card-title">{{ trad.Explications_methode_mail_1 }}</h3>
+								</div>
+								{{ form.input(
+									'mail_serveur_from',
+									trad.Email_expediteur_messages_automatiques,
+									mail_from,
+									{
+										classGroup: 'col col-sm-12',
+										classLabel: 'col col-sm-6',
+										classInput: 'col col-sm-6 control-label',
+										disabled: is_disabled
+									}
+								) }}
+								<br>
+							</div>
+							
+
 							<input type="radio" name="grr_mail_method" value="smtp" id="label_3c" onchange="afficherOptionsSMTP();" {% if settings.grr_mail_method == 'smtp' %} checked {% endif %} /> <label for="label_3c">{{ trad.methode_smtp }}</label><br>
 							<br>
 
@@ -108,7 +132,7 @@
 												<option value="0" {% if settings.smtp_verify_peer_name == '0' %} selected {% endif %}>False</option>
 											</select>
 										</div>
-								</div>
+								</div><br>
 
 							</div>
 
@@ -177,11 +201,19 @@
 		afficherOptionsSMTP();label_3c
 
 		function afficherOptionsSMTP(){
-			var afficher = document.getElementById('label_3c').checked;
+			
+			var afficherMailServeur = document.getElementById('label_3b').checked;
+			var afficherMailSmtp = document.getElementById('label_3c').checked;
 
-			if(afficher){
+			if(afficherMailServeur){
+				document.getElementById("card-mailserveur").style.display = "block";
+				document.getElementById('card-smtp').style.display = "none";
+			}
+			else if(afficherMailSmtp){
+				document.getElementById('card-mailserveur').style.display = "none";
 				document.getElementById("card-smtp").style.display = "block";
 			} else{
+				document.getElementById('card-mailserveur').style.display = "none";
 				document.getElementById('card-smtp').style.display = "none";
 			}		
 		}

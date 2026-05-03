@@ -2929,17 +2929,13 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 */
 function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array())
 {
-	global $vocab, $grrSettings, $locale, $weekstarts, $enable_periods, $periods_name;
+	global $vocab, $niveauDossier, $locale, $weekstarts, $enable_periods, $periods_name;
 
 	$message_erreur = '';
+	$prefixeChemin = cheminDetermination($niveauDossier);
 
-	if (@file_exists('include/mail.class.php')){
-		require_once 'include/mail.class.php';
-		require_once 'include/pages.class.php';
-	}else{
-		require_once '../include/mail.class.php';
-		require_once '../include/pages.class.php';
-	}
+	require_once $prefixeChemin.'include/mail.class.php';
+	require_once $prefixeChemin.'include/pages.class.php';
 
 	if (!Pages::load())
 		die('Erreur chargement pages');
@@ -2963,7 +2959,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	".TABLE_PREFIX."_entry.beneficiaire_ext,
 	".TABLE_PREFIX."_entry.jours,
 	".TABLE_PREFIX."_entry.clef,
-	".TABLE_PREFIX."_entry.courrier
+	".TABLE_PREFIX."_entry.courrier,
+	".TABLE_PREFIX."_room.description,
+	".TABLE_PREFIX."_room.comment_room,
+	".TABLE_PREFIX."_room.capacity
 	FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 	WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 	AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
@@ -2978,6 +2977,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	grr_sql_free($res);
 
 	get_planning_area_values($row[12]);
+	$webmaster_email  			= Settings::get("webmaster_email");
+	$rep_type					= 0;
 	$breve_description 			= bbcode(removeMailUnicode(htmlspecialchars($row[0])), 'nobbcode');
 	$description  				= bbcode(removeMailUnicode(htmlspecialchars($row[1])), 'nobbcode');
 	$beneficiaire 				= htmlspecialchars($row[2]);
@@ -2985,13 +2986,14 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$area_name    				= removeMailUnicode(htmlspecialchars($row[4]));
 	$room_id      				= $row[6];
 	$repeat_id    				= $row[7];
-	$date_avis    				= date('Y/m/d', $row[10]); //strftime("%Y/%m/%d", $row[10]);
 	$delais_option_reservation 	= $row[13];
 	$option_reservation 		= $row[14];
 	$moderate 					= $row[15];
 	$beneficiaire_ext			= htmlspecialchars($row[16]);
 	$jours_cycle 				= htmlspecialchars($row[17]);
 	$duration     				= $row[9];
+
+	// Date début et fin de la réservation
 	if ($enable_periods == 'y')
 	{
 		list($start_period, $start_date) = period_date_string($row[10]);
@@ -3002,23 +3004,15 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$start_date = time_date_string($row[10],$dformat);
 		$end_date = time_date_string($row[11],$dformat);
 	}
-	$rep_type = 0;
 
 	// Recherche du nom de l'ancienne ressource si besoin
 	if($oldRessource != '' && $oldRessource != $room_id)
 	{
-		$sql = "SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($oldRessource)."'";
-		$oldRess = grr_sql_query($sql);
-		if (!$oldRess)
-			fatal_error(0, grr_sql_error());
-		$rowOld = grr_sql_row($oldRess, 0);
-		grr_sql_free($oldRess);
-		$nomAncienneSalle = $rowOld[0];
+		$oldRess = grr_sql_query1("SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($oldRessource)."'");
+		$room_name = $oldRess." => ".$room_name;
 	}
-	else
-		$nomAncienneSalle = "";
-	//
 
+	// Si la réservation est périodique, on récupère les informations de périodicité
 	if ($repeat_id != 0)
 	{
 		// Utiliser les informations de périodicité fournies si disponibles, sinon les récupérer depuis la base
@@ -3053,19 +3047,18 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		toPeriodString($start_period, $duration, $dur_units);
 	else
 		toTimeString($duration, $dur_units);
-	$weeklist = array("unused", "every_week", "week_1_of_2", "week_1_of_3", "week_1_of_4", "week_1_of_5");
-	if ($rep_type == 2)
-		$affiche_period = $vocab[$weeklist[$rep_num_weeks]];
-	else
-		$affiche_period = $vocab['rep_type_'.$rep_type];
 
 	// Le bénéficiaire
 	$beneficiaire_email = affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"onlymail");
 	if ($beneficiaire != "")
 	{
-		$beneficiaire_actif = grr_sql_query1("SELECT etat FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$beneficiaire'");
-		if ($beneficiaire_actif == -1)
-			$beneficiaire_actif = 'actif'; // Cas des admins
+		$beneficiaireInfos = grr_sql_query("SELECT etat, desactive_mail FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$beneficiaire'");
+		$rowBeneficiaire = grr_sql_row($beneficiaireInfos, 0);
+
+		if($rowBeneficiaire[0] != 'inactif' && $rowBeneficiaire[1] == 0)
+			$beneficiaire_actif = "actif";
+		else
+			$beneficiaire_actif = "inactif";
 	}
 	else if (($beneficiaire_ext != "") && ($beneficiaire_email != ""))
 		$beneficiaire_actif = "actif";
@@ -3077,60 +3070,62 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$user_email = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$user_login'");
 	//
 	// Elaboration du message destiné aux utilisateurs désignés par l'admin dans la partie "Mails automatiques"
-	//
-    // Nom d'expéditeur (si != adresse de réponse, cas des serveurs SMTP refusant le relai)
-    $expediteur = '';
-    if (Settings::get('grr_mail_sender'))
-        $expediteur = Settings::get('grr_mail_from');
-
 	//Infos générales
 	$codes = [
 		'%nomdusite%' => Settings::get('title_home_page'),
 		'%nometablissement%' => Settings::get('company'),
 		'%urlgrr%' =>  traite_grr_url("","y"),
-		'%webmasteremail%' => Settings::get("webmaster_email"),
+		'%webmasteremail%' => $webmaster_email,
 		'%identifiantuser%' => $user_login,
 		'%logincompletuser%' => affiche_nom_prenom_email($user_login,"","formail"),
 		'%logincompletbeneficiaire%' => affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail"),
 		'%identifiantbeneficiaire%' => $beneficiaire,
 		'%domaine%' => $area_name,
 		'%ressource%' => $room_name,
+		'%ressourcedescription%' => $row[20],
+		'%ressourcecomment%' => $row[21],
+		'%ressourcecapacity%' => $row[22],
+		'%resanom%' => $vocab["entryid"].$room_id,
+		'%resadatedebut%' => $start_date,
+		'%resadatefin%' => $end_date,
+		'%resaduree%' => $duration." ".$dur_units,
+		'%resatype%' => "?".$row[5]."?",
+		'%resachampsadditionnels%' =>  affichage_champ_add_mails($id_entry),
+		'%urldetail%' => "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry,
+		'%resaperiodique%' => "",
+		'%resaconfirmation%' => "",
+		'%resadescription%' => "",
+		'%enattentemoderation%' => "",
+		'%decisionmotif%' => "",
+		'%maildestinataire%' => ""
 	];
 
 	// Infos sur la réservation	
-	$codes['%resadatedebut%'] = $start_date;
-	$codes['%resadatefin%'] = $end_date;
-	$codes['%resaduree%'] = $duration." ".$dur_units;
 	if (trim($breve_description) != "")
 		$codes['%resanom%'] = $vocab["namebooker"]." ".$vocab["deux_points"]." ".$breve_description;
-	else
-		$codes['%resanom%'] = $vocab["entryid"].$room_id."\n";
+
 	if ($description !='')
 		$codes['%resadescription%'] = $vocab["description"]." ".$description."\n";
-	else
-		$codes['%resadescription%'] = "";
+
 	if ($moderate == 1)
 		$codes['%enattentemoderation%'] = " (".$vocab['en_attente_moderation'].")";
-	else
-		$codes['%enattentemoderation%'] = "";
-
-	// Champs additionnels
-	$codes['%resachampsadditionnels%'] =  affichage_champ_add_mails($id_entry);
-	$destinataire_spec = envois_spec_champ_add_mails($id_entry);
 
 	// Type de réservation
 	$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$row[5]."'");
-	if ($temp == -1)
-		$codes['%resatype%'] = "?".$row[5]."?";
-	else
+	if ($temp != -1)
 		$codes['%resatype%'] = removeMailUnicode($temp);
 
 	// Infos périodicités
 	if ($rep_type != 0)
 	{
+		$affiche_period = $vocab['rep_type_'.$rep_type];
 		$resaPeriodique = $vocab["rep_type"]." ".$affiche_period."\n";
-		if ($rep_type == 2)
+
+		if ($rep_type == 2) // Chaque semaine ou semaine 1 de 2, 3, 4 ou 5
 		{
+			$weeklist = array("unused", "every_week", "week_1_of_2", "week_1_of_3", "week_1_of_4", "week_1_of_5");
+			$affiche_period = $vocab[$weeklist[$rep_num_weeks]];
+
 			$opt = "";
 			for ($i = 0; $i < 7; $i++)
 			{
@@ -3141,69 +3136,30 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			if ($opt)
 				$resaPeriodique .= $vocab["rep_rep_day"]." ".$opt."\n";
 		}
-		if ($rep_type == 6)
+		elseif ($rep_type == 6) // Cycles de jours
 		{
 			if (Settings::get("jours_cycles_actif") == "Oui")
 				$resaPeriodique .= $vocab["rep_type_6"].preg_replace("/ /", " ",$vocab["deux_points"]).ucfirst(substr($vocab["rep_type_6"],0,1)).$jours_cycle."\n";
 		}
 		$resaPeriodique .= $vocab["rep_end_date"]." ".$rep_end_date."\n";
 		$codes['%resaperiodique%'] = $resaPeriodique;
-	} else
-		$codes['%resaperiodique%'] = "";
+	}
 
 	if (($delais_option_reservation > 0) && ($option_reservation != -1))
 		$codes['%resaconfirmation%'] = "*** ".$vocab["reservation_a_confirmer_au_plus_tard_le"]." ".time_date_string_jma($option_reservation,$dformat)." ***\n";
-	else
-		$codes['%resaconfirmation%'] = "";
 
-/*
-(1)
-Pour les utilisateurs :
-	- qui sont renseigné manuellement dans l'administration
-	- les utilisateurs notifié via les champs additionnels
-*/
-	$sujet1 = $vocab["subject_mail1"].$room_name." - ".$date_avis;
+	// Par défaut l'expéditeur est l'utilisateur ayant agi sur la réservation
+	$expediteur1 = $user_email;
+	$expediteur2 = $user_email;
+	$expediteur3 = $user_email;
 
-	if ($action == 1){ // Création
-		//$sujet1 .= $vocab["subject_mail_creation"];
-		$repondre = $user_email;
-		$templateSujet1 = Pages::get('mails_resacreation_'.$locale);
-		$templateMail1 = Pages::get('mails_resacreation_'.$locale);
-		$codes['%urldetail%'] = "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
-	}
-	elseif ($action == 2){ // Modification
-		//$sujet1 .= $vocab["subject_mail_modify"];
-		//if ($moderate == 1)
-		//	$sujet1 .= " (".$vocab["en_attente_moderation"].")";
-		$repondre = $user_email;
-		if ($room_id != $oldRessource)
-			$codes['%ressource%'] =  $nomAncienneSalle." => ".$room_name;
-		
-		$templateSujet1 = Pages::get('mails_resamodification_'.$locale);
-		$templateMail1 = Pages::get('mails_resamodification_'.$locale);
-		$codes['%urldetail%'] = "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
-	}
-	elseif ($action == 3){ // Suppression
-		//$sujet1 .= $vocab["subject_mail_delete"];
-		//if ($moderate == 1)
-		//	$sujet1 .= " (".$vocab["en_attente_moderation"].")";
-		$repondre = $user_email;
-		$templateSujet1 = Pages::get('mails_resasuppression_'.$locale);
-		$templateMail1 = Pages::get('mails_resasuppression_'.$locale);
-	}
-	elseif ($action == 4){ // Suppression automatique
-		//$sujet1 .= $vocab["subject_mail_delete"];
-		$repondre = $user_email;
-		$templateMail1 = Pages::get('mails_resasuppression3_'.$locale);
-	}
-	elseif ($action == 5){ // Réservation en attente de modération
-		//$sujet1 .= $vocab["subject_mail_moderation"];
-		$repondre = Settings::get("webmaster_email");
-		$templateMail1 = Pages::get('mails_resamoderation_'.$locale);
-	}
+	if($action == 4){ // Suppression automatique
+		// L'expéditeur est le webmaster
+		$expediteur1 = $webmaster_email;
+		$expediteur2 = $webmaster_email;
+		$expediteur3 = $webmaster_email;
+	} 
 	elseif ($action == 6){ // Résultat d'une décision de modération
-		//$sujet1 .= $vocab["subject_mail_decision_moderation"];
-		$repondre = $user_email;
 		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
 		if (!$resmoderate)
 			fatal_error(0, grr_sql_error());
@@ -3221,35 +3177,31 @@ Pour les utilisateurs :
 
 		if ($moderate_description != "")
 			$codes['%decisionmotif%'] = $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
-		else
-			$codes['%decisionmotif%'] = "";
 
-		if (count($tab_id_moderes) == 0 )
-			$codes['%urldetail%'] = "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
-		else
+		if (count($tab_id_moderes) != 0 )
 		{
 			foreach ($tab_id_moderes as $id_moderes)
 				$codes['%urldetail%'] =  "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
 		}
-		$templateMail1 = Pages::get('mails_resamoderation2_'.$locale);
 	}
 	elseif ($action == 7){ // Notification d'un retard dans la restitution d'une ressource
-		//$sujet1 .= $vocab["subject_mail_retard"];
+		// L'expéditeur est le webmaster
+		$expediteur1 = $webmaster_email;
+		$expediteur2 = $webmaster_email;
+		$expediteur3 = $webmaster_email;
 
+		// Variable indiquant à qui le rappel est effectué
 		if ($beneficiaire_email != "")
 			$codes['%maildestinataire%'] .= $vocab["un_email_envoye"].$beneficiaire_email;
-		else
-			$codes['%maildestinataire%'] .= "";
-
-		$codes['%urldetail%'] = "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
-		$repondre = Settings::get("webmaster_email");
-		$templateMail1 = Pages::get('mails_retardrestitution_'.$locale);
 	}
 
+	/*
+	(1) Pour les utilisateurs : Qui sont renseigné manuellement dans l'administration ET les utilisateurs notifié via les champs additionnels
+	*/
 	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif' AND j.mail_resa=1 AND u.desactive_mail=0) ORDER BY u.nom, u.prenom";
 	$res = grr_sql_query($sql);
 	$nombre = grr_sql_count($res);
-	$destinataire = "";
+	$destinataire1 = "";
 	if ($nombre > 0)
 	{
 		$tab_destinataire = array();
@@ -3259,207 +3211,94 @@ Pour les utilisateurs :
 				$tab_destinataire[] = $row[0];
 		}
 		foreach ($tab_destinataire as $value){
-			$destinataire .= $value.";";
+			$destinataire1 .= $value.";";
 		}
 	}
-	$destinataire = $destinataire . $destinataire_spec;
-    
-	if ($expediteur =='')
-		$expediteur = $repondre;
+	$destinataire_spec = envois_spec_champ_add_mails($id_entry);
+	$destinataire1 = $destinataire1 . $destinataire_spec;
 
-	if($destinataire != "")
+	if($destinataire1 != "")
 	{
+		if ($repondre1 == '')
+			$repondre1 = $expediteur1;
+
 		$codes['%raisonmail%'] = $vocab['mail_raison_5'];
+		$templateMail1 = Pages::get('mails_resa_'.$action.'_1_'.$locale);
 		$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
 		$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
-		Email::Envois($destinataire, $sujetEncode1, $msgEncode1, $expediteur, '', '', $repondre);
+		Email::Envois($destinataire1, $sujetEncode1, $msgEncode1, $expediteur1, '', '', $repondre1,'mails_resa_'.$action.'_1_'.$locale);
 	}
 
-
-/*
-(2)
-Pour le benificiare de la ressource
-*/
-
+	/*
+	(2) Pour le benificiare de la ressource
+	*/
 	$envoi2 = false;
 	$destinataire2 = $beneficiaire_email;
 	$codes['%raisonmail%'] = $vocab['mail_raison_6'];
 
 	// Cas d'une création, modification ou suppression d'un message par un utilisateur différent du bénéficiaire :
 	// On envoie un message au bénéficiaire de la réservation pour l'avertir d'une modif ou d'une suppression
-	if ((($action == 1) || ($action == 2) || ($action == 3)) && ((strtolower($user_login) != strtolower($beneficiaire)) || (Settings::get('send_always_mail_to_creator') == '1')) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif'))
-	{
-		$repondre2 = $user_email;
-        if ($expediteur =='')
-			$expediteur = $repondre2;
-
-		if ($action == 1){ // Création
-			$templateMail2 = Pages::get('mails_resacreation2_'.$locale);
-		}
-		elseif ($action == 2){ // Modification
-			if ($room_id != $oldRessource)
-				$codes['%ressource%'] =  $nomAncienneSalle." => ".$room_name;
-
-			$templateMail2 = Pages::get('mails_resamodification2_'.$locale);
-
-		}
-		else{ // Suppression
-			$templateMail2 = Pages::get('mails_resasuppression2_'.$locale);
-		}
+	if (($action == 1 || $action == 2 || $action == 3 || $action == 6) && ((strtolower($user_login) != strtolower($beneficiaire)) || (Settings::get('send_always_mail_to_creator') == '1')))
 		$envoi2 = true;
-	}
-	elseif (($action == 4) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif')) // Supression automatique
+	elseif ($action == 4 || $action == 5 || $action == 7) // Supression automatique OU réservation en attente de modération, mail pour le beneficiaire OU Résultat d'une décision de modération
 	{
-		// Sujet
-		$repondre2 = Settings::get("webmaster_email");
-		if ($expediteur =='')
-			$expediteur = $repondre2;
+		// L'expéditeur est le webmaster
+		$expediteur2 = $webmaster_email;
+		$expediteur3 = $webmaster_email;
 
-		$templateMail2 = Pages::get('mails_resasuppression3_'.$locale);
-		$envoi2 = true;
-	}
-	elseif (($action == 5) && ($beneficiaire_email != '') && ($beneficiaire_actif == 'actif')) // Réservation en attente de modération, mail pour le beneficiaire
-	{
-		$repondre2 = Settings::get("webmaster_email");
-        if ($expediteur =='')
-			$expediteur = $repondre2;
-		$templateMail2 = Pages::get('mails_resamoderation3_'.$locale);
-		$envoi2 = true;
-	}
-	elseif (($action == 6) && ($beneficiaire_email != '') && ($beneficiaire_actif=='actif')) // Résultat d'une décision de modération
-	{
-		$repondre2 = $user_email;
-        if ($expediteur =='')
-			$expediteur = $repondre2;
-
-		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
-		if (!$resmoderate)
-			fatal_error(0, grr_sql_error());
-		if (grr_sql_count($resmoderate) < 1)
-			fatal_error(0, get_vocab('invalid_entry_id'));
-		$rowModerate = grr_sql_row($resmoderate, 0);
-		grr_sql_free($resmoderate);
-		$moderate_decision = $rowModerate[0];
-		$moderate_description = $rowModerate[1];
-
-		if ($moderate_decision == 2)
-			$codes['%decisionmoderation%'] = $vocab["moderation_acceptee"];
-		else if ($moderate_decision == 3)
-			$codes['%decisionmoderation%'] = $vocab["moderation_refusee"];
-
-		if ($moderate_description != "")
-			$codes['%decisionmotif%'] = $vocab["motif"].$vocab["deux_points"]."<br>".$moderate_description;
-		else
-			$codes['%decisionmotif%'] = "";
-
-		if (count($tab_id_moderes) == 0 )
-			$codes['%urldetail%'] = traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
-		else
-		{
-			foreach ($tab_id_moderes as $id_moderes)
-				$codes['%urldetail%'] =  traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
-		}
-
-		$templateMail2 = Pages::get('mails_resamoderation4_'.$locale);
-		$envoi2 = true;
-	}
-	elseif ( ($action == 7) && ($beneficiaire_email != '') )// Notification d'un retard dans la restitution d'une ressource
-	{
-		$repondre2 = Settings::get("webmaster_email");
-        if ($expediteur =='')
-			$expediteur = $repondre2;
-
-		$templateMail2 = Pages::get('mails_retardrestitution2_'.$locale);
 		$envoi2 = true;
 	}
 
-	if($envoi2 == true)
+	if($envoi2 == true && $beneficiaire_email != '' && $beneficiaire_actif == 'actif')
 	{
+		if ($repondre2 == '')
+			$repondre2 = $expediteur2;
+
+		$templateMail2 = Pages::get('mails_resa_'.$action.'_2_'.$locale);
 		$sujetEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[0]);
 		$msgEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[1]);
-		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur, '', '', $repondre2);
+		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur2, '', '', $repondre2,'mails_resa_'.$action.'_2_'.$locale);
 	}
 
-/*
-(3)
-Mail pour le gestionnaire, ou l'admin
-*/
+	/*
+	(3) Mail pour le gestionnaire, ou l'admin
+	*/
 	$envoi3 = false;
 
-	// Liste des destinataire
-	// Raison admin : 1:Gestionnaire de la ressource; 2:Admin du domaine; 3:Admin site; 4:Admins
-	list($mail_admin, $raison_admin) = find_active_user_room($room_id);
-	if($raison_admin != 0)
-		$codes['%raisonmail%'] = $vocab["mail_raison_".$raison_admin];
-	else
-		$codes['%raisonmail%'] = "";
-	$destinataire3 = "";
-	if (count($mail_admin) > 0)
-	{
-		foreach ($mail_admin as $value){
-			$destinataire3 .= $value.";";
-		}
-	}
-
-    // Cas d'une réservation modérée : le bénéficiaire peut éventuellement la supprimer, mais on prévient le modérateur
-    if ( ($action == 3) && ($moderate >0) && (count($mail_admin) > 0) ){
-		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_delete"];
-		$repondre3 = $user_email;
-		if (!isset($expediteur)||($expediteur ==''))
-			$expediteur = $repondre3;
-		
-		$templateMail3 = Pages::get('mails_resamoderation5_'.$locale);
+    // Cas d'une réservation modérée : le bénéficiaire peut éventuellement la modifier ou supprimer, mais on prévient le modérateur
+	// Ou réservation en attente de modération, mail pour le modérateur OU  Notification d'un retard dans la restitution d'une ressource
+    if ( (($action == 2 || $action == 3) && ($moderate > 0)) || ($action == 5 || $action == 7))
 		$envoi3 = true;
-    }
-	elseif ( ($action == 2) && ($moderate > 0) && (count($mail_admin) > 0) )// Modification d'une réservation en attente de modération ou modérée, mail pour le modérateur
-	{
-		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_moderation"];
-		$codes['%urldetail%'] = traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
-		$repondre3 = Settings::get("webmaster_email");
-		if ($expediteur =='')
-			$expediteur = $repondre3;
-		
-		$templateMail3 = Pages::get('mails_resamoderation_'.$locale);
-		$envoi3 = true;
-	}
-	elseif ( ($action == 5) && (count($mail_admin) > 0) )// Réservation en attente de modération, mail pour le modérateur
-	{
-		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_moderation"];
-		$codes['%urldetail%'] = traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
-		$repondre3 = Settings::get("webmaster_email");
-		if ($expediteur =='')
-			$expediteur = $repondre3;
-		
-		$templateMail3 = Pages::get('mails_resamoderation6_'.$locale);
-		$envoi3 = true;
-	}
-	elseif ( ($action == 7) && (count($mail_admin) > 0) ) // Notification d'un retard dans la restitution d'une ressource
-	{
-		//! Attention champ identique aux 1er cas
-		//$sujet3 = $vocab["subject_mail1"].$room_name." - ".$date_avis.$vocab["subject_mail_retard"];
-		$repondre3 = Settings::get("webmaster_email");
-        if ($expediteur =='')
-			$expediteur = $repondre3;
-
-		if ($beneficiaire_email != "")
-			$codes['%maildestinataire%'] .= $vocab["un_email_envoye"].$beneficiaire_email;
-		else
-			$codes['%maildestinataire%'] .= "";
-
-		$codes['%urldetail%'] = traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry;
-
-		$templateMail3 = Pages::get('mails_retardrestitution_'.$locale);
-
-		$envoi3 = true;
-	}
 
 	if($envoi3 == true)
 	{
-		$sujetEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[0]);
-		$msgEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[1]);
-		Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur, '', '', $repondre3);
-	}
+		// Liste des destinataire
+		// Raison admin : 1:Gestionnaire de la ressource; 2:Admin du domaine; 3:Admin site; 4:Admins
+		list($mail_admin, $raison_admin) = find_active_user_room($room_id);
+		if($raison_admin != 0)
+			$codes['%raisonmail%'] = $vocab["mail_raison_".$raison_admin];
+		else
+			$codes['%raisonmail%'] = "";
 
+		$destinataire3 = "";
+		if (count($mail_admin) > 0)
+		{
+			foreach ($mail_admin as $value){
+				$destinataire3 .= $value.";";
+			}
+		}
+
+		if($destinataire3 != "")
+		{
+			if ($repondre3 == '')
+				$repondre3 = $expediteur3;
+
+			$templateMail3 = Pages::get('mails_resa'.$action.'_3_'.$locale);
+			$sujetEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[0]);
+			$msgEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[1]);
+			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale);
+		}
+	}
 
 	return $message_erreur;
 } // Fin fonction send_mail
@@ -5094,7 +4933,7 @@ function find_active_user_room ($id_room)
 	// Raison : 1:Gestionnaire de la ressource; 2:Admin du domaine; 3:Admin site; 4:Admins
 	$emails = array ();
 	$sql = "select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_user_room
-	where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND 
+	where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND ".TABLE_PREFIX."_utilisateurs.desactive_mail = 0 AND 
 	".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_user_room.login and 
 	id_room='".$id_room."'";
 	$res = grr_sql_query($sql);
@@ -5114,7 +4953,7 @@ function find_active_user_room ($id_room)
 	{
 		$id_area = mrbsGetAreaIdFromRoomId($id_room);
 		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_area
-			where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND
+			where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND ".TABLE_PREFIX."_utilisateurs.desactive_mail = 0 AND 
 			".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_area.login and ".TABLE_PREFIX."_j_useradmin_area.id_area='".$id_area."'");
 		if ($sql_admin)
 		{
@@ -5136,7 +4975,7 @@ function find_active_user_room ($id_room)
 			$id_area = mrbsGetAreaIdFromRoomId($id_room);
 			$id_site = mrbsGetAreaSite($id_area);
 			$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs, ".TABLE_PREFIX."_j_useradmin_site
-				where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND
+				where ".TABLE_PREFIX."_utilisateurs.etat = 'actif' AND ".TABLE_PREFIX."_utilisateurs.desactive_mail = 0 AND 
 				".TABLE_PREFIX."_utilisateurs.login = ".TABLE_PREFIX."_j_useradmin_site.login and ".TABLE_PREFIX."_j_useradmin_site.id_site='".$id_site."'");
 			if ($sql_admin)
 			{
@@ -5154,7 +4993,7 @@ function find_active_user_room ($id_room)
 	// Si la table des emails des administrateurs des sites est vide, on avertit les administrateurs généraux
 	if (count($emails) == 0)
 	{
-		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs where etat = 'actif' AND statut = 'administrateur'");
+		$sql_admin = grr_sql_query("select email from ".TABLE_PREFIX."_utilisateurs where etat = 'actif' AND statut = 'administrateur' AND desactive_mail = 0");
 		if ($sql_admin)
 		{
 			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)

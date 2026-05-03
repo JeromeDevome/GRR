@@ -736,6 +736,7 @@ $vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "G
 1) El método \"smtp\" permitiendo de conectarse a un servidor de mail lejano;
 2) El método \"mail\" cuando el servidor de mail es local.
 El método \"smtp\" puede también ser utilizado con un servidor local pero es preferible privilegiar la méthode \"mail\" con un servidor local porque es más rápida..";
+$vocab["Explications_methode_mail_1"] = "Servidor Mail";
 $vocab["Explications_methode_smtp_1"] = "Servidor SMTP";
 $vocab["Explications_methode_smtp_2"] = "Si el método \"smtp\" es elegido y que ele servidor necesita una autentificación, indicar el nombre de usuario y la contraseña.";
 $vocab["explications_signaler_reservation_en_cours"] = "Se puede señalar cuando un recurso ha sido prestado (si el recurso es un material). Marcando la segunda o la tercera opción, el gestor señala que el recurso está prestado y no ha sido devuelto. Cuando el recurso ha sido restituido, el gestor no debe olvidar seleccionar la opción n° 1 más abajo.";
@@ -966,10 +967,12 @@ $vocab["mail_type_adm_test"] = "Prueba";
 $vocab["mail_type_compte_demande"] = "Solicitud de cuenta";
 $vocab["mail_type_resa_creation"] = "Creación de reserva";
 $vocab["mail_type_resa_moderation"] = "Reserva y Moderación";
+$vocab["mail_type_resa_moderation_decision"] = "Decisión de moderación";
 $vocab["mail_type_resa_modif"] = "Modificación de reserva";
 $vocab["mail_type_resa_resultat"] = "Resultado";
 $vocab["mail_type_resa_retard"] = "Retraso";
 $vocab["mail_type_resa_sup"] = "Supresión de reserva";
+$vocab["mail_type_resa_sup_auto"] = "Supresión automática de reserva";
 $vocab["mail_user"] = "Email";
 $vocab["mail_user_destinataire"] = "Enviar una copia al usuario";
 $vocab["mail_user_list"] = "Lista de los usuarios avisados por mail :";

@@ -17,15 +17,9 @@
  */
 
 
-get_vocab_admin("admin_config1");
-get_vocab_admin("admin_config2");
-get_vocab_admin("admin_config3");
-get_vocab_admin("admin_config4");
-get_vocab_admin("admin_config5");
-get_vocab_admin("admin_config6");
-get_vocab_admin("admin_config7");
-
 $msg = "";
+$trad = $vocab;
+
 // Automatic mail
 if (isset($_GET['automatic_mail']))
 {
@@ -49,6 +43,11 @@ if (isset($_GET['javascript_info_admin_disabled']))
 {
 	if (!Settings::set("javascript_info_admin_disabled", $_GET['javascript_info_admin_disabled']))
 		$msg .= "Erreur lors de l'enregistrement de javascript_info_admin_disabled !<br />";
+}
+if (isset($_GET['mail_serveur_from']))
+{
+	if (!Settings::set("mail_serveur_from", $_GET['mail_serveur_from']))
+		$msg .= "Erreur lors de l'enregistrement de mail_serveur_from !<br />";
 }
 if (isset($_GET['grr_mail_method']))
 {
@@ -130,7 +129,12 @@ if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 	$sujetMail = str_replace(array_keys($codes), $codes, $templateMail[0]);
 	$txtMail = str_replace(array_keys($codes), $codes, $templateMail[1]);
 	
-	Email::Envois($_GET['mail_test'], $sujetMail, $txtMail, Settings::get('grr_mail_from'), '', '');
+	$resultat_mail = Email::Envois($_GET['mail_test'], $sujetMail, $txtMail, Settings::get('grr_mail_from'), '', '');
+	if (!$resultat_mail['success']) {
+		$msg .= "Erreur envoi mail de test: " . htmlspecialchars($resultat_mail['error']) . "<br />";
+	} else {
+		$msg .= "Mail de test envoyé avec succès<br />";
+	}
 }
 if (isset($_GET['ok']))
 {
@@ -185,52 +189,8 @@ if (isset($_GET['ok'])) {
 
 $AllSettings = Settings::getAll();
 
-get_vocab_admin("title_automatic_mail");
-get_vocab_admin("warning_message_mail");
-get_vocab_admin("explain_automatic_mail");
-get_vocab_admin("admin_email_manager");
-get_vocab_admin("mail_admin_off");
-get_vocab_admin("admin_email_manager");
 
-get_vocab_admin("configuration_liens_adresses");
-get_vocab_admin("envoyer_email_avec_formulaire_oui");
-get_vocab_admin("envoyer_email_avec_formulaire_non");
-
-get_vocab_admin("Parametres_configuration_envoi_automatique_mails");
-get_vocab_admin("methode_mail");
-get_vocab_admin("methode_mail_bloque");
-get_vocab_admin("methode_mail_desactive");
-get_vocab_admin("methode_smtp");
-get_vocab_admin("Explications_methode_smtp_1");
-get_vocab_admin("utilisateur_smtp");
-get_vocab_admin("pwd");
-get_vocab_admin("Email_expediteur_messages_automatiques");
-get_vocab_admin("Nom_expediteur_messages_automatiques");
-get_vocab_admin("smtp_secure");
-get_vocab_admin("smtp_port");
-get_vocab_admin("smtp_param_sup");
-get_vocab_admin("smtp_allow_self_signed");
-get_vocab_admin("smtp_verify_peer_name");
-get_vocab_admin("smtp_verify_peer");
-get_vocab_admin("smtp_verify_depth");
-get_vocab_admin("mail_test");
-get_vocab_admin("copie_cachee");
-
-get_vocab_admin("javascript_info_disabled_msg");
-get_vocab_admin("javascript_info_disabled0");
-get_vocab_admin("javascript_info_disabled1");
-
-get_vocab_admin("javascript_info_admin_disabled_msg");
-
-get_vocab_admin("suppression_automatique_des_reservations");
-get_vocab_admin("Explications_suppression_automatique_des_reservations");
-get_vocab_admin("verif_reservation_auto0");
-get_vocab_admin("verif_reservation_auto1");
-get_vocab_admin("verif_reservation_auto2");
-get_vocab_admin("verif_reservation_auto3");
-
-get_vocab_admin("save");
-get_vocab_admin('message_records');
+$d['gMailExpediteur'] = $gMailExpediteur;
 
 $trad['dFctMailRestriction'] = $fonction_mail_restrictions;
 
