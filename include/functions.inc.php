@@ -3152,6 +3152,9 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$expediteur1 = $user_email;
 	$expediteur2 = $user_email;
 	$expediteur3 = $user_email;
+	$repondre1 = '';
+	$repondre2 = '';
+	$repondre3 = '';
 
 	if($action == 4){ // Suppression automatique
 		// L'expéditeur est le webmaster
