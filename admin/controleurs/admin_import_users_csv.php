@@ -92,6 +92,20 @@ if ($reg_data != 'yes')
 						$en_tete = 'no';
 					}
 					$data = fgetcsv ($fp, $long_max, ";");
+					
+					// Convertir l'encodage en UTF-8 pour chaque champ
+					if ($data != "")
+					{
+						foreach ($data as $key => $value)
+						{
+							// Déterminer l'encodage et convertir en UTF-8 si nécessaire
+							$encoding = mb_detect_encoding($value, 'UTF-8, ISO-8859-1, Windows-1252', true);
+							if ($encoding && $encoding != 'UTF-8')
+							{
+								$data[$key] = mb_convert_encoding($value, 'UTF-8', $encoding);
+							}
+						}
+					}
 
 					if($data != "")
 						$num = count($data);
@@ -112,7 +126,8 @@ if ($reg_data != 'yes')
 								if ($test_login == "")
 								{
 									$data[$c] = strtoupper($data[$c]);
-									$test = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$data[$c]'"));
+									$protected_login = protect_data_sql($data[$c]);
+									$test = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$protected_login'"));
 									if ($test!='0')
 									{
 										$uLogin = $data[$c];
@@ -310,7 +325,10 @@ else
 		$reg_prenom[$row] = protect_data_sql(html_entity_decode($reg_prenom[$row]));
 		$reg_email[$row] = protect_data_sql(corriger_caracteres($reg_email[$row]));
 		$reg_changer_pwd[$row] = protect_data_sql(corriger_caracteres($reg_changer_pwd[$row]));
-		$reg_login[$row] = trim($reg_login[$row]);
+		$reg_login[$row] = protect_data_sql(trim($reg_login[$row]));
+		$reg_type_user[$row] = protect_data_sql($reg_type_user[$row]);
+		$reg_statut[$row] = protect_data_sql($reg_statut[$row]);
+		$reg_type_auth[$row] = protect_data_sql($reg_type_auth[$row]);
 		$test_login = preg_replace("/([A-Za-z0-9_@.-])/","",$reg_login[$row]);
 		if($test_login == ""){
 			$test_login = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$reg_login[$row]'"));

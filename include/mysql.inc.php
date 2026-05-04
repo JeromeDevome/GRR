@@ -123,6 +123,9 @@ function grr_sql_row_keyed ($r, $i)
 // Return the number of rows returned by a result handle from grr_sql_query.
 function grr_sql_count ($r)
 {
+	if (!$r || $r === false) {
+		return 0;
+	}
 	return mysqli_num_rows($r);
 }
 // Return the value of an autoincrement field from the last insert.
