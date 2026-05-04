@@ -115,13 +115,17 @@ class Email{
 				if($repondre == '')
 					$repondre = $DE;
 
+				// A
+				$to = str_replace(";", ",", $A);
+
+				// En-têtes
        			$headers  = 'MIME-Version: 1.0' . "\r\n";
       			$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
 				$headers .= "From: {$DE}" . "\r\n" .
 					"Reply-To: {$repondre}" . "\r\n" .
 					'X-Mailer: PHP/' . phpversion();
 
-				mail(str_replace(";",",",$A), $sujet, utf8_decode(utf8_encode(str_replace("<br>","",$message))), $headers); //YN selon Rapace sur le forum
+				mail($to, $sujet, $message, $headers);
 			}
 
 		/** Log email **/
