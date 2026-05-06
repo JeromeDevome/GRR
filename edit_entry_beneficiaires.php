@@ -3,9 +3,9 @@
  * edit_entry_beneficiaires.php
  * Page "Ajax" utilisée dans edit_entry.php, calcule les data pour le sélecteur #beneficiaire
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-01-30 18:17$
+ * Dernière modification : $Date: 2026-05-06 18:54$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -17,7 +17,7 @@
  */
 include_once "include/admin.inc.php";
 // vérifications de sécurité : page accessible si utilisateur connecté et usager
-if ((authGetUserLevel(getUserName(),-1) < 2))//||(!isAjax()))
+if ((authGetUserLevel(getUserName(),-1) < 2)||(!isAjax()))
 {
 	showAccessDenied("");
 	exit();
@@ -32,7 +32,7 @@ paramètres attendus, passés par la méthode GET :
 //print_r($_GET);die();
 $id_area = isset($_GET["area"])? intval($_GET["area"]): -1;
 $id_room = isset($_GET["room"])? intval($_GET["room"]): -1;
-$id_user = isset($_GET["user"])? protect_data_sql($_GET["user"]): getUserName();
+$id_user = isset($_GET["user"])? htmlspecialchars($_GET["user"]): getUserName();
 $id_resa = isset($_GET["id"])?   intval($_GET["id"]): 0;
 // le test suivant est redondant, peut-on s'en passer sans vérifier que l'appel vient par AJAX ?
 $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id=? ","i",[$id_room]);
@@ -75,7 +75,10 @@ else
     $res = grr_sql_query($sql,"s",[$id_user]);
     if ($res){
         $row = grr_sql_row($res,0);
-        $benef = $row[0]." ".$row[1];
+        if(is_array($row))
+          $benef = $row[0]." ".$row[1];
+        else 
+          $benef = " ";
     }
     grr_sql_free($res);
     $benef = ($benef != " ")? $benef : get_vocab('utilisateur_inconnu').$id_user.')';
