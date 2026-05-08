@@ -3,7 +3,7 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2019-02-16 16:40$
+ * Dernière modification : $Date: 2026-05-08 16:30$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -30,8 +30,8 @@ function sanitize_csv_data($value) {
 }
 
 if (isset($_GET['ok'])) {
-    $msg = get_vocab("message_records");
-	affiche_pop_up($msg,"admin");
+	$d['enregistrement'] = 1;
+	$d['msgToast'] = get_vocab("message_records");
 }
 
 $back = "./admin_calend.php?";
