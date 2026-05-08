@@ -117,8 +117,11 @@ foreach ($dossierLister as $fileinfo) {
 // Popup
 // Si $back contient p=login
 if ( (strpos($back, 'login') !== false) && $userConnecte == "with_session")
-	$d['gPopup'] = grr_sql_query1("SELECT popup FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'");
-
+{
+	$valeurPopup = grr_sql_query1("SELECT valeur FROM ".TABLE_PREFIX."_page WHERE nom = 'popup'");
+	if($valeurPopup != "" && $valeurPopup != -1)
+		$d['gPopup'] = grr_sql_query1("SELECT popup FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'");
+}
 
 // Page demandée
 if(in_array($page.".php",$listeFichiers))
