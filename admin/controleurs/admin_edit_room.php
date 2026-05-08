@@ -103,6 +103,15 @@ if (!isset($retour_page))
 	$retour_page = substr($retour_page, 0, $long);
 }
 // modification d'une resource : admin ou gestionnaire
+
+$acces_config_ress_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
+if (authGetUserLevel(getUserName(), $room) < $acces_config_ress_level)
+{
+	showAccessDenied($back);
+	exit();
+}
+
+/*
 if (authGetUserLevel(getUserName(),-1) < 6)
 {
     if (isset($area_id)){
@@ -122,7 +131,7 @@ if (authGetUserLevel(getUserName(),-1) < 6)
 		showAccessDenied($back);
 		exit();
 	}
-}
+}*/
 $msg ='';
 
 // Enregistrement d'une ressource

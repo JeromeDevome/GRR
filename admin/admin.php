@@ -36,10 +36,17 @@ include "../include/mdp_faciles.inc.php";
 include "../include/hook.class.php";
 include "./modeles/AdminFonctions.php";
 
+$room = isset($_GET['room']) ? alphanum($_GET['room']) : -1;
+
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-if ((authGetUserLevel(getUserName(), -1, 'area') < 4) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+
+$acces_config_ress_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
+if (	(authGetUserLevel(getUserName(), -1, 'area') < 4) && 
+		(authGetUserLevel(getUserName(), -1, 'user') !=  1) && 
+		( $page <> 'admin_edit_room' ) || (authGetUserLevel(getUserName(), $room) < $acces_config_ress_level) && ($room != -1)
+	)
 {
 	showAccessDenied($back);
 	exit();
