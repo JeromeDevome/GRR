@@ -157,7 +157,7 @@
 		$(document).ready(function(){
 			$("#popup_name").draggable({containment: "#container"});
 			$("#popup_name").resizable();
-			afficheMenuHG('{{d.positionMenu}}');
+			afficheMenuHG('{{settings.menu_gauche}}');
 			if ( $(window).scrollTop() == 0 )
 				$("#toTop").hide(1);
 		});
