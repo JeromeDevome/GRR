@@ -904,13 +904,14 @@ function grr_closeSession(&$_auto)
 	@session_start();
 	
 	// Régénérer l'ID de session et détruire l'ancien cookie pour prévenir la réutilisation
+	$oldSessionId = session_id();
 	session_regenerate_id(true);
 	
 	// Sometimes 'start' may not exist, because the session was previously closed by another window
 	// It's not necessary to ".TABLE_PREFIX."_log this, then
 	if (isset($_SESSION['start']))
 	{
-		$sql = "update ".TABLE_PREFIX."_log set AUTOCLOSE = '" . $_auto . "', END = now() where SESSION_ID = '" . session_id() . "' and START = '" . $_SESSION['start'] . "'";
+		$sql = "update ".TABLE_PREFIX."_log set AUTOCLOSE = '" . $_auto . "', END = now() where SESSION_ID = '" . $oldSessionId . "' and START = '" . $_SESSION['start'] . "'";
 		grr_sql_query($sql);
 	}
 	// Détruit toutes les variables de session
