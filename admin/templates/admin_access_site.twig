@@ -1,5 +1,9 @@
 {% extends 'layout.twig' %}
 
+{% block css %}
+	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
+{% endblock %}
+
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block content %}
@@ -129,7 +133,7 @@
 									<td>{{ useradmin.login }}</td>
 									<td>{{ useradmin.nom }}</td>
 									<td>{{ useradmin.prenom }}</td>
-									<td><a href="?p=admin_access_site&action=del_user&login_user={{ useradmin.login }}&id_site={{ d.idSite }}"><i class="fa fa-trash"></i></a></td>
+									<td><a href="?p=admin_access_site&amp;action=del_user&amp;login_user={{ useradmin.login }}&amp;id_site={{ d.idSite }}"><i class="fa fa-trash"></i></a></td>
 								</tr>
 							{% endfor %}
 						</table>
@@ -145,7 +149,7 @@
 							{% for groupeadmin in groupesexep %}
 								<tr>
 									<td>{{ groupeadmin.nom }}</td>
-									<td><a href="?p=admin_access_site&action=del_groupe&groupe={{ groupeadmin.id }}&id_site={{ d.idSite }}"><i class="fa fa-trash"></i></a></td>
+									<td><a href="?p=admin_access_site&amp;action=del_groupe&amp;groupe={{ groupeadmin.id }}&amp;id_site={{ d.idSite }}"><i class="fa fa-trash"></i></a></td>
 								</tr>
 							{% endfor %}
 						</table>
@@ -158,7 +162,17 @@
 {% endblock %}
 
 {% block javascript %}
+	<script src="../jslib/toastr/toastr.min.js"></script>
 	<script>
+		$(function () {
+			{% if d.enregistrement == 1 %}
+				toastr.success("{{d.msgToast}}")
+			{% elseif d.enregistrement == 2 %}
+				toastr.warning("{{d.msgToast}}")
+			{% elseif d.enregistrement == 3 %}
+				toastr.error("{{d.msgToast}}")
+			{% endif %}
+		});
 
 		function site_go()
 		{
