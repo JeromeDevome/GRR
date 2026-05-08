@@ -58,14 +58,6 @@
 						<hr>	
 						
 						<section id="popupadmin">
-							<h4 class="page-header">{{ trad.javascript_info_admin_disabled_msg }}</h4>
-							<input type="radio" name="javascript_info_admin_disabled" value="0" id="label_5a" {% if settings.javascript_info_admin_disabled == '0' %} checked {% endif %} /> <label for="label_5a">{{ trad.javascript_info_disabled0 }}</label><br>
-							<input type="radio" name="javascript_info_admin_disabled" value="1" id="label_5b" {% if settings.javascript_info_admin_disabled == '1' %} checked {% endif %} /> <label for="label_5b">{{ trad.javascript_info_disabled1 }}</label><br>
-						</section>
-
-						<hr>	
-						
-						<section id="popupadmin">
 							<h4 class="page-header">{{ trad.suppression_automatique_des_reservations }}</h4>
 							<p>{{ trad.Explications_suppression_automatique_des_reservations |raw}}</p>
 							<input type="radio" name="verif_reservation_auto" value="0" id="label_6a" {% if settings.verif_reservation_auto == '0' %} checked {% endif %} /> <label for="label_6a">{{ trad.verif_reservation_auto0 }}</label><br>

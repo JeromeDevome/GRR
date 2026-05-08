@@ -5603,7 +5603,7 @@ function envois_spec_champ_add_mails($id_resa)
 Affiche un message pop-up
 $type_affichage = "user" -> Affichage des "pop-up" de confirmation après la création/modification/suppression d'une réservation
 Dans ce cas, l'affichage n'a lieu que si $_SESSION['displ_msg']='yes'
-$type_affichage = "admin" -> Affichage des "pop-up" de confirmation dans les menus d'administration
+$type_affichage = "admin" -> Affichage des "pop-up" de confirmation dans les menus d'administration (V4.6+ On force la popup plus le choix de l'affichage dans les paramètres d'administration)
 $type_affichage = "force" -> On force l'affichage du pop-up même si javascript_info_admin_disabled est true
 */
 function affiche_pop_up($msg = "",$type_affichage = "user")
@@ -5620,17 +5620,6 @@ function affiche_pop_up($msg = "",$type_affichage = "user")
 				echo "<script type=\"text/javascript\">";
 				if ((isset($_SESSION['displ_msg'])) && ($_SESSION['displ_msg'] == 'yes'))
 					echo " alert(\"".$msg."\")";
-				echo "</script>";
-			}
-		}
-		else if ($type_affichage == "admin")
-		{
-			if (!(Settings::get("javascript_info_admin_disabled")))
-			{
-				echo "<script type=\"text/javascript\">";
-				echo "<!--\n";
-				echo " alert(\"".$msg."\")";
-				echo "//-->";
 				echo "</script>";
 			}
 		}

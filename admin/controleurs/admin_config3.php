@@ -31,12 +31,6 @@ if (isset($_GET['javascript_info_disabled']))
 	if (!Settings::set("javascript_info_disabled", $_GET['javascript_info_disabled']))
 		$msg .= "Erreur lors de l'enregistrement de javascript_info_disabled !<br />";
 }
-// javascript_info_admin_disabled
-if (isset($_GET['javascript_info_admin_disabled']))
-{
-	if (!Settings::set("javascript_info_admin_disabled", $_GET['javascript_info_admin_disabled']))
-		$msg .= "Erreur lors de l'enregistrement de javascript_info_admin_disabled !<br />";
-}
 
 if (isset($_GET['verif_reservation_auto']))
 {
