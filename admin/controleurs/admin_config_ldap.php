@@ -39,14 +39,47 @@ function validateLdapFilter($filter) {
     return $filter;
 }
 
+// Fonction de validation d'une adresse LDAP
+function validateLdapAddress($address) {
+    if (empty($address)) {
+        return '';
+    }
+    // Accepte uniquement les URLs LDAP valides (ldap:// ou ldaps://)
+    if (preg_match('/^ldaps?:\/\/[a-zA-Z0-9\.\-:]+$/', $address)) {
+        return $address;
+    }
+    return '';
+}
+
+// Fonction de validation du port LDAP
+function validateLdapPort($port) {
+    $port = intval($port);
+    if ($port >= 1 && $port <= 65535) {
+        return $port;
+    }
+    return '';
+}
+
+// Fonction de validation d'un DN LDAP
+function validateLdapDn($dn) {
+    if (empty($dn)) {
+        return '';
+    }
+    // Valide que le DN respecte la structure de base (composants séparés par des virgules)
+    // Chaque composant doit être au format clé=valeur
+    if (preg_match('/^([a-zA-Z0-9]+=[^,]*)(,[a-zA-Z0-9]+=[^,]*)*$/', trim($dn))) {
+        return $dn;
+    }
+    return '';
+}
 
 
 $valid		= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $etape		= isset($_POST["etape"]) ? $_POST["etape"] : '0';
-$adresse	= isset($_POST["adresse"]) ? $_POST["adresse"] : NULL;
-$port		= isset($_POST["port"]) ? $_POST["port"] : NULL;
-$login_ldap	= isset($_POST["login_ldap"]) ? $_POST["login_ldap"] : NULL;
-$pwd_ldap	= isset($_POST["pwd_ldap"]) ? $_POST["pwd_ldap"] : NULL;
+$adresse	= isset($_POST["adresse"]) ? validateLdapAddress($_POST["adresse"]) : '';
+$port		= isset($_POST["port"]) ? validateLdapPort($_POST["port"]) : '';
+$login_ldap	= isset($_POST["login_ldap"]) ? $_POST["login_ldap"] : '';
+$pwd_ldap	= isset($_POST["pwd_ldap"]) ? $_POST["pwd_ldap"] : '';
 $pwd_ldap	= unslashes($pwd_ldap);
 $use_tls	= FALSE;
 if (isset($_POST["use_tls"]) && $_POST["use_tls"] == 'y')
@@ -57,9 +90,11 @@ $ldap_filter = isset($_POST["ldap_filter"]) ? validateLdapFilter($_POST["ldap_fi
 $ldap_group_filter = isset($_POST["ldap_group_filter"]) ? validateLdapFilter($_POST["ldap_group_filter"]) : '';
 
 // Validation des autres paramètres LDAP
-$base_ldap = isset($_POST["base_ldap"]) ? ldap_escape($_POST["base_ldap"], "", LDAP_ESCAPE_DN) : '';
-$base_ldap_autre = isset($_POST["base_ldap_autre"]) ? ldap_escape($_POST["base_ldap_autre"], "", LDAP_ESCAPE_DN) : '';
-$ldap_group_base = isset($_POST["ldap_group_base"]) ? ldap_escape($_POST["ldap_group_base"], "", LDAP_ESCAPE_DN) : '';
+// Note: Les DN saisis ne doivent pas être échappés car ils sont déjà valides.
+// ldap_escape() avec LDAP_ESCAPE_DN échappe les séparateurs (= et ,), rendant le DN invalide.
+$base_ldap = isset($_POST["base_ldap"]) ? validateLdapDn($_POST["base_ldap"]) : '';
+$base_ldap_autre = isset($_POST["base_ldap_autre"]) ? validateLdapDn($_POST["base_ldap_autre"]) : '';
+$ldap_group_base = isset($_POST["ldap_group_base"]) ? validateLdapDn($_POST["ldap_group_base"]) : '';
 
 // Validation des attributs LDAP
 $ldap_group_member_attr = isset($_POST["ldap_group_member_attr"]) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_POST["ldap_group_member_attr"]) : '';
@@ -208,33 +243,34 @@ if (isset($_POST['reg_ldap_statut']))
 		{
 			// On a ouvert un fichier config_ldap.inc.php
 			$conn = "<"."?php\n";
+			$conn .= "# Fichier de configuration LDAP généré automatiquement\n";
 			$conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
 			$conn .= "# ligne suivante : l'adresse de l'annuaire LDAP.\n";
 			$conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"ldap://localhost\"\n";
-			$conn .= "\$ldap_adresse='".$adresse."';\n";
+			$conn .= "\$ldap_adresse = ".var_export($adresse, true).";\n";
 			$conn .= "# ligne suivante : le port utilisé\n";
-			$conn .= "\$ldap_port='".$port."';\n";
+			$conn .= "\$ldap_port = ".var_export($port, true).";\n";
 			$conn .= "# ligne suivante : l'identifiant et le mot de passe dans le cas d'un accès non anonyme\n";
-			$conn .= "\$ldap_login='".$login_ldap."';\n";
+			$conn .= "\$ldap_login = ".var_export($login_ldap, true).";\n";
 			$conn .= "# Remarque : des problèmes liés à un mot de passe contenant un ou plusieurs caractères accentués ont déjà été constatés.\n";
-			$conn .= "\$ldap_pwd='".addslashes($pwd_ldap)."';\n";
+			$conn .= "\$ldap_pwd = ".var_export($pwd_ldap, true).";\n";
 			$conn .= "# ligne suivante : le chemin d'accès dans l'annuaire\n";
-			$conn .= "\$ldap_base='".$base_ldap."';\n";
+			$conn .= "\$ldap_base = ".var_export($base_ldap, true).";\n";
 			$conn .= "# ligne suivante : filtre LDAP supplémentaire (facultatif)\n";
-			$conn .= "\$ldap_filter='".$ldap_filter."';\n";
+			$conn .= "\$ldap_filter = ".var_export($ldap_filter, true).";\n";
 			$conn .= "# ligne suivante : utiliser TLS\n";
 			if ($use_tls)
-				$conn .= "\$use_tls=TRUE;\n";
+				$conn .= "\$use_tls = TRUE;\n";
 			else
-				$conn .= "\$use_tls=FALSE;\n";
+				$conn .= "\$use_tls = FALSE;\n";
 			$conn .= "# Attention : si vous configurez manuellement ce fichier (sans passer par la configuration en ligne)\n";
 			$conn .= "# vous devez tout de même activer LDAP en choisissant le \"statut par défaut des utilisateurs importés\".\n";
 			$conn .= "# Pour cela, rendez-vous sur la page : configuration -> Configuration LDAP.\n";
 			$conn .= "\n#SE3 variables\n";
-			$conn .= "\$ldap_group_member_attr=\"{$ldap_group_member_attr}\";\n";
-			$conn .= "\$ldap_group_base=\"{$ldap_group_base}\";\n";
-			$conn .= "\$ldap_group_filter=\"{$ldap_group_filter}\";\n";
-			$conn .= "\$ldap_group_user_field=\"{$ldap_group_user_field}\";\n";
+			$conn .= "\$ldap_group_member_attr = ".var_export($ldap_group_member_attr, true).";\n";
+			$conn .= "\$ldap_group_base = ".var_export($ldap_group_base, true).";\n";
+			$conn .= "\$ldap_group_filter = ".var_export($ldap_group_filter, true).";\n";
+			$conn .= "\$ldap_group_user_field = ".var_export($ldap_group_user_field, true).";\n";
 			$conn .= "?".">";
 			@fputs($f, $conn);
 			if (!@fclose($f))
@@ -313,19 +349,20 @@ if (isset($_POST['reg_ldap_statut']))
 			$trad['dSelect_chemin_ldap'] .= " />\n";
 			$trad['dSelect_chemin_ldap'] .= "<label for=\"autre\">".encode_message_utf8("Précisez le chemin : ")."</label>\n ";
 			if (isset($_POST["ldap_base"]))
-				$ldap_base = $_POST["ldap_base"];
+				$ldap_base_display = validateLdapDn($_POST["ldap_base"]);
 			else
-				$ldap_base ="";
+				$ldap_base_display ="";
 			if (isset($_POST["ldap_filter"]))
-				$ldap_filter = $_POST["ldap_filter"];
-			else $ldap_filter ="";
-			$trad['dSelect_chemin_ldap'] .= "<input type=\"text\" name=\"base_ldap_autre\" value=\"$ldap_base\" size=\"40\" />\n";
+				$ldap_filter_display = validateLdapFilter($_POST["ldap_filter"]);
+			else 
+				$ldap_filter_display ="";
+			$trad['dSelect_chemin_ldap'] .= "<input type=\"text\" name=\"base_ldap_autre\" value=\"".htmlspecialchars($ldap_base_display)."\" size=\"40\" />\n";
 
-			$trad['dAdresseLDAP']	= $adresse;
-			$trad['dPortLDAP']		= $port;
-			$trad['dLoginLDAP']		= $login_ldap;
-			$trad['dPwdLDAP']		= $pwd_ldap;
-			$trad['dFilterLDAP']	= $ldap_filter;
+			$trad['dAdresseLDAP']	= htmlspecialchars($adresse);
+			$trad['dPortLDAP']		= htmlspecialchars($port);
+			$trad['dLoginLDAP']		= htmlspecialchars($login_ldap);
+			$trad['dPwdLDAP']		= htmlspecialchars($pwd_ldap);
+			$trad['dFilterLDAP']	= htmlspecialchars($ldap_filter);
 			if ($use_tls)
 				$trad['dUseTLS']	= 'y';
 
@@ -333,9 +370,9 @@ if (isset($_POST['reg_ldap_statut']))
 		else
 		{
 			$trad['dConnexionReussi'] = 0;
-			$trad['dAdresseLDAP']	= $adresse;
-			$trad['dPortLDAP']		= $port;
-			$trad['dLoginLDAP']		= $login_ldap;
+			$trad['dAdresseLDAP']	= htmlspecialchars($adresse);
+			$trad['dPortLDAP']		= htmlspecialchars($port);
+			$trad['dLoginLDAP']		= htmlspecialchars($login_ldap);
 			if ($use_tls)
 				$trad['dUseTLS']	= 'y';
 		}
@@ -465,23 +502,23 @@ if (isset($_POST['reg_ldap_statut']))
 				$trad['dFichierCongLDAP'] = 1;
 				$trad['dMesgTitreConfigActuel'] = "Configuration actuelle";
 				$trad['dMesgConfActuel'] = "(Informations contenues dans le fichier \"config_ldap.inc.php\") :";
-				$trad['dMesgConfActuel'] .= "<li>Adresse de l'annuaire LDAP <b>: ".$ldap_adresse."</b></li>";
-				$trad['dMesgConfActuel'] .= "<li>Port utilisé : <b>".$ldap_port."</b></li>";
+				$trad['dMesgConfActuel'] .= "<li>Adresse de l'annuaire LDAP <b>: ".htmlspecialchars($ldap_adresse)."</b></li>";
+				$trad['dMesgConfActuel'] .= "<li>Port utilisé : <b>".htmlspecialchars($ldap_port)."</b></li>";
 				if ($test_chemin == 'failed')
-					$trad['dMesgConfActuel'] .= "<li><div class=\"alert alert-danger\" role=\"alert\">Chemin d'accès dans l'annuaire : <b> ".$ldap_base."</b></div></li>";
+					$trad['dMesgConfActuel'] .= "<li><div class=\"alert alert-danger\" role=\"alert\">Chemin d'accès dans l'annuaire : <b> ".htmlspecialchars($ldap_base)."</b></div></li>";
 				else
-					$trad['dMesgConfActuel'] .= "<li>Chemin d'accès dans l'annuaire : <b> ".$ldap_base."</b></li>";
+					$trad['dMesgConfActuel'] .= "<li>Chemin d'accès dans l'annuaire : <b> ".htmlspecialchars($ldap_base)."</b></li>";
 				if ($ldap_filter!="")
 					$ldap_filter_text = $ldap_filter;
 				else
 					$ldap_filter_text = "non";
 				if (($test_chemin == 'failed') && ($ldap_filter!=""))
-					$trad['dMesgConfActuel'] .= "<li><div class=\"alert alert-danger\" role=\"alert\">Filtre LDAP supplémentaire : <b> ".$ldap_filter_text."</b></div></li>";
+					$trad['dMesgConfActuel'] .= "<li><div class=\"alert alert-danger\" role=\"alert\">Filtre LDAP supplémentaire : <b> ".htmlspecialchars($ldap_filter_text)."</b></div></li>";
 				else
-					$trad['dMesgConfActuel'] .= "<li>Filtre LDAP supplémentaire : <b> ".$ldap_filter_text."</b></li>";
+					$trad['dMesgConfActuel'] .= "<li>Filtre LDAP supplémentaire : <b> ".htmlspecialchars($ldap_filter_text)."</b></li>";
 				if ($ldap_login) {
 					$trad['dMesgConfActuel'] .= "<li>Compte pour l'accès : <br />";
-					$trad['dMesgConfActuel'] .= "Identifiant : <b>".$ldap_login."</b><br />";
+					$trad['dMesgConfActuel'] .= "Identifiant : <b>".htmlspecialchars($ldap_login)."</b><br />";
 					$ldap_pwd_hide = "";
 					for ($i=0;$i<strlen($ldap_pwd);$i++)
 						$ldap_pwd_hide .= "*";
