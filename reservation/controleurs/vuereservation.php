@@ -3,7 +3,7 @@
  * vuereservation.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-20 15:53$
+ * Dernière modification : $Date: 2026-05-08 15:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Since 2003 Team DEVOME - JeromeB
@@ -324,7 +324,7 @@ if (($fin_session == 'n') && ($userName!='') && (authGetUserLevel($userName, $ro
 			if ($_SESSION['session_message_error'] == "")
 			{
 				$_SESSION['displ_msg'] = "yes";
-				$_SESSION["msg_a_afficher"] = get_vocab("un email envoye")." ".clean_input($_GET["mail_exist"]);
+				$_SESSION["msg_a_afficher"] = get_vocab("un_email_envoye")." ".clean_input($_GET["mail_exist"]);
 			}
             else
                 display_mail_msg();
