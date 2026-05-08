@@ -31,7 +31,7 @@ $user =$d['gNomUser'];
 // les variables attendues et leur type
 $form_vars = array(
   'Err'                => 'string',
-  'envoyer_notif'      => 'string',
+  'envoyer_notif'      => 'int', // 0 ou 1
   'create_by'          => 'string',
   'name'               => 'string',
   'description'        => 'string',
@@ -420,9 +420,14 @@ try {
     $statut_entry = isset($statut_entry)? $statut_entry : "-";
     $rep_jour_c = isset($rep_jour_)? $rep_jour_ : 0;
     $cycle_cplt = isset($cycle_cplt)? intval($cycle_cplt) : 0;
-    $envoyer_notif = 1;
-    if(isset($envoyer_notif) && ($envoyer_notif == 'y'))
+
+    if(authGetUserLevel($user,$room_id,'room') < 3)
+        $envoyer_notif = 1;
+    elseif(isset($envoyer_notif) && ($envoyer_notif == 1))
+        $envoyer_notif = 1;
+    else
         $envoyer_notif = 0;
+
     if ($cycle_cplt)
         $rep_jour_c =-1; // indique que le cycle complet est sélectionné
     if (($rep_type == 3) && ($rep_month == 3))
@@ -753,13 +758,13 @@ try {
                         else
                             $message_error = send_mail($id_first_resa, 1, $dformat, array(), $oldRessource);
                 }
-				else // ici $id_first_resa n'est pas défini ou nul, i.e. la série de réservations n'est pas posée => message à modifier ?
-				{/*
+				/*else // ici $id_first_resa n'est pas défini ou nul, i.e. la série de réservations n'est pas posée => message à modifier ?
+				{
 					if ($send_mail_moderate)
 						$message_error = send_mail($id_first_resa, 5, $dformat);
 					else
-						$message_error = send_mail($id_first_resa, 1, $dformat);*/
-				}
+						$message_error = send_mail($id_first_resa, 1, $dformat);
+				}*/
 			}
             mrbsDelEntry(getUserName(), $id, 1, 1);
 		}
@@ -772,7 +777,7 @@ try {
 			if($id > 0)
 				$differenceAvAp = compareEntrys($id, $start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $clef, $courrier,$nbparticipantmax);
 			mrbsCreateSingleEntry($id, $start_time, $end_time, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $statut_entry, $clef, $courrier,$nbparticipantmax);
-			if($id == 0 || $id == NULL)
+			if($id == 0 || $id == NULL) // Création réservation unique
 			{
 				$id = grr_sql_insert_id();
 				insertLogResa($id, 1, 'Création via calendrier');
@@ -784,8 +789,9 @@ try {
 						$message_error = send_mail($id,1,$dformat);
 				}
 			}
-			else
+			else // Modification réservation unique
 			{
+                $differenceAvAp = $differenceAvAp."::".$envoyer_notif;
 				insertLogResa($id, 2, $differenceAvAp);
 				if (Settings::get("automatic_mail") == 'yes' && $envoyer_notif == 1)
 				{
