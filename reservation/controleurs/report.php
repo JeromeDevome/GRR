@@ -283,6 +283,7 @@ if (isset($_GET["is_posted"]))
 	//  18  [17]  moderation -> e.moderate
 	//  19  [18]  resa confidentielle -> r.confidentiel_resa
 	//  20  [19]  id ressource -> e.room_id
+	//  21  [20]  nom du site -> s.sitename
     // Tableau des ressources invisibles pour l'utilisateur
     $sql = "SELECT distinct e.id, e.start_time, e.end_time, e.name, e.description, "
     . "e.type, e.beneficiaire, "

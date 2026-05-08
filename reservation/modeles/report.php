@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-10 10:45$
+ * Dernière modification : $Date: 2026-05-08 15:45$
  * @author    JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -30,7 +30,7 @@ function reporton(&$row, $dformat)
 
 	$site = "";
 	if (Settings::get("module_multisite") == 'Oui')
-		$site = $row[18];
+		$site = $row[20];
 
 	//Affichage de l'heure et de la durée de réservation
 	if ($enable_periods == 'y')
