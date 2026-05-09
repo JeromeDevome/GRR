@@ -149,6 +149,15 @@
                                             <input class="custom-control-input custom-control-input-danger" type="checkbox" id="2userusager" name="2userusager">
                                             <label for="2userusager" class="custom-control-label">{{ trad.admin_user }} - {{ trad.statut_user }}</label>
                                         </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input custom-control-input-danger" type="checkbox" id="2usergroupe" name="2usergroupe">
+                                            <label for="2usergroupe" class="custom-control-label">{{ trad.admin_user }} {{ trad.admin_groupe }} - <select name="2usergroupeid">
+                                                <option value="0">---</option>
+                                                {% for groupe in listeGroupes %}
+                                                    <option value="{{ groupe.idgroupe }}">{{ groupe.nom }}</option>
+                                                {% endfor %}
+                                            </select></label>
+                                        </div>
                                         
                                     </div>
                                     <div class="card-footer">

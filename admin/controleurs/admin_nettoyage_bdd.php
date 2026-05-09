@@ -40,6 +40,8 @@ $resasup2 = isset($_POST["2resasup"]) ? (($_POST["2resasup"])) : NULL;
 $resa2 = isset($_POST["2resa"]) ? (($_POST["2resa"])) : NULL;
 $uservisiteur2 = isset($_POST["2uservisiteur"]) ? (($_POST["2uservisiteur"])) : NULL;
 $userusager2 = isset($_POST["2userusager"]) ? (($_POST["2userusager"])) : NULL;
+$usergroupe2 = isset($_POST["2usergroupe"]) ? (($_POST["2usergroupe"])) : NULL;
+$usergroupeid2 = isset($_POST["2usergroupeid"]) ? intval(clean_input($_POST["2usergroupeid"])) : 0;
 
 $msg = "";
 $trad = $vocab;
@@ -185,6 +187,25 @@ elseif ($numForm == 2) {
         }
     }
 
+    if ($usergroupe2 == "on" && $usergroupeid2 > 0) {
+        $sql = "SELECT login FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE idgroupes = '".$usergroupeid2."'";
+        $res = grr_sql_query($sql);
+        if ($res)
+        {
+            for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+            {
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='$row[0]'");
+                grr_sql_command("DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$row[0]'");
+            }
+        }
+    }
+
 }
 
 if ($numAction == 1) {
@@ -202,9 +223,22 @@ while ($j < count($liste_tables))
 }
 
 
+// Liste les groupes de l'utilisateur
+$sql = "SELECT idgroupes, nom FROM ".TABLE_PREFIX."_groupes WHERE 1 ORDER BY nom";
+$res = grr_sql_query($sql);
+$listeGroupes = array();
+if ($res)
+{
+    for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+    {
+        $listeGroupes[] = array('idgroupe' => $row[0], 'nom' => $row[1]);
+    }
+}
 
 
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'listeTables' => $listeTables));
+
+
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'listeTables' => $listeTables, 'listeGroupes' => $listeGroupes));
 
 ?>
