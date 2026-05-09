@@ -45,7 +45,7 @@ while ($row = mysqli_fetch_assoc($res)) {
                       'titre' => $row["name"],
                       'sup' => $row["supprimer"]);
 }
-
+/*
 $sql = "SELECT count(*) as cnt, FROM_UNIXTIME(date,'%d-%m-%Y') as date FROM ".TABLE_PREFIX."_log_resa ORDER BY date limit 1";
 $res = grr_sql_query($sql);
 
@@ -58,6 +58,6 @@ if ($row = mysqli_fetch_assoc($res)) {
 }
 
 $d['TitreDateLog'] = get_vocab("log_mail").$d['DatePlusAncienne'];
-
+*/
 echo $twig->render('admin_log_resa_liste.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'logsmail' => $logsMail ));
 ?>
