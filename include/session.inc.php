@@ -647,7 +647,9 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 	$_SESSION['prenom'] = $row['prenom'];
 	$_SESSION['nom'] = $row['nom'];
     $_SESSION['statut'] = $row['statut'];
-	$_SESSION['start'] = date("Y-m-d H:i:s");
+	$res_now = grr_sql_query("SELECT now() as current_start");
+	$row_now = grr_sql_row_keyed($res_now, 0);
+	$_SESSION['start'] = $row_now['current_start'];
 	$_SESSION['maxLength'] = Settings::get("sessionMaxLength");
 	
 	// Régénérer l'ID de session pour prévenir les attaques par Session Fixation
