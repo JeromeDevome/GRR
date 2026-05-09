@@ -233,12 +233,16 @@
 						{% elseif log.action == 7 %}
 							<i class="fa fa-key bg-orange"></i>
 						{% elseif log.action == 8 %}
-							<i class="fa fa-envelope bg-orange"></i>
+							{% if log.erreur %}
+								<i class="fa fa-envelope bg-red"></i>
+							{% else %}
+								<i class="fa fa-envelope bg-green"></i>
+							{% endif %}
 						{% endif %}
 
-						<span class="time"><i class="fa fa-clock-o"></i> {{ log.date|date('H:i:s') }}</span>
+						<span class="time"><i class="fa fa-clock-o"></i> {{ log.date|date('Y-m-d H:i:s') }}</span>
 
-						<h3 class="timeline-header"><a href="#">{{ log.identifiant }}</a></h3>
+						<h3 class="timeline-header"><a href="#">{{ log.identifiant }}</a> {% if log.erreur %}<small class="text-danger">{{ trad.error }}</small>{% endif %}</h3>
 
 						<div class="timeline-body">
 							{{ log.infos |raw }}

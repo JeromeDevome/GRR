@@ -1311,6 +1311,9 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_userbook_room ADD CONSTRAINT grr_j_userbook_room_pk PRIMARY KEY (login,id_room,idgroupes);");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_j_group_room (`idgroupes` int NOT NULL, `id_room` int NOT NULL DEFAULT '0', PRIMARY KEY (`idgroupes`,`id_room`));");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD template VARCHAR(50) NULL DEFAULT NULL AFTER message;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD idresa INT NULL DEFAULT NULL AFTER template;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD type TINYINT NULL DEFAULT NULL AFTER idresa;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD erreur TEXT NOT NULL DEFAULT '' AFTER type;");
 
 		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='webmaster_email'");
 		if ($req == -1)

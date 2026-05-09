@@ -20,6 +20,7 @@
 				  <table id="tablelog" class="table display table-bordered table-striped">
 						<thead>
 							<tr>
+							  <th>Id</th>
 							  <th>Début réservation</th>
 							  <th>Fin réservation</th>
 							  <th>Nom</th>
@@ -29,6 +30,7 @@
 						<tbody>
 							{% for log in logsmail %}
 								<tr>
+									<td>{{ log.idresa }}</td>
 									<td data-order="{{log.debutts}}">{{ log.debut }}</td>
 									<td data-order="{{log.fints}}">{{ log.fin }}</td>
 									<td>{{ log.titre }} {% if log.sup == 1 %} <i class="fa fa-trash"></i>{%endif%}</td>

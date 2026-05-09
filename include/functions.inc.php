@@ -3229,7 +3229,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$templateMail1 = Pages::get('mails_resa_'.$action.'_1_'.$locale);
 		$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
 		$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
-		Email::Envois($destinataire1, $sujetEncode1, $msgEncode1, $expediteur1, '', '', $repondre1,'mails_resa_'.$action.'_1_'.$locale);
+		Email::Envois($destinataire1, $sujetEncode1, $msgEncode1, $expediteur1, '', '', $repondre1,'mails_resa_'.$action.'_1_'.$locale, $id_entry, 1);
 	}
 
 	/*
@@ -3260,7 +3260,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$templateMail2 = Pages::get('mails_resa_'.$action.'_2_'.$locale);
 		$sujetEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[0]);
 		$msgEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[1]);
-		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur2, '', '', $repondre2,'mails_resa_'.$action.'_2_'.$locale);
+		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur2, '', '', $repondre2,'mails_resa_'.$action.'_2_'.$locale, $id_entry, 2);
 	}
 
 	/*
@@ -3299,7 +3299,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			$templateMail3 = Pages::get('mails_resa'.$action.'_3_'.$locale);
 			$sujetEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[0]);
 			$msgEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[1]);
-			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale);
+			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale, $id_entry, 3);
 		}
 	}
 

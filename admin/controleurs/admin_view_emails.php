@@ -25,29 +25,31 @@ $idlogmail = isset($_GET["idlogmail"]) ? $_GET["idlogmail"] : NULL;
 get_vocab_admin('admin_view_emails');
 
 // Afficher : Logs
+get_vocab_admin('error');
 get_vocab_admin('date2');
 get_vocab_admin('mail_de');
 get_vocab_admin('mail_a');
 get_vocab_admin('mail_sujet');
 get_vocab_admin('mail_message');
+get_vocab_admin('entryid');
 
 $logsMail = array ();
 $visuMail = array();
 
 if(($idlogmail != NULL) && ($idlogmail != ""))
 {
-	$sql = "SELECT date, de, a, sujet, message FROM ".TABLE_PREFIX."_log_mail WHERE idlogmail = '$idlogmail'";
+	$sql = "SELECT date, de, a, sujet, message, erreur, template, type, idresa FROM ".TABLE_PREFIX."_log_mail WHERE idlogmail = '$idlogmail'";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
 		$row = grr_sql_row($res, 0);
-		$visuMail = array('datets' => $row[0], 'date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => iconv_mime_decode($row[3], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8'), 'message' => $row[4]);
+		$visuMail = array('datets' => $row[0], 'date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => iconv_mime_decode($row[3], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8'), 'message' => $row[4], 'erreur' => $row[5], 'template' => $row[6], 'type' => $row[7], 'idresa' => $row[8]);
 	}
 }
 
 
 
-$sql = "SELECT date, de, a, sujet, message, idlogmail FROM ".TABLE_PREFIX."_log_mail ORDER by date desc";
+$sql = "SELECT date, de, a, sujet, message, idlogmail, erreur, idresa FROM ".TABLE_PREFIX."_log_mail ORDER by date desc";
 $res = grr_sql_query($sql);
 
 $logsMail = array ();
@@ -56,7 +58,7 @@ if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		$logsMail[] = array('idlogmail' => $row[5], 'datets' => $row[0], 'date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => iconv_mime_decode($row[3], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8'), 'message' => substr($row[4], 0, 50));
+		$logsMail[] = array('idlogmail' => $row[5], 'datets' => $row[0], 'date' => date("d-m-Y H:i:s", $row[0]), 'de' => $row[1], 'a' => $row[2], 'sujet' => iconv_mime_decode($row[3], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8'), 'message' => substr($row[4], 0, 50), 'erreur' => $row[6], 'idresa' => $row[7]);
 	}
 }
 

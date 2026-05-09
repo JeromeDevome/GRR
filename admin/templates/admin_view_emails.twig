@@ -11,7 +11,7 @@
 
 	{% if visuMail %}
 	<div class="col-md-12">
-		<div class="card card-primary card-outline">
+		<div class="card {% if visuMail.erreur %}card-danger{% else %}card-success{% endif %} card-outline">
 			<div class="card-body p-0">
 				<div class="mailbox-read-info">
 					<h5>{{ visuMail.sujet }}</h5>
@@ -19,12 +19,22 @@
 						<span class="mailbox-read-time float-right">{{ visuMail.date }}</span></h6>
 					<h6>To: {{ visuMail.a }}</h6>
 				</div>
+				{% if visuMail.erreur %}
+				<div class="mailbox-controls with-border text-center">
+					<span class="mailbox-read-time text-danger">{{ trad.error }}: {{ visuMail.erreur }}</span>
+				</div>
+				{% endif %}
 				<div class="mailbox-read-message">
 					<p>{{ visuMail.message|raw }}</p>
 				</div>
+				<div class="mailbox-controls with-border text-center">
+				    <hr>
+					<span class="mailbox-read-time text-info">
+						<i>template: {{ visuMail.template }} | type: {{ visuMail.type }} | idresa: {{ visuMail.idresa }}</i>
+					</span>
+				</div>
 			</div>
 		</div>
-
 	</div>
 	{% endif %}
 
@@ -45,17 +55,21 @@
 							  <th>{{trad.mail_a}}</th>
 							  <th>{{trad.mail_sujet}}</th>
 							  <th>{{trad.mail_message}}</th>
+							  <th>{{trad.entryid}}</th>
+							  <th>{{trad.error}}</th>
 							  <td></td>
 							</tr>
 						</thead>
 						<tbody>
 							{% for log in logsmail %}
-								<tr>
+								<tr {% if log.erreur %} class="table-danger" {% endif %}>
 									<td  data-order="{{log.datets}}">{{ log.date }}</td>
 									<td>{{ log.de }}</td>
 									<td>{{ log.a }}</td>
 									<td>{{ log.sujet }}</td>
 									<td>{{ log.message |striptags }}</td>
+									<td>{{ log.idresa }}</td>
+									<td>{{ log.erreur|slice(0, 8) }}</td>
 									<td><a href="?p=admin_view_emails&amp;idlogmail={{ log.idlogmail }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i></a></td>
 								</tr>
 							{% endfor %}

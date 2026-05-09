@@ -24,6 +24,7 @@ check_access(6, $back);
 get_vocab_admin('admin_view_emails');
 
 // Afficher : Logs
+get_vocab_admin('error');
 get_vocab_admin('date2');
 get_vocab_admin('mail_de');
 get_vocab_admin('mail_a');
@@ -85,6 +86,42 @@ if ($res)
 		$logsResa[] = array('date' => $row[1], 'identifiant' => $row[2], 'action' => $row[3], 'infos' => $row[4]);
 	}
 }
+
+// Historique des notifications liées à la réservation
+$sql = "SELECT date, sujet, type, erreur, idlogmail FROM ".TABLE_PREFIX."_log_mail WHERE idresa = '".$idresa."' ORDER by date asc";
+$res2 = grr_sql_query($sql);
+
+
+if ($res2)
+{
+	for ($i = 0; ($row = grr_sql_row($res2, $i)); $i++)
+	{
+		$type = "";
+		if($row[2] == 1) {
+			$type = get_vocab("mail_desc_dest_adm");
+		} elseif($row[2] == 2) {
+			$type = get_vocab("mail_desc_dest_beneficiaire");
+		} elseif($row[2] == 3) {
+			$type = get_vocab("mail_desc_dest_gestionnaire");
+		}
+
+		$logsResa[] = array('date' => date('Y-m-d H:i:s', $row[0]), 'identifiant' => $type, 'action' => 8, 'infos' => $row[1], 'erreur' => $row[3], 'idlogmail' => $row[4]);
+	}
+}
+
+// Tri global par date
+usort($logsResa, function($a, $b) {
+
+    $dateA = is_numeric($a['date'])
+        ? (int)$a['date']
+        : strtotime($a['date']);
+
+    $dateB = is_numeric($b['date'])
+        ? (int)$b['date']
+        : strtotime($b['date']);
+
+    return $dateA <=> $dateB;
+});
 
 
 

@@ -18,12 +18,14 @@
 
 class Email{
 
-	public static function Envois ($A, $sujet, $message, $DE, $cc1='', $cc2='', $repondre='', $template='') {
+	public static function Envois ($A, $sujet, $message, $DE, $cc1='', $cc2='', $repondre='', $template='', $id_entry = null, $type_destinataire = null) {
 		global $gNbMail, $gMaxMail, $gMailExpediteur;
 
 		if($gNbMail < $gMaxMail || $gMaxMail == -1){
 
 			mb_internal_encoding('utf-8');
+			$success = true;
+			$error = '';
 
 			// Définition $DE par paramètre fonction sinon settings webmaster_email
 			if($DE == '' && !empty($webmaster_email))
@@ -93,10 +95,8 @@ class Email{
 				);
 
 				if(!$mail->send()) {
-					return array(
-						'success' => false,
-						'error' => $mail->ErrorInfo
-					);
+					$success = false;
+					$error = $mail->ErrorInfo;
 				}
 
 		/**  Envois via méthode mail **/
@@ -125,18 +125,24 @@ class Email{
 					"Reply-To: {$repondre}" . "\r\n" .
 					'X-Mailer: PHP/' . phpversion();
 
-				mail($to, $sujet, $message, $headers);
+				if (!mail($to, $sujet, $message, $headers)) {
+					$success = false;
+					$error = error_get_last() ? error_get_last()['message'] : 'Erreur inconnue lors de l\'envoi du mail.';
+				}
 			}
 
-		/** Log email **/
+			/** Log email **/
 			if (Settings::get('grr_mail_method') != 'bloque') {
-				$sql = "INSERT INTO ".TABLE_PREFIX."_log_mail ( date, de, a, sujet, message, template) values (
+				$sql = "INSERT INTO ".TABLE_PREFIX."_log_mail ( date, de, a, sujet, message, template, idresa, type, erreur) values (
 					'" . time() . "',
 					'" . protect_data_sql($DE) . "',
 					'" . protect_data_sql($A) . "',
 					'" . protect_data_sql($sujet) . "',
 					'" . protect_data_sql($message) . "',
-					'" . protect_data_sql($template) . "'
+					'" . protect_data_sql($template) . "',
+					'" . protect_data_sql($id_entry) . "',
+					'" . protect_data_sql($type_destinataire) . "',
+					'" . protect_data_sql($error) . "'
 					)
 				;";
 				grr_sql_query($sql);
@@ -144,7 +150,9 @@ class Email{
 
 			$gNbMail++;
 		}
-		return array('success' => true);
+
+		return array('success' => $success, 'error' => $error);
+
 	}
 }
 ?>

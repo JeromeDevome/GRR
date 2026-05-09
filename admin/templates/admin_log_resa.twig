@@ -76,13 +76,25 @@
 						{% elseif log.action == 7 %}
 							<i class="fa fa-key bg-orange"></i>
 						{% elseif log.action == 8 %}
-							<i class="fa fa-envelope  bg-orange"></i>
+							{% if log.erreur %}
+								<i class="fa fa-envelope bg-red"></i>
+							{% else %}
+								<i class="fa fa-envelope bg-green"></i>
+							{% endif %}
+							
 						{% endif %}
 
 					  <div class="timeline-item">
 						<span class="time"><i class="fa fa-clock-o"></i> {{ log.date|date('H:i:s') }}</span>
 
-						<h3 class="timeline-header"><a href="#">{{ log.identifiant }}</a></h3>
+						<h3 class="timeline-header">
+							{%if log.action == 8 %}
+								<a href="?p=admin_view_emails&amp;idlogmail={{ log.idlogmail }}">{{ log.identifiant }}</a> 
+							{% else %}
+								<a href="admin.php?p=admin_user_modify&amp;user_login={{ log.identifiant }}">{{ log.identifiant }}</a> 
+							{% endif %}
+							{% if log.erreur %}<small class="text-danger">{{ trad.error }}</small>{% endif %}
+						</h3>
 
 						<div class="timeline-body">
 						  {{ log.infos |raw }}

@@ -77,17 +77,54 @@ if ($user_level <= 2)
 
 // Historique de la réservation
 $sql = "SELECT idlogresa, date, identifiant, action, infoscomp FROM ".TABLE_PREFIX."_log_resa WHERE idresa = '".$idresa."' ORDER by date asc";
-$res = grr_sql_query($sql);
+$res1 = grr_sql_query($sql);
 
 $logsResa = array ();
 
-if ($res)
+if ($res1)
 {
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	for ($i = 0; ($row = grr_sql_row($res1, $i)); $i++)
 	{
 		$logsResa[] = array('date' => $row[1], 'identifiant' => $row[2], 'action' => $row[3], 'infos' => $row[4]);
 	}
 }
+
+// Historique des notifications liées à la réservation
+$sql = "SELECT date, sujet, type, erreur FROM ".TABLE_PREFIX."_log_mail WHERE idresa = '".$idresa."' ORDER by date asc";
+$res2 = grr_sql_query($sql);
+
+
+if ($res2)
+{
+	for ($i = 0; ($row = grr_sql_row($res2, $i)); $i++)
+	{
+		$type = "";
+		if($row[2] == 1) {
+			$type = get_vocab("mail_desc_dest_adm");
+		} elseif($row[2] == 2) {
+			$type = get_vocab("mail_desc_dest_beneficiaire");
+		} elseif($row[2] == 3) {
+			$type = get_vocab("mail_desc_dest_gestionnaire");
+		}
+
+		$logsResa[] = array('date' => date('Y-m-d H:i:s', $row[0]), 'identifiant' => $type, 'action' => 8, 'infos' => $row[1], 'erreur' => $row[3]);
+	}
+}
+
+// Tri global par date
+usort($logsResa, function($a, $b) {
+
+    $dateA = is_numeric($a['date'])
+        ? (int)$a['date']
+        : strtotime($a['date']);
+
+    $dateB = is_numeric($b['date'])
+        ? (int)$b['date']
+        : strtotime($b['date']);
+
+    return $dateA <=> $dateB;
+});
+
 
 echo $twig->render('resahistorique.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'resa' => $resa, 'logsresa' => $logsResa));
 ?>
