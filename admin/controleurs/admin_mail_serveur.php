@@ -111,7 +111,7 @@ if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 	$sujetMail = str_replace(array_keys($codes), $codes, $templateMail[0]);
 	$txtMail = str_replace(array_keys($codes), $codes, $templateMail[1]);
 	
-	$resultat_mail = Email::Envois($_GET['mail_test'], $sujetMail, $txtMail, Settings::get('grr_mail_from'), '', '');
+	$resultat_mail = Email::Envois($_GET['mail_test'], $sujetMail, $txtMail, Settings::get('grr_mail_from'), '', '', '', 'mails_test_'.$locale);
 	if (!$resultat_mail['success']) {
 		$msg .= "Erreur envoi mail de test: " . htmlspecialchars($resultat_mail['error']) . "<br />";
 	} else {

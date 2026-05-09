@@ -125,7 +125,7 @@ if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 		$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
 
 		// Mail au demandeur
-		Email::Envois($_POST['email'], $sujetEncode1, $msgEncode1, $_POST['email'], '', '');
+		Email::Envois($_POST['email'], $sujetEncode1, $msgEncode1, $_POST['email'], '', '', '', 'mails_demandecompte_'.$locale);
 
 		// Mail au gestionnaire user si il y en a
 		$sql = "SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE statut ='gestionnaire_utilisateur'";
@@ -143,7 +143,7 @@ if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 			foreach ($tab_destinataire as $value){
 				$destinataire .= $value.";";
 			}
-			Email::Envois($destinataire, $sujetEncode1, $msgEncode1, $expediteur, '', '', $expediteur);
+			Email::Envois($destinataire, $sujetEncode1, $msgEncode1, $expediteur, '', '', '', 'mails_demandecompte_'.$locale);
 		} 
 		else // si pas de gestionnaire d'utilisateur, aux admins
 		{
@@ -162,7 +162,7 @@ if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 				foreach ($tab_destinataire as $value){
 					$destinataire .= $value.";";
 				}
-				Email::Envois($destinataire, $sujetEncode1, $msgEncode1, '', '', $expediteur);
+				Email::Envois($destinataire, $sujetEncode1, $msgEncode1, '', '', $expediteur, '', 'mails_demandecompte_'.$locale);
 			} 
 		}
 

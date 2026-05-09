@@ -129,7 +129,7 @@ if (isset($choix) && $choix > 0)
 					$templateMail1 = Pages::get('mails_demandecompte2_'.$locale);
 					$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
 					$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
-					Email::Envois($demande['email'], $sujetEncode1, $msgEncode1, $expediteur, '', '');
+					Email::Envois($demande['email'], $sujetEncode1, $msgEncode1, $expediteur, '', '', '', 'mails_demandecompte2_'.$locale);
 
 				}
 			}
@@ -143,7 +143,7 @@ if (isset($choix) && $choix > 0)
 			$templateMail2 = Pages::get('mails_demandecompte3_'.$locale);
 			$sujetEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[0]);
 			$msgEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[1]);
-			Email::Envois($demande['email'], $sujetEncode2, $msgEncode2, $expediteur, '', '');
+			Email::Envois($demande['email'], $sujetEncode2, $msgEncode2, $expediteur, '', '', '', 'mails_demandecompte3_'.$locale);
 		}
 
 		// Dans tout les cas on met à jour le choix sauf si il y a eu une erreur
