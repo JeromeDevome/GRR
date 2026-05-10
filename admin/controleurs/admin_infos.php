@@ -116,6 +116,9 @@ $d['date'] = date('d-m-Y');
 $d['heure'] = date("H:i");
 $d['timezone'] = date_default_timezone_get();
 
+$res_now = grr_sql_query("SELECT now() as current_start");
+$row_now = grr_sql_row_keyed($res_now, 0);
+$d['dateServeurSQL'] = $row_now['current_start'];
 
 // Recherche mise à jour sur serveur GRR
 list($d['maj_SiteGRR'], $d['maj_SiteGRR_Num'], $d['maj_SiteGRR_Version']) = AdminFonctions::RechercheMajGRR();

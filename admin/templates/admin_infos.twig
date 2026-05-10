@@ -73,9 +73,10 @@ Timezone : {{ d.timezone }}</textarea></li>
 
 							<li class="list-group-item"><b class="col col-sm-12">Temps : </b></li>
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Time</p><b>{{ d.time }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Date du serveur (Jour-Mois-Annee)</p><b>{{ d.date }}</b></div></li>
-							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Heure du serveur</p><b>{{ d.heure }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Date & heure PHP (Jour-Mois-Annee)</p><b>{{ d.date }} {{ d.heure }}</b></div></li>
+							
 							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Timezone (date_default_timezone_set)</p><b>{{ d.timezone }}</b></div></li>
+							<li class="list-group-item"><div class="row"><p class="col col-sm-6">Date & heure du serveur SQL</p><b>{{ d.dateServeurSQL }}</b></div></li>
 						</ul>
 					</div>
 
