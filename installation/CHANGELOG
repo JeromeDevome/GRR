@@ -1,3 +1,37 @@
+Version 4.6.0 - En développement
+[Ajout] Drag & Drop des réservations - @JeromeDevome
+[Ajout] Ajout style des cellules associées à des réservations dont la liste de participants est complète - af1c971dc - @ynaessens
+[Ajout] Définition du nombre max de résa affiché dans la vue mois via paramètre configurable - 1a7e8cf41 & 36763442b - @JeromeDevome
+[Ajout] Affichage des mails dans l'historique de la réservation - 9e3ca3931 - @JeromeDevome
+[Ajout] Suppression des utilisateurs par groupe - a9d472943 - @JeromeDevome
+[Ajout] Modéreration par lot - 37fba38 - @JeromeDevome
+[Ajout] Heure du serveur SQL dans l'administ pour debug - f7c7865b3 - @JeromeDevome
+[Correction] Prise en compte des balises html dans le message d'accueil - 739c15363 -@JeromeDevome
+[Correction] Retour sur la vue précédente après une réservation - acc2636f3 - @JeromeDevome
+[Correction] Cararactère spécial lors de l'édition d'une réservation - e32aacee3 - @JeromeDevome
+[Correction] Ajout d'un participant par un gestionnaire - ec3bbe686 - @JeromeDevome
+[Correction] Changement de langue via les drapeaux - b773092c8 - @JeromeDevome
+[Correction] Affichage de la vue Annee All - 396a4f4ce - @JeromeDevome
+[Correction] Fonction mail, compatibilité UTF-8 php 8.2 - d17288619 - @JeromeDevome
+[Correction] Import CSV utilisateurs avec caractère UTF-8 - c1f0d0c6c - @JeromeDevome
+[Correction] Masquer le menu gauche par défaut - 11a2bac61 - @JeromeDevome
+[Correction] Fermeture correctement des sessions - 67b9b3f11 - @JeromeDevome
+[Correction] Nom du site dans recherche et stat - eb11092e6 - @JeromeDevome
+[Correction] Configation LDAP - bdffa931f - @JeromeDevome                                         !!! A tester
+[Correction] Accès à la fiche ressource pour le gestionnaire - 89774fd9d - @JeromeDevome
+[Correction] Case "Ne pas notifier le bénéficiaire" - 4155da3eb - @JeromeDevome
+[Correction] Compteur dans les logs de réservation - bdbbe7b5b - @JeromeDevome
+[Correction] Heure début de ssession, basé sur heure du serveur - 55063df0f - @JeromeDevome
+[Modification] Mise à jour des fichiers langues - @ynaessens & @JeromeDevome
+[Modification] Refonte de l'envois des mails - b47bedfbd - @JeromeDevome
+[Modification] Réorganisations des fonctions mails dans l'administration - d5ea2771e - @JeromeDevome
+[Modification] Ne pas afficher la poup d'infos si vide - 46f759acc - @JeromeDevome
+[Modification] Supression popup JS dans l'administration - b792661af & e315ceb2a - 7b1a208d1 @JeromeDevome
+[Modification] Amélioration des logs email (erreur smtp, template...) - 9e3ca3931 - @JeromeDevome
+[Modification] Mise à jour libraires PHP (symfony, twig, phpcas, tcpdf) - @JeromeDevome
+[Modification] Mise à jour libraires JS (pdfmake, dataTables) - @JeromeDevome
+
+
 Version 4.5.4 - 22/03/2026 Généré par @JeromeDevome
 [Ajout] Variables pour désactiver les alertes serveurs - f50371694 - @JeromeDevome
 [Ajout] Widget de tableau de bord pour le contrôle des mises à jour - 5b5b6fe9a - @JeromeDevome
