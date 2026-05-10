@@ -133,7 +133,7 @@
                                 <i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
                             </div>
                         {% elseif jourR.plageLibre %}
-                        <div class="dragdrop empty_cell" data-day="{{jourR.jour}}" data-month="{{jourR.mois}}" data-year="{{jourR.annee}}" data-ressource="{{ressource.id}}" data-plage-libre="{{jourR.plageLibre ? '1' : '0'}}">
+                        <div class="empty_cell" data-day="{{jourR.jour}}" data-month="{{jourR.mois}}" data-year="{{jourR.annee}}" data-ressource="{{ressource.id}}" data-plage-libre="{{jourR.plageLibre ? '1' : '0'}}">
                             <a href="app.php?p=editentree&amp;room={{ressource.id}}&amp;page=semaine_all&amp;year={{jourR.annee}}&amp;month={{jourR.mois}}&amp;day={{jourR.jour}}&amp;
                             {% if d.usePeriode == "y" %}
                                 period=&amp;

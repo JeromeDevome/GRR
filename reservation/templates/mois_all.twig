@@ -79,7 +79,7 @@
 					{% else %} <!-- Cellule jour du mois sélectionné-->
 						<td>
 
-							<div class="dragdrop monthday {{cellule.class}}" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}" data-plage-libre="{{cellule.plageLibre ? '1' : '0'}}">
+							<div class="dragdrop monthday {{cellule.class}}" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}" data-plage-libre="1">
 								<!-- Numéro du jour -->
 								<a title="{{trad.see_all_the_rooms_for_the_day}}" href="app.php?p=jour&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;area={{d.area}}">{{cellule.numJour}}
 									{% if settings.jours_cycles_actif == "Oui" and cellule.jourCycle > -1 %}
@@ -89,7 +89,7 @@
 							</div>
 
                             {% for resa in cellule.reservations %}
-                                <table class="pleine table-bordered table-striped">
+                                <table class="resadrag pleine table-bordered table-striped" data-resa-id="{{resa.idresa}}" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}">
                                     <tr>
                                         {{resa.td|raw}}
                                             <span class="small_planning">
@@ -97,7 +97,7 @@
                                                     {% if settings.display_level_view_entry == 0 %}
                                                         <a title="{{resa.titre}}" data-width="675" onclick="request({{resa.idresa}},{{cellule.numJour}},{{d.gMonth}},{{d.gYear}},{{d.room}},'mois_all',readData);" data-rel="popup_name" class="poplight lienCellule">
                                                     {% else %}
-                                                        <a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois_all">
+                                                        <a class="lienCellule" title="{{resa.titre}}" href="app.php?p=vuereservation&amp;id={{resa.idresa}}&amp;day={{cellule.numJour}}&amp;month={{d.gMonth}}&amp;year={{d.gYear}}&amp;page=mois_all">
                                                     {% endif %}
                                                 {% endif %}
                                                 {{resa.texte|raw}}
