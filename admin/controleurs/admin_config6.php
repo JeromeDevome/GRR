@@ -408,6 +408,18 @@ if (isset($_POST['gestion_lien_aide'])) {
     }
 }
 
+// Nombre max de réservations à afficher
+if (isset($_POST['max_resa_affiche'])) {
+    settype($_POST['max_resa_affiche'], 'integer');
+    if ($_POST['max_resa_affiche'] <= 1) {
+        $_POST['max_resa_affiche'] = 1;
+    }
+    if (!Settings::set('max_resa_affiche', $_POST['max_resa_affiche'])) {
+        $msg .= "Erreur lors de l'enregistrement de max_resa_affiche !<br />";
+    }
+}
+
+
 # Lors de l'édition d'un rapport, valeur par défaut en nombre de jours
 # de l'intervalle de temps entre la date de début du rapport et la date de fin du rapport.
 if (isset($_POST['default_report_days'])) {

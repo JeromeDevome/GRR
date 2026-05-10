@@ -523,6 +523,14 @@
 
 						<hr>
 
+						<section id="max_resa_affiche_msg">
+							<h4 class="page-header">{{ trad.max_resa_affiche }}</h4>
+							{{ form.input('max_resa_affiche', trad.max_resa_affiche_explain, settings.max_resa_affiche, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+							<br>
+						</section>
+
+						<hr>
+
 						<section id="default_report_days_msg">
 							<h4 class="page-header">{{ trad.default_report_days_msg }}</h4>
 							{{ form.input('default_report_days', trad.default_report_days_explain, settings.default_report_days, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
