@@ -52,6 +52,8 @@ $year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? intval(
 
 print_header_twig($day, $month, $year, "with_session");
 
+$d['listeLangues'] = $liste_language;
+
 $d['dDay'] = $day;
 $d['dMonth'] = $month;
 $d['dYear'] = $year;
