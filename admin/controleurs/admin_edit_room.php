@@ -2,7 +2,7 @@
 /**
  * admin_edit_room.php
  * Script de création/modification des ressources de l'application GRR
- * Dernière modification : $Date: 2026-05-11 15:00$
+ * Dernière modification : $Date: 2026-05-11 16:16$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -103,7 +103,7 @@ if (!isset($retour_page))
 	$retour_page = substr($retour_page, 0, $long);
 }
 // modification d'une ressource : admin ou gestionnaire
-$user_id = getYUserName();
+$user_id = getUserName();
 $acces_config_ress_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
 if (authGetUserLevel($user_id, $room) < $acces_config_ress_level)
 {
