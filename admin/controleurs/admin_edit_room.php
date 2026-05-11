@@ -2,7 +2,7 @@
 /**
  * admin_edit_room.php
  * Script de création/modification des ressources de l'application GRR
- * Dernière modification : $Date: 2025-12-12 09:27$
+ * Dernière modification : $Date: 2026-05-11 15:00$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -102,10 +102,10 @@ if (!isset($retour_page))
 	$long = strlen($retour_page) - $long_chaine_a_supprimer;
 	$retour_page = substr($retour_page, 0, $long);
 }
-// modification d'une resource : admin ou gestionnaire
-
+// modification d'une ressource : admin ou gestionnaire
+$user_id = getYUserName();
 $acces_config_ress_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
-if (authGetUserLevel(getUserName(), $room) < $acces_config_ress_level)
+if (authGetUserLevel($user_id, $room) < $acces_config_ress_level)
 {
 	showAccessDenied($back);
 	exit();
@@ -120,13 +120,13 @@ if (authGetUserLevel(getUserName(),-1) < 6)
             showAccessDenied($back);
             exit();
         }
-        elseif(authGetUserLevel(getUserName(),$area_id,'area')<4){
+        elseif(authGetUserLevel($user_id,$area_id,'area')<4){
             showAccessDenied($back);
             exit();
         }
     }
 	// Il s'agit d'une modif de ressource
-	elseif (((authGetUserLevel(getUserName(),$room) < 3)) || (!verif_acces_ressource(getUserName(), $room)))
+	elseif (((authGetUserLevel($user_id,$room) < 3)) || (!verif_acces_ressource($user_id, $room)))
 	{
 		showAccessDenied($back);
 		exit();
@@ -426,30 +426,30 @@ get_vocab_admin("save");
 get_vocab_admin("save_and_back");
 
 $trad['dTitrePage'] = get_vocab("match_area").get_vocab('deux_points')." ".$area_name." <span class=\"fa fa-arrow-right\"></span> ".$typeAction;
-$trad['dDroitsDomaine'] = authGetUserLevel(getUserName(),$area_id,"area");
-$trad['dDroitsRessource'] = authGetUserLevel(getUserName(),$room);
+$trad['dDroitsDomaine'] = authGetUserLevel($user_id,$area_id,"area");
+$trad['dDroitsRessource'] = authGetUserLevel($user_id,$room);
 $trad['dIdDomaine'] = $area_id;
 
 // Domaines
 $trad['dEnablePeriods'] = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area where id='".$area_id."'");
 $domaines = array();
 
-if (((authGetUserLevel(getUserName(),$area_id,"area") >=4 ) || (authGetUserLevel(getUserName(),$room) >= 4)) && ($trad['dEnablePeriods'] == 'n'))
+if (((authGetUserLevel($user_id,$area_id,"area") >=4 ) || (authGetUserLevel($user_id,$room) >= 4)) && ($trad['dEnablePeriods'] == 'n'))
 {
 	// les creneaux sont bases sur le temps : on ne peut pas changer une ressource de domaine
-	if(authGetUserLevel(getUserName(),-1,'area') >= 6)
+	if(authGetUserLevel($user_id,-1,'area') >= 6)
 		$sql = "SELECT id,area_name
 	FROM ".TABLE_PREFIX."_area where enable_periods='n'
 	ORDER BY area_name ASC";
-	else if (authGetUserLevel(getUserName(),$area_id,'area') == 5)
+	else if (authGetUserLevel($user_id,$area_id,'area') == 5)
 		$sql = "SELECT distinct a.id, a.area_name
 	FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j, ".TABLE_PREFIX."_site s,  ".TABLE_PREFIX."_j_useradmin_site u
-	WHERE a.id=j.id_area and u.id_site=j.id_site  and s.id=u.id_site and u.login='".getUserName()."'  and  enable_periods='n'
+	WHERE a.id=j.id_area and u.id_site=j.id_site  and s.id=u.id_site and u.login='".$user_id."'  and  enable_periods='n'
 	ORDER BY a.area_name ASC";
 	else
 		$sql = "SELECT id,area_name
 	FROM ".TABLE_PREFIX."_area a,  ".TABLE_PREFIX."_j_useradmin_area u
-	WHERE a.id=u.id_area and u.login='".getUserName()."' and  a.enable_periods='n'
+	WHERE a.id=u.id_area and u.login='".$user_id."' and  a.enable_periods='n'
 	ORDER BY a.area_name ASC";
 	$res = grr_sql_query($sql);
 	$nb_area = grr_sql_count($res);

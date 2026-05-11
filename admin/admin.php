@@ -3,7 +3,7 @@
  * admin.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2018-07-21 21:00$
+ * Dernière modification : $Date: 2026-05-11 15:00$
  * @author    JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html

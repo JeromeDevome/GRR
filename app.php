@@ -129,5 +129,4 @@ if(in_array($page.".php",$listeFichiers))
 else
 	include('./reservation/controleurs/index.php');
 
-
 ?>
