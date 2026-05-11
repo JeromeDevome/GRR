@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-03-16 18:17$
+ * Dernière modification : $Date: 2026-05-11 18:47$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -62,6 +62,13 @@ function clean_input($data){
         $data = htmlspecialchars($data);
     }
     return $data;
+}
+/* fonction clean_login
+*  élimine d'une chaîne tous les caractères non autorisés dans un identifiant d'utilisateur [a-zA-Z0-9_@.-]
+*/
+function clean_login($_login){// élimine tous les caractères interdits
+  $clean = preg_replace("/[^a-zA-Z0-9_@.-]*/",'',$_login);
+  return $clean;
 }
 /** function getUserName()
  * retourne le login de l'utilisateur connecté (et pas son nom), une chaîne vide sinon
@@ -223,7 +230,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
     toPeriodString($start_period, $duration, $dur_units);
   else
     toTimeString($duration, $dur_units);
-  $weeklist = array("unused", "every week", 'week_1_of_2', 'week_1_of_3', 'week_1_of_4', 'week_1_of_5');
+  $weeklist = array("unused", "every_week", 'week_1_of_2', 'week_1_of_3', 'week_1_of_4', 'week_1_of_5');
   if ($rep_type == 2)
     $affiche_period = $vocab[$weeklist[$rep_num_weeks]];
   else
@@ -286,7 +293,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
     $message .= $vocab["the_user"].affiche_nom_prenom_email($user_login,"","formail");
     $message .= $vocab["delete_booking"];
     $message .= $vocab["the_room"].$room_name." (".$area_name.") \n";
-    $message .= $vocab["reservee au nom de"];
+    $message .= $vocab["reservee_au_nom_de"];
     $message .= $vocab["the_user"].affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"formail")." \n";
     $repondre = $user_email;
   }
@@ -2221,7 +2228,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
       $res = grr_sql_query1($sql);
       if ((( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )&& acces_formulaire_reservation())
       {
-        echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('Reserver').'" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
+        echo '<div class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('reserver').'" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</div>',PHP_EOL;
       }
       // Administration
       if ($type_session == "with_session")
@@ -2894,7 +2901,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
 
       if ( ( $res == 1 && $type_session == "no_session" ) || ( ( $res == 1 || $res == 2) && $type_session == "with_session" && (authGetUserLevel(getUserName(), -1, 'area')) == 1  ) )
       {
-        echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('Reserver').'" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
+        echo '<td class="contactformulaire">',PHP_EOL,'<input class="btn btn-default" type="submit" rel="popup_name" value="'.get_vocab('reserver').'" onClick="javascript:location.href=\'contactFormulaire.php?day=',$day,'&amp;month=',$month,'&amp;year=',$year,'\'" >',PHP_EOL,'</td>',PHP_EOL;
       }
       // Administration
       if ($type_session == "with_session")
