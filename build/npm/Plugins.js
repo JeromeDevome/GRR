@@ -23,11 +23,6 @@ const jslib = [
     from: 'node_modules/jquery-ui/ui/i18n',
     to: 'jslib/jquery-ui/ui/i18n'
   },
-  // Popper
-  {
-    from: 'node_modules/popper.js/dist',
-    to: 'jslib/popper'
-  },
   // Bootstrap
   {
     from: 'node_modules/bootstrap/dist',
@@ -45,11 +40,6 @@ const jslib = [
     from: 'node_modules/@fortawesome/fontawesome-free/webfonts',
     to: 'jslib/fontawesome-free/webfonts'
   },
-  // Chart.js
-  {
-    from: 'node_modules/chart.js/dist/',
-    to: 'jslib/chart.js'
-  },
   // Summernote
   {
     from: 'node_modules/summernote/dist/font',
@@ -65,15 +55,6 @@ const jslib = [
     filterName: '.min',
     excludeName: ['.map', 'summernote-bs']
   },
-  // Bootstrap Slider
-  {
-    from: 'node_modules/bootstrap-slider/dist/',
-    to: 'jslib/bootstrap-slider'
-  },
-  {
-    from: 'node_modules/bootstrap-slider/dist/css',
-    to: 'jslib/bootstrap-slider/css'
-  },
   // Moment
   {
     from: 'node_modules/moment/min',
@@ -84,11 +65,6 @@ const jslib = [
   {
     from: 'node_modules/moment/locale',
     to: 'jslib/moment/locale'
-  },
-  // FastClick
-  {
-    from: 'node_modules/fastclick/lib',
-    to: 'jslib/fastclick'
   },
   // Date Range Picker
   {
@@ -124,10 +100,6 @@ const jslib = [
     filterName: '.min'
   },
   {
-    from: 'node_modules/datatables.net-autofill/js',
-    to: 'jslib/datatables-autofill/js'
-  },
-  {
     from: 'node_modules/datatables.net-buttons-bs5/js',
     to: 'jslib/datatables-buttons-bs5/js',
     filterName: '.min.js'
@@ -143,169 +115,12 @@ const jslib = [
     to: 'jslib/datatables-buttons/css',
     filterName: '.min'
   },
-  {
-    from: 'node_modules/datatables.net-colreorder/js',
-    to: 'jslib/datatables-colreorder/js'
-  },
-  {
-    from: 'node_modules/datatables.net-colreorder-bs4/js',
-    to: 'jslib/datatables-colreorder/js'
-  },
-  {
-    from: 'node_modules/datatables.net-colreorder-bs4/css',
-    to: 'jslib/datatables-colreorder/css'
-  },
-  {
-    from: 'node_modules/datatables.net-fixedcolumns/js',
-    to: 'jslib/datatables-fixedcolumns/js'
-  },
-  {
-    from: 'node_modules/datatables.net-fixedcolumns-bs4/js',
-    to: 'jslib/datatables-fixedcolumns/js'
-  },
-  {
-    from: 'node_modules/datatables.net-fixedcolumns-bs4/css',
-    to: 'jslib/datatables-fixedcolumns/css'
-  },
-  {
-    from: 'node_modules/datatables.net-fixedheader/js',
-    to: 'jslib/datatables-fixedheader/js'
-  },
-  {
-    from: 'node_modules/datatables.net-fixedheader-bs4/js',
-    to: 'jslib/datatables-fixedheader/js'
-  },
-  {
-    from: 'node_modules/datatables.net-fixedheader-bs4/css',
-    to: 'jslib/datatables-fixedheader/css'
-  },
-  {
-    from: 'node_modules/datatables.net-keytable/js',
-    to: 'jslib/datatables-keytable/js'
-  },
-  {
-    from: 'node_modules/datatables.net-keytable-bs4/js',
-    to: 'jslib/datatables-keytable/js'
-  },
-  {
-    from: 'node_modules/datatables.net-keytable-bs4/css',
-    to: 'jslib/datatables-keytable/css'
-  },
-  {
-    from: 'node_modules/datatables.net-responsive/js',
-    to: 'jslib/datatables-responsive/js'
-  },
-  {
-    from: 'node_modules/datatables.net-responsive-bs4/js',
-    to: 'jslib/datatables-responsive/js'
-  },
-  {
-    from: 'node_modules/datatables.net-responsive-bs4/css',
-    to: 'jslib/datatables-responsive/css'
-  },
-  {
-    from: 'node_modules/datatables.net-rowgroup/js',
-    to: 'jslib/datatables-rowgroup/js'
-  },
-  {
-    from: 'node_modules/datatables.net-rowgroup-bs4/js',
-    to: 'jslib/datatables-rowgroup/js'
-  },
-  {
-    from: 'node_modules/datatables.net-rowgroup-bs4/css',
-    to: 'jslib/datatables-rowgroup/css'
-  },
-  {
-    from: 'node_modules/datatables.net-rowreorder/js',
-    to: 'jslib/datatables-rowreorder/js'
-  },
-  {
-    from: 'node_modules/datatables.net-rowreorder-bs4/js',
-    to: 'jslib/datatables-rowreorder/js'
-  },
-  {
-    from: 'node_modules/datatables.net-rowreorder-bs4/css',
-    to: 'jslib/datatables-rowreorder/css'
-  },
-  {
-    from: 'node_modules/datatables.net-scroller/js',
-    to: 'jslib/datatables-scroller/js'
-  },
-  {
-    from: 'node_modules/datatables.net-scroller-bs4/js',
-    to: 'jslib/datatables-scroller/js'
-  },
-  {
-    from: 'node_modules/datatables.net-scroller-bs4/css',
-    to: 'jslib/datatables-scroller/css'
-  },
-  {
-    from: 'node_modules/datatables.net-searchbuilder/js',
-    to: 'jslib/datatables-searchbuilder/js'
-  },
-  {
-    from: 'node_modules/datatables.net-searchbuilder-bs4/js',
-    to: 'jslib/datatables-searchbuilder/js'
-  },
-  {
-    from: 'node_modules/datatables.net-searchbuilder-bs4/css',
-    to: 'jslib/datatables-searchbuilder/css'
-  },
-  {
-    from: 'node_modules/datatables.net-searchpanes/js',
-    to: 'jslib/datatables-searchpanes/js'
-  },
-  {
-    from: 'node_modules/datatables.net-searchpanes-bs4/js',
-    to: 'jslib/datatables-searchpanes/js'
-  },
-  {
-    from: 'node_modules/datatables.net-searchpanes-bs4/css',
-    to: 'jslib/datatables-searchpanes/css'
-  },
-  {
-    from: 'node_modules/datatables.net-select/js',
-    to: 'jslib/datatables-select/js'
-  },
-  {
-    from: 'node_modules/datatables.net-select-bs4/js',
-    to: 'jslib/datatables-select/js'
-  },
-  {
-    from: 'node_modules/datatables.net-select-bs4/css',
-    to: 'jslib/datatables-select/css'
-  },
 
-  // icheck bootstrap
-  {
-    from: 'node_modules/icheck-bootstrap/',
-    to: 'jslib/icheck-bootstrap'
-  },
   // inputmask
   {
     from: 'node_modules/inputmask/dist/',
     to: 'jslib/inputmask',
     filterName: '.min'
-  },
-  // ion-rangeslider
-  {
-    from: 'node_modules/ion-rangeslider/',
-    to: 'jslib/ion-rangeslider'
-  },
-  // jQuery Mousewheel
-  {
-    from: 'node_modules/jquery-mousewheel/',
-    to: 'jslib/jquery-mousewheel'
-  },
-  // jQuery Knob
-  {
-    from: 'node_modules/jquery-knob-chif/dist/',
-    to: 'jslib/jquery-knob'
-  },
-  // pace-progress
-  {
-    from: 'node_modules/@lgaitan/pace-progress/dist/',
-    to: 'jslib/pace-progress'
   },
   // Select2
   {
@@ -319,56 +134,17 @@ const jslib = [
     to: 'jslib/select2-bootstrap-5-theme',
     filterName: '.min'
   },
-  // Sparklines
-  {
-    from: 'node_modules/sparklines/source/',
-    to: 'jslib/sparklines'
-  },
   // Toastr
   {
     from: 'node_modules/toastr/build/',
     to: 'jslib/toastr',
     filterName: '.min'
   },
-  // jsGrid
-  {
-    from: 'node_modules/jsgrid/dist',
-    to: 'jslib/jsgrid'
-  },
-  {
-    from: 'node_modules/jsgrid/demos/db.js',
-    to: 'jslib/jsgrid/demos/db.js'
-  },
   // bootstrap4-duallistbox
   {
     from: 'node_modules/bootstrap4-duallistbox/dist',
     to: 'jslib/bootstrap4-duallistbox/',
     filterName: '.min'
-  },
-  // ekko-lightbox
-  {
-    from: 'node_modules/ekko-lightbox/dist',
-    to: 'jslib/ekko-lightbox/'
-  },
-  // jQuery Validate
-  {
-    from: 'node_modules/jquery-validation/dist/',
-    to: 'jslib/jquery-validation'
-  },
-  // bs-custom-file-input
-  {
-    from: 'node_modules/bs-custom-file-input/dist/',
-    to: 'jslib/bs-custom-file-input'
-  },
-  // bs-stepper
-  {
-    from: 'node_modules/bs-stepper/dist/',
-    to: 'jslib/bs-stepper'
-  },
-  // dropzonejs
-  {
-    from: 'node_modules/dropzone/dist/',
-    to: 'jslib/dropzone'
   },
   //ace editor
   {
