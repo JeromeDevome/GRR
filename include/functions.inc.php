@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-01-19 16:35$
+ * Dernière modification : $Date: 2026-05-12 15:57$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -62,6 +62,13 @@ function clean_input($data){
         $data = htmlspecialchars($data);
     }
     return $data;
+}
+/* fonction clean_login
+*  élimine d'une chaîne tous les caractères non autorisés dans un identifiant d'utilisateur [a-zA-Z0-9_@.-]
+*/
+function clean_login($_login){
+  $clean = preg_replace("/[^a-zA-Z0-9_@.-]*/",'',$_login);
+  return $clean;
 }
 /** function getUserName()
  * retourne le login de l'utilisateur connecté (et pas son nom), une chaîne vide sinon
@@ -1091,7 +1098,7 @@ function MajMysqlModeDemo() {
 function isAjax()
 {
   return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-          (utf8_strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'));
+          (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'));
 }
 /** NettoyerTablesJointure()
  * Supprime les lignes inutiles dans les tables de liaison
