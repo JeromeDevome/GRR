@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-05-11 18:47$
+ * Dernière modification : $Date: 2026-05-12 15:31$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1098,7 +1098,7 @@ function MajMysqlModeDemo() {
 function isAjax()
 {
   return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-          (utf8_strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'));
+          (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'));
 }
 /** NettoyerTablesJointure()
  * Supprime les lignes inutiles dans les tables de liaison
