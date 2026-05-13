@@ -3,9 +3,9 @@
  * admin_config_calend3.php
  * interface permettant la configuration des jours-cycles (étape 3)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-02 17:05$
+ * Dernière modification : $Date: 2026-05-13 15:53$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -96,31 +96,42 @@ function cal3($month, $year)
     return $s;
 }
 // traitement des données
-if(isset($_GET['date']))
-  $jour_cycle = grr_sql_query1("select Jours from ".TABLE_PREFIX."_calendrier_jours_cycle  WHERE DAY =? ","i",[$_GET['date']]);
-// Enregistrement du nouveau jour cycle
-if (isset($_GET['selection']))
-{
-  if ($_GET['selection'] == 0)
+// paramètres attendus et filtrage
+$date = (isset($_GET['date']))? intval($_GET['date']) : 0;
+$selection = (isset($_GET['selection']))? intval($_GET['selection']) : -1;
+$newdate = (isset($_GET['newdate']))? intval($_GET['newdate']) : 0;
+$newDay = (isset($_GET['newDay']))? intval($_GET['newDay']) : 0;
+$titre = (isset($_GET['titre']))? clean_input($_GET['titre']) : "";
+if(($titre != "")&&(!preg_match("/^[a-zA-Z]/",$titre))){
+  $msg = get_vocab('invalid_parameters');
+}
+else{
+  if($date != 0)
+    $jour_cycle = grr_sql_query1("select Jours from ".TABLE_PREFIX."_calendrier_jours_cycle  WHERE DAY =? ","i",[$date]);
+  // Enregistrement du nouveau jour cycle
+  if ($selection != -1)
   {
-    grr_sql_command("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY =? ","i",[$_GET['newdate']]);
-  }
-  elseif ($_GET['selection'] == 1)
-  {
-    grr_sql_command("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY =? ","i",[$_GET['newdate']]);
-    grr_sql_command("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours =? , DAY =? ","ii",[$_GET['newDay'],$_GET['newdate']]);
-  }
-  elseif ($_GET['selection'] == 2)
-  {
-    grr_sql_command("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY =? ","i",[$_GET['newdate']]);
-    grr_sql_command("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours =? , DAY =? ","si",[protect_data_sql($_GET['titre']),$_GET['newdate']]);
+    if ($selection == 0)
+    {
+      grr_sql_command("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY =? ","i",[$newdate]);
+    }
+    elseif ($selection == 1)
+    {
+      grr_sql_command("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY =? ","i",[$newdate]);
+      grr_sql_command("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours =? , DAY =? ","ii",[$newDay,$newdate]);
+    }
+    elseif ($selection == 2)
+    {
+      grr_sql_command("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY =? ","i",[$newdate]);
+      grr_sql_command("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours =? , DAY =? ","si",[protect_data_sql($titre),$newdate]);
+    }
   }
 }
-
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : "./admin_accueil.php" ;
 check_access(6, $back);
 // code HTML
 start_page_w_header("", "", "", $type = "with_session");
+affiche_pop_up($msg,"admin");
 // Affichage de la colonne de gauche
 if (!isset($_GET['pview']))
     include "admin_col_gauche2.php";
@@ -142,10 +153,10 @@ if (!isset($_GET['pview']))
 // intval($jour_cycle)=-1 : pas de jour cycle
 // intval($jour_cycle)=0 : Titre
 // intval($jour_cycle)>0 : Jour cycle
-	if (!isset($_GET['pview']) && isset($_GET['date']))
+	if (!isset($_GET['pview']) && ($date != 0))
 	{
 		echo "<fieldset style=\"padding-top: 8px; padding-bottom: 8px; width: 80%; margin-left: auto; margin-right: auto;\">\n";
-		echo "<legend>".get_vocab('Journee_du')." ".affiche_date($_GET['date'])."</legend>\n";
+		echo "<legend>".get_vocab('Journee_du')." ".affiche_date($date)."</legend>\n";
 		echo "<form id=\"main\" method=\"get\" action=\"admin_calend_jour_cycle.php\">\n";
 		echo "<div><input type='radio' name='selection' value='0'";
 		if (intval($jour_cycle) == -1)
@@ -164,7 +175,7 @@ if (!isset($_GET['pview']))
 			echo " >j".$i."</option>";
 		}
 		echo "</select>\n";
-		echo "<input name=\"newdate\" type=\"hidden\" value=\"".$_GET['date']."\" />";
+		echo "<input name=\"newdate\" type=\"hidden\" value=\"".$date."\" />";
 		echo "<input type=\"hidden\" value=\"3\" name=\"page_calend\" /><br />";
 		echo "<input type='radio' name='selection' value='2'";
 		if (intval($jour_cycle) == 0)

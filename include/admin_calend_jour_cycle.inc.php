@@ -1,7 +1,7 @@
 <?php
 /**
  * admin_calend_jour_cycle.inc.php
- * Menu da la page de création du calendrier jours/cycles
+ * Menu de la page de création du calendrier jours/cycles
  * Ce script fait partie de l'application GRR
  * Dernière modification : $Date: 2018-08-27 12:50$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
