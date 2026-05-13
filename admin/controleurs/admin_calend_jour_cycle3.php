@@ -3,7 +3,7 @@
  * admin_config_calend3.php
  * Interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:43$
+ * Dernière modification : $Date: 2026-05-13 17:23$
  * @author    Laurent Delineau & JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -124,29 +124,41 @@ get_vocab_admin("save");
 // intval($jour)=0 : Titre
 // intval($jour)>0 : Jour cycle
 
-	if (isset($_GET['date']))
+// paramètres attendus et filtrage
+$date = (isset($_GET['date']))? intval($_GET['date']) : 0;
+$selection = (isset($_GET['selection']))? intval($_GET['selection']) : -1;
+$newdate = (isset($_GET['newdate']))? intval($_GET['newdate']) : 0;
+$newDay = (isset($_GET['newDay']))? intval($_GET['newDay']) : 0;
+$titre = (isset($_GET['titre']))? clean_input($_GET['titre']) : "";
+// vérification du critère : premier caractère = lettre
+if(($titre != "")&&(!preg_match("/^[a-zA-Z]/",$titre))){
+  $msg = get_vocab('invalid_parameters');
+  fatal_error(1,$msg); // mériterait un traitement d'erreur plus propre
+}
+
+	if ($date != 0)
 	{
-		$trad['dDate'] = $_GET['date'];
-		$trad['dDateJour'] = affiche_date($_GET['date']);
-		$trad['dJourCycle'] = grr_sql_query1("select Jours from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$_GET['date']."");
+		$trad['dDate'] = $date;
+		$trad['dDateJour'] = affiche_date($date);
+		$trad['dJourCycle'] = grr_sql_query1("select Jours from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$date);
 	}
 
 	// Enregistrement du nouveau jour cycle
-	if (isset($_GET['selection']))
+	if ($selection != -1)
 	{
-		if ($_GET['selection'] == 0)
+		if ($selection == 0)
 		{
-			grr_sql_query("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$_GET['newdate']."");
+			grr_sql_query("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$newdate."");
 		}
-		elseif ($_GET['selection'] == 1)
+		elseif ($selection == 1)
 		{
-			grr_sql_query("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$_GET['newdate']."");
-			grr_sql_query("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours =".$_GET['newDay'].", DAY = ".$_GET['newdate']."");
+			grr_sql_query("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$newdate."");
+			grr_sql_query("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours =".$newDay.", DAY = ".$newdate."");
 		}
-		elseif ($_GET['selection'] == 2)
+		elseif ($selection == 2)
 		{
-			grr_sql_query("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$_GET['newdate']."");
-			grr_sql_query("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours ='".protect_data_sql($_GET['titre'])."', DAY = ".$_GET['newdate']."");
+			grr_sql_query("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$newdate."");
+			grr_sql_query("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours ='".protect_data_sql($titre)."', DAY = ".$newdate."");
 		}
 	}
 

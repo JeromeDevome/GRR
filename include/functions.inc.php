@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-03-30 13:53$
+ * Dernière modification : $Date: 2026-05-12 16:18$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -6279,7 +6279,13 @@ function clean_input($data){
 	$data = htmlspecialchars($data);
     return $data;
 }
-
+/* fonction clean_login
+*  élimine d'une chaîne tous les caractères non autorisés dans un identifiant d'utilisateur [a-zA-Z0-9_@.-]
+*/
+function clean_login($_login){
+  $clean = preg_replace("/[^a-zA-Z0-9_@.-]*/",'',$_login);
+  return $clean;
+}
 /* fonction alphanum
 * pour réduire les vulnérabilités
 */

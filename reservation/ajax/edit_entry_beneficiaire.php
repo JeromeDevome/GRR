@@ -3,7 +3,7 @@
  * edit_entry_beneficiaire.php
  * Page "Ajax" utilisée dans editentree
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-01-30 18:22$
+ * Dernière modification : $Date: 2026-05-12 16:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -37,7 +37,7 @@ $tab_benef["nom"] = "";
 $tab_benef["email"] = "";
 $area = isset($_GET["area"])? intval($_GET["area"]): -1;
 $room = isset($_GET["room"])? intval($_GET["room"]): -1;
-$user = isset($_GET["user"])? protect_data_sql($_GET["user"]): getUserName();
+$user = isset($_GET["user"])? clean_login($_GET["user"]): getUserName();
 $id = isset($_GET["id"])? intval($_GET["id"]): 0;
 $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $flag_qui_peut_reserver_pour = (authGetUserLevel($user, $room, "room") >= $qui_peut_reserver_pour); // accès à la ressource
