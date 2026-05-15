@@ -65,7 +65,7 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 }
 
 // Form1 : Supression avant une date
-if ($numForm == 1 && valideDate($dateMax,"d/m/Y") ) {
+if ($numForm == 1 && SecuChaine::Valide_date($dateMax,"d/m/Y") ) {
 
     $dateMax = str_replace('/', '-', $dateMax);
 

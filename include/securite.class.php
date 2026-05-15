@@ -81,6 +81,14 @@ class SecuChaine {
         return($out);
     }
 
+
+    // valideDate : Retourne true ou false selon si le format de la date est bon ou non
+    public static function Valide_date($date, $format = 'Y-m-d H:i:s')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
+    }
+
     // Détermine si l'adresse mail en paramètre est syntaxiquement valable
     public static function Valide_email($email)
     {
