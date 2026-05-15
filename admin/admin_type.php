@@ -100,7 +100,7 @@ start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 affiche_pop_up($msg,"admin");
-echo "<h2>".get_vocab('admin_type.php')."</h2>";
+echo "<h2>".get_vocab('admin_type')."</h2>";
 // ------------------------------------------ ModifExclure Début-2
 echo '<form action="./admin_type.php" method="get">'.PHP_EOL;
 echo '<div>'.PHP_EOL;

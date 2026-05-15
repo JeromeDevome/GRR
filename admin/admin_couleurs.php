@@ -229,7 +229,7 @@ include 'admin_col_gauche2.php';
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 affiche_pop_up($msg,"admin");
-echo "<h2>".get_vocab('admin_couleurs.php')."</h2>";
+echo "<h2>".get_vocab('admin_couleurs')."</h2>";
 echo '<p>'.get_vocab('admin_couleurs_explications').'</p>';
 // formulaire
 echo "<form action='./admin_couleurs.php' method='post'>";

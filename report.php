@@ -407,7 +407,7 @@ $overload_fields = grrOverloadGetFieldslist("");
 if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
 {
   start_page_w_header($day, $month, $year, $type="with_session");
-  echo '<div class="col col-xs-12"><h1 class="center">'.get_vocab("search report stats").'</h1>';
+  echo '<div class="col col-xs-12"><h1 class="center">'.get_vocab("search_report_stats").'</h1>';
   echo '  <form method="get" action="report.php">';
   // Si format imprimable ($_GET['pview'] = 1), on n'affiche pas le formulaire
   if ($_GET['pview'] != 1)
@@ -435,12 +435,12 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
     if ($_GET["condition_et_ou"] == "AND")
       echo "checked=\"checked\"";
     echo " /></td>\n";
-    echo "<td class='CL'>".get_vocab("Valide_toutes_les_conditions_suivantes")."</td></tr>";
+    echo "<td class='CL'>".get_vocab("valide_toutes_les_conditions_suivantes")."</td></tr>";
     echo "<tr><td class=\"CR\"><input type=\"radio\" name=\"condition_et_ou\" value=\"OR\" ";
     if ($_GET["condition_et_ou"] != "AND")
       echo "checked=\"checked\"";
     echo " /></td>\n";
-    echo "<td class='CL'>".get_vocab("Valide_au_moins_une_des_conditions_suivantes")."</td></tr>\n";
+    echo "<td class='CL'>".get_vocab("valide_au_moins_une_des_conditions_suivantes")."</td></tr>\n";
     if (isset($texte))
       $nb_ligne = max((count($texte) +2),5);
     else

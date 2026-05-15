@@ -467,16 +467,17 @@ else{
                 $cweek = date("w", $t2);
                 if ($display_day[$cweek] == 1)
                 {
-                    echo "<td > ";
+                    //echo "<td class='empty_cell'> ";
                     if (est_hors_reservation(mktime(0, 0, 0, $month, $cday, $year), $area))
                     {
-                        echo "<div class=\"empty_cell\">";
-                        echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  /></div>\n";
+                        echo "<td class=\"empty_cell\">";
+                        echo "<img src=\"img_grr/stop.png\" alt=\"".get_vocab("reservation_impossible")."\"  title=\"".get_vocab("reservation_impossible")."\" width=\"16\" height=\"16\" class=\"".$class_image."\"  />\n";
                     }
                     else
                     {
                         if (isset($d[$cday]["id"][0])) // il y a une réservation au moins à afficher
                         {
+                          echo "<td>";
                             echo "<table class='pleine table-bordered'>";
                             $n = count($d[$cday]["id"]);
                             for ($i = 0; $i < $n; $i++)
@@ -514,6 +515,9 @@ else{
                                 }
                             }
                             echo '</table>';
+                        }
+                        else{
+                          echo "<td class='empty_cell'>";
                         }
                         // la ressource est-elle accessible en réservation ? on affiche le lien vers edit_entry
                         $date_booking = mktime(23,59,0,$month,$k,$year) ; // le jour courant à presque minuit

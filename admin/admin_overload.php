@@ -213,7 +213,7 @@ foreach ($userdomain as $key=>$value)
 start_page_w_header("", "", "", $type = "with_session");
 include "admin_col_gauche2.php";
 echo '<div class="col col-sm-9 col-xs-12">';
-echo "<h2>".get_vocab("admin_overload.php")."</h2>\n";
+echo "<h2>".get_vocab("admin_overload")."</h2>\n";
 echo get_vocab("explication_champs_additionnels")."\n";
 echo "<form method=\"post\" action=\"admin_overload.php\" >\n";
 echo "<div class='table'>";

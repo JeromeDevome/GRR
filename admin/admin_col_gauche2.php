@@ -38,9 +38,9 @@ function sousMenu($liste,$titre='')
 						foreach ($liste as $key)
 							{
 								if ($chaine == $key)
-									echo "<tr><td class='active'><a href='".$key."'>".get_vocab($key)."</a></td></tr>\n";
+									echo "<tr><td class='active'><a href='".$key.".php'>".get_vocab($key)."</a></td></tr>\n";
 								else
-									echo "<tr><td><a href='".$key."'>".get_vocab($key)."</a></td></tr>\n";
+									echo "<tr><td><a href='".$key.".php'>".get_vocab($key)."</a></td></tr>\n";
 							}           
 		echo '				</table>
 						</div>
@@ -62,61 +62,61 @@ $titres = [get_vocab("admin_menu_general"),(Settings::get("module_multisite") ==
 $liste[1] = array(); // configuration
 $authUserLevel = authGetUserLevel(getUserName(), -1, 'area'); // niveau d'accès de l'utilisateur connecté
 if ($authUserLevel >= 6)
-			$liste[1] = ['admin_config11.php','admin_config12.php','admin_couleurs.php','admin_config2.php','admin_config3.php','admin_config4.php','admin_config5.php','admin_config6.php'];
+			$liste[1] = ['admin_config11','admin_config12','admin_couleurs','admin_config2','admin_config3','admin_config4','admin_config5','admin_config6'];
 $liste[2] = array(); // sites, domaines et ressources
 if (Settings::get("module_multisite") == "Oui")
 		{
 			if ($authUserLevel >= 6)
-				$liste[2][] = 'admin_site.php';
+				$liste[2][] = 'admin_site';
 		}
-if ($authUserLevel >= 4) $liste[2][] = 'admin_room.php';
-if ($authUserLevel >= 6) $liste[2][] = 'admin_type.php';
-if ($authUserLevel >= 4) $liste[2][] = 'admin_overload.php';
+if ($authUserLevel >= 4) $liste[2][] = 'admin_room';
+if ($authUserLevel >= 6) $liste[2][] = 'admin_type';
+if ($authUserLevel >= 4) $liste[2][] = 'admin_overload';
 $liste[3] = array(); // calendriers
 if ($authUserLevel >= 6)
-    $liste[3][] = 'admin_calend_ignore.php';
+    $liste[3][] = 'admin_calend_ignore';
 if (($authUserLevel >= 6)&&(Settings::get('show_holidays') == 'Oui'))
-    $liste[3][] = 'admin_calend_vacances_feries.php';
+    $liste[3][] = 'admin_calend_vacances_feries';
 if (Settings::get("jours_cycles_actif") == "Oui")
 {
     if ($authUserLevel >= 6)
-        $liste[3][] = 'admin_calend_jour_cycle.php';
+        $liste[3][] = 'admin_calend_jour_cycle';
 }
 $liste[4] = array(); // utilisateurs
-if (($authUserLevel >= 6) || (authGetUserLevel(getUserName(), -1, 'user') == 1)) $liste[4][] = 'admin_user.php';
+if (($authUserLevel >= 6) || (authGetUserLevel(getUserName(), -1, 'user') == 1)) $liste[4][] = 'admin_user';
 if (Settings::get("module_multisite") == "Oui")
-    if ($authUserLevel >= 6) $liste[4][] = 'admin_admin_site.php';
-if ($authUserLevel >= 5) $liste[4][] = 'admin_right_admin.php';
-if ($authUserLevel >= 4) $liste[4][] = 'admin_access_area.php';
+    if ($authUserLevel >= 6) $liste[4][] = 'admin_admin_site';
+if ($authUserLevel >= 5) $liste[4][] = 'admin_right_admin';
+if ($authUserLevel >= 4) $liste[4][] = 'admin_access_area';
 // ressources restreintes
 $test = grr_sql_query1("SELECT COUNT(`who_can_book`) FROM ".TABLE_PREFIX."_room WHERE `who_can_book` = 0 ");
-if (($test >0) && ($authUserLevel >= 4)) $liste[4][] = 'admin_book_room.php';
-if ($authUserLevel >= 4) $liste[4][] = 'admin_right.php' ;
+if (($test >0) && ($authUserLevel >= 4)) $liste[4][] = 'admin_book_room';
+if ($authUserLevel >= 4) $liste[4][] = 'admin_right' ;
 if ((Settings::get("ldap_statut") != "") || (Settings::get("sso_statut") != "") || (Settings::get("imap_statut") != ""))
 {
-    if ($authUserLevel >= 6) $liste[4][] = 'admin_purge_accounts.php';
+    if ($authUserLevel >= 6) $liste[4][] = 'admin_purge_accounts';
 }
 $liste[5] = array(); // réservations en masse
-if ($authUserLevel >= 4) $liste[5][] = 'admin_calend2.php';
-if ($authUserLevel >= 5) $liste[5][] = 'admin_delete_entry_after.php';
-if ($authUserLevel >= 5) $liste[5][] = 'admin_delete_entry_before.php';
-if ($authUserLevel >= 5) $liste[5][] = 'admin_import_entries_csv_direct.php';
-if ($authUserLevel >= 6) $liste[5][] = 'admin_import_entries_csv_udt.php';
-if ($authUserLevel >= 6) $liste[5][] = 'admin_import_xml_edt.php';
+if ($authUserLevel >= 4) $liste[5][] = 'admin_calend2';
+if ($authUserLevel >= 5) $liste[5][] = 'admin_delete_entry_after';
+if ($authUserLevel >= 5) $liste[5][] = 'admin_delete_entry_before';
+if ($authUserLevel >= 5) $liste[5][] = 'admin_import_entries_csv_direct';
+if ($authUserLevel >= 6) $liste[5][] = 'admin_import_entries_csv_udt';
+if ($authUserLevel >= 6) $liste[5][] = 'admin_import_xml_edt';
 $liste[6] = array(); // divers
-if ($authUserLevel >= 4) $liste[6][] = 'admin_email_manager.php';
-if ($authUserLevel >= 6) $liste[6][] = 'admin_view_connexions.php';
-if ($authUserLevel >= 6) $liste[6][] = 'admin_cgu.php';
-if ($authUserLevel >= 6) $liste[6][] = 'admin_maj.php';
+if ($authUserLevel >= 4) $liste[6][] = 'admin_email_manager';
+if ($authUserLevel >= 6) $liste[6][] = 'admin_view_connexions';
+if ($authUserLevel >= 6) $liste[6][] = 'admin_cgu';
+if ($authUserLevel >= 6) $liste[6][] = 'admin_maj';
 $liste[7] = array(); // authentifications externes
 if ( ($authUserLevel >= 6) && ((!isset($sso_restrictions)) || ($ldap_restrictions == false)) )
-    $liste[7][] = 'admin_config_ldap.php';
+    $liste[7][] = 'admin_config_ldap';
 if ( ($authUserLevel >= 6) && ((!isset($sso_restrictions)) || ($sso_restrictions == false)) )
-    $liste[7][] = 'admin_config_sso.php';
+    $liste[7][] = 'admin_config_sso';
 if ( ($authUserLevel >= 6) && ((!isset($sso_restrictions)) || ($imap_restrictions == false)) )
-    $liste[7][] = 'admin_config_imap.php';
+    $liste[7][] = 'admin_config_imap';
 if (Settings::get("sso_ac_corr_profil_statut") == 'y') {
-    if ($authUserLevel >= 5) $liste[7][] = 'admin_corresp_statut.php';
+    if ($authUserLevel >= 5) $liste[7][] = 'admin_corresp_statut';
 }
 // Affichage de la colonne de gauche
 echo '<div class="col col-sm-3 col-xs-12">';

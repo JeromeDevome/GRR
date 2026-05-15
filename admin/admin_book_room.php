@@ -223,7 +223,7 @@ start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_book_room.php')."</h2>\n";
+echo "<h2>".get_vocab('admin_book_room')."</h2>\n";
 affiche_pop_up($msg,"admin");
 echo "<div>";
 echo $sel_room;

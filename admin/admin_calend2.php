@@ -300,7 +300,7 @@ start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_calendar_title.php')."</h2>\n";
+echo "<h2>".get_vocab('admin_calendar_title')."</h2>\n";
 
 if ($etape == 4) // affichage du résultat
 {
@@ -508,7 +508,7 @@ echo "</div></form>";
 else if (!$etape)
 {
 	// Etape 1 :
-	echo get_vocab("admin_calendar_explain_1.php");
+	echo get_vocab("admin_calendar_explain_1");
 	echo "<h3 style=\"text-align:center;\">".get_vocab("etape_n")."1/3</h3>\n";
 	// Choix des domaines
 	echo "<form action=\"admin_calend2.php\" method=\"post\">\n";

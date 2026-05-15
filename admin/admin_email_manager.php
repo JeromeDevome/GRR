@@ -172,7 +172,7 @@ include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 affiche_pop_up($msg,"admin");
-echo "<h2>".get_vocab('admin_email_manager.php')."</h2>\n";
+echo "<h2>".get_vocab('admin_email_manager')."</h2>\n";
 if (Settings::get("automatic_mail") != 'yes')
 	echo "<h3 class=\"avertissement\">".get_vocab("attention_mail_automatique_désactive")."</h3>";
 echo get_vocab("explain_automatic_mail3")."<br /><hr />\n";

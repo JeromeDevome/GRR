@@ -46,7 +46,7 @@ $save = getFormVar('save','string','0');
 
 if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes') )
 {
-    $msg = $_GET['msg'];
+    $msg = clean_input($_GET['msg']);
 }
 else
     $msg = '';
@@ -171,7 +171,7 @@ include_once('admin_col_gauche2.php');
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 if($action == 'read'){ // afficher la table des sites 
-  echo '<h2>'.get_vocab('admin_site.php').'</h2>';
+  echo '<h2>'.get_vocab('admin_site').'</h2>';
 	echo '<p>'.get_vocab('admin_site_explications').'</p>';
 	echo '<a class="btn btn-success" href="admin_site.php?action=create&amp;id=0">'.get_vocab('display_add_site').'</a>';
   if($nb_sites > 0){ // table des sites

@@ -148,7 +148,7 @@ start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_admin_site.php')."</h2>";
+echo "<h2>".get_vocab('admin_admin_site')."</h2>";
 echo "<p><i>".get_vocab("admin_admin_site_explain")."</i></p>";
 // Affichage d'un pop-up
 affiche_pop_up($msg,"admin");

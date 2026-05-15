@@ -140,7 +140,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
     echo '<select class="select2" name="beneficiaire" id="beneficiaire" onchange="check_4();">'.$option.'</select>'.PHP_EOL;
     echo '</div>';
     echo '<div class="col col-sm-3">'.PHP_EOL;
-    echo '<br /><input type="button" id="bnfdef" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
+    echo '<br /><input type="button" id="bnfdef" class="btn btn-primary" value="'.get_vocab("definir_par_defaut").'" onclick="setdefault(\'beneficiaire_default\',document.getElementById(\'main\').beneficiaire.options[document.getElementById(\'main\').beneficiaire.options.selectedIndex].value)" />'.PHP_EOL;
     echo '</div></div>'.PHP_EOL;
     
     echo '<div id="menu4" class="form-inline" ';
@@ -158,7 +158,7 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
       echo '<div class="form-group col-sm-6">'.PHP_EOL;
       echo '    <div class="input-group">'.PHP_EOL;
       echo '      <div class="input-group-addon"><span>@</span></div>'.PHP_EOL;
-      echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.$benef_ext_email.'" placeholder="'.get_vocab("email beneficiaire").'">'.PHP_EOL;
+      echo '      <input class="form-control" type="email" name="benef_ext_email" value="'.$benef_ext_email.'" placeholder="'.get_vocab("email_beneficiaire").'">'.PHP_EOL;
       echo '    </div>'.PHP_EOL;
       echo '</div>'.PHP_EOL;
     }
@@ -232,7 +232,7 @@ function divTypes($id_user,$room,$area,$type=""){
 
   $display_type .=  '</select></div>'.PHP_EOL;
   if ($aff_default)
-    $display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir par defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
+    $display_type .= '<input type="button" class="btn btn-primary" value="'.get_vocab("definir_par_defaut").'" onclick="setdefault(\'type_default\',document.getElementById(\'main\').type.options[document.getElementById(\'main\').type.options.selectedIndex].text)" />'.PHP_EOL;
   $display_type .= '</div>'.PHP_EOL;
   if($nb_type <= 1)
     $display_type = '<div class="E"><b>'.get_vocab("type").get_vocab("deux_points").htmlentities($type_nom_unique).'</b>'.PHP_EOL.'<input name="type" type="hidden" value="'.$type_id_unique.'" /></div>'.PHP_EOL;
@@ -1114,7 +1114,7 @@ echo "</div>",PHP_EOL;
 
 echo '<!-- ************* Periodic edition ***************** -->',PHP_EOL;
 echo "<div class='col-sm-6 col-xs-12 form-inline'>";
-$weeklist = array("unused","every week",'week_1_of_2','week_1_of_3','week_1_of_4','week_1_of_5');
+$weeklist = array("unused","every_week",'week_1_of_2','week_1_of_3','week_1_of_4','week_1_of_5');
 $monthlist = array("firstofmonth","secondofmonth","thirdofmonth","fouthofmonth","fiveofmonth","lastofmonth");
 if($periodiciteConfig == 'y')
 {
@@ -1144,7 +1144,7 @@ if($periodiciteConfig == 'y')
         if ($i == '2') // semaine
         {
           echo '&nbsp;</label><select class="form-control" name="rep_num_weeks" size="1" onfocus="check_2()" onclick="check_2()">',PHP_EOL;
-          echo '<option value="1" >',get_vocab("every week"),'</option>',PHP_EOL;
+          echo '<option value="1" >',get_vocab("every_week"),'</option>',PHP_EOL;
           for ($weekit = 2; $weekit < 6; $weekit++)
           {
             echo '<option value="',$weekit,'"';

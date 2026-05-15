@@ -279,24 +279,24 @@ else if ($etape ==0)
 			echo encode_message_utf8("<li>type : <b>".$use_type."</b></li>");
 
 			if ($imap_ssl == "/ssl")
-				$use_ssl = "oui";
+				$use_ssl = get_vocab("YES");
 			else
-				$use_ssl = "non";
+				$use_ssl = get_vocab("NO");
 			echo encode_message_utf8("<li>".get_vocab('SSL')." : <b>".$use_ssl."</b></li>");
 			if ($imap_cert == "/validate-cert")
-				$use_cert = "oui";
+				$use_cert = get_vocab("YES");
 			else if ($imap_cert == "/novalidate-cert")
-				$use_cert = "non";
+				$use_cert = get_vocab("NO");
 			else
 				$use_cert = "(".get_vocab('non_precise').")";
 			echo encode_message_utf8("<li>".get_vocab('useCert')."<b> : ".$use_cert."</b></li>");
 
 			if ($imap_tls == "/tls" && $imap['adresse'] != "" && $imap['port'] != "")
-				$use_tls = "oui";
+				$use_tls = get_vocab("YES");
 			else if ($imap_tls == "/notls" && $imap['adresse'] != "" && $imap['port'] != "")
-				$use_tls = "non";
+				$use_tls = get_vocab("NO");
 			else
-				$use_tls = "(non précisé)";
+				$use_tls = "(".get_vocab('non_precise').")";
 			echo encode_message_utf8("<li>".get_vocab('useTLS')."<b> : ".$use_tls."</b></li>");
 			echo encode_message_utf8("</ul>".get_vocab('newImapConfig')."<br />");
 		}

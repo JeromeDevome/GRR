@@ -68,7 +68,7 @@ start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_purge_accounts.php')."</h2>";
+echo "<h2>".get_vocab('admin_purge_accounts')."</h2>";
 echo get_vocab('admin_clean_accounts_desc');
 echo "<div class='center'>\n
 <form id=\"purge_liaison\" action=\"admin_purge_accounts.php\" method=\"post\">\n

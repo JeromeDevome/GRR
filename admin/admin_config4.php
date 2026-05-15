@@ -81,7 +81,7 @@ elseif(isset($_GET['ok']))
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
 echo '<div class="col col-md-9 col-sm-8 col-xs-12">';
-echo "<h2>".get_vocab('admin_config4.php')."</h2>";
+echo "<h2>".get_vocab('admin_config4')."</h2>";
 //
 // dans le cas de mysql, on propose une sauvegarde et l'ouverture de la base
 //
@@ -119,8 +119,8 @@ if ($dbsys == "mysql")
 }
 	echo "<form action=\"./admin_config4.php\" method=\"get\">";
 	# Backup automatique
-	echo "\n<hr /><h3>".get_vocab("execution automatique backup")."</h3>";
-	echo "<p>".get_vocab("execution automatique backup explications")."</p>";
+	echo "\n<hr /><h3>".get_vocab("execution_automatique_backup")."</h3>";
+	echo "<p>".get_vocab("execution_automatique_backup_explications")."</p>";
 	echo "\n<p>".get_vocab("execution_automatique_backup_mdp").get_vocab("deux_points");
 	echo "\n<input class=\"form-control\" type=\"password\" name=\"motdepasse_backup\" value=\"".Settings::get("motdepasse_backup")."\" size=\"20\" /></p>";
 	//

@@ -137,7 +137,7 @@ if ($inc < 3)
 	echo "</tr>";
 }
 echo "</table>";
-echo "<div id=\"fixe\"><input type=\"submit\" onclick=\"return confirmlink(this, '".AddSlashes(get_vocab("avertissement_effacement"))."', '".get_vocab("admin_config_calend1.php")."')\" name=\"ok\" value=\"".get_vocab("save")."\" />\n";
+echo "<div id=\"fixe\"><input type=\"submit\" onclick=\"return confirmlink(this, '".AddSlashes(get_vocab("avertissement_effacement"))."', '".get_vocab("admin_config_calend1")."')\" name=\"ok\" value=\"".get_vocab("save")."\" />\n";
 echo "<input type=\"hidden\" name=\"record\" value=\"yes\" /></div>\n";
 echo "</form>";
 // fin de l'affichage de la colonne de droite

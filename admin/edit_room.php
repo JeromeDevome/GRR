@@ -67,6 +67,7 @@ $statut_room = isset($_POST["statut_room"]) ? "0" : "1";
 $type_affichage_reser = (int)getFormVar("type_affichage_reser","int");
 $who_can_book = (int)getFormVar("who_can_book","int",1);
 $who_can_see = (int)getFormVar("who_can_see","int");
+$nb_area = 0;
 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): "./admin_accueil.php";
 // memorisation du chemin de retour
@@ -715,7 +716,7 @@ echo "/></td></tr>\n";
     echo " checked ";
   echo "/></td></tr>\n";
 // Activer la fonctionnalite "participant"
-  echo "<tr><td>".get_vocab("activer_fonctionnalite_participant")."</td><td>";
+  echo "<tr><td>".get_vocab("activer_fonctionalite_participant")."</td><td>";
   echo '<select class="form-control" name="active_participant">';
   echo '<option value="0" ';
   if ($Room['active_participant'] == 0)

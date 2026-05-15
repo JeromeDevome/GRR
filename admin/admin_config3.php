@@ -160,7 +160,7 @@ elseif (isset($_POST['ok']))
 include "admin_col_gauche2.php";
 // colonne de droite
 echo '<div class="col col-sm-9 col-xs-12">';
-echo "<h2>".get_vocab('admin_config3.php')."</h2>";
+echo "<h2>".get_vocab('admin_config3')."</h2>";
 echo "<form action=\"./admin_config3.php\"  method=\"POST\" >\n";
 //
 // Automatic mail
@@ -176,7 +176,7 @@ echo "/>
 <label for='label_3'>";
 echo get_vocab("mail_admin_on");
 if (Settings::get("automatic_mail") == 'yes')
-	echo " - <a href='admin_email_manager.php'>".get_vocab('admin_email_manager.php')."</a>\n";
+	echo " - <a href='admin_email_manager.php'>".get_vocab('admin_email_manager')."</a>\n";
 echo "
 </label>
 <br />

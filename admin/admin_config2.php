@@ -93,7 +93,7 @@ affiche_pop_up($msg,"admin");
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_config2.php')."</h2>";
+echo "<h2>".get_vocab('admin_config2')."</h2>";
 echo "<form action=\"./admin_config2.php\" method=\"get\" >\n";
 // Type d'accès
 # authentification_obli = 1 : il est obligatoire de se connecter pour accéder au site.

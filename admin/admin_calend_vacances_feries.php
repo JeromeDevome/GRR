@@ -190,7 +190,7 @@ start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 // affichage de la colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_calend_vacances_feries.php')."</h2>\n";
+echo "<h2>".get_vocab('admin_calend_vacances_feries')."</h2>\n";
 echo "\n<p>".get_vocab("vacances_feries_description")."</p>";
 if ($action == 'test1'){
     echo "<p>Il faut activer l'affichage des vacances et jours fériés pour continuer...</p>";

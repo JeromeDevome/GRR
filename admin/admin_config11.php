@@ -280,7 +280,7 @@ affiche_pop_up($msg, 'admin');
 // Affichage de la colonne de gauche
 include 'admin_col_gauche2.php';
 echo '<div class="col col-md-9 col-sm-8 col-xs-12">';
-echo "<h2>".get_vocab('admin_config11.php')."</h2>";
+echo "<h2>".get_vocab('admin_config11')."</h2>";
 //
 // Config générale
 //****************

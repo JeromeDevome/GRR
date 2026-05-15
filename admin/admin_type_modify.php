@@ -158,7 +158,7 @@ echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
 affiche_pop_up($msg,"admin");
 if ((isset($id_type)) && ($id_type > 0))
 {
-    echo "<h2>".get_vocab("admin_type_modify_modify.php")."</h2>";
+    echo "<h2>".get_vocab("admin_type_modify_modify")."</h2>";
 }
 else
 {
@@ -171,7 +171,7 @@ else
     $row["couleur"]  = '';
     $row["couleurhexa"] = '#FFFFFF';
     $row["couleurtexte"] = "#000000";
-    echo "<h2>".get_vocab('admin_type_modify_create.php')."</h2>";
+    echo "<h2>".get_vocab('admin_type_modify_create')."</h2>";
 }
 echo get_vocab('admin_type_explications')."<br /><br />";
 echo '<form action="admin_type_modify.php" method="get">';

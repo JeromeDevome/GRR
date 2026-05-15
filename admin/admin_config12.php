@@ -298,7 +298,7 @@ affiche_pop_up($msg, 'admin');
 include 'admin_col_gauche2.php';
 //echo "<p>".get_vocab('mess_avertissement_config')."</p>";
 echo '<div class="col col-md-9 col-sm-8 col-xs-12">'; // colonne de droite
-echo "<h2>".get_vocab('admin_config12.php')."</h2>";
+echo "<h2>".get_vocab('admin_config12')."</h2>";
 echo '<form action="./admin_config12.php" id="mainForm" method="post" >'.PHP_EOL;
 //
 // Configuration de l'affichage par défaut

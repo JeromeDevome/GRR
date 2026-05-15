@@ -169,7 +169,7 @@ affiche_pop_up($msg,'admin');
 include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab("admin_config_sso.php")."</h2>\n";
+echo "<h2>".get_vocab("admin_config_sso")."</h2>\n";
 echo "<form action=\"admin_config_sso.php\" method=\"post\">\n";
 echo "<div>\n<input type=\"radio\" name=\"sso_statut\" value=\"no_sso\" ";
 if (Settings::get("sso_statut") == '')

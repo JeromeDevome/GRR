@@ -174,7 +174,7 @@ if (isset($_GET['msg']))
 include "admin_col_gauche2.php";
 // Affichage de la colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab("admin_room.php")."</h2>";
+echo "<h2>".get_vocab("admin_room")."</h2>";
 
 if (Settings::get("module_multisite") == "Oui")
 {

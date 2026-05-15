@@ -1108,7 +1108,7 @@ else
 
 if(!$majscript) {
     echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-	echo "<h2>".get_vocab('admin_maj.php')."</h2>";
+	echo "<h2>".get_vocab('admin_maj')."</h2>";
 	echo "<hr />";
 
 	// Numéro de version

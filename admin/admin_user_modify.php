@@ -388,11 +388,11 @@ affiche_pop_up($msg,"admin");
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 if (isset($user_login) && ($user_login != ''))
 {
-    echo "<h2>".get_vocab('admin_user_modify_modify.php')."</h2>";
+    echo "<h2>".get_vocab('admin_user_modify_modify')."</h2>";
 }
 else
 {
-    echo "<h2>".get_vocab('admin_user_modify_create.php')."</h2>";
+    echo "<h2>".get_vocab('admin_user_modify_create')."</h2>";
 }
 echo '<p>';
 echo "<a href=\"admin_user.php?display=$display\" type='button' class='btn btn-primary'>".get_vocab("back").'</a>';
@@ -550,7 +550,7 @@ echo '<div>';
           if(isset($row["acc"]) && $row["acc"])
             echo "<li>".get_vocab("a_acces_au_domaine")."</li>";
           if(isset($row["ress"])){
-            echo "<li>".get_vocab("gestionnaire des resources suivantes")."</li>";
+            echo "<li>".get_vocab("gestionnaire_des_ressources_suivantes")."</li>";
             echo "<ul>";
             foreach($row["ress"] as $ressource){
               echo "<li>".$ressource."</li>";
@@ -558,7 +558,7 @@ echo '<div>';
             echo "</ul>";
           }
           if(isset($row["mail"])){
-            echo "<li>".get_vocab("est prevenu par mail")."</li>";
+            echo "<li>".get_vocab("est_prevenu_par_mail")."</li>";
             echo "<ul>";
             foreach($row["mail"] as $ressource){
               echo "<li>".$ressource."</li>";
@@ -579,9 +579,9 @@ echo '<div>';
     if(!$a_privileges)
     {
         if ($utilisateur['statut'] == 'administrateur')
-          echo "<div>".get_vocab("administrateur general").".</div>";
+          echo "<div>".get_vocab("administrateur_general").".</div>";
         else
-          echo "<div>".get_vocab("pas de privileges").".</div>";
+          echo "<div>".get_vocab("pas_de_privileges").".</div>";
     }
 echo "</div></section></body>";
 ?>

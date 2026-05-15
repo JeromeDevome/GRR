@@ -107,7 +107,7 @@ start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 affiche_pop_up($msg,"admin");
 echo "<div class=\"col-md-9 col-sm-8 col-xs-12\">";
-echo "<h2>".get_vocab('admin_type.php')."</h2>";
+echo "<h2>".get_vocab('admin_type')."</h2>";
 echo "<h3>".get_vocab("match_area").get_vocab('deux_points')." ".$area_name."</h3>";
 if ($nb_lignes > 0)
 {

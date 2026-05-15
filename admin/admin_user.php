@@ -336,7 +336,7 @@ include "admin_col_gauche2.php";
 if (isset($mess) and ($mess != ""))
 	echo "<p>".$mess."</p>";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_user.php')."</h2>";
+echo "<h2>".get_vocab('admin_user')."</h2>";
 
 //menu de choix des traitements d'utilisateurs
 echo "<table class='table table-noborder center'>\n";

@@ -155,7 +155,7 @@ affiche_pop_up($msg,"admin");
 include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_right_admin.php')."</h2>\n";
+echo "<h2>".get_vocab('admin_right_admin')."</h2>\n";
 echo "<p><i>".get_vocab("admin_right_admin_explain")."</i></p>\n";
 // sélecteur de site si multisite
 if ($multisite){

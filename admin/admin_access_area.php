@@ -195,7 +195,7 @@ start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 // colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_access_area.php')."</h2>\n";
+echo "<h2>".get_vocab('admin_access_area')."</h2>\n";
 affiche_pop_up($msg,"admin");
 // sélecteur de domaine
 if ($existe_domaine == 'yes')
