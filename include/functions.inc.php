@@ -71,15 +71,6 @@ function safe_redirect($redirect_url, $default_url = './')
 	exit();
 }
 
-function returnmsg($type,$test, $status, $msg = '')
-{
-	echo encode_message_utf8('<div class="alert alert-'.$type.'" role="alert"><h3>'.$test);
-	echo encode_message_utf8($status)."</h3>";
-	if ($msg != '')
-		echo encode_message_utf8("($msg)"),PHP_EOL;
-	echo '</div>',PHP_EOL;
-}
-
 function getDaysInMonth($month, $year)
 {
 	return date('t', mktime(0, 0, 0, $month, 1, $year));
@@ -408,17 +399,6 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 	return $affichage;
 }
 
-function decode_options($a,$modele){
-    // suppose que l'on a une chaîne $a de {V,F} de longueur égale à celle du $modele
-    // renvoie un tableau de booléens True, False indexé par les valeurs du modèle
-    $choix = array();
-    $l = count($modele);
-    for($i=0; $i<$l; $i++){
-        $choix[$modele[$i]] = ((isset($a))&&('V' == $a[$i]))? TRUE: FALSE;
-    }
-    return $choix;
-}
-
 /**
  *Fonction qui calcule $room, $area et $id_site à partir de $_GET['room'], $_GET['area'], $_GET['id_site']
  */
@@ -458,23 +438,6 @@ function Definition_ressource_domaine_site()
 		}
 	}
 }
-
-function bouton_retour_haut()
-{
-	echo '<script type="text/javascript">',PHP_EOL,'$(function()',PHP_EOL,'{',PHP_EOL,'$(window).scroll(function()',PHP_EOL,'{',PHP_EOL,
-		'if ($(window).scrollTop() != 0)',PHP_EOL,'$("#toTop").fadeIn();',PHP_EOL,'else',PHP_EOL,'$("#toTop").fadeOut();',PHP_EOL,
-		'});',PHP_EOL,'$("#toTop").click(function()',PHP_EOL,'{',PHP_EOL,'$("body,html").animate({scrollTop:0},800);',PHP_EOL,
-		'});',PHP_EOL,'});',PHP_EOL,'</script>',PHP_EOL;
-}
-/*
-function bouton_aller_bas()
-{
-	echo '<script type="text/javascript">',PHP_EOL,'$(function()',PHP_EOL,'{',PHP_EOL,'$(window).scroll(function()',PHP_EOL,'{',PHP_EOL,
-		'if ($(this).scrollTop() != 800)',PHP_EOL,'$("#toBot").fadeIn();',PHP_EOL,'else',PHP_EOL,'$("#toBot").fadeOut();',PHP_EOL,
-		'});',PHP_EOL,'$("#toBot").click(function()',PHP_EOL,'{',PHP_EOL,'$("body,html").animate({scrollTop:800},0);',PHP_EOL,
-		'});',PHP_EOL,'});',PHP_EOL,'</script>',PHP_EOL;
-}*/
-
 /**
  *function affiche_ressource_empruntee_twig
  *- $id_room : identifiant de la ressource
@@ -600,25 +563,6 @@ function bbCode($t,$type)
 	$t = preg_replace($regCouleur, "<span style=\"font-size: \\1px\">", $t);
 	return $t;
 }
-
-/**
- * FUNCTION: how_many_connected()
- * DESCRIPTION: Si c'est un admin qui est connecté, affiche le nombre de personnes actuellement connectées.
- */                     
-function how_many_connected() {
-        if (authGetUserLevel(getUserName(), -1) >= 6) {
-                $nb_connect = nb_connecte();
-                if (@file_exists('./admin_access_area.php')){
-                        $racineAd = "./";
-                } else {
-                        $racineAd = "./admin/";
-                }
-                echo "<a href='{$racineAd}admin.php?p=admin_view_connexions'>$nb_connect</a>".PHP_EOL;
-                if (verif_version()) {
-                  affiche_pop_up(get_vocab("maj_bdd_not_update").get_vocab("please_go_to_admin_maj"),"force");
-                }
-        }
-}  
                        
 /**                                     
  * FUNCTION: nb_connecte()
@@ -1976,16 +1920,6 @@ function time_date_string_jma($t,$dformat)
 	return utf8_strftime($dformat, $t);
 }
 
-// Renvoie une balise span avec un style background-color correspondant au type de  la réservation
-function span_bgground($colclass)
-{
-	global $tab_couleur;
-	static $ecolors;
-	$res = grr_sql_query("SELECT couleurhexa, couleurtexte FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-	$row = grr_sql_row($res, 0);
-	echo '<span style="background-color: '.$row[0].'; background-image: none; background-repeat: repeat; background-attachment: scroll;color: '.$row[1].';">'.PHP_EOL;
-}
-
 //Output a start table cell tag <td> with color class and fallback color.
 function tdcell($colclass, $width = '')
 {
@@ -2023,22 +1957,6 @@ function tdcellT($colclass, $width = '')
 	}
 	else
 		return '<td class="'.$colclass.'" '.$temp.'>'.PHP_EOL;
-}
-
-function tdcell_rowspan($colclass, $step)
-{
-	global $tab_couleur;
-	static $ecolors;
-	if ($step < 1)
-		$step = 1;
-	if (($colclass >= "A") && ($colclass <= "ZZ"))
-	{
-		/*$couleurhexa = grr_sql_query1("SELECT couleurhexa FROM ".TABLE_PREFIX."_type_area WHERE type_letter='".$colclass."'");
-		echo '<td rowspan="'.$step.'" style="background-color:'.$couleurhexa.';">'.PHP_EOL;*/
-        echo '<td class="type'.$colclass.'" rowspan="'.$step.'">';
-	}
-	else
-		echo '<td rowspan="'.$step.'" class="'.$colclass.'">'.PHP_EOL;
 }
 
 //Display the entry-type color key. This has up to 2 rows, up to 10 columns.
@@ -3696,6 +3614,7 @@ function UserRoomMaxBooking($user, $id_room, $number)
 // Cette fonction teste si l'utilisateur $user a la possibilité d'effectuer une réservation, compte tenu
 // des limitations éventuelles de la ressource $id_room et du nombre $number de réservations à effectuer, sans que le quota défini sur l'intervalle [$start_time - $range, $start_time] dépasse la limite.
 //
+/*
 function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 {
 	global $enable_periods,$id_room_autorise;
@@ -3776,7 +3695,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
     }
 	// A ce stade, il s'agit d'un utilisateur et il n'y a pas eu de dépassement, ni pour l'ensemble des domaines, ni pour le domaine, ni pour la ressource, ni sur l'intervalle de temps
 	return 1;
-}
+}*/
 /* function authBooking($user,$room)
 à utiliser avec une ressource restreinte : détermine si $user est autorisé à réserver dans $room
 utilise la table grr_j_userbook_room
@@ -6035,66 +5954,6 @@ function supprimerReservationsUtilisateursEXT($avec_resa,$avec_privileges)
 		}
 		echo "<p class='avertissement'>".get_vocab("table_utilisateurs").get_vocab("deux_points").$n.get_vocab("entres_supprimees")."</p>\n";
 	}
-}
-/** NettoyerTablesJointure()
- *
- * Supprime les lignes inutiles dans les tables de liaison
- *
- */
-function NettoyerTablesJointure() {
-	$nb = 0;
-	// Table grr_j_mailuser_room
-	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_mailuser_room j
-	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
-	WHERE (u.login  IS NULL)";
-	$res = grr_sql_query($req);
-	while ($row = mysqli_fetch_array($res)) {
-		$nb++;
-		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='".$row[0]."'");
-	}
-
-	// Table grr_j_user_area
-	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_user_area j
-	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
-	WHERE (u.login  IS NULL)";
-	$res = grr_sql_query($req);
-	while ($row = mysqli_fetch_array($res)) {
-		$nb++;
-		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area where login='".$row[0]."'");
-	}
-	
-	// Table grr_j_user_room
-	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_user_room j
-	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
-	WHERE (u.login  IS NULL)";
-	$res = grr_sql_query($req);
-	while ($row = mysqli_fetch_array($res)) {
-		$nb++;
-		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='".$row[0]."'");
-	}
-	
-	// Table grr_j_useradmin_area
-	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_useradmin_area j
-	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
-	WHERE (u.login  IS NULL)";
-	$res = grr_sql_query($req);
-	while ($row = mysqli_fetch_array($res)) {
-		$nb++;
-		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='".$row[0]."'");
-	}
-	
-	// Table grr_j_useradmin_site
-	$req = "SELECT j.login FROM ".TABLE_PREFIX."_j_useradmin_site j
-	LEFT JOIN ".TABLE_PREFIX."_utilisateurs u on u.login=j.login
-	WHERE (u.login  IS NULL)";
-	$res = grr_sql_query($req);
-	while ($row = mysqli_fetch_array($res)) {
-		$nb++;
-		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='".$row[0]."'");
-	}
-	// Suppression effective
-	echo "<hr />\n";
-	echo "<p class='avertissement'>".get_vocab("tables_liaison").get_vocab("deux_points").$nb.get_vocab("entres_supprimees")."</p>\n";
 }
 
 if (!function_exists('htmlspecialchars_decode'))
