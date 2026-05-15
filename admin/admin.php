@@ -23,11 +23,12 @@ require '../vendor/autoload.php';
 require '../include/twiggrr.class.php';
 
 // GRR
+require "../include/securite.class.php";
 require "../include/functions.inc.php";
 
 $page = 'admin_accueil';
 if(isset($_GET['p'])){
-	$page = alphanum($_GET['p']);
+	$page = SecuChaine::alphanum($_GET['p']);
 }
 
 
@@ -36,7 +37,7 @@ include "../include/mdp_faciles.inc.php";
 include "../include/hook.class.php";
 include "./modeles/AdminFonctions.php";
 
-$room = isset($_GET['room']) ? alphanum($_GET['room']) : -1;
+$room = isset($_GET['room']) ? SecuChaine::alphanum($_GET['room']) : -1;
 
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))

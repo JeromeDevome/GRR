@@ -21,7 +21,7 @@ $grr_script_name = "admin_book_room.php";
 
 $ok = NULL;
 $id_room = isset($_POST["id_room"]) ? $_POST["id_room"] : (isset($_GET["id_room"]) ? $_GET["id_room"] : -1);
-$d['id_room'] = intval(clean_input($id_room));
+$d['id_room'] = intval(SecuChaine::clean_input($id_room));
 $reg_user_login = isset($_POST["reg_user_login"]) ? $_POST["reg_user_login"] : NULL;
 $reg_groupe = isset($_POST["reg_groupe"]) ? $_POST["reg_groupe"] : NULL;
 $reg_multi_user_login = isset($_POST["reg_multi_user_login"]) ? $_POST["reg_multi_user_login"] : NULL;
@@ -152,7 +152,7 @@ if ($action=='del_user')
 		exit();
 	}
 	unset($login_user);
-	$login_user = clean_input($_GET["login_user"]);
+	$login_user = SecuChaine::clean_input($_GET["login_user"]);
 	$sql = "DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE (login='$login_user' and id_room = '".$d['id_room']."')";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(1, "<p>" . grr_sql_error());

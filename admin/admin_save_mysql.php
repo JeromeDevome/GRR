@@ -30,6 +30,7 @@ if (isset($_GET['mdp']))
 	include "../personnalisation/connect.inc.php";
 	include "../include/config.inc.php";
 	include "../include/misc.inc.php";
+	include "../include/securite.class.php";
 	include "../include/functions.inc.php";
 	include "../include/$dbsys.inc.php";
 	include("../include/settings.class.php");

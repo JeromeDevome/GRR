@@ -176,8 +176,8 @@ if ($reg_data != 'yes')
 								$test_nom_prenom_existant = 'no';
 								if (preg_match ("`^.{1,30}$`", $data[$c]))
 								{
-									$test_nom = protect_data_sql($data[$c]);
-									$test_prenom = protect_data_sql($data[$c+1]);
+									$test_nom = SecuChaine::protect_data_sql($data[$c]);
+									$test_prenom = SecuChaine::protect_data_sql($data[$c+1]);
 									$test_nom_prenom = grr_sql_count(grr_sql_query("SELECT nom FROM ".TABLE_PREFIX."_utilisateurs WHERE (nom='$test_nom' and prenom = '$test_prenom')"));
 									if ($test_nom_prenom != '0')
 									{
@@ -243,8 +243,8 @@ else
 	for ($row = 1; $row < $nb_row; $row++)
 	{
 		// On nettoie les windozeries
-		$reg_nom[$row] = protect_data_sql(corriger_caracteres($reg_nom[$row]));
-		$reg_prenom[$row] = protect_data_sql(corriger_caracteres($reg_prenom[$row]));
+		$reg_nom[$row] = SecuChaine::protect_data_sql(corriger_caracteres($reg_nom[$row]));
+		$reg_prenom[$row] = SecuChaine::protect_data_sql(corriger_caracteres($reg_prenom[$row]));
 		$test_login = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$reg_login[$row]'"));
 		if ($test_login == 0) {
 			$sqlQuery = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',login='".$reg_login[$row]."',statut='".$reg_type_user[$row]."',etat='actif',source='ext'";

@@ -58,7 +58,7 @@ if ((authGetUserLevel(getUserName(),-1) >= Settings::get("acces_fiche_reservatio
 	$d['visuDescriptionComplete'] = 1;
 
 // Limitation par domaine
-$d['max_booking_per_area'] = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($id_area)."'");
+$d['max_booking_per_area'] = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".SecuChaine::protect_data_sql($id_area)."'");
 
 
 //Image de la ressource

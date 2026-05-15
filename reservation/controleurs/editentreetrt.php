@@ -185,9 +185,9 @@ try {
         $d['err_type'] = 'required';
         throw new Exception('erreur');
     }
-    $beneficiaire = isset($beneficiaire)? clean_input($beneficiaire) : "";
-    $benef_ext_nom = isset($benef_ext_nom)? clean_input($benef_ext_nom) : "";
-    $benef_ext_email = isset($benef_ext_email)? clean_input($benef_ext_email) : "";
+    $beneficiaire = isset($beneficiaire)? SecuChaine::clean_input($beneficiaire) : "";
+    $benef_ext_nom = isset($benef_ext_nom)? SecuChaine::clean_input($benef_ext_nom) : "";
+    $benef_ext_email = isset($benef_ext_email)? SecuChaine::clean_input($benef_ext_email) : "";
     $beneficiaire_ext = concat_nom_email($benef_ext_nom, $benef_ext_email);
 
     if ($beneficiaire == "-1")// est-ce possible ?
@@ -359,7 +359,7 @@ try {
         else 
         {
             $fin = array();
-            $fin = explode(':', clean_input($end_));
+            $fin = explode(':', SecuChaine::clean_input($end_));
             $end_hour = $fin[0];
             $end_minute = $fin[1];
             $pos = strpos($fin[1],' ');
@@ -446,7 +446,7 @@ try {
     }
     if ($rep_type != 0)
         $reps = mrbsGetRepeatEntryList($start_time, isset($rep_enddate)? $rep_enddate : 0, $rep_type, $rep_opt, $max_rep_entrys, $rep_num_weeks, $rep_jour_c, $area, $rep_month_abs1, $rep_month_abs2, array($vacances,$feries));
-    $create_by = isset($create_by)? clean_input($create_by) : $user;
+    $create_by = isset($create_by)? SecuChaine::clean_input($create_by) : $user;
     if (isset($room_back) && ($room_back != '0'))
         $room_back = ''; // room_back c'est NULL, '' ou '0'
     if (!isset($option_reservation))

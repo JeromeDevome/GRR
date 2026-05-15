@@ -58,7 +58,7 @@ if ($valid == 'yes')
 				{
 					VerifyModeDemo();
 					$reg_password1 =  password_hash($reg_password1, PASSWORD_DEFAULT);
-					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."' WHERE login='".getUserName()."'";
+					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".SecuChaine::protect_data_sql($reg_password1)."' WHERE login='".getUserName()."'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
 					else
@@ -102,14 +102,14 @@ if ($valid == 'yes')
 		{
 			if (trim($reg_nom) != '')
 			{
-				$sql.="nom = '" . protect_data_sql($reg_nom)."'";
+				$sql.="nom = '" . SecuChaine::protect_data_sql($reg_nom)."'";
 				$flag_virgule = 'y';
 				$_SESSION['nom'] = htmlspecialchars($reg_nom);
 			}
 			if (trim($reg_prenom) != '')
 			{
 				if ($flag_virgule == 'y') $sql .=",";
-				$sql .= "prenom = '" . protect_data_sql($reg_prenom)."'";
+				$sql .= "prenom = '" . SecuChaine::protect_data_sql($reg_prenom)."'";
 				$flag_virgule = 'y';
 				$_SESSION['prenom'] = htmlspecialchars($reg_prenom);
 			}
@@ -119,7 +119,7 @@ if ($valid == 'yes')
 			if(Settings::get('mail_user_obligatoire') != "y" || (Settings::get('mail_user_obligatoire') == "y" && $reg_email != "")){
 				if ($flag_virgule == 'y')
 					$sql .= ",";
-				$sql .= "email = '" . protect_data_sql($reg_email)."'";
+				$sql .= "email = '" . SecuChaine::protect_data_sql($reg_email)."'";
 			} else{
 				$msg = get_vocab('mail_user_obligatoire');
 			}
@@ -146,16 +146,16 @@ if (($valid == 'yes') || ($valid=='reset'))
 	$default_language = isset($_POST['default_language']) ? $_POST['default_language'] : NULL;
 	$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET ";
 	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_domaine")){
-		$sql .= "default_site = '".protect_data_sql($default_site)."', ";
-		$sql .= "default_area = '".protect_data_sql($default_area)."', ";
-		$sql .= "default_room = '".protect_data_sql($default_room)."', ";
+		$sql .= "default_site = '".SecuChaine::protect_data_sql($default_site)."', ";
+		$sql .= "default_area = '".SecuChaine::protect_data_sql($default_area)."', ";
+		$sql .= "default_room = '".SecuChaine::protect_data_sql($default_room)."', ";
 	}
 	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_theme"))
-		$sql .= "default_style = '". protect_data_sql($default_style)."', ";
+		$sql .= "default_style = '". SecuChaine::protect_data_sql($default_style)."', ";
 	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_affichage"))
-		$sql .= "default_list_type = '".protect_data_sql($default_list_type)."', ";
+		$sql .= "default_list_type = '".SecuChaine::protect_data_sql($default_list_type)."', ";
 	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_langue"))
-		$sql .= "default_language = '".protect_data_sql($default_language)."', ";
+		$sql .= "default_language = '".SecuChaine::protect_data_sql($default_language)."', ";
 	$sql .= "login='".getUserName()."'";
 	$sql .= "WHERE login='".getUserName()."'";
 	if (grr_sql_command($sql) < 0)

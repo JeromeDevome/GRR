@@ -396,7 +396,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 		else
 		{
-            if (validate_email($_email))
+            if (SecuChaine::Valide_email($_email))
             {
                 $affichage = '<a href="mailto:'.$_email.'">'.$_identite.'</a>';
             }
@@ -432,7 +432,7 @@ function Definition_ressource_domaine_site()
 
 	if (isset($_GET['room']) && $_GET['room'] != 'all' && $_GET['room'] != 0)
 	{
-		$room = intval(clean_input($_GET['room']));
+		$room = intval(SecuChaine::clean_input($_GET['room']));
 		$area = mrbsGetRoomArea($room);
 		$id_site = mrbsGetAreaSite($area);
 	}
@@ -440,14 +440,14 @@ function Definition_ressource_domaine_site()
 	{
 		if (isset($_GET['area']))
 		{
-			$area = intval(clean_input($_GET['area']));
+			$area = intval(SecuChaine::clean_input($_GET['area']));
 			$id_site = mrbsGetAreaSite($area);
 		}
 		else
 		{
 			if (isset($_GET["id_site"]))
 			{
-				$id_site = intval(clean_input($_GET["id_site"]));
+				$id_site = intval(SecuChaine::clean_input($_GET["id_site"]));
 				$area = get_default_area($id_site);
 			}
 			else
@@ -694,14 +694,14 @@ function resaToModerate($user)
             JOIN ".TABLE_PREFIX."_site s ON jsa.id_site = s.id
             WHERE e.moderate = 1 AND e.supprimer = 0
             AND (
-                e.room_id IN (SELECT id_room FROM ".TABLE_PREFIX."_j_user_room WHERE login = '".protect_data_sql($user)."')
+                e.room_id IN (SELECT id_room FROM ".TABLE_PREFIX."_j_user_room WHERE login = '".SecuChaine::protect_data_sql($user)."')
                 OR
-                r.area_id IN (SELECT id_area FROM ".TABLE_PREFIX."_j_user_area WHERE login = '".protect_data_sql($user)."')
+                r.area_id IN (SELECT id_area FROM ".TABLE_PREFIX."_j_user_area WHERE login = '".SecuChaine::protect_data_sql($user)."')
                 OR
                 r.area_id IN (
                     SELECT jsa2.id_area
                     FROM ".TABLE_PREFIX."_j_site_area jsa2
-                    WHERE jsa2.id_site IN (SELECT id_site FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login = '".protect_data_sql($user)."')
+                    WHERE jsa2.id_site IN (SELECT id_site FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login = '".SecuChaine::protect_data_sql($user)."')
                 )
             )
         ";
@@ -715,14 +715,14 @@ function resaToModerate($user)
             JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id
             WHERE e.moderate = 1 AND e.supprimer = 0
             AND (
-                e.room_id IN (SELECT id_room FROM ".TABLE_PREFIX."_j_user_room WHERE login = '".protect_data_sql($user)."')
+                e.room_id IN (SELECT id_room FROM ".TABLE_PREFIX."_j_user_room WHERE login = '".SecuChaine::protect_data_sql($user)."')
                 OR
-                r.area_id IN (SELECT id_area FROM ".TABLE_PREFIX."_j_user_area WHERE login = '".protect_data_sql($user)."')
+                r.area_id IN (SELECT id_area FROM ".TABLE_PREFIX."_j_user_area WHERE login = '".SecuChaine::protect_data_sql($user)."')
                 OR
                 r.area_id IN (
                     SELECT jsa.id_area
                     FROM ".TABLE_PREFIX."_j_site_area jsa
-                    WHERE jsa.id_site IN (SELECT id_site FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login = '".protect_data_sql($user)."')
+                    WHERE jsa.id_site IN (SELECT id_site FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login = '".SecuChaine::protect_data_sql($user)."')
                 )
             )
         ";
@@ -870,15 +870,15 @@ function  grr_add_ligne_moderation($id_entry, $login_moderateur, $motivation_mod
 		timestamp = '".$row['timestamp']."',
 		create_by = '".$row['create_by']."',
 		beneficiaire = '".$row['beneficiaire']."',
-		name = '".protect_data_sql($row['name'])."',
+		name = '".SecuChaine::protect_data_sql($row['name'])."',
 		type = '".$row['type']."',
-		description = '".protect_data_sql($row['description'])."',
+		description = '".SecuChaine::protect_data_sql($row['description'])."',
 		statut_entry = '".$row['statut_entry']."',
 		option_reservation = '".$row['option_reservation']."',
-		overload_desc  = '".protect_data_sql($row['overload_desc'])."',
+		overload_desc  = '".SecuChaine::protect_data_sql($row['overload_desc'])."',
 		moderate = '".$row['moderate']."',
-		motivation_moderation = '".protect_data_sql(strip_tags($motivation_moderation))."',
-		login_moderateur = '".protect_data_sql($login_moderateur)."'
+		motivation_moderation = '".SecuChaine::protect_data_sql(strip_tags($motivation_moderation))."',
+		login_moderateur = '".SecuChaine::protect_data_sql($login_moderateur)."'
 		WHERE id= '".$id_entry."'";
 	}
 	else
@@ -893,15 +893,15 @@ function  grr_add_ligne_moderation($id_entry, $login_moderateur, $motivation_mod
 		timestamp = '".$row['timestamp']."',
 		create_by = '".$row['create_by']."',
 		beneficiaire = '".$row['beneficiaire']."',
-		name = '".protect_data_sql($row['name'])."',
+		name = '".SecuChaine::protect_data_sql($row['name'])."',
 		type = '".$row['type']."',
-		description = '".protect_data_sql($row['description'])."',
+		description = '".SecuChaine::protect_data_sql($row['description'])."',
 		statut_entry = '".$row['statut_entry']."',
 		option_reservation = '".$row['option_reservation']."',
-		overload_desc  = '".protect_data_sql($row['overload_desc'])."',
+		overload_desc  = '".SecuChaine::protect_data_sql($row['overload_desc'])."',
 		moderate = '".$row['moderate']."',
-		motivation_moderation = '".protect_data_sql(strip_tags($motivation_moderation))."',
-		login_moderateur = '".protect_data_sql($login_moderateur)."'";
+		motivation_moderation = '".SecuChaine::protect_data_sql(strip_tags($motivation_moderation))."',
+		login_moderateur = '".SecuChaine::protect_data_sql($login_moderateur)."'";
 	}
 	
 	grr_sql_free($resCompteur);
@@ -960,17 +960,7 @@ function heure_ete_hiver($type, $annee, $heure)
 	return $debut;
 }
 
-# Remove backslash-escape quoting if PHP is configured to do it with
-# magic_quotes_gpc. Use this whenever you need the actual value of a GET/POST
-# form parameter (which might have special characters) regardless of PHP's
-# magic_quotes_gpc setting.
-function unslashes($s)
-{
-	if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc())
-		return stripslashes($s);
-	else
-		return $s;
-}
+
 
 // Corrige les caracteres degoutants utilises par les Windozeries
 function corriger_caracteres($texte)
@@ -990,19 +980,6 @@ function remplacer_accents($texte)
 	$chaineSansAccent = str_replace($search, $replace, $texte);
 	
 	return $chaineSansAccent;
-}
-
-// Traite les données avant insertion dans une requête SQL
-function protect_data_sql($_value)
-{
-	global $use_function_mysql_real_escape_string;
-	//if (get_magic_quotes_gpc())
-	if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc())
-		$_value = stripslashes($_value);
-	if (!is_numeric($_value) && $_value != null)
-		$_value = mysqli_real_escape_string($GLOBALS['db_c'], $_value);
-
-	return $_value;
 }
 
 // Traite les données envoyées par la methode GET|POST de la variable $_GET|POST["page"], renvoie "jour" si la page n'est pas définie
@@ -1083,7 +1060,7 @@ function begin_page($title, $page = "with_session")
 
 	if (isset($_GET['default_language']))
 	{
-		$_SESSION['default_language'] = alphanum(clean_input($_GET['default_language']));
+		$_SESSION['default_language'] = SecuChaine::alphanum(SecuChaine::clean_input($_GET['default_language']));
 		if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 			header("Location: ".$_SESSION['chemin_retour']);
 		else
@@ -1191,7 +1168,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 
 	if (isset($_GET['default_language']))
 	{
-		$_SESSION['default_language'] = alphanum($_GET['default_language']);
+		$_SESSION['default_language'] = SecuChaine::alphanum($_GET['default_language']);
 		if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
 			header("Location: ".$_SESSION['chemin_retour']);
 		else
@@ -1794,25 +1771,6 @@ function compare_ip_adr($ip1, $ips2)
 
 }
 
-/**
- * Contrôle validité ip
-*/
-function valide_ip_adr($input) {
-    $pattern = '/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(;\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})*$/';
-
-    if (preg_match($pattern, $input)) {
-        $ips = explode(';', $input);
-        foreach ($ips as $ip) {
-            if (!filter_var($ip, FILTER_VALIDATE_IP)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    return false;
-}
-
-
 //Retourne le domaine par défaut; Utilisé si aucun domaine n'a été défini.
 function get_default_area($id_site = -1)
 {
@@ -2198,20 +2156,6 @@ function synchro_groupe($idGroupe, $action)
 	}
 }
 
-// transforme une chaine de caractères en couleur hexadécimale valide
-function valid_color($entry)
-{
-	$out = preg_replace('/[^a-fA-F0-9]/','',$entry);
-	if (strlen($out)<4)
-	{
-		$out = '#'.substr($out.'000',0,3);
-	}
-	else //if (strlen($out)<7)
-	{
-		$out = '#'.substr($out.'000',0,6);
-	}
-	return($out);
-}
 //Round time down to the nearest resolution
 function round_t_down($t, $resolution, $am7)
 {
@@ -2488,7 +2432,7 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 function make_room_select_html($link, $current_area, $current_room, $year, $month, $day, $pos="G")
 {
 	global $vocab;
-	$sql = "select id, room_name, description from ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' order by order_display,room_name";
+	$sql = "select id, room_name, description from ".TABLE_PREFIX."_room WHERE area_id='".SecuChaine::protect_data_sql($current_area)."' order by order_display,room_name";
 	$res = grr_sql_query($sql);
 	if ($res && (grr_sql_count($res)>0)) // il y a des ressources à afficher
 	{
@@ -2693,7 +2637,7 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 {
 	global $vocab;
 	$out_html = "<b><i><span class=\"bground\">".get_vocab("rooms").get_vocab("deux_points")."</span></i></b><br />";
-	$sql = "select id, room_name, description from ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' order by order_display,room_name";
+	$sql = "select id, room_name, description from ".TABLE_PREFIX."_room WHERE area_id='".SecuChaine::protect_data_sql($current_area)."' order by order_display,room_name";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
@@ -2879,7 +2823,7 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 function make_room_item_html($link, $current_area, $current_room, $year, $month, $day)
 {
 	global $vocab;
-	$sql = "SELECT id, room_name, description FROM ".TABLE_PREFIX."_room WHERE area_id='".protect_data_sql($current_area)."' ORDER BY order_display,room_name";
+	$sql = "SELECT id, room_name, description FROM ".TABLE_PREFIX."_room WHERE area_id='".SecuChaine::protect_data_sql($current_area)."' ORDER BY order_display,room_name";
 	$res = grr_sql_query($sql);
 	if ($res && (grr_sql_count($res)>0)) // il y a des ressources à afficher
 	{
@@ -2966,7 +2910,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 	WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 	AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
-	AND ".TABLE_PREFIX."_entry.id='".protect_data_sql($id_entry)."'
+	AND ".TABLE_PREFIX."_entry.id='".SecuChaine::protect_data_sql($id_entry)."'
 	";
 	$res = grr_sql_query($sql);
 	if (!$res)
@@ -3008,7 +2952,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	// Recherche du nom de l'ancienne ressource si besoin
 	if($oldRessource != '' && $oldRessource != $room_id)
 	{
-		$oldRess = grr_sql_query1("SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($oldRessource)."'");
+		$oldRess = grr_sql_query1("SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id='".SecuChaine::protect_data_sql($oldRessource)."'");
 		$room_name = $oldRess." => ".$room_name;
 	}
 
@@ -3026,7 +2970,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		else
 		{
 			// Récupération depuis la base (comportement par défaut)
-			$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks FROM ".TABLE_PREFIX."_repeat WHERE id='".protect_data_sql($repeat_id)."'");
+			$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks FROM ".TABLE_PREFIX."_repeat WHERE id='".SecuChaine::protect_data_sql($repeat_id)."'");
 			if (!$res)
 				fatal_error(0, grr_sql_error());
 			$test = grr_sql_count($res);
@@ -3163,7 +3107,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$expediteur3 = $webmaster_email;
 	} 
 	elseif ($action == 6){ // Résultat d'une décision de modération
-		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".protect_data_sql($id_entry)."'");
+		$resmoderate = grr_sql_query("SELECT moderate, motivation_moderation FROM ".TABLE_PREFIX."_entry_moderate WHERE id ='".SecuChaine::protect_data_sql($id_entry)."'");
 		if (!$resmoderate)
 			fatal_error(0, grr_sql_error());
 		if (grr_sql_count($resmoderate) < 1)
@@ -3201,7 +3145,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	/*
 	(1) Pour les utilisateurs : Qui sont renseigné manuellement dans l'administration ET les utilisateurs notifié via les champs additionnels
 	*/
-	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif' AND j.mail_resa=1 AND u.desactive_mail=0) ORDER BY u.nom, u.prenom";
+	$sql = "SELECT u.email FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_mailuser_room j WHERE (j.id_room='".SecuChaine::protect_data_sql($room_id)."' AND u.login=j.login and u.etat='actif' AND j.mail_resa=1 AND u.desactive_mail=0) ORDER BY u.nom, u.prenom";
 	$res = grr_sql_query($sql);
 	$nombre = grr_sql_count($res);
 	$destinataire1 = "";
@@ -3324,7 +3268,7 @@ function getWritable($user, $id)
 		$temp = 2;
     $sql = "SELECT room_id, create_by, beneficiaire, dont_allow_modify, who_can_book, qui_peut_reserver_pour 
             FROM ".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON room_id = ".TABLE_PREFIX."_room.id
-            WHERE ".TABLE_PREFIX."_entry.id ='".protect_data_sql($id)."'";
+            WHERE ".TABLE_PREFIX."_entry.id ='".SecuChaine::protect_data_sql($id)."'";
     $res = grr_sql_query($sql);
     if (!$res)
         fatal_error(0, grr_sql_error());
@@ -3430,7 +3374,7 @@ function auth_visiteur($user,$id_room)
 	global $id_room_autorise;
 	if ((!isset($user)) || (!isset($id_room)))
 		return 0;
-	$res = grr_sql_query("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login ='".protect_data_sql($user)."'");
+	$res = grr_sql_query("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login ='".SecuChaine::protect_data_sql($user)."'");
 	if (!$res || grr_sql_count($res) == 0)
 		return 0;
 	$status = mysqli_fetch_row($res);
@@ -3456,7 +3400,7 @@ function authGetUserLevel($user, $id, $type = 'room')
 	if (!isset($user) || ($user == ''))
 		return 0;
 	// On vient lire le statut de l'utilisateur courant dans la database
-	$sql = "SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".protect_data_sql($user)."' "." AND etat='actif'";
+	$sql = "SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::protect_data_sql($user)."' "." AND etat='actif'";
 	$res = grr_sql_query($sql);
 	$nbraw = grr_sql_count($res);
 	//user level '0': User not defined in database
@@ -3490,12 +3434,12 @@ function authGetUserLevel($user, $id, $type = 'room')
 		{
 			// On regarde si l'utilisateur est administrateur du site auquel la ressource $id appartient
 			// calcul de l'id du domaine
-			$id_area = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id)."'");
+			$id_area = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id='".SecuChaine::protect_data_sql($id)."'");
 			// calcul de l'id du site
-			$id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".protect_data_sql($id_area)."'");
+			$id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".SecuChaine::protect_data_sql($id_area)."'");
 			if (Settings::get("module_multisite") == "Oui")
 			{
-				$res3 = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".protect_data_sql($id_site)."' AND j.login='".protect_data_sql($user)."'");
+				$res3 = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".SecuChaine::protect_data_sql($id_site)."' AND j.login='".SecuChaine::protect_data_sql($user)."'");
 				if (grr_sql_count($res3) > 0)
 				{
 					grr_sql_free($res3);
@@ -3505,15 +3449,15 @@ function authGetUserLevel($user, $id, $type = 'room')
 			// On regarde si l'utilisateur est administrateur du domaine auquel la ressource $id appartient
 			$res3 = grr_sql_query("SELECT u.login
 				FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
-				WHERE (u.login=j.login AND j.id_area='".protect_data_sql($id_area)."' AND u.login='".protect_data_sql($user)."')");
+				WHERE (u.login=j.login AND j.id_area='".SecuChaine::protect_data_sql($id_area)."' AND u.login='".SecuChaine::protect_data_sql($user)."')");
 			if (grr_sql_count($res3) > 0)
 				return 4;
 			// On regarde si l'utilisateur est gestionnaire des réservations pour une ressource
 			$str_res2 = "SELECT *
 			FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_user_room j
-			WHERE u.login=j.login and u.login='".protect_data_sql($user)."' ";
+			WHERE u.login=j.login and u.login='".SecuChaine::protect_data_sql($user)."' ";
 			if ($id!=-1)
-				$str_res2.="AND j.id_room='".protect_data_sql($id)."'";
+				$str_res2.="AND j.id_room='".SecuChaine::protect_data_sql($id)."'";
 			$res2 = grr_sql_query($str_res2);
 			if (grr_sql_count($res2) > 0)
 				return 3;
@@ -3530,14 +3474,14 @@ function authGetUserLevel($user, $id, $type = 'room')
 				//On regarde si l'utilisateur est administrateur d'un site quelconque
 					$res2 = grr_sql_query("SELECT u.login
 						FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
-						WHERE (u.login=j.login and u.login='".protect_data_sql($user)."')");
+						WHERE (u.login=j.login and u.login='".SecuChaine::protect_data_sql($user)."')");
 					if (grr_sql_count($res2) > 0)
 						return 5;
 				}
 				//On regarde si l'utilisateur est administrateur d'un domaine quelconque
 				$res2 = grr_sql_query("SELECT u.login
 					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
-					WHERE (u.login=j.login and u.login='".protect_data_sql($user)."')");
+					WHERE (u.login=j.login and u.login='".SecuChaine::protect_data_sql($user)."')");
 				if (grr_sql_count($res2) > 0)
 					return 4;
 			}
@@ -3546,15 +3490,15 @@ function authGetUserLevel($user, $id, $type = 'room')
 				if (Settings::get("module_multisite") == "Oui")
 				{
 				// On regarde si l'utilisateur est administrateur du site auquel le domaine $id appartient
-					$id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".protect_data_sql($id)."'");
-					$res3 = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".protect_data_sql($id_site)."' AND j.login='".protect_data_sql($user)."'");
+					$id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".SecuChaine::protect_data_sql($id)."'");
+					$res3 = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".SecuChaine::protect_data_sql($id_site)."' AND j.login='".SecuChaine::protect_data_sql($user)."'");
 					if (grr_sql_count($res3) > 0)
 						return 5;
 				}
 				//On regarde si l'utilisateur est administrateur du domaine dont l'id est $id
 				$res3 = grr_sql_query("SELECT u.login
 					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
-					WHERE (u.login=j.login and j.id_area='".protect_data_sql($id)."' and u.login='".protect_data_sql($user)."')");
+					WHERE (u.login=j.login and j.id_area='".SecuChaine::protect_data_sql($id)."' and u.login='".SecuChaine::protect_data_sql($user)."')");
 				if (grr_sql_count($res3) > 0)
 					return 4;
 			}
@@ -3569,7 +3513,7 @@ function authGetUserLevel($user, $id, $type = 'room')
 				//On regarde si l'utilisateur est administrateur d'un site quelconque
 				$res2 = grr_sql_query("SELECT u.login
 					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
-					WHERE (u.login=j.login and u.login='".protect_data_sql($user)."')");
+					WHERE (u.login=j.login and u.login='".SecuChaine::protect_data_sql($user)."')");
 				if (grr_sql_count($res2) > 0)
 					return 5;
 			}
@@ -3578,7 +3522,7 @@ function authGetUserLevel($user, $id, $type = 'room')
 				//On regarde si l'utilisateur est administrateur du site dont l'id est $id
 				$res3 = grr_sql_query("SELECT u.login
 					FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
-					WHERE (u.login=j.login and j.id_site='".protect_data_sql($id)."' and u.login='".protect_data_sql($user)."')");
+					WHERE (u.login=j.login and j.id_site='".SecuChaine::protect_data_sql($id)."' and u.login='".SecuChaine::protect_data_sql($user)."')");
 				if (grr_sql_count($res3) > 0)
 					return 5;
 			}
@@ -3599,26 +3543,26 @@ function authUserAccesArea($user,$id)
 {
 	if ($id == '')
 		return 0;
-	$sql = "SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".protect_data_sql($user)."' and statut='administrateur')";
+	$sql = "SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".SecuChaine::protect_data_sql($user)."' and statut='administrateur')";
 	$res = grr_sql_query($sql);
 	if (grr_sql_count($res) != "0")
 		return 1;
 	if (Settings::get("module_multisite") == "Oui")
 	{
 		$id_site = mrbsGetAreaSite($id);
-		$sql = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".$id_site."' AND j.login='".protect_data_sql($user)."'";
+		$sql = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".$id_site."' AND j.login='".SecuChaine::protect_data_sql($user)."'";
 		$res = grr_sql_query($sql);
 		if (grr_sql_count($res) != "0")
 			return 1;
 	}
-	$sql = "SELECT id FROM ".TABLE_PREFIX."_area WHERE (id = '".protect_data_sql($id)."' and access='r')";
+	$sql = "SELECT id FROM ".TABLE_PREFIX."_area WHERE (id = '".SecuChaine::protect_data_sql($id)."' and access='r')";
 	$res = grr_sql_query($sql);
 	$test = grr_sql_count($res);
 	if ($test == "0")
 		return 1;
 	else
 	{
-		$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_area WHERE (login = '".protect_data_sql($user)."' and id_area = '".protect_data_sql($id)."')";
+		$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_area WHERE (login = '".SecuChaine::protect_data_sql($user)."' and id_area = '".SecuChaine::protect_data_sql($id)."')";
 		$res2 = grr_sql_query($sql2);
 		$test2 = grr_sql_count($res2);
 		if ($test2 != "0")
@@ -3639,26 +3583,26 @@ function authUserAccesSite($user,$id)
 {
 	if ($id == '')
 		return 0;
-	$sql = "SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".protect_data_sql($user)."' and statut='administrateur')";
+	$sql = "SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".SecuChaine::protect_data_sql($user)."' and statut='administrateur')";
 	$res = grr_sql_query($sql);
 	if (grr_sql_count($res) != "0")
 		return 1;
 	if (Settings::get("module_multisite") == "Oui")
 	{
 		$id_site = mrbsGetAreaSite($id);
-		$sql = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".$id_site."' AND j.login='".protect_data_sql($user)."'";
+		$sql = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".$id_site."' AND j.login='".SecuChaine::protect_data_sql($user)."'";
 		$res = grr_sql_query($sql);
 		if (grr_sql_count($res) != "0")
 			return 1;
 	}
-	$sql = "SELECT id FROM ".TABLE_PREFIX."_site WHERE (id = '".protect_data_sql($id)."' and access='r')";
+	$sql = "SELECT id FROM ".TABLE_PREFIX."_site WHERE (id = '".SecuChaine::protect_data_sql($id)."' and access='r')";
 	$res = grr_sql_query($sql);
 	$test = grr_sql_count($res);
 	if ($test == "0")
 		return 1;
 	else
 	{
-		$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_site WHERE (login = '".protect_data_sql($user)."' and id_site = '".protect_data_sql($id)."')";
+		$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_site WHERE (login = '".SecuChaine::protect_data_sql($user)."' and id_site = '".SecuChaine::protect_data_sql($id)."')";
 		$res2 = grr_sql_query($sql2);
 		$test2 = grr_sql_count($res2);
 		if ($test2 != "0")
@@ -3667,7 +3611,7 @@ function authUserAccesSite($user,$id)
 		{
 			$sql3 = "SELECT login FROM ".TABLE_PREFIX."_j_group_site gs 
 			JOIN ".TABLE_PREFIX."_utilisateurs_groupes ug on ug.idgroupes = gs.idgroupes 
-			WHERE (ug.login = '".protect_data_sql($user)."' and gs.id_site = '".protect_data_sql($id)."')";
+			WHERE (ug.login = '".SecuChaine::protect_data_sql($user)."' and gs.id_site = '".SecuChaine::protect_data_sql($id)."')";
 			$res3 = grr_sql_query($sql3);
 			$test3 = grr_sql_count($res3);
 			if ($test3 != "0")
@@ -3695,11 +3639,11 @@ function UserRoomMaxBooking($user, $id_room, $number)
 		return 0;
 	// A ce niveau, l'utilisateur est simple utilisateur ou bien simple visiteur sur un domaine autorisé
 	// On regarde si le nombre de réservation de la ressource est limité
-	$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
+	$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id = '".SecuChaine::protect_data_sql($id_room)."'");
 	// Calcul de l'id de l'area de la ressource.
 	$id_area = mrbsGetRoomArea($id_room);
 	// On regarde si le nombre de réservation du domaine est limité
-	$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($id_area)."'");
+	$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".SecuChaine::protect_data_sql($id_area)."'");
 	// On regarde si le nombre de réservation pour l'ensemble des ressources est limité
 	$max_booking = Settings::get("UserAllRoomsMaxBooking");
 	// Si aucune limitation
@@ -3718,7 +3662,7 @@ function UserRoomMaxBooking($user, $id_room, $number)
 	// y-a-t-il dépassement pour l'ensemble des ressources ?
 	if ($max_booking > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry r WHERE (beneficiaire = '".protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry r WHERE (beneficiaire = '".SecuChaine::protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking)
 			return 0;
@@ -3728,7 +3672,7 @@ function UserRoomMaxBooking($user, $id_room, $number)
 	// y-a-t-il dépassement pour l'ensemble des ressources du domaine ?
 	if ($max_booking_per_area > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$id_area."' and e.beneficiaire = '".protect_data_sql($user)."' and e.end_time > '$now') AND e.supprimer=0");
+		$nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$id_area."' and e.beneficiaire = '".SecuChaine::protect_data_sql($user)."' and e.end_time > '$now') AND e.supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking_per_area)
 			return 0;
@@ -3738,7 +3682,7 @@ function UserRoomMaxBooking($user, $id_room, $number)
 	// y-a-t-il dépassement pour la ressource
 	if ($max_booking_per_room > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".protect_data_sql($id_room)."' and beneficiaire = '".protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".SecuChaine::protect_data_sql($id_room)."' and beneficiaire = '".SecuChaine::protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking_per_room)
 			return 0;
@@ -3766,14 +3710,14 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 		return 0;
 	// A ce niveau, l'utilisateur est simple utilisateur ou bien simple visiteur sur un domaine autorisé
 	// On regarde si le nombre de réservation de la ressource est limité
-	$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
+	$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id = '".SecuChaine::protect_data_sql($id_room)."'");
     // limitation dans le temps
-    $booking_range = grr_sql_query1("SELECT booking_range FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'"); // jours
+    $booking_range = grr_sql_query1("SELECT booking_range FROM ".TABLE_PREFIX."_room WHERE id = '".SecuChaine::protect_data_sql($id_room)."'"); // jours
     $min_int = $start_time - $booking_range * 86400 ;// approximatif, mais devrait être convenable
 	// Calcul de l'id de l'area de la ressource.
 	$id_area = mrbsGetRoomArea($id_room);
 	// On regarde si le nombre de réservation du domaine est limité
-	$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($id_area)."'");
+	$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".SecuChaine::protect_data_sql($id_area)."'");
 	// On regarde si le nombre de réservation pour l'ensemble des ressources est limité
 	$max_booking = Settings::get("UserAllRoomsMaxBooking");
 	// Si aucune limitation
@@ -3792,7 +3736,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 	// y-a-t-il dépassement pour l'ensemble des ressources ?
 	if ($max_booking > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry r WHERE (beneficiaire = '".protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry r WHERE (beneficiaire = '".SecuChaine::protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking)
 			return 0;
@@ -3802,7 +3746,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 	// y-a-t-il dépassement pour l'ensemble des ressources du domaine ?
 	if ($max_booking_per_area > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$id_area."' and e.beneficiaire = '".protect_data_sql($user)."' and e.end_time > '$now') AND e.supprimer=0");
+		$nb_bookings = grr_sql_query1("SELECT count(e.id) FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_room r WHERE (e.room_id=r.id and r.area_id='".$id_area."' and e.beneficiaire = '".SecuChaine::protect_data_sql($user)."' and e.end_time > '$now') AND e.supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking_per_area)
 			return 0;
@@ -3812,7 +3756,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 	// y-a-t-il dépassement pour la ressource
 	if ($max_booking_per_room > 0)
 	{
-		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".protect_data_sql($id_room)."' and beneficiaire = '".protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
+		$nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (room_id = '".SecuChaine::protect_data_sql($id_room)."' and beneficiaire = '".SecuChaine::protect_data_sql($user)."' and end_time > '$now') AND supprimer=0");
 		$nb_bookings += $number;
 		if ($nb_bookings > $max_booking_per_room)
 			return 0;
@@ -3822,8 +3766,8 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
     // limitation sur l'intervalle
     if ($booking_range > 0 ){
         $nb_bookings = grr_sql_query1("SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (
-        room_id = '".protect_data_sql($id_room)."'
-        AND beneficiaire = '".protect_data_sql($user)."'
+        room_id = '".SecuChaine::protect_data_sql($id_room)."'
+        AND beneficiaire = '".SecuChaine::protect_data_sql($user)."'
         AND end_time > '".$now."'
         AND start_time > '".min_int."') AND supprimer=0");
         $nb_bookings += $number;
@@ -3838,7 +3782,7 @@ function UserRoomMaxBookingRange($user, $id_room, $number, $start_time)
 utilise la table grr_j_userbook_room
 */
 function authBooking($user,$room){
-    $sql = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_j_userbook_room WHERE (login = '".protect_data_sql($user)."' AND id_room = '".protect_data_sql($room)."')";
+    $sql = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_j_userbook_room WHERE (login = '".SecuChaine::protect_data_sql($user)."' AND id_room = '".SecuChaine::protect_data_sql($room)."')";
 	$test = grr_sql_query1($sql);
     return ($test > 0);
 }
@@ -3858,12 +3802,12 @@ function authBooking($user,$room){
  	global $correct_diff_time_local_serveur, $can_delete_or_create;
  	$can_delete_or_create = "y";
 	// On teste si l'utilisateur est administrateur
- 	$sql = "SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($user)."'";
+ 	$sql = "SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".SecuChaine::protect_data_sql($user)."'";
  	$statut_user = grr_sql_query1($sql);
  	if ($statut_user == 'administrateur')
  		return true;
 	// A-t-on le droit d'agir dans le passé ?
- 	$allow_action_in_past = grr_sql_query1("SELECT allow_action_in_past FROM ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
+ 	$allow_action_in_past = grr_sql_query1("SELECT allow_action_in_past FROM ".TABLE_PREFIX."_room WHERE id = '".SecuChaine::protect_data_sql($id_room)."'");
  	if ($allow_action_in_past == 'y')
  		return true;
 	// Correction de l'avance en nombre d'heure du serveur sur les postes clients
@@ -3887,9 +3831,9 @@ function authBooking($user,$room){
  		if (($endtime != '') && ($endtime < $date_now))
  			return false;
  		if ((Settings::get("allow_user_delete_after_begin") == 1) || (Settings::get("allow_user_delete_after_begin") == 2))
- 			$sql = "SELECT end_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'";
+ 			$sql = "SELECT end_time FROM ".TABLE_PREFIX."_entry WHERE id = '".SecuChaine::protect_data_sql($id)."'";
  		else
- 			$sql = "SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'";
+ 			$sql = "SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".SecuChaine::protect_data_sql($id)."'";
  		$date_booking = grr_sql_query1($sql);
  		if ($date_booking < $date_now)
  			return false;
@@ -3899,7 +3843,7 @@ function authBooking($user,$room){
 			// Si oui, on transmet la variable $only_modify = true avant que la fonction de retourne true.
  			if (Settings::get("allow_user_delete_after_begin") == 2)
  			{
- 				$date_debut = grr_sql_query1("SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'");
+ 				$date_debut = grr_sql_query1("SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".SecuChaine::protect_data_sql($id)."'");
  				if ($date_debut < $date_now)
  					$can_delete_or_create = "n";
  				else
@@ -3912,7 +3856,7 @@ function authBooking($user,$room){
  	{
  		if (Settings::get("allow_user_delete_after_begin") == 1)
  		{
- 			$id_area = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
+ 			$id_area = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room WHERE id = '".SecuChaine::protect_data_sql($id_room)."'");
  			$resolution_area = grr_sql_query1("select resolution_area from ".TABLE_PREFIX."_area WHERE id = '".$id_area."'");
  			if ($date_booking > $date_now - $resolution_area)
  				return true;
@@ -3935,7 +3879,7 @@ function authBooking($user,$room){
  {
  	if (authGetUserLevel($user,$id_room) >= 3)
  		return true;
- 	$id_area = grr_sql_query1("SELECT area_id from ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id_room)."'");
+ 	$id_area = grr_sql_query1("SELECT area_id from ".TABLE_PREFIX."_room WHERE id='".SecuChaine::protect_data_sql($id_room)."'");
  	$duree_max_resa_area = grr_sql_query1("SELECT duree_max_resa_area from ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
  	$enable_periods =  grr_sql_query1("SELECT enable_periods from ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
  	if ($enable_periods == 'y')
@@ -3959,7 +3903,7 @@ function authBooking($user,$room){
  	$datenow = mktime(0, 0, 0, $month, $day, $year);
  	if (authGetUserLevel($user,$id_room) >= 3)
  		return true;
- 	$delais_max_resa_room = grr_sql_query1("SELECT delais_max_resa_room FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id_room)."'");
+ 	$delais_max_resa_room = grr_sql_query1("SELECT delais_max_resa_room FROM ".TABLE_PREFIX."_room WHERE id='".SecuChaine::protect_data_sql($id_room)."'");
 	if ($delais_max_resa_room == -1)
  		return true;
  	else if ($datenow + $delais_max_resa_room * 24 * 3600 + 1 < $date_booking)
@@ -3985,7 +3929,7 @@ function authBooking($user,$room){
  	global $correct_diff_time_local_serveur, $can_delete_or_create;
  	$can_delete_or_create = "y";
 	// On teste si l'utilisateur est administrateur
- 	$sql = "SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($user)."'";
+ 	$sql = "SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".SecuChaine::protect_data_sql($user)."'";
  	$statut_user = grr_sql_query1($sql);
  	if ($statut_user == 'administrateur')
  		return true;
@@ -4010,9 +3954,9 @@ function authBooking($user,$room){
  		if (($endtime != '') && ($endtime < $date_now))
  			return false;
  		if ((Settings::get("allow_user_delete_after_begin") == 1) || (Settings::get("allow_user_delete_after_begin") == 2))
- 			$sql = "SELECT end_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'";
+ 			$sql = "SELECT end_time FROM ".TABLE_PREFIX."_entry WHERE id = '".SecuChaine::protect_data_sql($id)."'";
  		else
- 			$sql = "SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'";
+ 			$sql = "SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".SecuChaine::protect_data_sql($id)."'";
  		$date_booking = grr_sql_query1($sql);
  		if ($date_booking < $date_now)
  			return false;
@@ -4022,7 +3966,7 @@ function authBooking($user,$room){
 			// Si oui, on transmet la variable $only_modify = true avant que la fonction de retourne true.
  			if (Settings::get("allow_user_delete_after_begin") == 2)
  			{
- 				$date_debut = grr_sql_query1("SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".protect_data_sql($id)."'");
+ 				$date_debut = grr_sql_query1("SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id = '".SecuChaine::protect_data_sql($id)."'");
  				if ($date_debut < $date_now)
  					$can_delete_or_create = "n";
  				else
@@ -4035,7 +3979,7 @@ function authBooking($user,$room){
  	{
  		if (Settings::get("allow_user_delete_after_begin") == 1)
  		{
- 			$id_area = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room WHERE id = '".protect_data_sql($id_room)."'");
+ 			$id_area = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room WHERE id = '".SecuChaine::protect_data_sql($id_room)."'");
  			$resolution_area = grr_sql_query1("select resolution_area from ".TABLE_PREFIX."_area WHERE id = '".$id_area."'");
  			if ($date_booking > $date_now - $resolution_area)
  				return true;
@@ -4158,7 +4102,7 @@ function verif_delais_min_resa_room($user, $id_room, $date_booking, $enable_peri
 {
 	if (authGetUserLevel($user,$id_room) >= 3)
 		return true;
-	$delais_min_resa_room = grr_sql_query1("SELECT delais_min_resa_room FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id_room)."'");
+	$delais_min_resa_room = grr_sql_query1("SELECT delais_min_resa_room FROM ".TABLE_PREFIX."_room WHERE id='".SecuChaine::protect_data_sql($id_room)."'");
 	if ($delais_min_resa_room == 0)
 		return true;
 	else
@@ -4355,13 +4299,13 @@ function showAccessDeniedMaxBookings($day, $month, $year, $id_room, $back)
 	echo '<h1>'.get_vocab("accessdenied").'</h1>';
 	echo '<p>';
 		// Limitation par ressource
-		$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id_room)."'");
+		$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id='".SecuChaine::protect_data_sql($id_room)."'");
 		if ($max_booking_per_room >= 0)
 			echo get_vocab("msg_max_booking").get_vocab("deux_points").$max_booking_per_room."<br />";
 		// Calcul de l'id de l'area de la ressource.
 		$id_area = mrbsGetRoomArea($id_room);
 		// Limitation par domaine
-		$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($id_area)."'");
+		$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".SecuChaine::protect_data_sql($id_area)."'");
 		if ($max_booking_per_area >= 0)
 			echo get_vocab("msg_max_booking_area").get_vocab("deux_points").$max_booking_per_area."<br />";
 		// Limitation sur l'ensemble des ressources
@@ -4382,13 +4326,13 @@ function showAccessDeniedMaxBookings_twig($day, $month, $year, $id_room, $back)
 	$html = '<h1>'.get_vocab("accessdenied").'</h1>';
 	$html .= '<p>';
 		// Limitation par ressource
-		$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id='".protect_data_sql($id_room)."'");
+		$max_booking_per_room = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_room WHERE id='".SecuChaine::protect_data_sql($id_room)."'");
 		if ($max_booking_per_room >= 0)
 			$html .= get_vocab("msg_max_booking").get_vocab("deux_points").$max_booking_per_room."<br />";
 		// Calcul de l'id de l'area de la ressource.
 		$id_area = mrbsGetRoomArea($id_room);
 		// Limitation par domaine
-		$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($id_area)."'");
+		$max_booking_per_area = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".SecuChaine::protect_data_sql($id_area)."'");
 		if ($max_booking_per_area >= 0)
 			$html .= get_vocab("msg_max_booking_area").get_vocab("deux_points").$max_booking_per_area."<br />";
 		// Limitation sur l'ensemble des ressources
@@ -4486,7 +4430,7 @@ function get_planning_area_values($id_area)
 	global $resolution, $morningstarts, $eveningends, $eveningends_minutes, $weekstarts, $twentyfourhour_format, $enable_periods, $periods_name, $display_day, $nb_display_day;
 	$sql = "SELECT calendar_default_values, resolution_area, morningstarts_area, eveningends_area, eveningends_minutes_area, weekstarts_area, twentyfourhour_format_area, enable_periods, display_days
 	FROM ".TABLE_PREFIX."_area
-	WHERE id = '".protect_data_sql($id_area)."'";
+	WHERE id = '".SecuChaine::protect_data_sql($id_area)."'";
 	$res = grr_sql_query($sql);
 	if (!$res)
 	{
@@ -4898,7 +4842,7 @@ function est_hors_reservation($time,$area="-1")
 	// 2ème test : s'agit-il d'une journée qui n'est pas affichée pour le domaine considéré ?
 	if ($area!=-1)
 	{
-		$sql = "SELECT display_days FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($area)."'";
+		$sql = "SELECT display_days FROM ".TABLE_PREFIX."_area WHERE id = '".SecuChaine::protect_data_sql($area)."'";
 		$result = grr_sql_query1($sql);
 		$jour_semaine = date("w",$time);
 		if (substr($result,$jour_semaine,1) == 'n')
@@ -4918,7 +4862,7 @@ function resa_est_hors_reservation($start_time,$end_time)
 function resa_est_hors_reservation2($start_time,$end_time,$area)
 {
 	// S'agit-il d'une journée qui n'est pas affichée pour le domaine considéré ?
-	$sql = "SELECT display_days FROM ".TABLE_PREFIX."_area WHERE id = '".protect_data_sql($area)."'";
+	$sql = "SELECT display_days FROM ".TABLE_PREFIX."_area WHERE id = '".SecuChaine::protect_data_sql($area)."'";
 	$result = grr_sql_query1($sql);
 	$jour_semaine = date("w",$start_time);
 	if (substr($result, $jour_semaine, 1) == 'n')
@@ -4944,7 +4888,7 @@ function find_active_user_room ($id_room)
 	{
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
-			if (validate_email($row[0]))
+			if (SecuChaine::Valide_email($row[0]))
 			{
 				$emails[] = $row[0];
 				$raison = 1;
@@ -4962,7 +4906,7 @@ function find_active_user_room ($id_room)
 		{
 			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
 			{
-				if (validate_email($row[0]))
+				if (SecuChaine::Valide_email($row[0]))
 				{
 					$emails[] = $row[0];
 					$raison = 2;
@@ -4984,7 +4928,7 @@ function find_active_user_room ($id_room)
 			{
 				for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
 				{
-					if (validate_email($row[0]))
+					if (SecuChaine::Valide_email($row[0]))
 					{
 						$emails[] = $row[0];
 						$raison = 3;
@@ -5001,7 +4945,7 @@ function find_active_user_room ($id_room)
 		{
 			for ($i = 0; ($row = grr_sql_row($sql_admin, $i)); $i++)
 			{
-				if (validate_email($row[0]))
+				if (SecuChaine::Valide_email($row[0]))
 				{
 					$emails[] = $row[0];
 					$raison = 4;
@@ -5011,24 +4955,7 @@ function find_active_user_room ($id_room)
 	}
 	return array($emails,$raison);
 }
-/** validate_email ($email)
- * Détermine si l'adresse mail en paramètre est syntaxiquement valable
- * Rend un booléen
-*/
-function validate_email ($email)
-{
-	$atom   = '[-a-z0-9!#$%&\'*+\\/=?^_`{|}~]';
-		// caractères autorisés avant l'arobase
-	$domain = '([a-z0-9]([-a-z0-9]*[a-z0-9]+)?)';
-		// caractères autorisés après l'arobase (nom de domaine)
-	$regex = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . '(' . $domain . '{1,63}\.)+' . $domain . '{2,63}$/i';
-	if (preg_match($regex, $email))
-		return true;
-	else {
-        $regex2 = '/^' . $atom . '+' . '(\.' . $atom . '+)*' . '@' . 'localhost/i';
-        return preg_match($regex2, $email);
-    }
-}
+
 /** grrDelOverloadFromEntries()
  * Supprime les données du champ $id_field de toutes les réservations
  */
@@ -5775,7 +5702,7 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
  		else
  		{
 			// Le code n'existe pas dans la base, alors on l'insère en lui attribuant le statut par défaut.
- 			$libellefonction = protect_data_sql($libellefonction);
+ 			$libellefonction = SecuChaine::protect_data_sql($libellefonction);
  			grr_sql_command("INSERT INTO grr_correspondance_statut(code_fonction,libelle_fonction,statut_grr) VALUES ('$codefonction', '$libellefonction', '$_statut')");
  			return $_statut;
  		}
@@ -5791,10 +5718,10 @@ function affiche_nom_prenom_email($_beneficiaire, $_beneficiaire_ext, $type = "n
 */
 function jQuery_DatePickerTwig($typeDate){
 
-	$getID		= isset($_GET['id']) ? alphanum($_GET['id']) : '';
-	$getDay		= isset($_GET['day']) ? alphanum($_GET['day']) : '';
-	$getMonth	= isset($_GET['month']) ? alphanum($_GET['month']) : '';
-	$getYear	= isset($_GET['year']) ? alphanum($_GET['year']) : '';
+	$getID		= isset($_GET['id']) ? SecuChaine::alphanum($_GET['id']) : '';
+	$getDay		= isset($_GET['day']) ? SecuChaine::alphanum($_GET['day']) : '';
+	$getMonth	= isset($_GET['month']) ? SecuChaine::alphanum($_GET['month']) : '';
+	$getYear	= isset($_GET['year']) ? SecuChaine::alphanum($_GET['year']) : '';
 
 	if ($typeDate == 'rep_end_' && isset($_GET['id'])){
 		$res = grr_sql_query("SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id=".$getID.";");
@@ -6268,34 +6195,6 @@ function display_mail_msg()
             $_SESSION['session_message_error'] = "";
         }
     }
-}
-
-/* fonction clean_input
-* pour réduire le risque XSS
-*/
-function clean_input($data){
-    $data = trim($data);
-    $data = stripslashes($data);
-	$data = htmlspecialchars($data);
-    return $data;
-}
-/* fonction clean_login
-*  élimine d'une chaîne tous les caractères non autorisés dans un identifiant d'utilisateur [a-zA-Z0-9_@.-]
-*/
-function clean_login($_login){
-  $clean = preg_replace("/[^a-zA-Z0-9_@.-]*/",'',$_login);
-  return $clean;
-}
-/* fonction alphanum
-* pour réduire les vulnérabilités
-*/
-function alphanum($data){
-	$data = trim($data);
-	$data = stripslashes($data);
-	$data = htmlentities($data);
-	$data = preg_replace('/[^A-Za-z0-9\-_]/', '', $data);
-
-	return $data;
 }
 
 // Génération d'un Token aléatoire

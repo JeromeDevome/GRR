@@ -373,7 +373,7 @@ if (isset($id) && $id !=0) // édition d'une réservation existante
   if ($entry_type >= 1) // entrée associée à une périodicité
   {
     $sql = "SELECT rep_type, start_time, end_date, rep_opt, rep_num_weeks, end_time, type, name, beneficiaire, description
-    FROM ".TABLE_PREFIX."_repeat WHERE id='".protect_data_sql($rep_id)."'";
+    FROM ".TABLE_PREFIX."_repeat WHERE id='".SecuChaine::protect_data_sql($rep_id)."'";
     $res = grr_sql_query($sql);
     if (!$res)
       fatal_error(1, grr_sql_error());

@@ -155,7 +155,7 @@ echo '<table class="table_adm">';
                         //echo $cours;
                         //echo("<p><b>Structure</b><br />");
                     foreach($cours->attributes() as $key => $value) {
-                        echo(" Cours ".clean_input($key)." -&gt;".clean_input($value)."<br />");
+                        echo(" Cours ".SecuChaine::clean_input($key)." -&gt;".SecuChaine::clean_input($value)."<br />");
                         $i++;
                         $tab_cours[$i]=array();
                         $tab_cours[$i]['attribut'][$key]=$value;
@@ -166,7 +166,7 @@ echo '<table class="table_adm">';
                         }
                                 //print_r($tab_cours[$i]);
                         $salle = $tab_cours[$i]['enfant']['salle']; // traiter le cas d'une salle vide ?
-                        $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name='".protect_data_sql($salle)."'");
+                        $room_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE room_name='".SecuChaine::protect_data_sql($salle)."'");
                         $jour_semaine = $joursemaine[substr(strtolower($tab_cours[$i]['enfant']['jour']),0,3)]; 
                         $name = $tab_cours[$i]['enfant']['classe'].' - '.$tab_cours[$i]['enfant']['mat_libelle']; // nettoyer le code classe pour les groupes complexes 
                         $description = $tab_cours[$i]['enfant']['prof_nom'].' '.$tab_cours[$i]['enfant']['prof_prenom'];
@@ -449,7 +449,7 @@ function entre_reservation($room_id,$jour_semaine,$name,$description,
 		
 		// Si il y a tentative de réserver pendant une durée dépassant la durée max
 		if ($error_duree_max_resa_area == 'yes') {
-			$area_id = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room where id='".protect_data_sql($room_id)."'");
+			$area_id = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room where id='".SecuChaine::protect_data_sql($room_id)."'");
 			$duree_max_resa_area = grr_sql_query1("select duree_max_resa_area from ".TABLE_PREFIX."_area where id='".$area_id."'");
 			print_header();
 			$temps_format = $duree_max_resa_area*60;

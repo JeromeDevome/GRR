@@ -135,14 +135,14 @@ class Email{
 			if (Settings::get('grr_mail_method') != 'bloque') {
 				$sql = "INSERT INTO ".TABLE_PREFIX."_log_mail ( date, de, a, sujet, message, template, idresa, type, erreur) values (
 					'" . time() . "',
-					'" . protect_data_sql($DE) . "',
-					'" . protect_data_sql($A) . "',
-					'" . protect_data_sql($sujet) . "',
-					'" . protect_data_sql($message) . "',
-					'" . protect_data_sql($template) . "',
-					'" . protect_data_sql($id_entry) . "',
-					'" . protect_data_sql($type_destinataire) . "',
-					'" . protect_data_sql($error) . "'
+					'" . SecuChaine::protect_data_sql($DE) . "',
+					'" . SecuChaine::protect_data_sql($A) . "',
+					'" . SecuChaine::protect_data_sql($sujet) . "',
+					'" . SecuChaine::protect_data_sql($message) . "',
+					'" . SecuChaine::protect_data_sql($template) . "',
+					'" . SecuChaine::protect_data_sql($id_entry) . "',
+					'" . SecuChaine::protect_data_sql($type_destinataire) . "',
+					'" . SecuChaine::protect_data_sql($error) . "'
 					)
 				;";
 				grr_sql_query($sql);

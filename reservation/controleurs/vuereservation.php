@@ -47,7 +47,7 @@ $reg_statut_id = isset($_GET["statut_id"]) ? htmlspecialchars($_GET["statut_id"]
 
 if (isset($_GET["id"]))
 {
-	$id = clean_input($_GET["id"]);
+	$id = SecuChaine::clean_input($_GET["id"]);
 	settype($id, "integer");
 }
 else
@@ -74,7 +74,7 @@ grr_sql_free($res);
 if (strstr ($back, 'p=vuereservation'))
 {
     if (isset($year)&&isset($month)&&isset($day)){
-        $page = (isset($_GET['page']))? clean_input($_GET['page']) : "day";
+        $page = (isset($_GET['page']))? SecuChaine::clean_input($_GET['page']) : "day";
         $back = 'app.php?p='.$page.'&year='.$year.'&month='.$month.'&day='.$day;
         if (($page == "semaine_all") || ($page == "mois_all") || ($page == "mois2_all") || ($page == "jour") || ($page == "annee") || ($page == "annee_all"))
             $back .= "&area=".mrbsGetRoomArea($row1['1']);
@@ -212,7 +212,7 @@ if(isset($_GET["reg_part"]))
 {
     $reg_participant = array();
     if(isset($_GET["reg_participant"]))
-        $reg_participant = array_map('clean_input',$_GET['reg_participant']);
+        $reg_participant = array_map('SecuChaine::clean_input',$_GET['reg_participant']);
     // tester s'il est possible d'inscrire tout ce monde !
     $reg_users = array(); // participants déjà inscrits
     $resp = grr_sql_query("SELECT beneficiaire FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
@@ -324,7 +324,7 @@ if (($fin_session == 'n') && ($userName!='') && (authGetUserLevel($userName, $ro
 			if ($_SESSION['session_message_error'] == "")
 			{
 				$_SESSION['displ_msg'] = "yes";
-				$_SESSION["msg_a_afficher"] = get_vocab("un_email_envoye")." ".clean_input($_GET["mail_exist"]);
+				$_SESSION["msg_a_afficher"] = get_vocab("un_email_envoye")." ".SecuChaine::clean_input($_GET["mail_exist"]);
 			}
             else
                 display_mail_msg();

@@ -45,6 +45,7 @@ if (lassospkit_nameid() != NULL && (getUserName()!=''))
 
 //Chargement des valeurs de la table settingS
 require_once("./include/language.inc.php");
+require_once("./include/securite.class.php");
 require_once("./include/functions.inc.php");
 
 echo begin_page(Settings::get("company").get_vocab("deux_points").get_vocab("mrbs"),"no_session");

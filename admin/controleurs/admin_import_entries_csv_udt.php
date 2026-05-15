@@ -439,7 +439,7 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	// Si il y a tentative de réserver pendant une durée dépassant la durée max
 	if ($error_duree_max_resa_area == 'yes') {
-		$area_id = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room where id='".protect_data_sql($room_id)."'");
+		$area_id = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room where id='".SecuChaine::protect_data_sql($room_id)."'");
 		$duree_max_resa_area = grr_sql_query1("select duree_max_resa_area from ".TABLE_PREFIX."_area where id='".$area_id."'");
 		$temps_format = $duree_max_resa_area*60;
 		toTimeString($temps_format, $dur_units);

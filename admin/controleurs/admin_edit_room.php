@@ -38,7 +38,7 @@ $allow_action_in_past  = isset($_POST["allow_action_in_past"]) ? $_POST["allow_a
 $dont_allow_modify  = isset($_POST["dont_allow_modify"]) ? $_POST["dont_allow_modify"] : NULL;
 $qui_peut_reserver_pour  = isset($_POST["qui_peut_reserver_pour"]) ? $_POST["qui_peut_reserver_pour"] : NULL;
 $who_can_see  = isset($_POST["who_can_see"]) ? $_POST["who_can_see"] : NULL;
-$who_can_book  = isset($_POST["who_can_book"]) ? intval(clean_input($_POST["who_can_book"])) : 1;
+$who_can_book  = isset($_POST["who_can_book"]) ? intval(SecuChaine::clean_input($_POST["who_can_book"])) : 1;
 $max_booking = isset($_POST["max_booking"]) ? $_POST["max_booking"] : NULL;
 settype($max_booking, "integer");
 if ($max_booking<-1)
@@ -175,11 +175,11 @@ if (isset($change_room))
 	if ((isset($room)) && !((isset($action) && ($action == "duplique_room"))))
 	{
 		$sql = "UPDATE ".TABLE_PREFIX."_room SET
-		room_name='".protect_data_sql($room_name)."',
-		description='".protect_data_sql($description)."', ";
+		room_name='".SecuChaine::protect_data_sql($room_name)."',
+		description='".SecuChaine::protect_data_sql($description)."', ";
 		if ($picture_room != '')
-			$sql .= "picture_room='".protect_data_sql($picture_room)."', ";
-		$sql .= "comment_room='".protect_data_sql($comment_room)."',
+			$sql .= "picture_room='".SecuChaine::protect_data_sql($picture_room)."', ";
+		$sql .= "comment_room='".SecuChaine::protect_data_sql($comment_room)."',
 		show_comment='".$show_comment."',
 		area_id='".$area_id."',
 		show_fic_room='".$show_fic_room."',
@@ -197,7 +197,7 @@ if (isset($change_room))
 		qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 		who_can_see = '".$who_can_see."',
 		who_can_book = '".$who_can_book."',
-		order_display='".protect_data_sql($area_order)."',
+		order_display='".SecuChaine::protect_data_sql($area_order)."',
 		type_affichage_reser='".$type_affichage_reser."',
 		max_booking='".$max_booking."',
 		moderate='".$moderate."',
@@ -213,11 +213,11 @@ if (isset($change_room))
 	else
 	{
 		$sql = "insert into ".TABLE_PREFIX."_room
-		SET room_name='".protect_data_sql($room_name)."',
+		SET room_name='".SecuChaine::protect_data_sql($room_name)."',
 		area_id='".$area_id."',
-		description='".protect_data_sql($description)."',
-		picture_room='".protect_data_sql($picture_room)."',
-		comment_room='".protect_data_sql(corriger_caracteres($comment_room))."',
+		description='".SecuChaine::protect_data_sql($description)."',
+		picture_room='".SecuChaine::protect_data_sql($picture_room)."',
+		comment_room='".SecuChaine::protect_data_sql(corriger_caracteres($comment_room))."',
 		show_fic_room='".$show_fic_room."',
 		active_ressource_empruntee = '".$active_ressource_empruntee."',
 		active_cle = '".$active_cle."',
@@ -233,7 +233,7 @@ if (isset($change_room))
 		qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 		who_can_see = '".$who_can_see."',
 		who_can_book = '".$who_can_book."',
-		order_display='".protect_data_sql($area_order)."',
+		order_display='".SecuChaine::protect_data_sql($area_order)."',
 		type_affichage_reser='".$type_affichage_reser."',
 		max_booking='".$max_booking."',
 		moderate='".$moderate."',
@@ -247,7 +247,7 @@ if (isset($change_room))
 	if ($room_name == '')
 	{
 		$room_name = get_vocab("room")." ".$room;
-		grr_sql_command("UPDATE ".TABLE_PREFIX."_room SET room_name='".protect_data_sql($room_name)."' WHERE id=$room");
+		grr_sql_command("UPDATE ".TABLE_PREFIX."_room SET room_name='".SecuChaine::protect_data_sql($room_name)."' WHERE id=$room");
 	}
 	// image d'illustration
 	$cledDossier = hash('ripemd128', $room.Settings::get("tokenprivee"));
@@ -271,7 +271,7 @@ if (isset($change_room))
 		list($nomImage, $resultImport) = Import::Image($dossier, $room);
 
 		if($resultImport == ""){
-			$sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".protect_data_sql($nomImage)."' WHERE id=".protect_data_sql($room);
+			$sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".SecuChaine::protect_data_sql($nomImage)."' WHERE id=".SecuChaine::protect_data_sql($room);
 			if (grr_sql_command($sql_picture) < 0)
 			{
 				fatal_error(0, get_vocab('update_room_failed') . grr_sql_error());

@@ -80,7 +80,7 @@ $adresse	= isset($_POST["adresse"]) ? validateLdapAddress($_POST["adresse"]) : '
 $port		= isset($_POST["port"]) ? validateLdapPort($_POST["port"]) : '';
 $login_ldap	= isset($_POST["login_ldap"]) ? $_POST["login_ldap"] : '';
 $pwd_ldap	= isset($_POST["pwd_ldap"]) ? $_POST["pwd_ldap"] : '';
-$pwd_ldap	= unslashes($pwd_ldap);
+$pwd_ldap	= SecuChaine::unslashes($pwd_ldap);
 $use_tls	= FALSE;
 if (isset($_POST["use_tls"]) && $_POST["use_tls"] == 'y')
 	$use_tls = TRUE;

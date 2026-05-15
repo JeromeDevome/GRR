@@ -258,7 +258,7 @@ function grr_sql_syntax_timestamp_to_unix($fieldname)
 // requires quoting of % and _ in addition to the usual.
 function grr_sql_syntax_caseless_contains($fieldname, $s, $type_recherche = 1)
 {
-	$s = protect_data_sql($s);
+	$s = SecuChaine::protect_data_sql($s);
 //    $s = str_replace("'", "''", $s);
 //    $s = str_replace("\\", "\\\\", $s);
 	$s = str_replace("%", "\\%", $s);

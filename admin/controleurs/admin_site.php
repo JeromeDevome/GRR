@@ -114,17 +114,17 @@ function create_site($id_site)
 		if ((isset($_POST['save']) && ($_POST['save'] != 'no')) || ((isset($_GET['save'])) && ($_GET['save'] != 'no')))
 		{
 			$sql="INSERT INTO ".TABLE_PREFIX."_site
-			SET sitecode='".strtoupper(protect_data_sql($sitecode))."',
-			sitename='".protect_data_sql($sitename)."',
-			access='".protect_data_sql($access)."',
-			adresse_ligne1='".protect_data_sql($adresse_ligne1)."',
-			adresse_ligne2='".protect_data_sql($adresse_ligne2)."',
-			adresse_ligne3='".protect_data_sql($adresse_ligne3)."',
-			cp='".protect_data_sql($cp)."',
-			ville='".strtoupper(protect_data_sql($ville))."',
-			pays='".strtoupper(protect_data_sql($pays))."',
-			tel='".protect_data_sql($tel)."',
-			fax='".protect_data_sql($fax)."'";
+			SET sitecode='".strtoupper(SecuChaine::protect_data_sql($sitecode))."',
+			sitename='".SecuChaine::protect_data_sql($sitename)."',
+			access='".SecuChaine::protect_data_sql($access)."',
+			adresse_ligne1='".SecuChaine::protect_data_sql($adresse_ligne1)."',
+			adresse_ligne2='".SecuChaine::protect_data_sql($adresse_ligne2)."',
+			adresse_ligne3='".SecuChaine::protect_data_sql($adresse_ligne3)."',
+			cp='".SecuChaine::protect_data_sql($cp)."',
+			ville='".strtoupper(SecuChaine::protect_data_sql($ville))."',
+			pays='".strtoupper(SecuChaine::protect_data_sql($pays))."',
+			tel='".SecuChaine::protect_data_sql($tel)."',
+			fax='".SecuChaine::protect_data_sql($fax)."'";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0,'<p>'.grr_sql_error().'</p>');
 			mysqli_insert_id($GLOBALS['db_c']);
@@ -273,17 +273,17 @@ function update_site($id)
 		if ((isset($_POST['save']) && ($_POST['save']!='no')) || ((isset($_GET['save'])) && ($_GET['save']!='no')))
 		{
 			$sql = "UPDATE ".TABLE_PREFIX."_site
-			SET sitecode='".strtoupper(protect_data_sql($sitecode))."',
-			access='".protect_data_sql($access)."',
-			sitename='".protect_data_sql($sitename)."',
-			adresse_ligne1='".protect_data_sql($adresse_ligne1)."',
-			adresse_ligne2='".protect_data_sql($adresse_ligne2)."',
-			adresse_ligne3='".protect_data_sql($adresse_ligne3)."',
-			cp='".protect_data_sql($cp)."',
-			ville='".strtoupper(protect_data_sql($ville))."',
-			pays='".strtoupper(protect_data_sql($pays))."',
-			tel='".protect_data_sql($tel)."',
-			fax='".protect_data_sql($fax)."'
+			SET sitecode='".strtoupper(SecuChaine::protect_data_sql($sitecode))."',
+			access='".SecuChaine::protect_data_sql($access)."',
+			sitename='".SecuChaine::protect_data_sql($sitename)."',
+			adresse_ligne1='".SecuChaine::protect_data_sql($adresse_ligne1)."',
+			adresse_ligne2='".SecuChaine::protect_data_sql($adresse_ligne2)."',
+			adresse_ligne3='".SecuChaine::protect_data_sql($adresse_ligne3)."',
+			cp='".SecuChaine::protect_data_sql($cp)."',
+			ville='".strtoupper(SecuChaine::protect_data_sql($ville))."',
+			pays='".strtoupper(SecuChaine::protect_data_sql($pays))."',
+			tel='".SecuChaine::protect_data_sql($tel)."',
+			fax='".SecuChaine::protect_data_sql($fax)."'
 			WHERE id='".$id."'";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0,'<p>'.grr_sql_error().'</p>');

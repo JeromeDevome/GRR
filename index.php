@@ -21,6 +21,7 @@ require_once("include/config.inc.php");
 if (file_exists("personnalisation/connect.inc.php"))
 	include "personnalisation/connect.inc.php";
 require_once("include/misc.inc.php");
+require_once("include/securite.class.php");
 require_once("include/functions.inc.php");
 require_once("include/settings.class.php");
 // Paramètres langage

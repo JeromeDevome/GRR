@@ -26,6 +26,7 @@ $niveauDossier = 2;
 require_once("../personnalisation/connect.inc.php");
 require_once("../include/config.inc.php");
 require_once("../include/misc.inc.php");
+require_once("../include/securite.class.php");
 require_once("../include/functions.inc.php");
 require_once("../include/$dbsys.inc.php");
 require_once("../include/settings.class.php");
@@ -135,7 +136,7 @@ if (isset($_POST['maj']) || $majscript)
 	$texte_popup = "Votre GRR a été mis à jour vers la version ".$version_grr.". N'oubliez pas de vérifier les nouvelles options disponibles dans la documentation.";
 
 
-	$sql = "UPDATE ".TABLE_PREFIX."_page set valeur = '" . protect_data_sql($texte_popup) . "' where nom = 'popup'";
+	$sql = "UPDATE ".TABLE_PREFIX."_page set valeur = '" . SecuChaine::protect_data_sql($texte_popup) . "' where nom = 'popup'";
 	$res = grr_sql_query($sql);
 
 

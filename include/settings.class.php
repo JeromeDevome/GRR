@@ -68,14 +68,14 @@ class Settings {
 	{
 		if (isset(self::$grrSettings[$_name]))
 		{
-			$sql = "UPDATE ".TABLE_PREFIX."_setting set VALUE = '" . protect_data_sql($_value) . "' where NAME = '" . protect_data_sql($_name) . "'";
+			$sql = "UPDATE ".TABLE_PREFIX."_setting set VALUE = '" . SecuChaine::protect_data_sql($_value) . "' where NAME = '" . SecuChaine::protect_data_sql($_name) . "'";
 			$res = grr_sql_query($sql);
 			if (!$res)
 				return false;
 		}
 		else
 		{
-			$sql = "INSERT INTO ".TABLE_PREFIX."_setting set NAME = '" . protect_data_sql($_name) . "', VALUE = '" . protect_data_sql($_value) . "'";
+			$sql = "INSERT INTO ".TABLE_PREFIX."_setting set NAME = '" . SecuChaine::protect_data_sql($_name) . "', VALUE = '" . SecuChaine::protect_data_sql($_value) . "'";
 			$res = grr_sql_query($sql);
 			if (!$res)
 				return (false);
@@ -87,7 +87,7 @@ class Settings {
 	static function delette($name)
 	{
 		$AllSettings = array();
-		$sql_query="DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME = '" . protect_data_sql($name) . "'";
+		$sql_query="DELETE FROM ".TABLE_PREFIX."_setting WHERE NAME = '" . SecuChaine::protect_data_sql($name) . "'";
 		$res=grr_sql_query($sql_query);
 	}
 }

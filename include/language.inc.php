@@ -30,7 +30,7 @@ else
 if (isset($_SESSION['default_language']))
 {
 	// si l'utilisateur a défini sa propre langue
-	$locale = alphanum($_SESSION['default_language']);
+	$locale = SecuChaine::alphanum($_SESSION['default_language']);
 }
 else if ($defaultlanguage)
 {
@@ -69,12 +69,12 @@ if (@file_exists($prefixeChemin."personnalisation/".$gcDossierLangue."/lang_subs
 if (isset($_GET['area']))
 {
 // Si l'id du domaine est passé en paramètre, on le récupère
-	$subst_id_area = intval(clean_input($_GET['area']));
+	$subst_id_area = intval(SecuChaine::clean_input($_GET['area']));
 }
 else if (isset($_GET['room']))
 {
 // sinon, on essaye avec l'id de la ressource
-	$subst_id_area = mrbsGetRoomArea(intval(clean_input($_GET['room'])));
+	$subst_id_area = mrbsGetRoomArea(intval(SecuChaine::clean_input($_GET['room'])));
 }
 if (isset($subst_id_area))
 {

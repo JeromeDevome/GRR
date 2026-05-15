@@ -82,7 +82,7 @@ if (isset($champ[0]))
 	$k = 0;
 	while ($k < count($texte))
 	{
-		$texte[$k] = unslashes($texte[$k]);
+		$texte[$k] = SecuChaine::unslashes($texte[$k]);
 		//Mettre les valeurs par défaut quand le formulaire est réutilisé.
 		$texte_default[$k] = htmlspecialchars($texte[$k]);
 		$k++;
@@ -255,7 +255,7 @@ if (isset($_GET["is_posted"]))
     $k = 0;
     while ($k < count($texte))
     {
-        $texte[$k] = unslashes($texte[$k]);
+        $texte[$k] = SecuChaine::unslashes($texte[$k]);
         $k++;
     }
 	//Les heures de début et de fin sont aussi utilisés pour mettre l'heure dans le rapport.

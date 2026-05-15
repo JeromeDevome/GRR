@@ -16,6 +16,8 @@
  * (at your option) any later version.
  */
 
+require_once("securite.class.php");
+
  if( (!isset($administration) || $administration != true) && (!isset($moncompte) || $moncompte != true))
  	include "functions.inc.php";
 

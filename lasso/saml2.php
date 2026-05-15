@@ -94,12 +94,13 @@ class EndpointExemple extends LassoSPKitSaml2Endpoint {
 	      require_once("./include/config.inc.php");
 	      include "./include/connect.inc.php";
 	      require_once("./include/$dbsys.inc.php");
+	      require_once("./include/securite.class.php");
 	      require_once("./include/functions.inc.php");
 	      require_once("./include/session.inc.php");
 
 	      // See admin_view_connexions.php:67
 	      $sql = "SELECT session_id FROM ".TABLE_PREFIX."_log
-                      WHERE login = '" . protect_data_sql($id) . "'
+                      WHERE login = '" . SecuChaine::protect_data_sql($id) . "'
                       AND end > NOW()";
 	      $res = grr_sql_query($sql);
 	      if ($res) {

@@ -62,8 +62,8 @@ if ($valid == "yes")
 	$reg_nom = isset($_GET["reg_nom"]) ? $_GET["reg_nom"] : NULL;
 	$reg_prenom = isset($_GET["reg_prenom"]) ? $_GET["reg_prenom"] : NULL;
 	$new_login = isset($_GET["new_login"]) ? $_GET["new_login"] : NULL;
-	$reg_password = isset($_GET["reg_password"]) ? unslashes($_GET["reg_password"]) : NULL;
-	$reg_password2 = isset($_GET["reg_password2"]) ? unslashes($_GET["reg_password2"]) : NULL;
+	$reg_password = isset($_GET["reg_password"]) ? SecuChaine::unslashes($_GET["reg_password"]) : NULL;
+	$reg_password2 = isset($_GET["reg_password2"]) ? SecuChaine::unslashes($_GET["reg_password2"]) : NULL;
 	$reg_changepwd = isset($_GET["reg_changepwd"]) ? $_GET["reg_changepwd"] : 0;
 	$reg_statut = isset($_GET["reg_statut"]) ? $_GET["reg_statut"] : NULL;
 	$reg_email = isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
@@ -156,16 +156,16 @@ if ($valid == "yes")
 							$defautRessource = $settings->get("default_room");
 
 						$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
-						nom='".protect_data_sql($reg_nom)."',
-						prenom='".protect_data_sql($reg_prenom)."',
-						login='".protect_data_sql($new_login)."',
-						password='".protect_data_sql($reg_password_c)."',
-						changepwd='".protect_data_sql($reg_changepwd)."',
-						statut='".protect_data_sql($reg_statut)."',
-						email='".protect_data_sql($reg_email)."',
-						etat='".protect_data_sql($reg_etat)."',
-						commentaire='".protect_data_sql($reg_commentaire)."',
-						desactive_mail='".protect_data_sql($reg_desactive_mail)."',
+						nom='".SecuChaine::protect_data_sql($reg_nom)."',
+						prenom='".SecuChaine::protect_data_sql($reg_prenom)."',
+						login='".SecuChaine::protect_data_sql($new_login)."',
+						password='".SecuChaine::protect_data_sql($reg_password_c)."',
+						changepwd='".SecuChaine::protect_data_sql($reg_changepwd)."',
+						statut='".SecuChaine::protect_data_sql($reg_statut)."',
+						email='".SecuChaine::protect_data_sql($reg_email)."',
+						etat='".SecuChaine::protect_data_sql($reg_etat)."',
+						commentaire='".SecuChaine::protect_data_sql($reg_commentaire)."',
+						desactive_mail='".SecuChaine::protect_data_sql($reg_desactive_mail)."',
 						default_site = '".$defautSite."',
 						default_area = '".$defautDomaine."',
 						default_room = '".$defautRessource."',
@@ -218,7 +218,7 @@ if ($valid == "yes")
 			$test_statut = TRUE;
 			if (authGetUserLevel(getUserName(),-1) < 6)
 			{
-				$old_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".protect_data_sql($user_login)."'");
+				$old_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::protect_data_sql($user_login)."'");
 				if (((($old_statut == "administrateur") || ($old_statut == "gestionnaire_utilisateur")) && ($old_statut != $reg_statut))
 					|| ((($old_statut == "utilisateur") || ($old_statut == "visiteur")) && (($reg_statut == "administrateur") || ($reg_statut == "gestionnaire_utilisateur"))))
 					$test_statut = FALSE;
@@ -233,7 +233,7 @@ if ($valid == "yes")
 				// On demande un changement de la source ext->local
 				if (($reg_password == '') && ($reg_password2 == ''))
 				{
-					$old_mdp = grr_sql_query1("SELECT password FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".protect_data_sql($user_login)."'");
+					$old_mdp = grr_sql_query1("SELECT password FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::protect_data_sql($user_login)."'");
 					if (($old_mdp == '') || ($old_mdp == -1))
 					{
 						$msg = get_vocab("passwd_error");
@@ -254,29 +254,29 @@ if ($valid == "yes")
 			}
 			if ($retry != 'yes')
 			{
-				$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".protect_data_sql($reg_nom)."',
-				prenom='".protect_data_sql($reg_prenom)."',
-				statut='".protect_data_sql($reg_statut)."',
-				changepwd='".protect_data_sql($reg_changepwd)."',
-				email='".protect_data_sql($reg_email)."',";
+				$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".SecuChaine::protect_data_sql($reg_nom)."',
+				prenom='".SecuChaine::protect_data_sql($reg_prenom)."',
+				statut='".SecuChaine::protect_data_sql($reg_statut)."',
+				changepwd='".SecuChaine::protect_data_sql($reg_changepwd)."',
+				email='".SecuChaine::protect_data_sql($reg_email)."',";
 				if ($reg_source=="local")
 				{
 					$sql .= "source='local',";
 					if ($reg_password_c!='')
-						$sql .= "password='".protect_data_sql($reg_password_c)."',";
+						$sql .= "password='".SecuChaine::protect_data_sql($reg_password_c)."',";
 				}
 				else
 					$sql .= "source='ext',password='',";
-				$sql .= "etat='".protect_data_sql($reg_etat)."',
-				commentaire='".protect_data_sql($reg_commentaire)."',
-				desactive_mail='".protect_data_sql($reg_desactive_mail)."',
-				default_site='".protect_data_sql($reg_site)."',
-				default_area='".protect_data_sql($reg_area)."',
-				default_room='".protect_data_sql($reg_room)."',
-				default_style='".protect_data_sql($reg_style)."',
-				default_list_type='".protect_data_sql($reg_list)."',
-				default_language='".protect_data_sql($reg_langue)."' 
-				WHERE login='".protect_data_sql($user_login)."'";
+				$sql .= "etat='".SecuChaine::protect_data_sql($reg_etat)."',
+				commentaire='".SecuChaine::protect_data_sql($reg_commentaire)."',
+				desactive_mail='".SecuChaine::protect_data_sql($reg_desactive_mail)."',
+				default_site='".SecuChaine::protect_data_sql($reg_site)."',
+				default_area='".SecuChaine::protect_data_sql($reg_area)."',
+				default_room='".SecuChaine::protect_data_sql($reg_room)."',
+				default_style='".SecuChaine::protect_data_sql($reg_style)."',
+				default_list_type='".SecuChaine::protect_data_sql($reg_list)."',
+				default_language='".SecuChaine::protect_data_sql($reg_langue)."' 
+				WHERE login='".SecuChaine::protect_data_sql($user_login)."'";
 
 				if (grr_sql_command($sql) < 0)
 				{

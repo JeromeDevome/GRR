@@ -87,7 +87,7 @@ if ($action == "add")
 	}
 	if ($arearight == true)
 	{
-		$sql = "INSERT INTO ".TABLE_PREFIX."_overload (id_area, fieldname, fieldtype, obligatoire, confidentiel, fieldlist, affichage, overload_mail, mail_spec) VALUES ($id_area, '".protect_data_sql($fieldname)."', '".protect_data_sql($fieldtype)."', '".$obligatoire."', '".$confidentiel."', '".protect_data_sql($fieldlist)."', '".$affichage."', '".$overload_mail."', '".$mail_spec."');";
+		$sql = "INSERT INTO ".TABLE_PREFIX."_overload (id_area, fieldname, fieldtype, obligatoire, confidentiel, fieldlist, affichage, overload_mail, mail_spec) VALUES ($id_area, '".SecuChaine::protect_data_sql($fieldname)."', '".SecuChaine::protect_data_sql($fieldtype)."', '".$obligatoire."', '".$confidentiel."', '".SecuChaine::protect_data_sql($fieldlist)."', '".$affichage."', '".$overload_mail."', '".$mail_spec."');";
 		if (grr_sql_command($sql) < 0)
 			fatal_error(0, "$sql \n\n" . grr_sql_error());
 	}
@@ -188,14 +188,14 @@ if ($action == "change")
 		if ($arearight == true)
 		{
 			$sql = "UPDATE ".TABLE_PREFIX."_overload SET
-			fieldname='".protect_data_sql($fieldname)."',
-			fieldtype='".protect_data_sql($fieldtype)."',
+			fieldname='".SecuChaine::protect_data_sql($fieldname)."',
+			fieldtype='".SecuChaine::protect_data_sql($fieldtype)."',
 			obligatoire='".$obligatoire."',
 			confidentiel='".$confidentiel."',
 			affichage='".$affichage."',
 			overload_mail='".$overload_mail."',
-			fieldlist='".protect_data_sql($fieldlist)."',
-			mail_spec='".protect_data_sql($mail_spec)."'
+			fieldlist='".SecuChaine::protect_data_sql($fieldlist)."',
+			mail_spec='".SecuChaine::protect_data_sql($mail_spec)."'
 			WHERE id=$id_overload;";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, "$sql \n\n" . grr_sql_error());

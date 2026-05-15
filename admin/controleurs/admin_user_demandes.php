@@ -44,7 +44,7 @@ if (isset($choix) && $choix > 0)
 
 	VerifyModeDemo();
 
-	$sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs_demandes WHERE idutilisateursdemandes = '".protect_data_sql($idemande)."' AND etat <> '1'";
+	$sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs_demandes WHERE idutilisateursdemandes = '".SecuChaine::protect_data_sql($idemande)."' AND etat <> '1'";
 	$resDemande = grr_sql_query($sql);
 	$nombreligne = grr_sql_count ($resDemande);
 	if ($nombreligne != 0)
@@ -101,13 +101,13 @@ if (isset($choix) && $choix > 0)
 						$defautRessource = $settings->get("default_room");
 
 					$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
-					nom='".protect_data_sql($demande['nom'])."',
-					prenom='".protect_data_sql($demande['prenom'])."',
-					login='".protect_data_sql($getLogin)."',
-					password='".protect_data_sql($demande['mdp'])."',
+					nom='".SecuChaine::protect_data_sql($demande['nom'])."',
+					prenom='".SecuChaine::protect_data_sql($demande['prenom'])."',
+					login='".SecuChaine::protect_data_sql($getLogin)."',
+					password='".SecuChaine::protect_data_sql($demande['mdp'])."',
 					changepwd='0',
-					statut='".protect_data_sql($getStatut)."',
-					email='".protect_data_sql($demande['email'])."',
+					statut='".SecuChaine::protect_data_sql($getStatut)."',
+					email='".SecuChaine::protect_data_sql($demande['email'])."',
 					etat='actif',
 					default_site = '".$defautSite."',
 					default_area = '".$defautDomaine."',
@@ -153,7 +153,7 @@ if (isset($choix) && $choix > 0)
 			etat='".$choix."',
 			gestionnaire='".getUserName()."',
 			datedemande='".date("Ymd")."'
-			WHERE idutilisateursdemandes='".protect_data_sql($idemande)."'";
+			WHERE idutilisateursdemandes='".SecuChaine::protect_data_sql($idemande)."'";
 			if (grr_sql_command($sql) < 0)
 			{
 				fatal_error(0, get_vocab("message_records_error") . grr_sql_error());

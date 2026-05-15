@@ -23,7 +23,7 @@ if (isset($series))
 $page = verif_page();
 
 if (isset($_GET["id"]))
-	$id = intval(clean_input($_GET["id"]));
+	$id = intval(SecuChaine::clean_input($_GET["id"]));
 else{
 	header("Location: ./app.php?p=login");
 	die();
@@ -75,7 +75,7 @@ if ($info = mrbsGetEntryInfo($id))
 	if ($result)
 	{
         //echo "44";
-        $room_back = isset($_GET['room_back']) ? clean_input($_GET['room_back']) : $info['room_id'];
+        $room_back = isset($_GET['room_back']) ? SecuChaine::clean_input($_GET['room_back']) : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
         $ress = '';
         if ($room_back != '0')  {$ress = "&room=".$room_back;}

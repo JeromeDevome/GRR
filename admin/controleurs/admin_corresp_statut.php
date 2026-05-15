@@ -52,7 +52,7 @@ if ( isset($_GET['action_add']) && ($_GET['action_add'] == 'yes'))
 {
 	if (($_POST['codefonc'] != "") && ($_POST['libfonc'] != "") && ($_POST['statutgrr'] != ""))
 	{
-		$sql = "INSERT INTO ".TABLE_PREFIX."_correspondance_statut (code_fonction, libelle_fonction, statut_grr) VALUES ('".strtoupper(protect_data_sql($_POST['codefonc']))."', '".ucfirst(protect_data_sql($_POST['libfonc']))."','".$_POST['statutgrr']."')";
+		$sql = "INSERT INTO ".TABLE_PREFIX."_correspondance_statut (code_fonction, libelle_fonction, statut_grr) VALUES ('".strtoupper(SecuChaine::protect_data_sql($_POST['codefonc']))."', '".ucfirst(SecuChaine::protect_data_sql($_POST['libfonc']))."','".$_POST['statutgrr']."')";
 		if (grr_sql_command($sql) < 0)
 			fatal_error(0, "<p>" . grr_sql_error());
 		else

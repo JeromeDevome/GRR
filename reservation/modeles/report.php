@@ -127,7 +127,7 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 {
 	global $vocab;
 
-	$getSumby = alphanum($_GET["sumby"]);
+	$getSumby = SecuChaine::alphanum($_GET["sumby"]);
 
 	if ($getSumby == "5") //Type
 		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$getSumby]."'");
@@ -172,7 +172,7 @@ function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end,
 {
 	global $vocab, $periods_name;
 
-	$getSumby = alphanum($_GET["sumby"]);
+	$getSumby = SecuChaine::alphanum($_GET["sumby"]);
 	$max_periods = count($periods_name);
 
 	if ($getSumby == "5")
@@ -233,7 +233,7 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 {
 	global $vocab, $gListeResume;
 
-	$getSumby = alphanum($_GET["sumby"]);
+	$getSumby = SecuChaine::alphanum($_GET["sumby"]);
     $rooms = array_keys($room_hash);    
 	ksort($rooms);
     $breve_descriptions = array_keys($breve_description_hash);

@@ -23,11 +23,12 @@ require '../vendor/autoload.php';
 require '../include/twiggrr.class.php';
 
 #GRR
+require "../include/securite.class.php";
 require "../include/functions.inc.php";
 
 $page = 'moncompte';
 if(isset($_GET['pc'])){
-	$page = alphanum($_GET['pc']);
+	$page = SecuChaine::alphanum($_GET['pc']);
 }
 
 include "../include/admin.inc.php";

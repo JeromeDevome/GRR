@@ -18,6 +18,7 @@
 
 require_once("../include/config.inc.php");
 require_once("../include/misc.inc.php");
+require_once("../include/securite.class.php");
 require_once("../include/functions.inc.php");
 
 require '../vendor/autoload.php';

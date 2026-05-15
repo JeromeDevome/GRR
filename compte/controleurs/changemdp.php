@@ -54,7 +54,7 @@ if ($valid == 'yes')
 				{
 					VerifyModeDemo();
 					$reg_password1 = password_hash($reg_password1, PASSWORD_DEFAULT);
-					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".protect_data_sql($reg_password1)."', changepwd ='0' WHERE login='".getUserName()."'";
+					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".SecuChaine::protect_data_sql($reg_password1)."', changepwd ='0' WHERE login='".getUserName()."'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
 					else

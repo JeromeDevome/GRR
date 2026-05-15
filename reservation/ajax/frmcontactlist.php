@@ -19,14 +19,15 @@
 include "../../personnalisation/connect.inc.php";
 include "../../include/mysql.inc.php";
 include "../../include/misc.inc.php";
+include "../../include/securite.class.php";
 include "../../include/functions.inc.php";
 
 $id = intval($_GET['id']);
 
-if ($id != protect_data_sql($id))
+if ($id != SecuChaine::protect_data_sql($id))
     die('Donnée incorrecte');
 
-$res = grr_sql_query("SELECT room_name,id FROM ".TABLE_PREFIX."_room WHERE area_id = '".protect_data_sql($id)."' ORDER BY room_name");
+$res = grr_sql_query("SELECT room_name,id FROM ".TABLE_PREFIX."_room WHERE area_id = '".SecuChaine::protect_data_sql($id)."' ORDER BY room_name");
 $nbresult = mysqli_num_rows($res);
 $user_name = getUserName();
 if ($nbresult != 0)

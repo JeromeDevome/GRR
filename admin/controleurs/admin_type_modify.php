@@ -84,7 +84,7 @@ if (isset($_GET['change_type']))
 		else
 		{
 			$sql = "UPDATE ".TABLE_PREFIX."_type_area SET
-			type_name='".protect_data_sql($type_name)."',
+			type_name='".SecuChaine::protect_data_sql($type_name)."',
 			order_display =";
 			if (is_numeric($order_display))
 				$sql= $sql .intval($order_display).",";
@@ -120,7 +120,7 @@ if (isset($_GET['change_type']))
 		else
 		{
 			$sql = "INSERT INTO ".TABLE_PREFIX."_type_area SET
-			type_name='".protect_data_sql($type_name)."',
+			type_name='".SecuChaine::protect_data_sql($type_name)."',
 			order_display =";
 			if (is_numeric($order_display))
 				$sql= $sql .intval($order_display).",";

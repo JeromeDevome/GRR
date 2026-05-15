@@ -53,7 +53,7 @@ if ((isset($id_area)) && ($id_area != -1))
 		grr_sql_free($res);
 	}
 	else
-		$area_name = unslashes($area_name);
+		$area_name = SecuChaine::unslashes($area_name);
 }
 else
 	$area_name='';

@@ -65,7 +65,7 @@ if($action == "envoi") //envoi du message
 	}
 	else
 	{
-		$destinataire = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".protect_data_sql($cible)."'");
+		$destinataire = grr_sql_query1("SELECT email FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".SecuChaine::protect_data_sql($cible)."'");
 		if ($destinataire == -1)
 			$destinataire = "";
 	}

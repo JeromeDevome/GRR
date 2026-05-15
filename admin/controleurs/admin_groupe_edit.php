@@ -71,9 +71,9 @@ if ($valid == "yes")
 			else
 			{
 				$sql = "INSERT INTO ".TABLE_PREFIX."_groupes SET
-				nom='".protect_data_sql($reg_nom)."',
-				description='".protect_data_sql($reg_description)."',
-				archive='".protect_data_sql($archive)."'";
+				nom='".SecuChaine::protect_data_sql($reg_nom)."',
+				description='".SecuChaine::protect_data_sql($reg_description)."',
+				archive='".SecuChaine::protect_data_sql($archive)."'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
 				else
@@ -93,10 +93,10 @@ if ($valid == "yes")
 			}
 			else
 			{
-				$sql = "UPDATE ".TABLE_PREFIX."_groupes SET nom='".protect_data_sql($reg_nom)."',
-				description='".protect_data_sql($reg_description)."',
-				archive='".protect_data_sql($archive)."'
-				WHERE idgroupes='".protect_data_sql($idgroupe)."'";
+				$sql = "UPDATE ".TABLE_PREFIX."_groupes SET nom='".SecuChaine::protect_data_sql($reg_nom)."',
+				description='".SecuChaine::protect_data_sql($reg_description)."',
+				archive='".SecuChaine::protect_data_sql($archive)."'
+				WHERE idgroupes='".SecuChaine::protect_data_sql($idgroupe)."'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0, get_vocab("message_records_error") . grr_sql_error());
 				else

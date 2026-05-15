@@ -129,7 +129,7 @@ $date = (isset($_GET['date']))? intval($_GET['date']) : 0;
 $selection = (isset($_GET['selection']))? intval($_GET['selection']) : -1;
 $newdate = (isset($_GET['newdate']))? intval($_GET['newdate']) : 0;
 $newDay = (isset($_GET['newDay']))? intval($_GET['newDay']) : 0;
-$titre = (isset($_GET['titre']))? clean_input($_GET['titre']) : "";
+$titre = (isset($_GET['titre']))? SecuChaine::clean_input($_GET['titre']) : "";
 // vérification du critère : premier caractère = lettre
 if(($titre != "")&&(!preg_match("/^[a-zA-Z]/",$titre))){
   $msg = get_vocab('invalid_parameters');
@@ -158,7 +158,7 @@ if(($titre != "")&&(!preg_match("/^[a-zA-Z]/",$titre))){
 		elseif ($selection == 2)
 		{
 			grr_sql_query("delete from ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY = ".$newdate."");
-			grr_sql_query("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours ='".protect_data_sql($titre)."', DAY = ".$newdate."");
+			grr_sql_query("insert into ".TABLE_PREFIX."_calendrier_jours_cycle set Jours ='".SecuChaine::protect_data_sql($titre)."', DAY = ".$newdate."");
 		}
 	}
 
