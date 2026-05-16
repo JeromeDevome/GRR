@@ -31,15 +31,25 @@
 						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-primary" onclick="setCheckboxesGrr(document.getElementById('formulaireF'), false, 'all'); return false;">{{ trad.uncheck_all_ }}</a> 
 						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-default" >{{ trad.returnprev }}</a>
 
+						<form action="?p=admin_calend_vacances_feries" method="POST" id="annee">
+							<input type="hidden" name="p" value="admin_calend_vacances_feries" />
+							<input type="hidden" name="define_holidays" value="F" />
+							{{ trad.annee }} 
+							{{d.liste_annees |raw }}
+							<input class="btn btn-primary" type="submit" name="{{ trad.OK }}" value="{{ trad.OK }}" />
+						</form>
+
 						<form action="?p=admin_calend_vacances_feries" method="post" id="formulaireF">
+							<input type="hidden" name="p" value="admin_calend_vacances_feries" />
+							<input type="hidden" name="recordFeries" value="yes" />
+							<input type="hidden" name="define_holidays" value="F" />
+							<input type="hidden" name="From_year" value="{{ d.From_year }}" />
 							<table>
 								{{ trad.dCalendrier |raw }}
 							</table>
 
 							<div style="text-align:center;">
 								<input class="btn btn-primary" type="submit" name="{{ trad.save }}" value="{{ trad.save }}" />
-								<input class="btn btn-primary" type="hidden" name="recordFeries" value="yes" />
-								<input class="btn btn-primary" type="hidden" name="define_holidays" value="F" />
 							</div>
 						</form>
 
@@ -49,15 +59,25 @@
 						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-primary" onclick="setCheckboxesGrr(document.getElementById('formulaireV'), false, 'all'); return false;">{{ trad.uncheck_all_ }}</a> 
 						<a href="?p=admin_calend_vacances_feries" class="btn btn-xs btn-default" >{{ trad.returnprev }}</a>
 
+						<form action="?p=admin_calend_vacances_feries" method="POST" id="annee">
+							<input type="hidden" name="p" value="admin_calend_vacances_feries" />
+							<input type="hidden" name="define_holidays" value="V" />
+							{{ trad.annee }} 
+							{{d.liste_annees |raw }}
+							<input class="btn btn-primary" type="submit" name="{{ trad.OK }}" value="{{ trad.OK }}" />
+						</form>
+
 						<form action="?p=admin_calend_vacances_feries" method="post" id="formulaireV">
+							<input type="hidden" name="p" value="admin_calend_vacances_feries" />
+							<input type="hidden" name="recordVacances" value="yes" />
+							<input type="hidden" name="define_holidays" value="V" />
+							<input type="hidden" name="From_year" value="{{ d.From_year }}" />
 							<table>
 								{{ trad.dCalendrier |raw }}
 							</table>
 
 							<div style="text-align:center;">
 								<input class="btn btn-primary" type="submit" name="{{ trad.save }}" value="{{ trad.save }}" />
-								<input class="btn btn-primary" type="hidden" name="recordVacances" value="yes" />
-								<input class="btn btn-primary" type="hidden" name="define_holidays" value="V" />
 							</div>
 						</form>
 

@@ -3,7 +3,7 @@
  * admin_calend_vacances_feries.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-03-26 16:38$
+ * Dernière modification : $Date: 2026-05-16 15:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -17,22 +17,37 @@
  */
 
 $grr_script_name = "admin_calend_vacances_feries.php";
+$trad = $vocab;
 
 check_access(6, $back);
 
-get_vocab_admin('admin_calend_vacances_feries');
-get_vocab_admin('vacances_feries_description');
-
-get_vocab_admin('vacances_feries_FR');
-get_vocab_admin('uncheck_all_');
-get_vocab_admin('vacances_FR');
-get_vocab_admin('returnprev');
-
-get_vocab_admin('save');
 
 // premier test : l'affichage des vacances et fériés est-il activé ?
 if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 {
+
+	$annee = isset($_POST['From_year']) ? $_POST['From_year'] : (isset($_GET['From_year']) ? intval($_GET['From_year']) : date('Y'));
+
+	if (!isset($From_year))
+		$From_year = $annee;
+
+	$d['liste_annees'] = genDateSelectorForm("From_", "", "", $From_year,"");
+	$d['From_year'] = $From_year;
+
+	$premier_jour_annee = mktime(0, 0, 0, 1, 1, $annee);
+	$dernier_jour_annee = mktime(0, 0, 0, 12, 31, $annee);
+
+	$begin_bookings = Settings::get("begin_bookings");
+	$end_bookings = Settings::get("end_bookings");
+
+	if($begin_bookings < $premier_jour_annee){
+		$begin_bookings = $premier_jour_annee;
+	}
+
+	if($end_bookings > $dernier_jour_annee){
+		$end_bookings = $dernier_jour_annee;
+	}
+
 
 	if ((isset($_POST['define_holidays'])) && ($_POST['define_holidays'] == 'F')){
 
@@ -48,13 +63,12 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 				for ($i = 0; ($row_old = grr_sql_row($res_old, $i)); $i++)
 					$day_old[$i] = $row_old[0];
 			}
-			// On vide la table ".TABLE_PREFIX."_calendrier_feries
-			$sql = "truncate table ".TABLE_PREFIX."_calendrier_feries";
+			// On supprime de la table ".TABLE_PREFIX."_calendrier_feries
+			$sql = "DELETE FROM ".TABLE_PREFIX."_calendrier_feries WHERE DAY >= '".$begin_bookings."' AND DAY <= '".$end_bookings."'";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, "<p>" . grr_sql_error());
 			$result = 0;
-			$end_bookings = Settings::get("end_bookings");
-			$begin_bookings = Settings::get("begin_bookings");
+
 			$month = date('m', $begin_bookings );
 			$year = date('Y', $begin_bookings );
 			$day = 1;
@@ -82,8 +96,7 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 				}
 			}
 		}
-		$begin_bookings = Settings::get("begin_bookings");
-		$end_bookings = Settings::get("end_bookings");
+
 		$month = date('m', $begin_bookings);
 		$year = date('Y', $begin_bookings);
 		$yearFin = date('Y', $end_bookings);
@@ -155,13 +168,12 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 				for ($i = 0; ($row_old = grr_sql_row($res_old, $i)); $i++)
 					$day_old[$i] = $row_old[0];
 			}
-			// On vide la table ".TABLE_PREFIX."_calendrier_vacances
-			$sql = "truncate table ".TABLE_PREFIX."_calendrier_vacances";
+			// On supprime de la table ".TABLE_PREFIX."_calendrier_vacances
+			$sql = "DELETE FROM ".TABLE_PREFIX."_calendrier_vacances WHERE DAY >= '".$begin_bookings."' AND DAY <= '".$end_bookings."'";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, "<p>" . grr_sql_error());
 			$result = 0;
-			$end_bookings = Settings::get("end_bookings");
-			$begin_bookings = Settings::get("begin_bookings");
+
 			$month = date('m', $begin_bookings);
 			$year = date('Y', $begin_bookings);
 			$day = 1;
@@ -190,8 +202,6 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 				}
 			}
 		}
-		$begin_bookings = Settings::get("begin_bookings");
-		$end_bookings = Settings::get("end_bookings");
 		$month = date('m', $begin_bookings);
 		$year = date('Y', $begin_bookings);
 		$yearFin = date('Y', $end_bookings);
@@ -272,5 +282,5 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 	}
 }
 
-	echo $twig->render('admin_calend_vacances_feries.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
+echo $twig->render('admin_calend_vacances_feries.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>
