@@ -52,7 +52,32 @@ if (	(authGetUserLevel(getUserName(), -1, 'area') < 4) &&
 	showAccessDenied($back);
 	exit();
 }
-print_header_admin("", "", "", $type="with_session");
+
+// If we dont know the right date then make it up
+if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
+{
+	$date_now = time();
+	if ($date_now < Settings::get("begin_bookings"))
+		$date_ = Settings::get("begin_bookings");
+	else if ($date_now > Settings::get("end_bookings"))
+		$date_ = Settings::get("end_bookings");
+	else
+		$date_ = $date_now;
+	$day   = date("d",$date_);
+	$month = date("m",$date_);
+	$year  = date("Y",$date_);
+}
+
+// On fabrique une date valide pour la réservation si ce n'est pas le cas
+$date_ = mktime(0, 0, 0, $month, $day, $year);
+if ($date_ < Settings::get("begin_bookings"))
+	$date_ = Settings::get("begin_bookings");
+else if ($date_ > Settings::get("end_bookings"))
+	$date_ = Settings::get("end_bookings");
+$day   = date("d",$date_);
+$month = date("m",$date_);
+$year  = date("Y",$date_);
+
 
 get_vocab_admin('admin');
 get_vocab_admin('grr_version');
@@ -62,11 +87,11 @@ get_vocab_admin("display_add_user");
 get_vocab_admin('admin_view_connexions');
 
 $d = array();
-$d['version'] = $version_grr;
-$d['versionCache'] = hash('sha256', $version_grr.Settings::get("tokenpublic"));
-$d['nomAffichage'] = $nomAffichage;
-$d['lienRetour'] = $lienRetour;
-$d['lienCompte'] = $lienCompte;
+$d['version']		= $version_grr;
+$d['versionCache']	= hash('sha256', $version_grr.Settings::get("tokenpublic"));
+$d['nomAffichage']	= htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);;
+$d['lienRetour']	= "../".page_accueil('yes')."day=".$day."&year=".$year."&month=".$month;
+$d['lienCompte']	= "../compte/compte.php?day=".$day."&year=".$year."&month=".$month;
 $d['nomUtilisateur'] = getUserName();
 $AllSettings = Settings::getAll();
 
@@ -75,9 +100,7 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
-// Menu GRR
-$menuAdminT = array();
-$menuAdminTN2 = array();
+// Menu administrateur
 include "admin_col_gauche.php";
 
 // Sécurité
@@ -94,13 +117,5 @@ if(in_array($page.".php",$listeFichiers))
 else
 	include('controleurs/index.php');
 
-
-if($page === 'admin_change_date_bookings' || $page === 'admin_open_mysql'){ // Config Général => Contenu (Modification Dates) && Config Général => Sécurité (Restauration sauvegarde)
-	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
-} elseif($page === 'admin_type_modify'){
-	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'type' => $typeResa, 'lettres' => $lettres));
-} elseif($page === 'admin_user'){
-	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateurs' => $col));
-}
 
 ?>

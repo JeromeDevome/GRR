@@ -64,6 +64,8 @@ if (get_request_uri() != ''){
 //Construction du menu
 $iN2 = 0;
 $liste = array();
+$menuAdminT = array();
+$menuAdminTN2 = array();
 if (authGetUserLevel(getUserName(), -1, 'area') >= 4)
 	afficheLienNiveau1('admin_accueil', 'fa fa-tachometer-alt', 1);
 if (authGetUserLevel(getUserName(), -1, 'area') >= 6)

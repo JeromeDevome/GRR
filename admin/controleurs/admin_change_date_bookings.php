@@ -57,4 +57,5 @@ $trad['dBegin_bookings']	= $_GET['begin_bookings'];
 $trad['dEnd_bookings']		= $_GET['end_bookings'];
 $trad['dPlageSelectionner']	= date("d/m/Y", $_GET['begin_bookings'])." - ". date("d/m/Y", $_GET['end_bookings']);
 
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

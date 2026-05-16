@@ -180,4 +180,5 @@ for ($i = 1; $i <= 702; $i++)
 	$letter++;
 }
 
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'type' => $typeResa, 'lettres' => $lettres));
 ?>

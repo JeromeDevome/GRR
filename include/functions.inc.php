@@ -1264,60 +1264,6 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	}
 }
 
-function print_header_admin($day = '', $month = '', $year = '', $type_session = 'with_session')
-{
-	global $vocab, $search_str, $grrSettings, $desactive_VerifNomPrenomUser, $grr_script_name;
-	global $use_admin, $id_site, $lienRetour, $lienCompte, $nomAffichage;
-
-	// Si nous ne sommes pas dans un format imprimable
-	if ((!isset($_GET['pview'])) || ($_GET['pview'] != 1))
-	{
-		// If we dont know the right date then make it up
-		if (!isset($day) || !isset($month) || !isset($year) || ($day == '') || ($month == '') || ($year == ''))
-		{
-			$date_now = time();
-			if ($date_now < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_now > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			else
-				$date_ = $date_now;
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-		}
-		if (!(isset($search_str)))
-			$search_str = get_vocab("search_for");
-		if (empty($search_str))
-			$search_str = "";
-		if (!(isset($desactive_bandeau_sup) && ($desactive_bandeau_sup == 1) && ($type_session != 'with_session')))
-		{
-
-			$nomAffichage =  htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);
-
-			// On fabrique une date valide pour la réservation si ce n'est pas le cas
-			$date_ = mktime(0, 0, 0, $month, $day, $year);
-			if ($date_ < Settings::get("begin_bookings"))
-				$date_ = Settings::get("begin_bookings");
-			else if ($date_ > Settings::get("end_bookings"))
-				$date_ = Settings::get("end_bookings");
-			$day   = date("d",$date_);
-			$month = date("m",$date_);
-			$year  = date("Y",$date_);
-
-			// Liens
-			$lienRetour = '../'.page_accueil('yes').'day='.$day.'&year='.$year.'&month='.$month;
-			$lienCompte = '../compte/compte.php?day='.$day.'&amp;year='.$year.'&amp;month='.$month;
-
-			//Mail réservation
-			$sql = "SELECT value FROM ".TABLE_PREFIX."_setting WHERE name='mail_etat_destinataire'";
-			$res = grr_sql_query1($sql);
-			grr_sql_free($res);
-
-		}
-	}
-}
-
 /**
  * @param string $type
  */

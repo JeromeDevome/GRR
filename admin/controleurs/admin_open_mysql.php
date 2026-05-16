@@ -129,4 +129,6 @@ if($restaureBBD == 1){
 		get_vocab_admin("msg_logout3");
 	}
 }
+
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>
