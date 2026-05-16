@@ -30,7 +30,7 @@ require "./include/functions.inc.php";
 
 $page = 'login';
 if(isset($_GET['p'])){
-	$page = SecuChaine::alphanum($_GET['p']);
+	$page = SecuChaine::Alphanumeric($_GET['p']);
 }
 
 include "./personnalisation/connect.inc.php";
@@ -60,7 +60,7 @@ $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 	
-/*if ((authGetUserLevel(getUserName(), -1, 'area') < 4) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+/*if ((SecuAccess::UserLevel(getUserName(), -1, 'area') < 4) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();
@@ -84,8 +84,8 @@ $d['gDay'] = $day;
 $d['gMonth'] = $month;
 $d['gYear'] = $year;
 
-$d['levelUser'] = authGetUserLevel(getUserName(),-1);
-$d['accesStats'] = verif_access_search(getUserName());
+$d['levelUser'] = SecuAccess::UserLevel(getUserName(),-1);
+$d['accesStats'] = SecuAccess::UserSearch(getUserName());
 $AllSettings = Settings::getAll();
 
 $d['gNomUser'] = getUserName();

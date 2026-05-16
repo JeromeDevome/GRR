@@ -38,10 +38,10 @@ if ($info = mrbsGetEntryInfo($id))
 	if (isset($_SERVER['HTTP_REFERER']))
 		$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
 	
-	$authGetUserLevel = authGetUserLevel(getUserName(), $id);
-	if ($authGetUserLevel < 1)
+	$UserLevel = SecuAccess::UserLevel(getUserName(), $id);
+	if ($UserLevel < 1)
 	{
-		showAccessDenied($back, 'authGetUserLevel');
+		showAccessDenied($back, 'SecuAccess::UserLevel');
 		exit();
 	}
 
@@ -52,15 +52,15 @@ if ($info = mrbsGetEntryInfo($id))
 		showAccessDenied($back, 'lvl_participationInf1');
 		exit;
 	}
-	if($authGetUserLevel < $lvl_participation)
+	if($UserLevel < $lvl_participation)
 	{
-		showAccessDenied($back, 'authGetUserLevel_Inf_Lvl_participation;'.$authGetUserLevel.';'.$lvl_participation);
+		showAccessDenied($back, 'SecuAccess::UserLevel_Inf_Lvl_participation;'.$UserLevel.';'.$lvl_participation);
 		exit;
 	}	
 
-	if (authUserAccesArea(getUserName(), $area) == 0)
+	if (SecuAccess::UserArea(getUserName(), $area) == 0)
 	{
-		showAccessDenied($back, 'authUserAccesArea');
+		showAccessDenied($back, 'SecuAccess::UserArea');
 		exit();
 	}
 	//if (Settings::get("automatic_mail") == 'yes')

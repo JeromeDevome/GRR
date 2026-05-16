@@ -239,11 +239,11 @@
        for ($ir = 0; ($row = grr_sql_row($res, $ir)); $ir++)
        {
             // calcul de l'accès à la ressource en fonction du niveau de l'utilisateur
-           $verif_acces_ressource = verif_acces_ressource($user_name, $row[2]);
-           if ($verif_acces_ressource) // on n'affiche que les ressources accessibles
+           $AccesUserResource = SecuAccess::UserResource($user_name, $row[2]);
+           if ($AccesUserResource) // on n'affiche que les ressources accessibles
            {
                // Calcul du niveau d'accès aux fiches de réservation détaillées des ressources
-               $acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row[2]);
+               $acces_fiche_reservation = SecuAccess::UserSheetReservation($user_name, $row[2]);
                $li++;
 
                $joursRessource = array();
@@ -281,8 +281,8 @@
                                     $ficheResa = $acces_fiche_reservation;
                                     if($acces_fiche_reservation)
                                     {
-                                        $authGetUserLevel = authGetUserLevel(getUserName(), $row[2]);
-                                        if($da[$cday][$cmonth][$cyear]["confidentiel_resa"][$i] == 1 && getUserName() != $da[$cday][$cmonth][$cyear]["beneficiaire"][$i] && $authGetUserLevel < 3)
+                                        $UserLevel = SecuAccess::UserLevel(getUserName(), $row[2]);
+                                        if($da[$cday][$cmonth][$cyear]["confidentiel_resa"][$i] == 1 && getUserName() != $da[$cday][$cmonth][$cyear]["beneficiaire"][$i] && $UserLevel < 3)
                                         {
                                             $ficheResa = false;
                                             $lien = $id;

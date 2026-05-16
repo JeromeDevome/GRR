@@ -34,8 +34,8 @@ $duree_max_resa_area1  = isset($_POST["duree_max_resa_area1"]) ? $_POST["duree_m
 $duree_max_resa_area2  = isset($_POST["duree_max_resa_area2"]) ? $_POST["duree_max_resa_area2"] : NULL;
 $max_booking = isset($_POST["max_booking"]) ? $_POST["max_booking"] : NULL;
 $access_file = isset($_POST['access_file'])? 1:0;
-$user_right = (int)getFormVar("user_right","int");
-$upload_file = (int)getFormVar("upload_file","int");
+$user_right = (int)SecuChaine::GetFormVar("user_right","int");
+$upload_file = (int)SecuChaine::GetFormVar("upload_file","int");
 settype($max_booking, "integer");
 if ($max_booking<-1)
 	$max_booking = -1;
@@ -69,7 +69,7 @@ if (!isset($retour_page))
 	$retour_page = substr($retour_page, 0, $long);
 }
 // modification d'une resource : admin ou gestionnaire
-if (authGetUserLevel(getUserName(),-1) < 6)
+if (SecuAccess::UserLevel(getUserName(),-1) < 6)
 {
     if (isset($id_site)){
         $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id='".$id_site."'");
@@ -77,7 +77,7 @@ if (authGetUserLevel(getUserName(),-1) < 6)
             showAccessDenied($back);
             exit();
         }
-        elseif(authGetUserLevel(getUserName(),$id_site,'site')<5){
+        elseif(SecuAccess::UserLevel(getUserName(),$id_site,'site')<5){
             showAccessDenied($back);
             exit();
         }
@@ -92,7 +92,7 @@ if (authGetUserLevel(getUserName(),-1) < 6)
 			exit();
 		}
 		// Il s'agit de la modif d'un domaine
-		if ((authGetUserLevel(getUserName(), $id_area, 'area') < 4))
+		if ((SecuAccess::UserLevel(getUserName(), $id_area, 'area') < 4))
 		{
 			showAccessDenied($back);
 			exit();
@@ -177,20 +177,20 @@ if ((!empty($id_area)) || (isset($add_area)))
 						".TABLE_PREFIX."_area.id = '".$id_area."'");
 				}
 				$sql = "UPDATE ".TABLE_PREFIX."_area SET
-				area_name='".SecuChaine::protect_data_sql($area_name)."',
-				access='".SecuChaine::protect_data_sql($access)."',
-				order_display='".SecuChaine::protect_data_sql($area_order)."',
-				ip_adr='".SecuChaine::protect_data_sql($ip_adr)."',
+				area_name='".SecuChaine::ProtectDataSql($area_name)."',
+				access='".SecuChaine::ProtectDataSql($access)."',
+				order_display='".SecuChaine::ProtectDataSql($area_order)."',
+				ip_adr='".SecuChaine::ProtectDataSql($ip_adr)."',
 				calendar_default_values = 'n',
-				duree_max_resa_area = '".SecuChaine::protect_data_sql($duree_max_resa_area)."',
-				morningstarts_area = '".SecuChaine::protect_data_sql($_POST['morningstarts_area'])."',
-				eveningends_area = '".SecuChaine::protect_data_sql($_POST['eveningends_area'])."',
-				resolution_area = '".SecuChaine::protect_data_sql($_POST['resolution_area'])."',
-				duree_par_defaut_reservation_area = '".SecuChaine::protect_data_sql($_POST['duree_par_defaut_reservation_area'])."',
-				eveningends_minutes_area = '".SecuChaine::protect_data_sql($_POST['eveningends_minutes_area'])."',
-				weekstarts_area = '".SecuChaine::protect_data_sql($_POST['weekstarts_area'])."',
-				enable_periods = '".SecuChaine::protect_data_sql($_POST['enable_periods'])."',
-				twentyfourhour_format_area = '".SecuChaine::protect_data_sql($_POST['twentyfourhour_format_area'])."',
+				duree_max_resa_area = '".SecuChaine::ProtectDataSql($duree_max_resa_area)."',
+				morningstarts_area = '".SecuChaine::ProtectDataSql($_POST['morningstarts_area'])."',
+				eveningends_area = '".SecuChaine::ProtectDataSql($_POST['eveningends_area'])."',
+				resolution_area = '".SecuChaine::ProtectDataSql($_POST['resolution_area'])."',
+				duree_par_defaut_reservation_area = '".SecuChaine::ProtectDataSql($_POST['duree_par_defaut_reservation_area'])."',
+				eveningends_minutes_area = '".SecuChaine::ProtectDataSql($_POST['eveningends_minutes_area'])."',
+				weekstarts_area = '".SecuChaine::ProtectDataSql($_POST['weekstarts_area'])."',
+				enable_periods = '".SecuChaine::ProtectDataSql($_POST['enable_periods'])."',
+				twentyfourhour_format_area = '".SecuChaine::ProtectDataSql($_POST['twentyfourhour_format_area'])."',
 				max_booking='".$max_booking."',
 				display_days = '".$display_days."',
 				user_right = '".$user_right."',
@@ -206,20 +206,20 @@ if ((!empty($id_area)) || (isset($add_area)))
 			else
 			{
 				$sql = "INSERT INTO ".TABLE_PREFIX."_area SET
-				area_name='".SecuChaine::protect_data_sql($area_name)."',
-				access='".SecuChaine::protect_data_sql($access)."',
-				order_display='".SecuChaine::protect_data_sql($area_order)."',
-				ip_adr='".SecuChaine::protect_data_sql($ip_adr)."',
+				area_name='".SecuChaine::ProtectDataSql($area_name)."',
+				access='".SecuChaine::ProtectDataSql($access)."',
+				order_display='".SecuChaine::ProtectDataSql($area_order)."',
+				ip_adr='".SecuChaine::ProtectDataSql($ip_adr)."',
 				calendar_default_values = 'n',
-				duree_max_resa_area = '".SecuChaine::protect_data_sql($duree_max_resa_area)."',
-				morningstarts_area = '".SecuChaine::protect_data_sql($_POST['morningstarts_area'])."',
-				eveningends_area = '".SecuChaine::protect_data_sql($_POST['eveningends_area'])."',
-				resolution_area = '".SecuChaine::protect_data_sql($_POST['resolution_area'])."',
-				duree_par_defaut_reservation_area = '".SecuChaine::protect_data_sql($_POST['duree_par_defaut_reservation_area'])."',
-				eveningends_minutes_area = '".SecuChaine::protect_data_sql($_POST['eveningends_minutes_area'])."',
-				weekstarts_area = '".SecuChaine::protect_data_sql($_POST['weekstarts_area'])."',
-				enable_periods = '".SecuChaine::protect_data_sql($_POST['enable_periods'])."',
-				twentyfourhour_format_area = '".SecuChaine::protect_data_sql($_POST['twentyfourhour_format_area'])."',
+				duree_max_resa_area = '".SecuChaine::ProtectDataSql($duree_max_resa_area)."',
+				morningstarts_area = '".SecuChaine::ProtectDataSql($_POST['morningstarts_area'])."',
+				eveningends_area = '".SecuChaine::ProtectDataSql($_POST['eveningends_area'])."',
+				resolution_area = '".SecuChaine::ProtectDataSql($_POST['resolution_area'])."',
+				duree_par_defaut_reservation_area = '".SecuChaine::ProtectDataSql($_POST['duree_par_defaut_reservation_area'])."',
+				eveningends_minutes_area = '".SecuChaine::ProtectDataSql($_POST['eveningends_minutes_area'])."',
+				weekstarts_area = '".SecuChaine::ProtectDataSql($_POST['weekstarts_area'])."',
+				enable_periods = '".SecuChaine::ProtectDataSql($_POST['enable_periods'])."',
+				twentyfourhour_format_area = '".SecuChaine::ProtectDataSql($_POST['twentyfourhour_format_area'])."',
 				display_days = '".$display_days."',
 				max_booking='".$max_booking."',
 				id_type_par_defaut = '-1',
@@ -245,10 +245,10 @@ if ((!empty($id_area)) || (isset($add_area)))
 			if ($area_name == '')
 			{
 				$area_name = get_vocab("match_area")." ".$id_area;
-				grr_sql_command("UPDATE ".TABLE_PREFIX."_area SET area_name='".SecuChaine::protect_data_sql($area_name)."' WHERE id=$id_area");
+				grr_sql_command("UPDATE ".TABLE_PREFIX."_area SET area_name='".SecuChaine::ProtectDataSql($area_name)."' WHERE id=$id_area");
 			}
 		  	#on cree ou recree ".TABLE_PREFIX."_area_periodes pour le domaine
-			if (SecuChaine::protect_data_sql($_POST['enable_periods']) == 'y')
+			if (SecuChaine::ProtectDataSql($_POST['enable_periods']) == 'y')
 			{
 				if (isset($number_periodes))
 				{
@@ -269,13 +269,13 @@ if ((!empty($id_area)) || (isset($add_area)))
 							$reg_periode = grr_sql_query("insert into ".TABLE_PREFIX."_area_periodes set
 								id_area='".$id_area."',
 								num_periode='".$num."',
-								nom_periode='".SecuChaine::protect_data_sql($nom_periode)."'
+								nom_periode='".SecuChaine::ProtectDataSql($nom_periode)."'
 								");
 			  				#on cree un modele par defaut avec area=0
 							$reg_periode = grr_sql_query("insert into ".TABLE_PREFIX."_area_periodes set
 								id_area='0',
 								num_periode='".$num."',
-								nom_periode='".SecuChaine::protect_data_sql($nom_periode)."'");
+								nom_periode='".SecuChaine::ProtectDataSql($nom_periode)."'");
 							$num++;
 						}
 						$i++;
@@ -390,7 +390,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 		if (Settings::get("module_multisite") == "Oui")
 		{
 
-			if (authGetUserLevel(getUserName(), -1, 'area') >= 6)
+			if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 				$sql = "SELECT id,sitecode,sitename
 						FROM ".TABLE_PREFIX."_site
 						ORDER BY sitename ASC";

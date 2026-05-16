@@ -140,17 +140,17 @@ else { // Etape 1: on connaît $id de la réservation à échanger, on va en che
         $area  = mrbsGetRoomArea($resa1["room_id"]);
         $beneficiaire = $resa1['beneficiaire'];
         // on commence par vérifier les droits d'accès
-        if (authGetUserLevel($current_user, -1) < 1)
+        if (SecuAccess::UserLevel($current_user, -1) < 1)
         {
             showAccessDenied($back);
             exit();
         }
-        if (!getWritable($beneficiaire, $id))
+        if (!SecuAccess::IsAllowedToModifyResa($beneficiaire, $id))
         {
             showAccessDenied($back);
             exit;
         }
-        if (authUserAccesArea($current_user, $area) == 0)
+        if (SecuAccess::UserArea($current_user, $area) == 0)
         {
             showAccessDenied($back);
             exit();
@@ -180,9 +180,9 @@ else { // Etape 1: on connaît $id de la réservation à échanger, on va en che
         foreach($reps as $a){
             $resaPossible = mrbsGetEntryInfo($a['id']);
             $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$resaPossible['room_id']."' ");
-            $user_can_book = $who_can_book || (authBooking($current_user,$resaPossible['room_id']));
-            if (verif_acces_ressource($current_user,$resaPossible['room_id']) 
-                && verif_acces_fiche_reservation($current_user,$resaPossible['room_id']) 
+            $user_can_book = $who_can_book || (SecuAccess::UserBookingResourceRestrict($current_user,$resaPossible['room_id']));
+            if (SecuAccess::UserResource($current_user,$resaPossible['room_id']) 
+                && SecuAccess::UserSheetReservation($current_user,$resaPossible['room_id']) 
                 && $user_can_book
                 && UserRoomMaxBooking($current_user,$resaPossible['room_id'],1)){ // si l'utilisateur peut accéder à la ressource et la modifier, on l'affiche
 

@@ -30,7 +30,7 @@ if($action == NULL)
 	$action = isset($_POST["action"]) ? $_POST["action"] : NULL;
 
 
-check_access(4, $back);
+SecuAccess::CheckAccess(4, $back);
 
 if ($test_user == "multi")
 {
@@ -39,7 +39,7 @@ if ($test_user == "multi")
 	// On commence par vérifier que l'utilisateur n'est pas déjà présent dans cette liste.
 		if ($id_area != -1)
 		{
-			if (authGetUserLevel(getUserName(), $id_area, 'area') < 4)
+			if (SecuAccess::UserLevel(getUserName(), $id_area, 'area') < 4)
 			{
 				showAccessDenied($back);
 				exit();
@@ -76,7 +76,7 @@ if ($test_user == "simple")
    // On commence par vérifier que l'utilisateur n'est pas déjà présent dans cette liste.
 	if ($id_area != -1)
 	{
-		if (authGetUserLevel(getUserName(), $id_area, 'area') < 4)
+		if (SecuAccess::UserLevel(getUserName(), $id_area, 'area') < 4)
 		{
 			showAccessDenied($back);
 			exit();
@@ -111,7 +111,7 @@ if ($action == "add_groupe")
    // On commence par vérifier que le groupe n'est pas déjà présent dans cette liste.
 	if ($id_area != -1)
 	{
-		if (authGetUserLevel(getUserName(), $id_area, 'area') < 4)
+		if (SecuAccess::UserLevel(getUserName(), $id_area, 'area') < 4)
 		{
 			showAccessDenied($back);
 			exit();
@@ -145,7 +145,7 @@ if ($action == "add_groupe")
 
 if ($action=='del_user')
 {
-	if (authGetUserLevel(getUserName(), $id_area, 'area') < 4)
+	if (SecuAccess::UserLevel(getUserName(), $id_area, 'area') < 4)
 	{
 		showAccessDenied($back);
 		exit();
@@ -163,7 +163,7 @@ if ($action=='del_user')
 
 } elseif ($action=='del_groupe')
 {
-	if (authGetUserLevel(getUserName(), $id_area, 'area') < 4)
+	if (SecuAccess::UserLevel(getUserName(), $id_area, 'area') < 4)
 	{
 		showAccessDenied($back);
 		exit();
@@ -206,7 +206,7 @@ if ($res)
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
 		// on affiche que les domaines que l'utilisateur connecté a le droit d'administrer
-		if (authGetUserLevel(getUserName(),$row[0],'area') >= 4)
+		if (SecuAccess::UserLevel(getUserName(),$row[0],'area') >= 4)
 		{
 			$domaines[] = array('id' => $row[0], 'nom' => $row[1]);
 			$existe_domaine = 'yes';

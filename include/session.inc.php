@@ -68,7 +68,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 			$_statut = "utilisateur";
 		$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 		from ".TABLE_PREFIX."_utilisateurs
-		where login = '" . SecuChaine::protect_data_sql($_login) . "' and ";
+		where login = '" . SecuChaine::ProtectDataSql($_login) . "' and ";
 		if ($_user_ext_authentifie != 'lasso')
 			$sql .= " password = '' and ";
 		$sql .= " etat != 'inactif'";
@@ -89,7 +89,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 				{
 					//  On détecte si Nom, Prénom ou Email ont changé,
 					// Si c'est le cas, on met à jour les champs
-					$req = grr_sql_query("SELECT nom, prenom, email from ".TABLE_PREFIX."_utilisateurs where login ='".SecuChaine::protect_data_sql($_login)."'");
+					$req = grr_sql_query("SELECT nom, prenom, email from ".TABLE_PREFIX."_utilisateurs where login ='".SecuChaine::ProtectDataSql($_login)."'");
                     if (!$req)
                         fatal_error(0, "erreur de lecture dans la base de données".grr_sql_error());
 					$res = mysqli_fetch_array($req);
@@ -100,10 +100,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 					{
 						// Si l'un des champs est différent, on met à jour les champs
 						$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET
-						nom='".SecuChaine::protect_data_sql($nom_user)."',
-						prenom='".SecuChaine::protect_data_sql($prenom_user)."',
-						email='".SecuChaine::protect_data_sql($email_user)."'
-						where login='".SecuChaine::protect_data_sql($_login)."'";
+						nom='".SecuChaine::ProtectDataSql($nom_user)."',
+						prenom='".SecuChaine::ProtectDataSql($prenom_user)."',
+						email='".SecuChaine::ProtectDataSql($email_user)."'
+						where login='".SecuChaine::ProtectDataSql($_login)."'";
 						if (grr_sql_command($sql) < 0)
 							fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
 						//Comme les données de la base on été changés, on doit remettre à jour la variable $row,
@@ -111,7 +111,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 						//on récupère les données de l'utilisateur
 						$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 						FROM ".TABLE_PREFIX."_utilisateurs
-						WHERE login = '" . SecuChaine::protect_data_sql($_login) . "' and
+						WHERE login = '" . SecuChaine::ProtectDataSql($_login) . "' and
 						source = 'ext' and
 						etat != 'inactif'";
 						$res_user = grr_sql_query($sql);
@@ -131,7 +131,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         // L'utilisateur n'est pas présent dans la base locale ou est inactif
         //  ou possède un mot de passe (utilisateur local GRR)
         // On teste si un utilisateur porte déjà le même login
-            $test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".SecuChaine::protect_data_sql($_login)."'");
+            $test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".SecuChaine::ProtectDataSql($_login)."'");
             if ($test != '-1')
                 return "3";
             else
@@ -270,12 +270,12 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 }
             // On insère le nouvel utilisateur
                 $sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
-                nom='".SecuChaine::protect_data_sql($nom_user)."',
-                prenom='".SecuChaine::protect_data_sql($prenom_user)."',
-                login='".SecuChaine::protect_data_sql($_login)."',
+                nom='".SecuChaine::ProtectDataSql($nom_user)."',
+                prenom='".SecuChaine::ProtectDataSql($prenom_user)."',
+                login='".SecuChaine::ProtectDataSql($_login)."',
                 password='',
                 statut='".$_statut."',
-                email='".SecuChaine::protect_data_sql($email_user)."',
+                email='".SecuChaine::ProtectDataSql($email_user)."',
                 etat='actif',";
                 if (isset($default_style_user) and ($default_style_user!=""))
                     $sql .= "default_style='".$default_style_user."',";
@@ -290,7 +290,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 				// on récupère les données de l'utilisateur
 				$sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
 				from ".TABLE_PREFIX."_utilisateurs
-				where login = '" . SecuChaine::protect_data_sql($_login) . "' and
+				where login = '" . SecuChaine::ProtectDataSql($_login) . "' and
 				source = 'ext' and
 				etat != 'inactif'";
 				$res_user = grr_sql_query($sql);
@@ -308,7 +308,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     else
     {
 		// utilisateur déjà enregistré ?
-        $sql = "SELECT UPPER(login) login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(SecuChaine::protect_data_sql($_login))."' AND source = 'local';";
+        $sql = "SELECT UPPER(login) login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(SecuChaine::ProtectDataSql($_login))."' AND source = 'local';";
 
         $res_user = grr_sql_query($sql);
         $num_row = grr_sql_count($res_user);
@@ -360,7 +360,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 		// l'utilisateur est présent dans la base locale
         else
         {
-            $sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(SecuChaine::protect_data_sql($_login))."';";
+            $sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".strtoupper(SecuChaine::ProtectDataSql($_login))."';";
             $res_user = grr_sql_query($sql);
             $row = grr_sql_row_keyed($res_user, 0);
             // S'il s'agit d'un utilisateur inactif, on s'arrête là
@@ -429,7 +429,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         // on regarde si un utilisateur ldap ayant le même login existe déjà
         $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
         FROM ".TABLE_PREFIX."_utilisateurs
-        WHERE login = '" . SecuChaine::protect_data_sql($_login) . "' and
+        WHERE login = '" . SecuChaine::ProtectDataSql($_login) . "' and
         source = 'ext' and
         etat != 'inactif'";
         $res_user = grr_sql_query($sql);
@@ -454,10 +454,10 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             $user_info[2] = utf8_encode($user_info[2]);*/
             // devrait être inutile puisque LDAP répond au format UTF-8
             $sql2 = "UPDATE ".TABLE_PREFIX."_utilisateurs SET
-            nom='".SecuChaine::protect_data_sql($user_info[0])."',
-            prenom='".SecuChaine::protect_data_sql($user_info[1])."',
-            email='".SecuChaine::protect_data_sql($user_info[2])."'
-            WHERE login='".SecuChaine::protect_data_sql($_login)."'";
+            nom='".SecuChaine::ProtectDataSql($user_info[0])."',
+            prenom='".SecuChaine::ProtectDataSql($user_info[1])."',
+            email='".SecuChaine::ProtectDataSql($user_info[2])."'
+            WHERE login='".SecuChaine::ProtectDataSql($_login)."'";
             if (grr_sql_command($sql2) < 0)
                 fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
             // on récupère les données de l'utilisateur dans $row
@@ -470,7 +470,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             // Lire les infos sur l'utilisateur depuis LDAP
             $user_info = grr_getinfo_ldap($user_dn,$_login,$_password);
             // On teste si un utilisateur porte déjà le même login
-            $test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".SecuChaine::protect_data_sql($_login)."'");
+            $test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".SecuChaine::ProtectDataSql($_login)."'");
             if ($test != '-1')
                 return "3";
             else
@@ -481,19 +481,19 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 // devrait être inutile puisque LDAP répond au format UTF-8
                 // On insère le nouvel utilisateur
                 $sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
-                nom='".SecuChaine::protect_data_sql($user_info[0])."',
-                prenom='".SecuChaine::protect_data_sql($user_info[1])."',
-                login='".SecuChaine::protect_data_sql($_login)."',
+                nom='".SecuChaine::ProtectDataSql($user_info[0])."',
+                prenom='".SecuChaine::ProtectDataSql($user_info[1])."',
+                login='".SecuChaine::ProtectDataSql($_login)."',
                 password='',
                 statut='".Settings::get("ldap_statut")."',
-                email='".SecuChaine::protect_data_sql($user_info[2])."',
+                email='".SecuChaine::ProtectDataSql($user_info[2])."',
                 etat='actif',
                 source='ext'";
                 if (grr_sql_command($sql) < 0)
                     fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
                 $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
                 FROM ".TABLE_PREFIX."_utilisateurs
-                WHERE login = '" . SecuChaine::protect_data_sql($_login) . "' and
+                WHERE login = '" . SecuChaine::ProtectDataSql($_login) . "' and
                 source = 'ext' and
                 etat != 'inactif'";
                 $res_user = grr_sql_query($sql);
@@ -518,7 +518,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         // on regarde si un utilisateur imap ayant le meme login existe deja
         $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
         FROM ".TABLE_PREFIX."_utilisateurs
-        WHERE login = '" . SecuChaine::protect_data_sql($_login) . "' and
+        WHERE login = '" . SecuChaine::ProtectDataSql($_login) . "' and
         source = 'ext' and
         etat != 'inactif'";
         $res_user = grr_sql_query($sql);
@@ -543,26 +543,26 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
             }
 
             // On teste si un utilisateur porte déjà le même login
-            $test = grr_sql_query1("SELECT login from ".TABLE_PREFIX."_utilisateurs where login = '".SecuChaine::protect_data_sql($_login)."'");
+            $test = grr_sql_query1("SELECT login from ".TABLE_PREFIX."_utilisateurs where login = '".SecuChaine::ProtectDataSql($_login)."'");
             if ($test != '-1')
                 return "3";
             else
             {
                 // On insère le nouvel utilisateur
                 $sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
-                nom='".SecuChaine::protect_data_sql($l_nom)."',
-                prenom='".SecuChaine::protect_data_sql($l_prenom)."',
-                login='".SecuChaine::protect_data_sql($_login)."',
+                nom='".SecuChaine::ProtectDataSql($l_nom)."',
+                prenom='".SecuChaine::ProtectDataSql($l_prenom)."',
+                login='".SecuChaine::ProtectDataSql($_login)."',
                 password='',
                 statut='".Settings::get("imap_statut")."',
-                email='".SecuChaine::protect_data_sql($l_email)."',
+                email='".SecuChaine::ProtectDataSql($l_email)."',
                 etat='actif',
                 source='ext'";
                 if (grr_sql_command($sql) < 0)
                     fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
                 $sql = "SELECT upper(login) login, password, prenom, nom, statut, now() start, default_area, default_room, default_style, default_list_type, default_language, source, etat, default_site, changepwd
                 from ".TABLE_PREFIX."_utilisateurs
-                where login = '" . SecuChaine::protect_data_sql($_login) . "' and
+                where login = '" . SecuChaine::ProtectDataSql($_login) . "' and
                 source = 'ext' and
                 etat != 'inactif'";
                 $res_user = grr_sql_query($sql);
@@ -621,7 +621,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 	]);
     @session_start();
 	// Is this user already connected ?
-    $sql = "SELECT SESSION_ID from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and LOGIN = '" . SecuChaine::protect_data_sql($_login) . "' and now() between START and END";
+    $sql = "SELECT SESSION_ID from ".TABLE_PREFIX."_log where SESSION_ID = '" . session_id() . "' and LOGIN = '" . SecuChaine::ProtectDataSql($_login) . "' and now() between START and END";
     $res = grr_sql_query($sql);
     $num_row = grr_sql_count($res);
 
@@ -739,14 +739,14 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
 		$useragent = substr($_SERVER['HTTP_USER_AGENT'],0,254);
 
 	$sql = "INSERT INTO ".TABLE_PREFIX."_log (LOGIN, START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END) values (
-		'" . SecuChaine::protect_data_sql($_SESSION['login']) . "',
-		'" . SecuChaine::clean_input($_SESSION['start']) . "',
+		'" . SecuChaine::ProtectDataSql($_SESSION['login']) . "',
+		'" . SecuChaine::CleanInput($_SESSION['start']) . "',
 		'" . session_id() . "',
-		'" . SecuChaine::clean_input($_SERVER['REMOTE_ADDR']) . "',
-		'" . SecuChaine::clean_input($useragent) . "',
-		'" . SecuChaine::clean_input($httpreferer) . "',
+		'" . SecuChaine::CleanInput($_SERVER['REMOTE_ADDR']) . "',
+		'" . SecuChaine::CleanInput($useragent) . "',
+		'" . SecuChaine::CleanInput($httpreferer) . "',
 		'1',
-		'" . SecuChaine::clean_input($_SESSION['start']) . "' + interval " . Settings::get("sessionMaxLength") . " minute
+		'" . SecuChaine::CleanInput($_SESSION['start']) . "' + interval " . Settings::get("sessionMaxLength") . " minute
 		)
 	;";
 	grr_sql_query($sql);
@@ -841,7 +841,7 @@ function grr_resumeSession()
 		// La session est-elle expirée
 	if (isset($_SESSION['login']))
 	{
-		$test_session = grr_sql_query1("SELECT count(LOGIN) from ".TABLE_PREFIX."_log where END > now() and LOGIN = '".SecuChaine::protect_data_sql($_SESSION['login'])."'");
+		$test_session = grr_sql_query1("SELECT count(LOGIN) from ".TABLE_PREFIX."_log where END > now() and LOGIN = '".SecuChaine::ProtectDataSql($_SESSION['login'])."'");
 		if ($test_session == 0)
 			$_SESSION = array();
 	}
@@ -869,8 +869,8 @@ function grr_resumeSession()
 	
 		// To be removed
 		// Validating session data
-	$sql = "SELECT password = '" . $_SESSION['password'] . "' PASSWORD, login = '" . SecuChaine::protect_data_sql($_SESSION['login']) . "' login, statut = '" . $_SESSION['statut'] . "' STATUT
-	from ".TABLE_PREFIX."_utilisateurs where login = '" . SecuChaine::protect_data_sql($_SESSION['login']) . "'";
+	$sql = "SELECT password = '" . $_SESSION['password'] . "' PASSWORD, login = '" . SecuChaine::ProtectDataSql($_SESSION['login']) . "' login, statut = '" . $_SESSION['statut'] . "' STATUT
+	from ".TABLE_PREFIX."_utilisateurs where login = '" . SecuChaine::ProtectDataSql($_SESSION['login']) . "'";
 	$res = grr_sql_query($sql);
 	$row = grr_sql_row_keyed($res, 0);
 		// Checking for a timeout

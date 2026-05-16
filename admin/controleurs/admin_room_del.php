@@ -37,7 +37,7 @@ if (isset($_SERVER['HTTP_REFERER']))
 /* Suppression Ressource */
 if ($type == "room")
 {
-	if ((authGetUserLevel(getUserName(),$room) < 4) || (!verif_acces_ressource(getUserName(), $room)))
+	if ((SecuAccess::UserLevel(getUserName(),$room) < 4) || (!SecuAccess::UserResource(getUserName(), $room)))
 	{
 		showAccessDenied($back);
 		exit();
@@ -88,7 +88,7 @@ if ($type == "room")
 if ($type == "area")
 {
 	// Seul l'admin peut supprimer un domaine
-	if (authGetUserLevel(getUserName(), $id_area, 'area') < 5)
+	if (SecuAccess::UserLevel(getUserName(), $id_area, 'area') < 5)
 	{
 		showAccessDenied($back);
 		exit();

@@ -35,8 +35,8 @@ if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 	/// Init des variables
 	$reg_nom = isset($_POST["nom"]) ? $_POST["nom"] : NULL;
 	$reg_prenom = isset($_POST["prenom"]) ? $_POST["prenom"] : NULL;
-	$reg_mdp1 = isset($_POST["mdp1"]) ? SecuChaine::unslashes($_POST["mdp1"]) : NULL;
-	$reg_mdp2 = isset($_POST["mdp2"]) ? SecuChaine::unslashes($_POST["mdp2"]) : NULL;
+	$reg_mdp1 = isset($_POST["mdp1"]) ? SecuChaine::Unslashes($_POST["mdp1"]) : NULL;
+	$reg_mdp2 = isset($_POST["mdp2"]) ? SecuChaine::Unslashes($_POST["mdp2"]) : NULL;
 	$reg_email = isset($_POST["email"]) ? $_POST["email"] : NULL;
 	$reg_telephone = isset($_POST["telephone"]) ? $_POST["telephone"] : NULL;
 	$reg_commentaire = isset($_POST["commentaire"]) ? $_POST["commentaire"] : "";
@@ -92,12 +92,12 @@ if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 		$expediteur = Settings::get("webmaster_email");
 
 		$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs_demandes SET
-		nom='".SecuChaine::protect_data_sql($reg_nom)."',
-		prenom='".SecuChaine::protect_data_sql($reg_prenom)."',
-		email='".SecuChaine::protect_data_sql($reg_email)."',
-		telephone='".SecuChaine::protect_data_sql($reg_telephone)."',
+		nom='".SecuChaine::ProtectDataSql($reg_nom)."',
+		prenom='".SecuChaine::ProtectDataSql($reg_prenom)."',
+		email='".SecuChaine::ProtectDataSql($reg_email)."',
+		telephone='".SecuChaine::ProtectDataSql($reg_telephone)."',
 		mdp='".$reg_mdp1."',
-		commentaire='".SecuChaine::protect_data_sql($reg_commentaire)."',
+		commentaire='".SecuChaine::ProtectDataSql($reg_commentaire)."',
 		datedemande='".date("Ymd")."'";
 
 		if (grr_sql_command($sql) < 0)

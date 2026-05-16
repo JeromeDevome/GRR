@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_change_date_bookings.php";
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 if (isset($_GET['valid']) && ($_GET['valid'] == "yes"))
 {

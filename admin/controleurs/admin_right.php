@@ -24,10 +24,10 @@ if (isset($room))
 if (!isset($id_area))
 	settype($id_area,"integer");
 
-check_access(4, $back);
+SecuAccess::CheckAccess(4, $back);
 
 // tableau des ressources auxquelles l'utilisateur n'a pas accès
-$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+$tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
 $reg_admin_login = isset($_POST["reg_admin_login"]) ? $_POST["reg_admin_login"] : NULL;
 $reg_multi_admin_login = isset($_POST["reg_multi_admin_login"]) ? $_POST["reg_multi_admin_login"] : NULL;
 $test_user =  isset($_POST["reg_multi_admin_login"]) ? "multi" : (isset($_POST["reg_admin_login"]) ? "simple" : NULL);
@@ -56,7 +56,7 @@ if ($test_user == "multi")
 				exit();
 			}
 		// La ressource existe : on vérifie les privilèges de l'utilisateur
-			if (authGetUserLevel(getUserName(),$room) < 4)
+			if (SecuAccess::UserLevel(getUserName(),$room) < 4)
 			{
 				showAccessDenied($back);
 				exit();
@@ -96,7 +96,7 @@ if ($test_user == "multi")
 				exit();
 			}
 		// Le domaine existe : on vérifie les privilèges de l'utilisateur
-			if (authGetUserLevel(getUserName(),$id_area,'area') < 4)
+			if (SecuAccess::UserLevel(getUserName(),$id_area,'area') < 4)
 			{
 				showAccessDenied($back);
 				exit();
@@ -151,7 +151,7 @@ if ($test_user == "simple")
 				exit();
 			}
 		// La ressource existe : on vérifie les privilèges de l'utilisateur
-			if (authGetUserLevel(getUserName(),$room) < 4)
+			if (SecuAccess::UserLevel(getUserName(),$room) < 4)
 			{
 				showAccessDenied($back);
 				exit();
@@ -191,7 +191,7 @@ if ($test_user == "simple")
 				exit();
 			}
 			// Le domaine existe : on vérifie les privilèges de l'utilisateur
-			if (authGetUserLevel(getUserName(),$id_area,'area') < 4)
+			if (SecuAccess::UserLevel(getUserName(),$id_area,'area') < 4)
 			{
 				showAccessDenied($back);
 				exit();
@@ -228,7 +228,7 @@ if ($action)
 {
 	if ($action == "del_admin")
 	{
-		if (authGetUserLevel(getUserName(),$room) < 4)
+		if (SecuAccess::UserLevel(getUserName(),$room) < 4)
 		{
 			showAccessDenied($back);
 			exit();
@@ -245,7 +245,7 @@ if ($action)
 	}
 	if ($action == "del_admin_all")
 	{
-		if (authGetUserLevel(getUserName(),$id_area,'area') < 4)
+		if (SecuAccess::UserLevel(getUserName(),$id_area,'area') < 4)
 		{
 			showAccessDenied($back);
 			exit();
@@ -274,7 +274,7 @@ if ($action)
 }
 if ((empty($id_area)) && (isset($row[0])))
 {
-	if (authGetUserLevel(getUserName(),$row[0],'area') >= 6)
+	if (SecuAccess::UserLevel(getUserName(),$row[0],'area') >= 6)
 		$id_area = get_default_area();
 	else
 	{
@@ -321,7 +321,7 @@ if ($res)
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
 		// On affiche uniquement les domaines administrés par l'utilisateur
-		if (authGetUserLevel(getUserName(),$row[0],'area') >= 4)
+		if (SecuAccess::UserLevel(getUserName(),$row[0],'area') >= 4)
 			$domaines[] = array('id' => $row[0], 'nom' => $row[1]);
 	}
 }
@@ -414,7 +414,7 @@ else // Sur toute les ressources du domaine
 	{
 		for ($i = 0; ($row3 = grr_sql_row($res, $i)); $i++)
 		{
-			if (authUserAccesArea($row3[0],$id_area) == 1)
+			if (SecuAccess::UserArea($row3[0],$id_area) == 1)
 			{
 				$ExisteDeja = false;
 				foreach($utilisateursAdmin as $index => $user) {

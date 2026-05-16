@@ -19,7 +19,7 @@
 
 $grr_script_name = "admin_groupe_edit.php";
 
-if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();
@@ -71,9 +71,9 @@ if ($valid == "yes")
 			else
 			{
 				$sql = "INSERT INTO ".TABLE_PREFIX."_groupes SET
-				nom='".SecuChaine::protect_data_sql($reg_nom)."',
-				description='".SecuChaine::protect_data_sql($reg_description)."',
-				archive='".SecuChaine::protect_data_sql($archive)."'";
+				nom='".SecuChaine::ProtectDataSql($reg_nom)."',
+				description='".SecuChaine::ProtectDataSql($reg_description)."',
+				archive='".SecuChaine::ProtectDataSql($archive)."'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
 				else
@@ -93,10 +93,10 @@ if ($valid == "yes")
 			}
 			else
 			{
-				$sql = "UPDATE ".TABLE_PREFIX."_groupes SET nom='".SecuChaine::protect_data_sql($reg_nom)."',
-				description='".SecuChaine::protect_data_sql($reg_description)."',
-				archive='".SecuChaine::protect_data_sql($archive)."'
-				WHERE idgroupes='".SecuChaine::protect_data_sql($idgroupe)."'";
+				$sql = "UPDATE ".TABLE_PREFIX."_groupes SET nom='".SecuChaine::ProtectDataSql($reg_nom)."',
+				description='".SecuChaine::ProtectDataSql($reg_description)."',
+				archive='".SecuChaine::ProtectDataSql($archive)."'
+				WHERE idgroupes='".SecuChaine::ProtectDataSql($idgroupe)."'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0, get_vocab("message_records_error") . grr_sql_error());
 				else
@@ -120,7 +120,7 @@ if (isset($idgroupe) && ($idgroupe != 0))
 	$groupe = grr_sql_row_keyed($res, 0);
 	grr_sql_free($res);
 }
-if ((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentification_obli") == 1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 1) && (Settings::get("authentification_obli") == 1))
 {
 	showAccessDenied($back);
 	exit();

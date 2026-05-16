@@ -21,7 +21,7 @@ $grr_script_name = "admin_groupe.php";
 
 $msg = '';
 
-if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1,'user') != 1))
 {
 	showAccessDenied($back);
 	exit();
@@ -74,7 +74,7 @@ get_vocab_admin("confirm_del");
 get_vocab_admin("cancel");
 get_vocab_admin("delete");
 
-if (authGetUserLevel(getUserName(),-1) >= 6)
+if (SecuAccess::UserLevel(getUserName(),-1) >= 6)
 	$d['estAdministrateur'] = 1;
 
 

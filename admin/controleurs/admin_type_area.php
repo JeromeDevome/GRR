@@ -22,7 +22,7 @@ $grr_script_name = "admin_type_area.php";
 $id_area = isset($_GET["id_area"]) ? intval($_GET["id_area"]) : NULL; // id_area est un entier
 $types = array();
 
-check_access(4, $back);
+SecuAccess::CheckAccess(4, $back);
 
 get_vocab_admin("admin_type");
 get_vocab_admin("display_add_type");
@@ -40,7 +40,7 @@ get_vocab_admin("nobody");
 get_vocab_admin("save");
 get_vocab_admin("back");
 
-$d['droitsAdmin'] = authGetUserLevel(getUserName(),-1);
+$d['droitsAdmin'] = SecuAccess::UserLevel(getUserName(),-1);
 $d['idArea'] = $id_area;
 
 // Gestion du retour à la page précédente sans enregistrement

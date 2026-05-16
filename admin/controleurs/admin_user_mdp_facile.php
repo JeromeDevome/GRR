@@ -20,7 +20,7 @@ $grr_script_name = "admin_user_mdp_facile.php";
 
 $col = array();
 
-if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1,'user') != 1))
 {
 	showAccessDenied($back);
 	exit();

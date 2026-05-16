@@ -23,7 +23,7 @@ if (isset($series))
 $page = verif_page();
 
 if (isset($_GET["id"]))
-	$id = intval(SecuChaine::clean_input($_GET["id"]));
+	$id = intval(SecuChaine::CleanInput($_GET["id"]));
 else{
 	header("Location: ./app.php?p=login");
 	die();
@@ -35,17 +35,17 @@ if ($info = mrbsGetEntryInfo($id))
 	$year  = date("Y", $info["start_time"]);
 	$area  = mrbsGetRoomArea($info["room_id"]);
 	$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
-	if (authGetUserLevel(getUserName(), -1) < 1)
+	if (SecuAccess::UserLevel(getUserName(), -1) < 1)
 	{
 		showAccessDenied($back);
 		exit();
 	}
-    if (!getWritable(getUserName(), $id))
+    if (!SecuAccess::IsAllowedToModifyResa(getUserName(), $id))
 	{
 		showAccessDenied($back);
 		exit;
 	}
-	if (authUserAccesArea(getUserName(), $area) == 0)
+	if (SecuAccess::UserArea(getUserName(), $area) == 0)
 	{
 		showAccessDenied($back);
 		exit();
@@ -63,7 +63,7 @@ if ($info = mrbsGetEntryInfo($id))
 	$date_now = time();
 	get_planning_area_values($area);
 	$who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$room_id."' ");
-    $user_can_book = $who_can_book || (authBooking($current_user,$info_alt['room_id']));
+    $user_can_book = $who_can_book || (SecuAccess::UserBookingResourceRestrict($current_user,$info_alt['room_id']));
 
 	if ((!(verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods))) || ((verif_booking_date(getUserName(), $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")) && $user_can_book)
 	{
@@ -75,7 +75,7 @@ if ($info = mrbsGetEntryInfo($id))
 	if ($result)
 	{
         //echo "44";
-        $room_back = isset($_GET['room_back']) ? SecuChaine::clean_input($_GET['room_back']) : $info['room_id'];
+        $room_back = isset($_GET['room_back']) ? SecuChaine::CleanInput($_GET['room_back']) : $info['room_id'];
 		$_SESSION['displ_msg'] = 'yes';
         $ress = '';
         if ($room_back != '0')  {$ress = "&room=".$room_back;}

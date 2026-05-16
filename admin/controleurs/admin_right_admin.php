@@ -22,7 +22,7 @@ $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"
 if (!isset($id_area))
 	settype($id_area,"integer");
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 $reg_admin_login = isset($_POST["reg_admin_login"]) ? $_POST["reg_admin_login"] : NULL;
 $reg_multi_admin_login = isset($_POST["reg_multi_admin_login"]) ? $_POST["reg_multi_admin_login"] : NULL;
@@ -131,7 +131,7 @@ $trad['dNbUserAjoutable'] = grr_sql_count($res);
 if ($res)
 {
 	for ($i = 0; ($row3 = grr_sql_row($res, $i)); $i++)
-		if (authUserAccesArea($row3[0], $id_area) == 1)
+		if (SecuAccess::UserArea($row3[0], $id_area) == 1)
 		{
 			$ExisteDeja = false;
 			foreach($utilisateursAdmin as $index => $user) {

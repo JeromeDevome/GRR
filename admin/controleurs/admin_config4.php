@@ -52,7 +52,7 @@ if (isset($_GET['ip_autorise']))
 {
 	$ctrlIp = true;
 	if($_GET['ip_autorise'] != "")
-		$ctrlIp = SecuChaine::Valide_ip_adr($_GET['ip_autorise']);
+		$ctrlIp = SecuChaine::ValideNetworkIp($_GET['ip_autorise']);
 
 	if ($ctrlIp == false || !Settings::set("ip_autorise", $_GET['ip_autorise']))
 		$msg .= "Erreur lors de l'enregistrement de ip_autorise !<br />";

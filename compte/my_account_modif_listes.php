@@ -27,7 +27,7 @@
 //					2-> on vide la liste des ressouces
 $niveauDossier = 2;
 include "../include/admin.inc.php";
-if ((authGetUserLevel(getUserName(), -1) < 1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 1))
 {
 	showAccessDenied("");
 	exit();
@@ -85,7 +85,7 @@ if ($_GET['type'] == "domaine")
 
 		for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
 		{
-			if (authUserAccesArea($session_login, $row[0]) != 0)
+			if (SecuAccess::UserArea($session_login, $row[0]) != 0)
 			{
 				$display_liste .=  '              <option value="'.$row[0].'"';
 				if ($default_area == $row[0])
@@ -127,7 +127,7 @@ if ($_GET['type'] == "ressource")
 		FROM ".TABLE_PREFIX."_room
 		WHERE area_id='".$id_area."'";
 		// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-		$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+		$tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
 		foreach ($tab_rooms_noaccess as $key)
 		{
 			$sql .= " and id != $key ";

@@ -54,7 +54,7 @@ $room_from_entry = intval($row['room_id']);
 
 // contrôle permission écrire
 $current_user = getUserName();
-if (!getWritable($current_user, $id)) {
+if (!SecuAccess::IsAllowedToModifyResa($current_user, $id)) {
     echo "Permission refusée";
     exit;
 }
@@ -109,7 +109,7 @@ $_REQUEST['end_minute']  = intval(date('i', $new_end));
 $_REQUEST['dragdrop']    = '1';
 
 // copier aussi toutes les valeurs préparées dans POST, car
-// editentreetrt.php utilise getFormVar qui lit uniquement $_GET/$_POST
+// editentreetrt.php utilise SecuChaine::GetFormVar qui lit uniquement $_GET/$_POST
 foreach ($_REQUEST as $key => $val) {
     $_POST[$key] = $val;
 }

@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_log_resa.php";
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 
 get_vocab_admin('admin_view_emails');

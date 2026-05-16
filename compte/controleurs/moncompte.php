@@ -40,7 +40,7 @@ $trad = $vocab;
 
 if ($valid == 'yes')
 {
-	if (IsAllowedToModifyMdp())
+	if (SecuAccess::IsAllowedToModifyMdp())
 	{
 		$reg_password_a = isset($_POST['reg_password_a']) ? $_POST['reg_password_a'] : NULL;
 		$reg_password1 = isset($_POST['reg_password1']) ? $_POST['reg_password1'] : NULL;
@@ -58,7 +58,7 @@ if ($valid == 'yes')
 				{
 					VerifyModeDemo();
 					$reg_password1 =  password_hash($reg_password1, PASSWORD_DEFAULT);
-					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".SecuChaine::protect_data_sql($reg_password1)."' WHERE login='".getUserName()."'";
+					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".SecuChaine::ProtectDataSql($reg_password1)."' WHERE login='".getUserName()."'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
 					else
@@ -98,34 +98,34 @@ if ($valid == 'yes')
 	{
 		$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET ";
 		$flag_virgule = 'n';
-		if (IsAllowedToModifyProfil())
+		if (SecuAccess::IsAllowedToModifyProfil())
 		{
 			if (trim($reg_nom) != '')
 			{
-				$sql.="nom = '" . SecuChaine::protect_data_sql($reg_nom)."'";
+				$sql.="nom = '" . SecuChaine::ProtectDataSql($reg_nom)."'";
 				$flag_virgule = 'y';
 				$_SESSION['nom'] = htmlspecialchars($reg_nom);
 			}
 			if (trim($reg_prenom) != '')
 			{
 				if ($flag_virgule == 'y') $sql .=",";
-				$sql .= "prenom = '" . SecuChaine::protect_data_sql($reg_prenom)."'";
+				$sql .= "prenom = '" . SecuChaine::ProtectDataSql($reg_prenom)."'";
 				$flag_virgule = 'y';
 				$_SESSION['prenom'] = htmlspecialchars($reg_prenom);
 			}
 		}
-		if (IsAllowedToModifyEmail())
+		if (SecuAccess::IsAllowedToModifyEmail())
 		{
 			if(Settings::get('mail_user_obligatoire') != "y" || (Settings::get('mail_user_obligatoire') == "y" && $reg_email != "")){
 				if ($flag_virgule == 'y')
 					$sql .= ",";
-				$sql .= "email = '" . SecuChaine::protect_data_sql($reg_email)."'";
+				$sql .= "email = '" . SecuChaine::ProtectDataSql($reg_email)."'";
 			} else{
 				$msg = get_vocab('mail_user_obligatoire');
 			}
 		}
 		$sql .= "WHERE login='".getUserName()."'";
-		if ((IsAllowedToModifyProfil()) || (IsAllowedToModifyEmail()))
+		if ((SecuAccess::IsAllowedToModifyProfil()) || (SecuAccess::IsAllowedToModifyEmail()))
 		{
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
@@ -133,7 +133,7 @@ if ($valid == 'yes')
 				$msg .= "\\n".get_vocab('message_records');
 		}
 	}
-	if (IsAllowedToModifyProfil() && ($champ_manquant=='y'))
+	if (SecuAccess::IsAllowedToModifyProfil() && ($champ_manquant=='y'))
 		$msg .= "\\n".str_replace("\'","'",get_vocab('required'));
 }
 if (($valid == 'yes') || ($valid=='reset'))
@@ -145,17 +145,17 @@ if (($valid == 'yes') || ($valid=='reset'))
 	$default_list_type = isset($_POST['area_item_format']) ? $_POST['area_item_format'] : NULL;
 	$default_language = isset($_POST['default_language']) ? $_POST['default_language'] : NULL;
 	$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET ";
-	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_domaine")){
-		$sql .= "default_site = '".SecuChaine::protect_data_sql($default_site)."', ";
-		$sql .= "default_area = '".SecuChaine::protect_data_sql($default_area)."', ";
-		$sql .= "default_room = '".SecuChaine::protect_data_sql($default_room)."', ";
+	if (SecuAccess::UserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_domaine")){
+		$sql .= "default_site = '".SecuChaine::ProtectDataSql($default_site)."', ";
+		$sql .= "default_area = '".SecuChaine::ProtectDataSql($default_area)."', ";
+		$sql .= "default_room = '".SecuChaine::ProtectDataSql($default_room)."', ";
 	}
-	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_theme"))
-		$sql .= "default_style = '". SecuChaine::protect_data_sql($default_style)."', ";
-	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_affichage"))
-		$sql .= "default_list_type = '".SecuChaine::protect_data_sql($default_list_type)."', ";
-	if (authGetUserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_langue"))
-		$sql .= "default_language = '".SecuChaine::protect_data_sql($default_language)."', ";
+	if (SecuAccess::UserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_theme"))
+		$sql .= "default_style = '". SecuChaine::ProtectDataSql($default_style)."', ";
+	if (SecuAccess::UserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_affichage"))
+		$sql .= "default_list_type = '".SecuChaine::ProtectDataSql($default_list_type)."', ";
+	if (SecuAccess::UserLevel(getUserName(),-1) >= Settings::get("allow_users_modify_langue"))
+		$sql .= "default_language = '".SecuChaine::ProtectDataSql($default_language)."', ";
 	$sql .= "login='".getUserName()."'";
 	$sql .= "WHERE login='".getUserName()."'";
 	if (grr_sql_command($sql) < 0)
@@ -249,9 +249,9 @@ else
 
 
 $d['identifiant'] = getUserName();
-$d['modificationNom'] = IsAllowedToModifyProfil();
-$d['modificationMail'] = IsAllowedToModifyEmail();
-$d['modificationMDP'] = IsAllowedToModifyMdp();
+$d['modificationNom'] = SecuAccess::IsAllowedToModifyProfil();
+$d['modificationMail'] = SecuAccess::IsAllowedToModifyEmail();
+$d['modificationMDP'] = SecuAccess::IsAllowedToModifyMdp();
 $d['user_nom'] = $user_nom;
 $d['user_prenom'] = $user_prenom;
 $d['user_email'] = $user_email;
@@ -263,7 +263,7 @@ $d['default_css'] = $default_css;
 $d['default_language'] = $default_language;
 $d['default_room'] = $default_room;
 
-	if (IsAllowedToModifyProfil())
+	if (SecuAccess::IsAllowedToModifyProfil())
 	{
 		if ((trim($user_nom) == "") || (trim($user_prenom) == ''))
 			$d['AvertissementNomPrenom'] = 1;

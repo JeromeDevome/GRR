@@ -557,7 +557,7 @@ Version 4.0.3 - 31/03/2023 Généré par @JeromeDevome
 
 [Ajout] Peronnalisation de la couleur des liens @JeromeDevome
 [Ajout] Ajout multiple administrateur de ste @JeromeDevome
-[Correction] protect_data_sql cas d'une valeur à null @JeromeDevome
+[Correction] ProtectDataSql cas d'une valeur à null @JeromeDevome
 [Correction] Suppression (en affichage) des réservations périodique après modification de la série (Pb v4.0.0) @JeromeDevome
 [Correction] Permission gestion des clés @JeromeDevome
 [Correction] Suppression d'un administrateur de site (Pb v4.0.0) @JeromeDevome

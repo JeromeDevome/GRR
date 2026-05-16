@@ -97,12 +97,12 @@ $form_vars = array(
 foreach($form_vars as $var => $var_type)
 {
     if ($var_type != "array"){
-        $$var = getFormVar($var, $var_type);
+        $$var = SecuChaine::GetFormVar($var, $var_type);
         if (($var_type == "string")&&($$var !== NULL)){
           $$var = trim($$var);}
     }
     else{ // traitement d'un tableau
-        $$var = getFormVar($var,'');
+        $$var = SecuChaine::GetFormVar($var,'');
         $$var = (array) $$var;
     }
 }
@@ -112,7 +112,7 @@ $overloadFields = array(); // contiendra, s'il en existe, les valeurs des champs
 if ($res){
     foreach($res as $row){
         $overloadField = 'addon_'.$row['id'];
-        $overloadFields[$row['id']] = getFormVar($overloadField);
+        $overloadFields[$row['id']] = SecuChaine::GetFormVar($overloadField);
     }
 }
 grr_sql_free($res);
@@ -210,7 +210,7 @@ else{
 }
 
 // l'utilisateur est-il autorisé à être ici ?
-if (((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) == 0))||(authUserAccesArea($user_name, $area) == 0))
+if (((SecuAccess::UserLevel($user_name,-1) < 2) && (SecuAccess::VisitorBookingResource($user_name,$room) == 0))||(SecuAccess::UserArea($user_name, $area) == 0))
 {
   $d['messageErreur'] = showAccessDenied_twig($page_ret);
   echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
@@ -218,7 +218,7 @@ if (((authGetUserLevel($user_name,-1) < 2) && (auth_visiteur($user_name,$room) =
 }
 if (isset($room) && ($room != -1)){// on vérifie que la ressource n'est pas restreinte ou que l'accès est autorisé
     $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$room."' ");
-    if (!($who_can_book || (authBooking($user_name,$room)) || (authGetUserLevel($user_name,$room) > 2))){
+    if (!($who_can_book || (SecuAccess::UserBookingResourceRestrict($user_name,$room)) || (SecuAccess::UserLevel($user_name,$room) > 2))){
         $d['messageErreur'] = showAccessDenied_twig($page_ret."&alerte=acces");
     echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
         exit();
@@ -250,8 +250,8 @@ if ($longueur_liste_ressources_max == '')
   $longueur_liste_ressources_max = 20;
 // horaires
 // depuis un planning
-$hour = getFormVar('hour','int'); 
-$minute = getFormVar('minute','int');
+$hour = SecuChaine::GetFormVar('hour','int'); 
+$minute = SecuChaine::GetFormVar('minute','int');
 $start_hour = $hour;
 $start_min = $minute;
 if ($hour < 10) $hour = "0".$hour;
@@ -320,13 +320,13 @@ if (UserRoomMaxBooking($user_name, $room, $compt) == 0)
 //Participants
 $active_participant = isset($Room['active_participant'])? $Room['active_participant']: 0;
 if($active_participant > 0)
-  if (authGetUserLevel($user_name,$room) >= $Room['active_participant'])
+  if (SecuAccess::UserLevel($user_name,$room) >= $Room['active_participant'])
     $d['active_participant'] = 1;
 
 $d['etype'] = 0;
 if (isset($id) && $id !=0) // édition d'une réservation existante
 {
-    if (!getWritable($user_name,$id) && ($copier == ''))
+    if (!SecuAccess::IsAllowedToModifyResa($user_name,$id) && ($copier == ''))
     {
         $d['messageErreur'] = showAccessDenied_twig($page_ret);
         echo $twig->render('erreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
@@ -373,7 +373,7 @@ if (isset($id) && $id !=0) // édition d'une réservation existante
   if ($entry_type >= 1) // entrée associée à une périodicité
   {
     $sql = "SELECT rep_type, start_time, end_date, rep_opt, rep_num_weeks, end_time, type, name, beneficiaire, description
-    FROM ".TABLE_PREFIX."_repeat WHERE id='".SecuChaine::protect_data_sql($rep_id)."'";
+    FROM ".TABLE_PREFIX."_repeat WHERE id='".SecuChaine::ProtectDataSql($rep_id)."'";
     $res = grr_sql_query($sql);
     if (!$res)
       fatal_error(1, grr_sql_error());
@@ -512,7 +512,7 @@ else // nouvelle réservation
 }
 
 // fin nouvelle réservation
-$Err = getFormVar("Err",'string'); // utilité ?
+$Err = SecuChaine::GetFormVar("Err",'string'); // utilité ?
 if ($enable_periods == 'y')
   toPeriodString($start_min, $duration, $dur_units);
 else{
@@ -529,7 +529,7 @@ if ($res)
     foreach($res as $row)
   {
     array_push($allareas_id, $row['id']);
-    if (authUserAccesArea($user_name, $row['id'])==1)
+    if (SecuAccess::UserArea($user_name, $row['id'])==1)
     {
       $nb_areas++;
     }
@@ -569,9 +569,9 @@ $d['idresa'] = (isset($id))? $id : 0;
 */
 
 $qui_peut_reserver_pour  = isset($Room['qui_peut_reserver_pour'])? $Room['qui_peut_reserver_pour']: 5;
-$flag_qui_peut_reserver_pour = (authGetUserLevel($user_name, $room, "room") >= $qui_peut_reserver_pour); // accès à la ressource
-$flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour || (authGetUserLevel($user_name, $area_id, "area") >= $qui_peut_reserver_pour); // accès au domaine
-$flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour && (($id == 0) || (authGetUserLevel($user_name, $room) > 2) ); // création d'une nouvelle réservation ou usager 
+$flag_qui_peut_reserver_pour = (SecuAccess::UserLevel($user_name, $room, "room") >= $qui_peut_reserver_pour); // accès à la ressource
+$flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour || (SecuAccess::UserLevel($user_name, $area_id, "area") >= $qui_peut_reserver_pour); // accès au domaine
+$flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour && (($id == 0) || (SecuAccess::UserLevel($user_name, $room) > 2) ); // création d'une nouvelle réservation ou usager 
 
 if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher 
 {
@@ -720,7 +720,7 @@ if ($res)
     $d['optionsDomaine'] = '';
     foreach($res as $row)
   {
-    if (authUserAccesArea($user_name,$row['id']) == 1)
+    if (SecuAccess::UserArea($user_name,$row['id']) == 1)
     {
       $selected = "";
       if ($row['id'] == $area)
@@ -733,7 +733,7 @@ grr_sql_free($res);
 /*
 * Ressources
 */
-$tab_rooms_noaccess = no_book_rooms($user_name);
+$tab_rooms_noaccess = SecuAccess::ResourcesNotBookingForUser($user_name);
 $sql = "SELECT id, room_name, description FROM ".TABLE_PREFIX."_room WHERE area_id=$area_id ";
 foreach ($tab_rooms_noaccess as $key)
 {
@@ -770,14 +770,14 @@ if ($res)
   $ids = [];
   for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
   {
-    if (authUserAccesArea(getUserName(), $row[0]) == 1)
+    if (SecuAccess::UserArea(getUserName(), $row[0]) == 1)
     {
       $ids[] = $row[0];
     }
   }
   // modification proposée par Eric Marie (Github)
   $sql2 = "SELECT area_id, id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id IN ('" . implode("', '", $ids) . "')";
-  $tab_rooms_noaccess = no_book_rooms($user_name);
+  $tab_rooms_noaccess = SecuAccess::ResourcesNotBookingForUser($user_name);
   foreach($tab_rooms_noaccess as $key)
   {
     $sql2 .= " AND id != $key ";
@@ -854,7 +854,7 @@ if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || (
   }
 }
 
-$d['levelUserRessource'] = authGetUserLevel($user_name,$room_id);
+$d['levelUserRessource'] = SecuAccess::UserLevel($user_name,$room_id);
 
 /** 
 * fin du bloc de "gauche"

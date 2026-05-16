@@ -47,12 +47,12 @@ if (isset($_GET['room']))
 }
 else
 	die();
-if ((authGetUserLevel(getUserName(), -1) < 2) && (auth_visiteur(getUserName(), $room) == 0))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 2) && (SecuAccess::VisitorBookingResource(getUserName(), $room) == 0))
 {
 	showAccessDenied("");
 	exit();
 }
-if (authUserAccesArea(getUserName(), $areas) == 0)
+if (SecuAccess::UserArea(getUserName(), $areas) == 0)
 {
 	showAccessDenied("");
 	exit();
@@ -121,7 +121,7 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 
 $d["gcDossierDoc"] = $gcDossierDoc;
 
-$droit_acces = authGetUserLevel(getUserName(), $room);
+$droit_acces = SecuAccess::UserLevel(getUserName(), $room);
 $res = grr_sql_query("SELECT access_file, user_right, upload_file FROM ".TABLE_PREFIX."_area WHERE id =$areas");
 $attached_files = array();
 if(!$res)

@@ -25,9 +25,9 @@ if (isset($room))
 if (!isset($id_area))
 	settype($id_area,"integer");
 
-check_access(4, $back);
+SecuAccess::CheckAccess(4, $back);
 // tableau des ressources auxquelles l'utilisateur n'a pas accès
-$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+$tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
 if (isset($_POST['mail1']))
 {
 	if (isset($_POST['send_always_mail_to_creator']))
@@ -67,7 +67,7 @@ if ($action && $reg_admin_login)
 				exit();
 			}
 			// La ressource existe : on vérifie les privilèges de l'utilisateur
-			check_access(4, $back);
+			SecuAccess::CheckAccess(4, $back);
 			$sql = "SELECT * FROM ".TABLE_PREFIX."_j_mailuser_room WHERE (login = '$reg_admin_login' and id_room = '$room')";
 			$res = grr_sql_query($sql);
 			$test = grr_sql_count($res);
@@ -89,7 +89,7 @@ if ($action && $reg_admin_login)
 	}
 	elseif ($action == "del_admin")
 	{
-		if (authGetUserLevel(getUserName(),$room) < 4)
+		if (SecuAccess::UserLevel(getUserName(),$room) < 4)
 		{
 			showAccessDenied($back);
 			exit();
@@ -102,7 +102,7 @@ if ($action && $reg_admin_login)
 	}
 	elseif ($action == "mailresa")
 	{
-		if (authGetUserLevel(getUserName(),$room) < 4)
+		if (SecuAccess::UserLevel(getUserName(),$room) < 4)
 		{
 			showAccessDenied($back);
 			exit();
@@ -120,7 +120,7 @@ if ($action && $reg_admin_login)
 	}
 	elseif($action == 'mailhebdo')
 	{
-		if (authGetUserLevel(getUserName(),$room) < 4)
+		if (SecuAccess::UserLevel(getUserName(),$room) < 4)
 		{
 			showAccessDenied($back);
 			exit();
@@ -184,7 +184,7 @@ if ($res)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		if (authGetUserLevel(getUserName(), $row[0], 'area') >= 4)
+		if (SecuAccess::UserLevel(getUserName(), $row[0], 'area') >= 4)
 			$domaines[] = array('id' => $row[0], 'nom' => $row[1]);
 	}
 }
@@ -235,7 +235,7 @@ else
 	{
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
-			if (authUserAccesArea($row[0], $id_area) == 1)
+			if (SecuAccess::UserArea($row[0], $id_area) == 1)
 				$utilisateurs[] = array('login' => $row[0], 'nom' => $row[1], 'prenom' => $row[2]);
 		}
 	}

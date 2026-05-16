@@ -22,7 +22,7 @@ if($restaureBBD == 1){
 	$day   = date("d");
 	$month = date("m");
 	$year  = date("Y");
-	check_access(6, $back);
+	SecuAccess::CheckAccess(6, $back);
 	$sql_file = isset($_FILES["sql_file"]) ? $_FILES["sql_file"] : NULL;
 	$file_name = isset($_GET["file_name"]) ? $_GET["file_name"] : NULL;
 	VerifyModeDemo();

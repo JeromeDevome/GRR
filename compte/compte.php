@@ -28,7 +28,7 @@ require "../include/functions.inc.php";
 
 $page = 'moncompte';
 if(isset($_GET['pc'])){
-	$page = SecuChaine::alphanum($_GET['pc']);
+	$page = SecuChaine::Alphanumeric($_GET['pc']);
 }
 
 include "../include/admin.inc.php";
@@ -39,7 +39,7 @@ include_once('../include/hook.class.php');
 $back = '';
 if (isset($_SERVER['HTTP_REFERER']))
 	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-/*if ((authGetUserLevel(getUserName(), -1, 'area') < 4) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+/*if ((SecuAccess::UserLevel(getUserName(), -1, 'area') < 4) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();
@@ -59,8 +59,8 @@ $d['dDay'] = $day;
 $d['dMonth'] = $month;
 $d['dYear'] = $year;
 
-$d['accesStats'] = verif_access_search(getUserName());
-$d['levelUser'] = authGetUserLevel(getUserName(),-1);
+$d['accesStats'] = SecuAccess::UserSearch(getUserName());
+$d['levelUser'] = SecuAccess::UserLevel(getUserName(),-1);
 $d['versionGRR'] = $version_grr;
 $d['versionCache'] = hash('sha256', $version_grr.Settings::get("tokenpublic"));
 $d['gNomUser'] = getUserName();

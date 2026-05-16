@@ -28,7 +28,7 @@ $area_id = isset($_GET["area_id"]) ? intval($_GET["area_id"]) : NULL;
 if (isset($area_id))
 	settype($area_id,"integer");
 
-if (authGetUserLevel(getUserName(),$area_id,"area") < 4)
+if (SecuAccess::UserLevel(getUserName(),$area_id,"area") < 4)
 {
 	showAccessDenied($back);
 	exit();

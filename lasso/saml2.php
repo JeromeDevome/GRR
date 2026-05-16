@@ -100,7 +100,7 @@ class EndpointExemple extends LassoSPKitSaml2Endpoint {
 
 	      // See admin_view_connexions.php:67
 	      $sql = "SELECT session_id FROM ".TABLE_PREFIX."_log
-                      WHERE login = '" . SecuChaine::protect_data_sql($id) . "'
+                      WHERE login = '" . SecuChaine::ProtectDataSql($id) . "'
                       AND end > NOW()";
 	      $res = grr_sql_query($sql);
 	      if ($res) {

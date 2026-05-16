@@ -103,14 +103,14 @@ if (!$res)
 else  //Build an array of information about each day in the month.
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
-    $verif_acces_ressource = array();
+    $AccesUserResource = array();
     $acces_fiche_reservation = array();
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
 		if ($row['15'] <> (Settings::get('exclude_type_in_views_all')))
         {
-            $verif_acces_ressource[$row[5]] = verif_acces_ressource($user_name, $row[5]);
-            $acces_fiche_reservation[$row[5]] = verif_acces_fiche_reservation($user_name, $row[5]);
+            $AccesUserResource[$row[5]] = SecuAccess::UserResource($user_name, $row[5]);
+            $acces_fiche_reservation[$row[5]] = SecuAccess::UserSheetReservation($user_name, $row[5]);
             $t = max((int)$row[0], $month_start);
             $end_t = min((int)$row[1], $month_end);
             $day_num = date("j", $t);
@@ -292,7 +292,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 {
                     $ficheResa = $acces_fiche_reservation;
 
-                    if ($verif_acces_ressource[$da[$cday]["id_room"][$i]]) // On n'affiche pas les réservations des ressources non visibles pour l'utilisateur.
+                    if ($AccesUserResource[$da[$cday]["id_room"][$i]]) // On n'affiche pas les réservations des ressources non visibles pour l'utilisateur.
                     {	
                         if ($i == Settings::get("max_resa_affiche") && $n >= Settings::get("max_resa_affiche"))
                         {
@@ -303,7 +303,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         // On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
                         if($acces_fiche_reservation)
                         {
-                            if($da[$cday]["resa_confidentielle"][$i] == 1 && getUserName() != $da[$cday]["beneficiaire"][$i] && $authGetUserLevel < 3)
+                            if($da[$cday]["resa_confidentielle"][$i] == 1 && getUserName() != $da[$cday]["beneficiaire"][$i] && $UserLevel < 3)
                                 $ficheResa = false;
                         }
 

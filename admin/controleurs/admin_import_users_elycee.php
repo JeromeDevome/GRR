@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_import_users_elycee.php";
 
-if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();
@@ -135,7 +135,7 @@ if ($reg_data != 'yes')
 								// profil : élève ou parent => visiteur, enseignant ou administratif => utilisateur
 								// Type d'utilisateur : quatre valeurs autorisées : visiteur, utilisateur, administrateur, gestionnaire_utilisateur
 								// Si c'est un gestionnaire d'utilisateurs qui importe, seuls les types visiteur et utilisateur sont autorisés
-/* 										if (authGetUserLevel(getUserName(), -1) >= 6)
+/* 										if (SecuAccess::UserLevel(getUserName(), -1) >= 6)
 									$filtre = "(visiteur|utilisateur|administrateur|gestionnaire_utilisateur)";
 								else
 									$filtre = "`(visiteur|utilisateur)`";
@@ -176,8 +176,8 @@ if ($reg_data != 'yes')
 								$test_nom_prenom_existant = 'no';
 								if (preg_match ("`^.{1,30}$`", $data[$c]))
 								{
-									$test_nom = SecuChaine::protect_data_sql($data[$c]);
-									$test_prenom = SecuChaine::protect_data_sql($data[$c+1]);
+									$test_nom = SecuChaine::ProtectDataSql($data[$c]);
+									$test_prenom = SecuChaine::ProtectDataSql($data[$c+1]);
 									$test_nom_prenom = grr_sql_count(grr_sql_query("SELECT nom FROM ".TABLE_PREFIX."_utilisateurs WHERE (nom='$test_nom' and prenom = '$test_prenom')"));
 									if ($test_nom_prenom != '0')
 									{
@@ -243,8 +243,8 @@ else
 	for ($row = 1; $row < $nb_row; $row++)
 	{
 		// On nettoie les windozeries
-		$reg_nom[$row] = SecuChaine::protect_data_sql(corriger_caracteres($reg_nom[$row]));
-		$reg_prenom[$row] = SecuChaine::protect_data_sql(corriger_caracteres($reg_prenom[$row]));
+		$reg_nom[$row] = SecuChaine::ProtectDataSql(corriger_caracteres($reg_nom[$row]));
+		$reg_prenom[$row] = SecuChaine::ProtectDataSql(corriger_caracteres($reg_prenom[$row]));
 		$test_login = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$reg_login[$row]'"));
 		if ($test_login == 0) {
 			$sqlQuery = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',login='".$reg_login[$row]."',statut='".$reg_type_user[$row]."',etat='actif',source='ext'";

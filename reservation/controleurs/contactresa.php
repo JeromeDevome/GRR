@@ -136,7 +136,7 @@ $sql_areaName = "SELECT id, area_name,resolution_area FROM ".TABLE_PREFIX."_area
 $res_areaName = grr_sql_query($sql_areaName);
 foreach($res_areaName as $row)
 {
-	if (authUserAccesArea(getUserName(),$row['id']) == 1)
+	if (SecuAccess::UserArea(getUserName(),$row['id']) == 1)
 	{
 		$domaineDispo[] = array('id' => $row['id'], 'nom' => $row['area_name'], 'resolution' => $row['resolution_area']);
 	}

@@ -24,7 +24,7 @@ include "./reservation/modeles/report.php";
 
 
 //Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
-if (!verif_access_search(getUserName()))
+if (!SecuAccess::UserSearch(getUserName()))
 {
 	showAccessDenied($back);
 	exit();
@@ -82,7 +82,7 @@ if (isset($champ[0]))
 	$k = 0;
 	while ($k < count($texte))
 	{
-		$texte[$k] = SecuChaine::unslashes($texte[$k]);
+		$texte[$k] = SecuChaine::Unslashes($texte[$k]);
 		//Mettre les valeurs par défaut quand le formulaire est réutilisé.
 		$texte_default[$k] = htmlspecialchars($texte[$k]);
 		$k++;
@@ -200,7 +200,7 @@ while ($k < $nb_ligne)
 	{
 		$selectAdd = 0;
 		// if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-		if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
+		if ((SecuAccess::UserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
 		{
 			if (isset($champ[$k]) && ($champ[$k] == "addon_".$overload_fields[$fieldname]["id"]))
 				$selectAdd = 1;
@@ -237,7 +237,7 @@ $overload_fields = mrbsOverloadGetFieldslist("");
 foreach ($overload_fields as $fieldname=>$fieldtype)
 {
 	// if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-	if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
+	if ((SecuAccess::UserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
 	{
 		if ($_GET["sumby"] == $overload_fields[$fieldname]["id"])
 			$selectAdd = 1;
@@ -255,7 +255,7 @@ if (isset($_GET["is_posted"]))
     $k = 0;
     while ($k < count($texte))
     {
-        $texte[$k] = SecuChaine::unslashes($texte[$k]);
+        $texte[$k] = SecuChaine::Unslashes($texte[$k]);
         $k++;
     }
 	//Les heures de début et de fin sont aussi utilisés pour mettre l'heure dans le rapport.
@@ -297,18 +297,18 @@ if (isset($_GET["is_posted"]))
 		$sql .= ", ".TABLE_PREFIX."_site s, ".TABLE_PREFIX."_j_site_area sa";
 
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
-    if (authGetUserLevel(getUserName(),-1) < 6)
+    if (SecuAccess::UserLevel(getUserName(),-1) < 6)
         if ($test_grr_j_user_area != 0)
             $sql .= ", ".TABLE_PREFIX."_j_user_area j ";
         $sql .= " WHERE e.room_id = r.id AND r.area_id = a.id AND supprimer =0";
 	// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-    $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+    $tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
     foreach ($tab_rooms_noaccess as $key)
     {
         $sql .= " and r.id != $key ";
     }
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
-    if (authGetUserLevel(getUserName(),-1) < 6)
+    if (SecuAccess::UserLevel(getUserName(),-1) < 6)
         if ($test_grr_j_user_area == 0)
             $sql .= " and a.access='a' ";
         else
@@ -346,7 +346,7 @@ if (isset($_GET["is_posted"]))
 			foreach ($overload_fields as $fieldname=>$fieldtype)
 			{
 				// if ($overload_fields[$fieldname]["confidentiel"] != 'y') filtrage trop strict
-				if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
+				if ((SecuAccess::UserLevel(getUserName(),-1) > 5) || ($overload_fields[$fieldname]['affichage'] == 'y'))
 				{
 					if ($champ[$k] == "addon_".$overload_fields[$fieldname]["id"])
 						$sql .=  grr_sql_syntax_caseless_contains_overload("e.overload_desc", $texte[$k], $overload_fields[$fieldname]["id"], $type_recherche[$k]);
@@ -405,7 +405,7 @@ if (isset($_GET["is_posted"]))
 			foreach ($overload_fields_c as $fieldname=>$fieldtype)
 			{
 				//if ($overload_fields_c[$fieldname]["confidentiel"] != 'y') // filtrage trop strict
-				if ((authGetUserLevel(getUserName(),-1) > 5) || ($overload_fields_c[$fieldname]['affichage'] == 'y'))
+				if ((SecuAccess::UserLevel(getUserName(),-1) > 5) || ($overload_fields_c[$fieldname]['affichage'] == 'y'))
 				{
 					//echo "<td>".$fieldname."</td>";
 					$tablOverload[$i] = $overload_fields_c[$fieldname]["name"];

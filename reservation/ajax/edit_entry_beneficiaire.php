@@ -19,7 +19,7 @@ $niveauDossier = 3;
 
 include_once "../../include/admin.inc.php";
 // vérifications de sécurité : page accessible si utilisateur connecté et usager
-if ((authGetUserLevel(getUserName(),-1) < 2))
+if ((SecuAccess::UserLevel(getUserName(),-1) < 2))
 {
 	showAccessDenied("");
 	exit();
@@ -37,12 +37,12 @@ $tab_benef["nom"] = "";
 $tab_benef["email"] = "";
 $area = isset($_GET["area"])? intval($_GET["area"]): -1;
 $room = isset($_GET["room"])? intval($_GET["room"]): -1;
-$user = isset($_GET["user"])? SecuChaine::clean_login($_GET["user"]): getUserName();
+$user = isset($_GET["user"])? SecuChaine::CleanLogin($_GET["user"]): getUserName();
 $id = isset($_GET["id"])? intval($_GET["id"]): 0;
 $qui_peut_reserver_pour  = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
-$flag_qui_peut_reserver_pour = (authGetUserLevel($user, $room, "room") >= $qui_peut_reserver_pour); // accès à la ressource
-$flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour || (authGetUserLevel($user, $area, "area") >= $qui_peut_reserver_pour); // accès au domaine
-$flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour && (($id == 0) || (authGetUserLevel($user, $room) > 2) ); // création d'une nouvelle réservation ou usager 
+$flag_qui_peut_reserver_pour = (SecuAccess::UserLevel($user, $room, "room") >= $qui_peut_reserver_pour); // accès à la ressource
+$flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour || (SecuAccess::UserLevel($user, $area, "area") >= $qui_peut_reserver_pour); // accès au domaine
+$flag_qui_peut_reserver_pour = $flag_qui_peut_reserver_pour && (($id == 0) || (SecuAccess::UserLevel($user, $room) > 2) ); // création d'une nouvelle réservation ou usager 
 if ($flag_qui_peut_reserver_pour ) // on crée les sélecteurs à afficher 
 {
 	$benef = "";

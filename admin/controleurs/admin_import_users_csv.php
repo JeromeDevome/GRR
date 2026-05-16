@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_import_users_csv.php";
 
-if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();
@@ -126,7 +126,7 @@ if ($reg_data != 'yes')
 								if ($test_login == "")
 								{
 									$data[$c] = strtoupper($data[$c]);
-									$protected_login = SecuChaine::protect_data_sql($data[$c]);
+									$protected_login = SecuChaine::ProtectDataSql($data[$c]);
 									$test = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$protected_login'"));
 									if ($test!='0')
 									{
@@ -155,8 +155,8 @@ if ($reg_data != 'yes')
 								$test_nom_prenom_existant = 'no';
 								if (preg_match ("`^.{1,30}$`", $data[$c]))
 								{
-									$test_nom = SecuChaine::protect_data_sql($data[$c]);
-									$test_prenom = SecuChaine::protect_data_sql($data[$c+1]);
+									$test_nom = SecuChaine::ProtectDataSql($data[$c]);
+									$test_prenom = SecuChaine::ProtectDataSql($data[$c+1]);
 									$test_nom_prenom = grr_sql_count(grr_sql_query("SELECT nom FROM ".TABLE_PREFIX."_utilisateurs WHERE (nom='$test_nom' and prenom = '$test_prenom')"));
 									if ($test_nom_prenom != '0')
 									{
@@ -223,7 +223,7 @@ if ($reg_data != 'yes')
 								case 5:
 								// Type d'utilisateur : quatre valeurs autorisées : visiteur, utilisateur, administrateur, gestionnaire_utilisateur
 								// Si c'est un gestionnaire d'utilisateurs qui importe, seuls les types visiteur et utilisateur sont autorisés
-								if (authGetUserLevel(getUserName(), -1) >= 6)
+								if (SecuAccess::UserLevel(getUserName(), -1) >= 6)
 									$filtre = "(visiteur|utilisateur|administrateur|gestionnaire_utilisateur)";
 								else
 									$filtre = "`(visiteur|utilisateur)`";
@@ -319,23 +319,23 @@ else
 	for ($row = 1; $row < $nb_row; $row++)
 	{
 		if ($reg_type_auth[$row] != "ext")
-			$reg_mdp[$row] = password_hash(SecuChaine::unslashes($reg_mdp[$row]), PASSWORD_DEFAULT);
+			$reg_mdp[$row] = password_hash(SecuChaine::Unslashes($reg_mdp[$row]), PASSWORD_DEFAULT);
 		// On nettoie les windozeries
-		$reg_nom[$row] = SecuChaine::protect_data_sql(corriger_caracteres($reg_nom[$row]));
-		$reg_prenom[$row] = SecuChaine::protect_data_sql(html_entity_decode($reg_prenom[$row]));
-		$reg_email[$row] = SecuChaine::protect_data_sql(corriger_caracteres($reg_email[$row]));
-		$reg_changer_pwd[$row] = SecuChaine::protect_data_sql(corriger_caracteres($reg_changer_pwd[$row]));
-		$reg_login[$row] = SecuChaine::protect_data_sql(trim($reg_login[$row]));
-		$reg_type_user[$row] = SecuChaine::protect_data_sql($reg_type_user[$row]);
-		$reg_statut[$row] = SecuChaine::protect_data_sql($reg_statut[$row]);
-		$reg_type_auth[$row] = SecuChaine::protect_data_sql($reg_type_auth[$row]);
+		$reg_nom[$row] = SecuChaine::ProtectDataSql(corriger_caracteres($reg_nom[$row]));
+		$reg_prenom[$row] = SecuChaine::ProtectDataSql(html_entity_decode($reg_prenom[$row]));
+		$reg_email[$row] = SecuChaine::ProtectDataSql(corriger_caracteres($reg_email[$row]));
+		$reg_changer_pwd[$row] = SecuChaine::ProtectDataSql(corriger_caracteres($reg_changer_pwd[$row]));
+		$reg_login[$row] = SecuChaine::ProtectDataSql(trim($reg_login[$row]));
+		$reg_type_user[$row] = SecuChaine::ProtectDataSql($reg_type_user[$row]);
+		$reg_statut[$row] = SecuChaine::ProtectDataSql($reg_statut[$row]);
+		$reg_type_auth[$row] = SecuChaine::ProtectDataSql($reg_type_auth[$row]);
 		$test_login = preg_replace("/([A-Za-z0-9_@.-])/","",$reg_login[$row]);
 		if($test_login == ""){
 			$test_login = grr_sql_count(grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$reg_login[$row]'"));
 			if ($test_login == 0)
-				$regdata = grr_sql_query("INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',login='".$reg_login[$row]."',email='".$reg_email[$row]."',password='".SecuChaine::protect_data_sql($reg_mdp[$row])."',statut='".$reg_type_user[$row]."',etat='".$reg_statut[$row]."',source='".$reg_type_auth[$row]."',changepwd='".$reg_changer_pwd[$row]."'");
+				$regdata = grr_sql_query("INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',login='".$reg_login[$row]."',email='".$reg_email[$row]."',password='".SecuChaine::ProtectDataSql($reg_mdp[$row])."',statut='".$reg_type_user[$row]."',etat='".$reg_statut[$row]."',source='".$reg_type_auth[$row]."',changepwd='".$reg_changer_pwd[$row]."'");
 			else
-				$regdata = grr_sql_query("UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',email='".$reg_email[$row]."',password='".SecuChaine::protect_data_sql($reg_mdp[$row])."',statut='".$reg_type_user[$row]."',etat='".$reg_statut[$row]."',source='".$reg_type_auth[$row]."',changepwd='".$reg_changer_pwd[$row]."' WHERE login='".$reg_login[$row]."'");
+				$regdata = grr_sql_query("UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".$reg_nom[$row]."',prenom='".$reg_prenom[$row]."',email='".$reg_email[$row]."',password='".SecuChaine::ProtectDataSql($reg_mdp[$row])."',statut='".$reg_type_user[$row]."',etat='".$reg_statut[$row]."',source='".$reg_type_auth[$row]."',changepwd='".$reg_changer_pwd[$row]."' WHERE login='".$reg_login[$row]."'");
 		}
 	
 		if (!$regdata)

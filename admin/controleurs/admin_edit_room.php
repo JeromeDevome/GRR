@@ -38,7 +38,7 @@ $allow_action_in_past  = isset($_POST["allow_action_in_past"]) ? $_POST["allow_a
 $dont_allow_modify  = isset($_POST["dont_allow_modify"]) ? $_POST["dont_allow_modify"] : NULL;
 $qui_peut_reserver_pour  = isset($_POST["qui_peut_reserver_pour"]) ? $_POST["qui_peut_reserver_pour"] : NULL;
 $who_can_see  = isset($_POST["who_can_see"]) ? $_POST["who_can_see"] : NULL;
-$who_can_book  = isset($_POST["who_can_book"]) ? intval(SecuChaine::clean_input($_POST["who_can_book"])) : 1;
+$who_can_book  = isset($_POST["who_can_book"]) ? intval(SecuChaine::CleanInput($_POST["who_can_book"])) : 1;
 $max_booking = isset($_POST["max_booking"]) ? $_POST["max_booking"] : NULL;
 settype($max_booking, "integer");
 if ($max_booking<-1)
@@ -105,14 +105,14 @@ if (!isset($retour_page))
 // modification d'une ressource : admin ou gestionnaire
 $user_id = getUserName();
 $acces_config_ress_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
-if (authGetUserLevel($user_id, $room) < $acces_config_ress_level)
+if (SecuAccess::UserLevel($user_id, $room) < $acces_config_ress_level)
 {
 	showAccessDenied($back);
 	exit();
 }
 
 /*
-if (authGetUserLevel(getUserName(),-1) < 6)
+if (SecuAccess::UserLevel(getUserName(),-1) < 6)
 {
     if (isset($area_id)){
         $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id='".$area_id."'");
@@ -120,13 +120,13 @@ if (authGetUserLevel(getUserName(),-1) < 6)
             showAccessDenied($back);
             exit();
         }
-        elseif(authGetUserLevel($user_id,$area_id,'area')<4){
+        elseif(SecuAccess::UserLevel($user_id,$area_id,'area')<4){
             showAccessDenied($back);
             exit();
         }
     }
 	// Il s'agit d'une modif de ressource
-	elseif (((authGetUserLevel($user_id,$room) < 3)) || (!verif_acces_ressource($user_id, $room)))
+	elseif (((SecuAccess::UserLevel($user_id,$room) < 3)) || (!SecuAccess::UserResource($user_id, $room)))
 	{
 		showAccessDenied($back);
 		exit();
@@ -175,11 +175,11 @@ if (isset($change_room))
 	if ((isset($room)) && !((isset($action) && ($action == "duplique_room"))))
 	{
 		$sql = "UPDATE ".TABLE_PREFIX."_room SET
-		room_name='".SecuChaine::protect_data_sql($room_name)."',
-		description='".SecuChaine::protect_data_sql($description)."', ";
+		room_name='".SecuChaine::ProtectDataSql($room_name)."',
+		description='".SecuChaine::ProtectDataSql($description)."', ";
 		if ($picture_room != '')
-			$sql .= "picture_room='".SecuChaine::protect_data_sql($picture_room)."', ";
-		$sql .= "comment_room='".SecuChaine::protect_data_sql($comment_room)."',
+			$sql .= "picture_room='".SecuChaine::ProtectDataSql($picture_room)."', ";
+		$sql .= "comment_room='".SecuChaine::ProtectDataSql($comment_room)."',
 		show_comment='".$show_comment."',
 		area_id='".$area_id."',
 		show_fic_room='".$show_fic_room."',
@@ -197,7 +197,7 @@ if (isset($change_room))
 		qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 		who_can_see = '".$who_can_see."',
 		who_can_book = '".$who_can_book."',
-		order_display='".SecuChaine::protect_data_sql($area_order)."',
+		order_display='".SecuChaine::ProtectDataSql($area_order)."',
 		type_affichage_reser='".$type_affichage_reser."',
 		max_booking='".$max_booking."',
 		moderate='".$moderate."',
@@ -213,11 +213,11 @@ if (isset($change_room))
 	else
 	{
 		$sql = "insert into ".TABLE_PREFIX."_room
-		SET room_name='".SecuChaine::protect_data_sql($room_name)."',
+		SET room_name='".SecuChaine::ProtectDataSql($room_name)."',
 		area_id='".$area_id."',
-		description='".SecuChaine::protect_data_sql($description)."',
-		picture_room='".SecuChaine::protect_data_sql($picture_room)."',
-		comment_room='".SecuChaine::protect_data_sql(corriger_caracteres($comment_room))."',
+		description='".SecuChaine::ProtectDataSql($description)."',
+		picture_room='".SecuChaine::ProtectDataSql($picture_room)."',
+		comment_room='".SecuChaine::ProtectDataSql(corriger_caracteres($comment_room))."',
 		show_fic_room='".$show_fic_room."',
 		active_ressource_empruntee = '".$active_ressource_empruntee."',
 		active_cle = '".$active_cle."',
@@ -233,7 +233,7 @@ if (isset($change_room))
 		qui_peut_reserver_pour = '".$qui_peut_reserver_pour."',
 		who_can_see = '".$who_can_see."',
 		who_can_book = '".$who_can_book."',
-		order_display='".SecuChaine::protect_data_sql($area_order)."',
+		order_display='".SecuChaine::ProtectDataSql($area_order)."',
 		type_affichage_reser='".$type_affichage_reser."',
 		max_booking='".$max_booking."',
 		moderate='".$moderate."',
@@ -247,7 +247,7 @@ if (isset($change_room))
 	if ($room_name == '')
 	{
 		$room_name = get_vocab("room")." ".$room;
-		grr_sql_command("UPDATE ".TABLE_PREFIX."_room SET room_name='".SecuChaine::protect_data_sql($room_name)."' WHERE id=$room");
+		grr_sql_command("UPDATE ".TABLE_PREFIX."_room SET room_name='".SecuChaine::ProtectDataSql($room_name)."' WHERE id=$room");
 	}
 	// image d'illustration
 	$cledDossier = hash('ripemd128', $room.Settings::get("tokenprivee"));
@@ -271,7 +271,7 @@ if (isset($change_room))
 		list($nomImage, $resultImport) = Import::Image($dossier, $room);
 
 		if($resultImport == ""){
-			$sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".SecuChaine::protect_data_sql($nomImage)."' WHERE id=".SecuChaine::protect_data_sql($room);
+			$sql_picture = "UPDATE ".TABLE_PREFIX."_room SET picture_room='".SecuChaine::ProtectDataSql($nomImage)."' WHERE id=".SecuChaine::ProtectDataSql($room);
 			if (grr_sql_command($sql_picture) < 0)
 			{
 				fatal_error(0, get_vocab('update_room_failed') . grr_sql_error());
@@ -426,22 +426,22 @@ get_vocab_admin("save");
 get_vocab_admin("save_and_back");
 
 $trad['dTitrePage'] = get_vocab("match_area").get_vocab('deux_points')." ".$area_name." <span class=\"fa fa-arrow-right\"></span> ".$typeAction;
-$trad['dDroitsDomaine'] = authGetUserLevel($user_id,$area_id,"area");
-$trad['dDroitsRessource'] = authGetUserLevel($user_id,$room);
+$trad['dDroitsDomaine'] = SecuAccess::UserLevel($user_id,$area_id,"area");
+$trad['dDroitsRessource'] = SecuAccess::UserLevel($user_id,$room);
 $trad['dIdDomaine'] = $area_id;
 
 // Domaines
 $trad['dEnablePeriods'] = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area where id='".$area_id."'");
 $domaines = array();
 
-if (((authGetUserLevel($user_id,$area_id,"area") >=4 ) || (authGetUserLevel($user_id,$room) >= 4)) && ($trad['dEnablePeriods'] == 'n'))
+if (((SecuAccess::UserLevel($user_id,$area_id,"area") >=4 ) || (SecuAccess::UserLevel($user_id,$room) >= 4)) && ($trad['dEnablePeriods'] == 'n'))
 {
 	// les creneaux sont bases sur le temps : on ne peut pas changer une ressource de domaine
-	if(authGetUserLevel($user_id,-1,'area') >= 6)
+	if(SecuAccess::UserLevel($user_id,-1,'area') >= 6)
 		$sql = "SELECT id,area_name
 	FROM ".TABLE_PREFIX."_area where enable_periods='n'
 	ORDER BY area_name ASC";
-	else if (authGetUserLevel($user_id,$area_id,'area') == 5)
+	else if (SecuAccess::UserLevel($user_id,$area_id,'area') == 5)
 		$sql = "SELECT distinct a.id, a.area_name
 	FROM ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_j_site_area j, ".TABLE_PREFIX."_site s,  ".TABLE_PREFIX."_j_useradmin_site u
 	WHERE a.id=j.id_area and u.id_site=j.id_site  and s.id=u.id_site and u.login='".$user_id."'  and  enable_periods='n'

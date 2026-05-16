@@ -108,11 +108,11 @@ $form_vars = array(
 foreach($form_vars as $var => $var_type)
 {
     if ($var_type != "array"){
-        $$var = getFormVar($var, $var_type);
+        $$var = SecuChaine::GetFormVar($var, $var_type);
         if ($var_type == "string" && $$var != ''){$$var = trim($$var);}
     }
     else{ // traitement d'un tableau
-        $$var = getFormVar($var,'');
+        $$var = SecuChaine::GetFormVar($var,'');
         $$var = (array) $$var;
     }
 }
@@ -185,9 +185,9 @@ try {
         $d['err_type'] = 'required';
         throw new Exception('erreur');
     }
-    $beneficiaire = isset($beneficiaire)? SecuChaine::clean_input($beneficiaire) : "";
-    $benef_ext_nom = isset($benef_ext_nom)? SecuChaine::clean_input($benef_ext_nom) : "";
-    $benef_ext_email = isset($benef_ext_email)? SecuChaine::clean_input($benef_ext_email) : "";
+    $beneficiaire = isset($beneficiaire)? SecuChaine::CleanInput($beneficiaire) : "";
+    $benef_ext_nom = isset($benef_ext_nom)? SecuChaine::CleanInput($benef_ext_nom) : "";
+    $benef_ext_email = isset($benef_ext_email)? SecuChaine::CleanInput($benef_ext_email) : "";
     $beneficiaire_ext = concat_nom_email($benef_ext_nom, $benef_ext_email);
 
     if ($beneficiaire == "-1")// est-ce possible ?
@@ -224,7 +224,7 @@ try {
     {
         $id_field = $overload_fields_list[$overfield]["id"];
         $fieldname = "addon_".$id_field;
-        $$fieldname = getFormVar($fieldname); 
+        $$fieldname = SecuChaine::GetFormVar($fieldname); 
         if (($overload_fields_list[$overfield]["type"] == "numeric") && 
             (isset($$fieldname) && ($$fieldname != '') && (!preg_match("`^[0-9]*\.{0,1}[0-9]*$`",$$fieldname))))
         {
@@ -359,7 +359,7 @@ try {
         else 
         {
             $fin = array();
-            $fin = explode(':', SecuChaine::clean_input($end_));
+            $fin = explode(':', SecuChaine::CleanInput($end_));
             $end_hour = $fin[0];
             $end_minute = $fin[1];
             $pos = strpos($fin[1],' ');
@@ -446,7 +446,7 @@ try {
     }
     if ($rep_type != 0)
         $reps = mrbsGetRepeatEntryList($start_time, isset($rep_enddate)? $rep_enddate : 0, $rep_type, $rep_opt, $max_rep_entrys, $rep_num_weeks, $rep_jour_c, $area, $rep_month_abs1, $rep_month_abs2, array($vacances,$feries));
-    $create_by = isset($create_by)? SecuChaine::clean_input($create_by) : $user;
+    $create_by = isset($create_by)? SecuChaine::CleanInput($create_by) : $user;
     if (isset($room_back) && ($room_back != '0'))
         $room_back = ''; // room_back c'est NULL, '' ou '0'
     if (!isset($option_reservation))
@@ -502,7 +502,7 @@ try {
             $i = 0;
             while ($i < count($reps)) // s'arrête à la première erreur par les exceptions
             {
-                if ((authGetUserLevel($user,-1) < 2) && (auth_visiteur($user,$room_id) == 0)){
+                if ((SecuAccess::UserLevel($user,-1) < 2) && (SecuAccess::VisitorBookingResource($user,$room_id) == 0)){
                     $d['err_type'] = 'reservation_impossible';
                     $d['err_msg'] = get_vocab('norights');
                     throw new Exception('erreur');
@@ -541,7 +541,7 @@ try {
         }
         else // réservation unique
         {
-            if ((authGetUserLevel($user,$room_id,'room') < 2) && (auth_visiteur($user,$room_id) == 0)){
+            if ((SecuAccess::UserLevel($user,$room_id,'room') < 2) && (SecuAccess::VisitorBookingResource($user,$room_id) == 0)){
                     $d['err_type'] = 'booking_room_out';
                     throw new Exception('erreur');
             }
@@ -591,25 +591,25 @@ try {
             }
         }
         $statut_room = grr_sql_query1("SELECT statut_room from ".TABLE_PREFIX."_room where id = '$room_id'");
-        if (($statut_room == "0") && authGetUserLevel($user,$room_id) < 3)
+        if (($statut_room == "0") && SecuAccess::UserLevel($user,$room_id) < 3)
         {
             $d['err_type'] = 'booking_room_out';
             throw new Exception('erreur');
         }
-        if (!verif_acces_ressource($user, $room_id))
+        if (!SecuAccess::UserResource($user, $room_id))
         {
             $d['err_type'] = 'booking_room_out';
             throw new Exception('erreur');
         }
     }
     if (isset($id) && ($id != 0)){
-        if (!getWritable($user, $id)){
+        if (!SecuAccess::IsAllowedToModifyResa($user, $id)){
             $d['err_type'] = "accessdenied";
             $d['err_msg'] = get_vocab("norights");
             throw new Exception('erreur');
         }
     }
-    if (authUserAccesArea($user, $area) == 0){
+    if (SecuAccess::UserArea($user, $area) == 0){
         $d['err_type'] = "accessdenied";
         $d['err_msg'] = get_vocab("norights");
         throw new Exception('erreur');
@@ -701,7 +701,7 @@ try {
 	foreach ($rooms as $room_id)
 	{
 
-        if(authGetUserLevel($user,$room_id,'room') < 3)
+        if(SecuAccess::UserLevel($user,$room_id,'room') < 3)
             $envoy_notif = 1;
         elseif(isset($envoyer_notif) && ($envoyer_notif == 1))
             $envoy_notif = 1;
@@ -716,7 +716,7 @@ try {
 			if (isset($id))
 			{
 				$old_entry_moderate =  grr_sql_query1("SELECT moderate FROM ".TABLE_PREFIX."_entry where id='".$id."'");
-				if (authGetUserLevel($user,$room_id) < 3)
+				if (SecuAccess::UserLevel($user,$room_id) < 3)
 					$entry_moderate = 1;
 				else
 					$entry_moderate = $old_entry_moderate;
@@ -725,7 +725,7 @@ try {
 			}
 			else
 			{
-				if (authGetUserLevel($user,$room_id) < 3)
+				if (SecuAccess::UserLevel($user,$room_id) < 3)
 					$entry_moderate = 1;
 				else
 				{
@@ -863,7 +863,7 @@ catch (Exception $e){
         foreach ($overload_fields_list as $overfield=>$fieldtype){
             $id_field = $overload_fields_list[$overfield]["id"];
             $fieldname = "addon_".$id_field;
-            $$fieldname = getFormVar($fieldname,'string');
+            $$fieldname = SecuChaine::GetFormVar($fieldname,'string');
             if ($$fieldname != NULL){
                 $hiddenInputs .= "<input type='hidden' name='".$fieldname."' value='".htmlspecialchars($$fieldname, ENT_QUOTES, 'UTF-8')."' >";
             }
@@ -883,7 +883,7 @@ catch (Exception $e){
             $d['htmlConflit'] .= $conflits;
         if (!isset($hide_title))
             $d['htmlConflit'] .= "</UL>";
-        if (authGetUserLevel($user,$area,'area') >= 4){
+        if (SecuAccess::UserLevel($user,$area,'area') >= 4){
             $d['htmlConflit'] .= '<center>';
             $d['htmlConflit'] .= '<form method="GET">';
             $d['htmlConflit'] .= '<input type="hidden" name="p" value="editentreetrt">';

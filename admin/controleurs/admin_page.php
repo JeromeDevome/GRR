@@ -20,7 +20,7 @@ $grr_script_name = "admin_page.php";
 
 $trad = $vocab;
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 if (isset($_POST["action"]))
 	$action = $_POST["action"];
@@ -62,7 +62,7 @@ if ($action == "add")
     else
         $emplacement = 0;
 
-	$sql = "INSERT INTO ".TABLE_PREFIX."_page (nom, titre, systeme, valeur, statutmini, lien, nouveauonglet, ordre, emplacement) VALUES ('".uniqid()."', '".SecuChaine::protect_data_sql($titre)."', 0, '', '".SecuChaine::protect_data_sql($statutmini)."', '".SecuChaine::protect_data_sql($lien)."', $nouveauonglet,  $ordre, '".SecuChaine::protect_data_sql($emplacement)."');";
+	$sql = "INSERT INTO ".TABLE_PREFIX."_page (nom, titre, systeme, valeur, statutmini, lien, nouveauonglet, ordre, emplacement) VALUES ('".uniqid()."', '".SecuChaine::ProtectDataSql($titre)."', 0, '', '".SecuChaine::ProtectDataSql($statutmini)."', '".SecuChaine::ProtectDataSql($lien)."', $nouveauonglet,  $ordre, '".SecuChaine::ProtectDataSql($emplacement)."');";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, "$sql \n\n" . grr_sql_error());
 }
@@ -103,8 +103,8 @@ elseif ($action == "change")
 
 
     $sql = "UPDATE ".TABLE_PREFIX."_page SET
-    titre='".SecuChaine::protect_data_sql($titre)."',
-    statutmini='".SecuChaine::protect_data_sql($statutmini)."',
+    titre='".SecuChaine::ProtectDataSql($titre)."',
+    statutmini='".SecuChaine::ProtectDataSql($statutmini)."',
     lien='".$lien."',
     nouveauonglet='".$nouveauonglet."',
     ordre='".$ordre."'

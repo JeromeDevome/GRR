@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_calend_jour_cycle2.php";
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 get_vocab_admin("titre_config_Jours_Cycles");
 

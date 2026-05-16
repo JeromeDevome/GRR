@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_reservation_bloc.php";
 
-check_access(4, $back);
+SecuAccess::CheckAccess(4, $back);
 
 // Initialisation
 $etape = isset($_POST["etape"]) ? $_POST["etape"] : NULL;
@@ -106,14 +106,14 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			$temp = "id_room_".$row[0];
-			if ((isset($_POST[$temp])) && verif_acces_ressource(getUserName(),$row[0]))
+			if ((isset($_POST[$temp])) && SecuAccess::UserResource(getUserName(),$row[0]))
 			{
 			// La ressource est selectionnée
 			// $rooms[] = $id;
 			// On récupère les données du domaine
 				$area_id = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id = '".$row[0]."'");
 				$id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area WHERE id_area = '".$area_id."'");
-				//if (authGetUserLevel(getUserName(),$id_site,'site') >= 5)
+				//if (SecuAccess::UserLevel(getUserName(),$id_site,'site') >= 5)
 				if (1)
 				{
 					get_planning_area_values($area_id);
@@ -338,7 +338,7 @@ else if ($etape == 2)
 		# then select the rooms in that area
 		$sql = "SELECT id, room_name FROM ".TABLE_PREFIX."_room WHERE area_id=$area_id ";
 		// tableau des ressources auxquelles l'utilisateur n'a pas accès
-		$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+		$tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
 		// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
 		foreach ($tab_rooms_noaccess as $key)
 			$sql .= " and id != $key ";
@@ -384,7 +384,7 @@ else if (!$etape)
 {
 	$trad['dEtape'] = 1;
 
-	if (authGetUserLevel(getUserName(), -1) >= 2)
+	if (SecuAccess::UserLevel(getUserName(), -1) >= 2)
 		$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area
 	ORDER BY order_display, area_name";
 	else
@@ -398,7 +398,7 @@ else if (!$etape)
 	{
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
-			if (authUserAccesArea(getUserName(),$row[0]) == 1)
+			if (SecuAccess::UserArea(getUserName(),$row[0]) == 1)
 				$domaines[] = array('id' => $row[0], 'nom' => $row[1]);
 		}
 	}

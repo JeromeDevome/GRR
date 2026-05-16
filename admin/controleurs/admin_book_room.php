@@ -21,7 +21,7 @@ $grr_script_name = "admin_book_room.php";
 
 $ok = NULL;
 $id_room = isset($_POST["id_room"]) ? $_POST["id_room"] : (isset($_GET["id_room"]) ? $_GET["id_room"] : -1);
-$d['id_room'] = intval(SecuChaine::clean_input($id_room));
+$d['id_room'] = intval(SecuChaine::CleanInput($id_room));
 $reg_user_login = isset($_POST["reg_user_login"]) ? $_POST["reg_user_login"] : NULL;
 $reg_groupe = isset($_POST["reg_groupe"]) ? $_POST["reg_groupe"] : NULL;
 $reg_multi_user_login = isset($_POST["reg_multi_user_login"]) ? $_POST["reg_multi_user_login"] : NULL;
@@ -47,7 +47,7 @@ if ($actionPost == "multi")
 {	
     if ($d['id_room'] != -1)
     {
-        if (authGetUserLevel(getUserName(), $d['id_room']) < 3)
+        if (SecuAccess::UserLevel(getUserName(), $d['id_room']) < 3)
         {
             showAccessDenied($back);
             exit();
@@ -79,7 +79,7 @@ if ($actionPost == "simple")
 {
 	if ($d['id_room'] != -1)
 	{
-		if (authGetUserLevel(getUserName(), $d['id_room']) < 3)
+		if (SecuAccess::UserLevel(getUserName(), $d['id_room']) < 3)
 		{
 			showAccessDenied($back);
 			exit();
@@ -111,7 +111,7 @@ if ($actionPost == "add_groupe")
 {
 	if ($d['id_room'] != -1)
 	{
-		if (authGetUserLevel(getUserName(), $d['id_room']) < 3)
+		if (SecuAccess::UserLevel(getUserName(), $d['id_room']) < 3)
 		{
 			showAccessDenied($back);
 			exit();
@@ -146,13 +146,13 @@ if ($actionPost == "add_groupe")
 
 if ($action=='del_user')
 {
-	if (authGetUserLevel(getUserName(), $d['id_room']) < 3)
+	if (SecuAccess::UserLevel(getUserName(), $d['id_room']) < 3)
 	{
 		showAccessDenied($back);
 		exit();
 	}
 	unset($login_user);
-	$login_user = SecuChaine::clean_input($_GET["login_user"]);
+	$login_user = SecuChaine::CleanInput($_GET["login_user"]);
 	$sql = "DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE (login='$login_user' and id_room = '".$d['id_room']."')";
 	if (grr_sql_command($sql) < 0)
 		fatal_error(1, "<p>" . grr_sql_error());
@@ -163,7 +163,7 @@ if ($action=='del_user')
 	}
 } elseif ($action=='del_groupe')
 {
-	if (authGetUserLevel(getUserName(), $d['id_room']) < 3)
+	if (SecuAccess::UserLevel(getUserName(), $d['id_room']) < 3)
 	{
 		showAccessDenied($back);
 		exit();
@@ -206,7 +206,7 @@ else
 	foreach($res as $row)
 	{
 		// on vérifie que l'utilisateur connecté a les droits suffisants
-		if (authGetUserLevel($user_name,$row['id'])>2)
+		if (SecuAccess::UserLevel($user_name,$row['id'])>2)
       if($multisite)
         $ressources[] = array($row['id'],($row['sitename']." > ".$row['area_name']." > ".$row['room_name']));
       else
@@ -236,7 +236,7 @@ if ($d['id_room'] != -1)
     if ($res)
         for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
             // on n'affiche que les utilisateurs ayant accès à la ressource
-             if (verif_acces_ressource($row[0],$d['id_room']))
+             if (SecuAccess::UserResource($row[0],$d['id_room']))
                 $userAjout[] = $row;
         }
 

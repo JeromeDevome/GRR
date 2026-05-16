@@ -133,21 +133,21 @@ class AdminFonctions
         global $dformat;
         $listeModeration = array();
         $sql = "";
-        if (authGetUserLevel($user,-1) > 5) // admin général
+        if (SecuAccess::UserLevel($user,-1) > 5) // admin général
         {
             $sql = "SELECT e.id,r.room_name,e.start_time,create_by,beneficiaire FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE e.moderate = 1 AND e.supprimer = 0";
         }
-        elseif (isset($_GET['id_site']) && (authGetUserLevel($user,intval($_GET['id_site']),'site') > 4)) // admin du site
+        elseif (isset($_GET['id_site']) && (SecuAccess::UserLevel($user,intval($_GET['id_site']),'site') > 4)) // admin du site
         {
-            $sql = "SELECT e.id,r.room_name,e.start_time,create_by,beneficiaire FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".SecuChaine::protect_data_sql($_GET['id_site'])." AND e.moderate = 1 AND e.supprimer = 0)";
+            $sql = "SELECT e.id,r.room_name,e.start_time,create_by,beneficiaire FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_j_site_area j ON r.area_id = j.id_area WHERE (j.id_site = ".SecuChaine::ProtectDataSql($_GET['id_site'])." AND e.moderate = 1 AND e.supprimer = 0)";
         }
-        elseif (isset($_GET['area']) && (authGetUserLevel($user,intval($_GET['area']),'area') > 3)) // admin du domaine
+        elseif (isset($_GET['area']) && (SecuAccess::UserLevel($user,intval($_GET['area']),'area') > 3)) // admin du domaine
         {
-            $sql = "SELECT e.id,r.room_name,e.start_time,create_by,beneficiaire FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".SecuChaine::protect_data_sql($_GET['area'])." AND e.moderate = 1 AND e.supprimer = 0)";
+            $sql = "SELECT e.id,r.room_name,e.start_time,create_by,beneficiaire FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id WHERE (a.id = ".SecuChaine::ProtectDataSql($_GET['area'])." AND e.moderate = 1 AND e.supprimer = 0)";
         }
-        elseif (isset($_GET['room']) && (authGetUserLevel($user,intval($_GET['room']),'room') > 2)) // gestionnaire de la ressource
+        elseif (isset($_GET['room']) && (SecuAccess::UserLevel($user,intval($_GET['room']),'room') > 2)) // gestionnaire de la ressource
         {
-            $sql = "SELECT e.id,r.room_name,e.start_time,create_by,beneficiaire FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.room_id = ".SecuChaine::protect_data_sql($_GET['room'])." AND e.moderate = 1  AND e.supprimer = 0 ) ";
+            $sql = "SELECT e.id,r.room_name,e.start_time,create_by,beneficiaire FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id WHERE (e.room_id = ".SecuChaine::ProtectDataSql($_GET['room'])." AND e.moderate = 1  AND e.supprimer = 0 ) ";
         }
         if ($sql != ""){
             $res = grr_sql_query($sql);

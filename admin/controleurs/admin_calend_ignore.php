@@ -19,7 +19,7 @@
 
 $grr_script_name = "admin_calend_ignore.php";
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 get_vocab_admin('calendrier_des_jours_hors_reservation');
 get_vocab_admin('les_journees_cochees_sont_ignorees');

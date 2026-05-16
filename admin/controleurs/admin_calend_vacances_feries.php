@@ -19,7 +19,7 @@
 $grr_script_name = "admin_calend_vacances_feries.php";
 $trad = $vocab;
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 
 // premier test : l'affichage des vacances et fériés est-il activé ?

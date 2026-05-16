@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_view_connexions.php";
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 
 // Action : Déconnecter un utilisateur

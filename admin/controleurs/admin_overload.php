@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_overload.php";
 
-check_access(4, $back);
+SecuAccess::CheckAccess(4, $back);
 
 if (isset($_POST["action"]))
 	$action = $_POST["action"];
@@ -32,7 +32,7 @@ if (grr_sql_count($res) != 0)
 {
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		if (authGetUserLevel(getUserName(), $row[0], 'area') >= 4)
+		if (SecuAccess::UserLevel(getUserName(), $row[0], 'area') >= 4)
 			$userdomain[$row[0]] = $row[1];
 	}
 }
@@ -87,7 +87,7 @@ if ($action == "add")
 	}
 	if ($arearight == true)
 	{
-		$sql = "INSERT INTO ".TABLE_PREFIX."_overload (id_area, fieldname, fieldtype, obligatoire, confidentiel, fieldlist, affichage, overload_mail, mail_spec) VALUES ($id_area, '".SecuChaine::protect_data_sql($fieldname)."', '".SecuChaine::protect_data_sql($fieldtype)."', '".$obligatoire."', '".$confidentiel."', '".SecuChaine::protect_data_sql($fieldlist)."', '".$affichage."', '".$overload_mail."', '".$mail_spec."');";
+		$sql = "INSERT INTO ".TABLE_PREFIX."_overload (id_area, fieldname, fieldtype, obligatoire, confidentiel, fieldlist, affichage, overload_mail, mail_spec) VALUES ($id_area, '".SecuChaine::ProtectDataSql($fieldname)."', '".SecuChaine::ProtectDataSql($fieldtype)."', '".$obligatoire."', '".$confidentiel."', '".SecuChaine::ProtectDataSql($fieldlist)."', '".$affichage."', '".$overload_mail."', '".$mail_spec."');";
 		if (grr_sql_command($sql) < 0)
 			fatal_error(0, "$sql \n\n" . grr_sql_error());
 	}
@@ -188,14 +188,14 @@ if ($action == "change")
 		if ($arearight == true)
 		{
 			$sql = "UPDATE ".TABLE_PREFIX."_overload SET
-			fieldname='".SecuChaine::protect_data_sql($fieldname)."',
-			fieldtype='".SecuChaine::protect_data_sql($fieldtype)."',
+			fieldname='".SecuChaine::ProtectDataSql($fieldname)."',
+			fieldtype='".SecuChaine::ProtectDataSql($fieldtype)."',
 			obligatoire='".$obligatoire."',
 			confidentiel='".$confidentiel."',
 			affichage='".$affichage."',
 			overload_mail='".$overload_mail."',
-			fieldlist='".SecuChaine::protect_data_sql($fieldlist)."',
-			mail_spec='".SecuChaine::protect_data_sql($mail_spec)."'
+			fieldlist='".SecuChaine::ProtectDataSql($fieldlist)."',
+			mail_spec='".SecuChaine::ProtectDataSql($mail_spec)."'
 			WHERE id=$id_overload;";
 			if (grr_sql_command($sql) < 0)
 				fatal_error(0, "$sql \n\n" . grr_sql_error());

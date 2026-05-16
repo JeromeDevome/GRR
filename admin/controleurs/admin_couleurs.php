@@ -158,7 +158,7 @@ elseif ((isset($_POST['record'])) && (!isset($ok))) // Enregistrement des donné
         fwrite($fich,":root{");
         foreach($champs_couleur as $code_js => $code_css)
 		{
-            $couleur = SecuChaine::Valide_couleur($_POST[$code_js]);
+            $couleur = SecuChaine::ValideCouleur($_POST[$code_js]);
 			Settings::set("sp_".$code_js, $couleur);
             fwrite($fich," 
     ".$code_css.": ".$couleur.";");
@@ -248,43 +248,43 @@ elseif ((isset($_POST['cssperso'])) && (!isset($ok))) // Enregistrement des donn
 $AllSettings = Settings::getAll(); //Refresh
 
 // couleurs pour le formulaire ; si on arrive ici sans avoir enregistré, on récupère les valeurs par défaut, définies dans le tableau $default_color_tab
-$hexa['header_text'] = (isset($AllSettings['sp_header_text']))? SecuChaine::Valide_couleur($AllSettings['sp_header_text']) : $default_color_tab["header_text"];
-$hexa['header_bgcolor'] = (isset($AllSettings['sp_header_bgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_header_bgcolor']) : $default_color_tab["header_bgcolor"];
-$hexa['header_hover'] = (isset($AllSettings['sp_header_hover']))? SecuChaine::Valide_couleur($AllSettings['sp_header_hover']) : $default_color_tab["header_hover"];
-$hexa['menuG_color'] = (isset($AllSettings['sp_menuG_color']))? SecuChaine::Valide_couleur($AllSettings['sp_menuG_color']) : $default_color_tab["menuG_color"];
-$hexa['menuG_bgcolor'] = (isset($AllSettings['sp_menuG_bgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_menuG_bgcolor']) : $default_color_tab["menuG_bgcolor"];
-$hexa['lien_classique'] = (isset($AllSettings['sp_lien_classique']))? SecuChaine::Valide_couleur($AllSettings['sp_lien_classique']) : $default_color_tab["lien_classique"];
-$hexa['cal_titrecolor'] = (isset($AllSettings['sp_cal_titrecolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_titrecolor']) : $default_color_tab["cal_titrecolor"];
-$hexa['cal_titrebgcolor'] = (isset($AllSettings['sp_cal_titrebgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_titrebgcolor']) : $default_color_tab["cal_titrebgcolor"];
-$hexa['cal_jourscolor'] = (isset($AllSettings['sp_cal_jourscolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_jourscolor']) : $default_color_tab["cal_jourscolor"];
-$hexa['cal_joursbgcolor'] = (isset($AllSettings['sp_cal_joursbgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_joursbgcolor']) : $default_color_tab["cal_joursbgcolor"];
-$hexa['cal_semcolor'] = (isset($AllSettings['sp_cal_semcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_semcolor']) : $default_color_tab["cal_semcolor"];
-$hexa['cal_sembgcolor'] = (isset($AllSettings['sp_cal_sembgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_sembgcolor']) : $default_color_tab["cal_sembgcolor"];
-$hexa['cal_semhovercolor'] = (isset($AllSettings['sp_cal_semhovercolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_semhovercolor']) : $default_color_tab["cal_semhovercolor"];
-$hexa['cal_weekcolor'] = (isset($AllSettings['sp_cal_weekcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_weekcolor']) : $default_color_tab["cal_weekcolor"];
-$hexa['cal_weekbgcolor'] = (isset($AllSettings['sp_cal_weekbgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_weekbgcolor']) : $default_color_tab["cal_weekbgcolor"];
-$hexa['cal_cellcolor'] = (isset($AllSettings['sp_cal_cellcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_cellcolor']) : $default_color_tab["cal_cellcolor"];
-$hexa['cal_cellbgcolor'] = (isset($AllSettings['sp_cal_cellbgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_cellbgcolor']) : $default_color_tab["cal_cellbgcolor"];
-$hexa['cal_cellhovercolor'] = (isset($AllSettings['sp_cal_cellhovercolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_cellhovercolor']) : $default_color_tab["cal_cellhovercolor"];
-$hexa['cal_cellhoverbgcolor'] = (isset($AllSettings['sp_cal_cellhoverbgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_cellhoverbgcolor']) : $default_color_tab['cal_cellhoverbgcolor'];
-$hexa['cal_current_day_color'] = (isset($AllSettings['sp_cal_current_day_color']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_current_day_color']) : $default_color_tab["cal_current_day_color"];
-$hexa['cal_current_day_bgcolor'] = (isset($AllSettings['sp_cal_current_day_bgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_cal_current_day_bgcolor']) : $default_color_tab["cal_current_day_bgcolor"];
-$hexa['pl2_titrecolor'] = (isset($AllSettings['sp_pl2_titrecolor']))? SecuChaine::Valide_couleur($AllSettings['sp_pl2_titrecolor']) : $default_color_tab["pl2_titrecolor"];
-$hexa['pl2_titrebgcolor'] = (isset($AllSettings['sp_pl2_titrebgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_pl2_titrebgcolor']) : $default_color_tab['pl2_titrebgcolor'];
-$hexa['pl2_entetecolor'] = (isset($AllSettings['sp_pl2_entetecolor']))? SecuChaine::Valide_couleur($AllSettings['sp_pl2_entetecolor']) : $default_color_tab["pl2_entetecolor"];
-$hexa['pl2_entetebgcolor'] = (isset($AllSettings['sp_pl2_entetebgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_pl2_entetebgcolor']) : $default_color_tab["pl2_entetebgcolor"];
-$hexa['pl2_cellcolor'] = (isset($AllSettings['sp_pl2_cellcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_pl2_cellcolor']) : $default_color_tab["pl2_cellcolor"];
-$hexa['pl2_cellbgcolor'] = (isset($AllSettings['sp_pl2_cellbgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_pl2_cellbgcolor']) : $default_color_tab["pl2_cellbgcolor"];
-$hexa['icons_color'] = (isset($AllSettings['sp_icons_color']))? SecuChaine::Valide_couleur($AllSettings['sp_icons_color']) : $default_color_tab["icons_color"];
-$hexa['btn_primary_color'] = (isset($AllSettings['sp_btn_primary_color']))? SecuChaine::Valide_couleur($AllSettings['sp_btn_primary_color']) : $default_color_tab["btn_primary_color"];
-$hexa['btn_primary_bgcolor'] = (isset($AllSettings['sp_btn_primary_bgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_btn_primary_bgcolor']) : $default_color_tab["btn_primary_bgcolor"];
-$hexa['btn_primary_bordcolor'] = (isset($AllSettings['sp_btn_primary_bordcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_btn_primary_bordcolor']) : $default_color_tab["btn_primary_bordcolor"];
-$hexa['active_btn_primary_color'] = (isset($AllSettings['sp_active_btn_primary_color']))? SecuChaine::Valide_couleur($AllSettings['sp_active_btn_primary_color']) : $default_color_tab["active_btn_primary_color"];
-$hexa['active_btn_primary_bgcolor'] = (isset($AllSettings['sp_active_btn_primary_bgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_active_btn_primary_bgcolor']) : $default_color_tab["active_btn_primary_bgcolor"];
-$hexa['active_btn_primary_bordcolor'] = (isset($AllSettings['sp_active_btn_primary_bordcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_active_btn_primary_bordcolor']) : $default_color_tab["active_btn_primary_bordcolor"];
-$hexa['focus_btn_primary_color'] = (isset($AllSettings['sp_focus_btn_primary_color']))? SecuChaine::Valide_couleur($AllSettings['sp_focus_btn_primary_color']) : $default_color_tab["focus_btn_primary_color"];
-$hexa['focus_btn_primary_bgcolor'] = (isset($AllSettings['sp_focus_btn_primary_bgcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_focus_btn_primary_bgcolor']) : $default_color_tab["focus_btn_primary_bgcolor"];
-$hexa['focus_btn_primary_bordcolor'] = (isset($AllSettings['sp_focus_btn_primary_bordcolor']))? SecuChaine::Valide_couleur($AllSettings['sp_focus_btn_primary_bordcolor']) : $default_color_tab["focus_btn_primary_bordcolor"];
+$hexa['header_text'] = (isset($AllSettings['sp_header_text']))? SecuChaine::ValideCouleur($AllSettings['sp_header_text']) : $default_color_tab["header_text"];
+$hexa['header_bgcolor'] = (isset($AllSettings['sp_header_bgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_header_bgcolor']) : $default_color_tab["header_bgcolor"];
+$hexa['header_hover'] = (isset($AllSettings['sp_header_hover']))? SecuChaine::ValideCouleur($AllSettings['sp_header_hover']) : $default_color_tab["header_hover"];
+$hexa['menuG_color'] = (isset($AllSettings['sp_menuG_color']))? SecuChaine::ValideCouleur($AllSettings['sp_menuG_color']) : $default_color_tab["menuG_color"];
+$hexa['menuG_bgcolor'] = (isset($AllSettings['sp_menuG_bgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_menuG_bgcolor']) : $default_color_tab["menuG_bgcolor"];
+$hexa['lien_classique'] = (isset($AllSettings['sp_lien_classique']))? SecuChaine::ValideCouleur($AllSettings['sp_lien_classique']) : $default_color_tab["lien_classique"];
+$hexa['cal_titrecolor'] = (isset($AllSettings['sp_cal_titrecolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_titrecolor']) : $default_color_tab["cal_titrecolor"];
+$hexa['cal_titrebgcolor'] = (isset($AllSettings['sp_cal_titrebgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_titrebgcolor']) : $default_color_tab["cal_titrebgcolor"];
+$hexa['cal_jourscolor'] = (isset($AllSettings['sp_cal_jourscolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_jourscolor']) : $default_color_tab["cal_jourscolor"];
+$hexa['cal_joursbgcolor'] = (isset($AllSettings['sp_cal_joursbgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_joursbgcolor']) : $default_color_tab["cal_joursbgcolor"];
+$hexa['cal_semcolor'] = (isset($AllSettings['sp_cal_semcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_semcolor']) : $default_color_tab["cal_semcolor"];
+$hexa['cal_sembgcolor'] = (isset($AllSettings['sp_cal_sembgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_sembgcolor']) : $default_color_tab["cal_sembgcolor"];
+$hexa['cal_semhovercolor'] = (isset($AllSettings['sp_cal_semhovercolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_semhovercolor']) : $default_color_tab["cal_semhovercolor"];
+$hexa['cal_weekcolor'] = (isset($AllSettings['sp_cal_weekcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_weekcolor']) : $default_color_tab["cal_weekcolor"];
+$hexa['cal_weekbgcolor'] = (isset($AllSettings['sp_cal_weekbgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_weekbgcolor']) : $default_color_tab["cal_weekbgcolor"];
+$hexa['cal_cellcolor'] = (isset($AllSettings['sp_cal_cellcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_cellcolor']) : $default_color_tab["cal_cellcolor"];
+$hexa['cal_cellbgcolor'] = (isset($AllSettings['sp_cal_cellbgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_cellbgcolor']) : $default_color_tab["cal_cellbgcolor"];
+$hexa['cal_cellhovercolor'] = (isset($AllSettings['sp_cal_cellhovercolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_cellhovercolor']) : $default_color_tab["cal_cellhovercolor"];
+$hexa['cal_cellhoverbgcolor'] = (isset($AllSettings['sp_cal_cellhoverbgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_cellhoverbgcolor']) : $default_color_tab['cal_cellhoverbgcolor'];
+$hexa['cal_current_day_color'] = (isset($AllSettings['sp_cal_current_day_color']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_current_day_color']) : $default_color_tab["cal_current_day_color"];
+$hexa['cal_current_day_bgcolor'] = (isset($AllSettings['sp_cal_current_day_bgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_cal_current_day_bgcolor']) : $default_color_tab["cal_current_day_bgcolor"];
+$hexa['pl2_titrecolor'] = (isset($AllSettings['sp_pl2_titrecolor']))? SecuChaine::ValideCouleur($AllSettings['sp_pl2_titrecolor']) : $default_color_tab["pl2_titrecolor"];
+$hexa['pl2_titrebgcolor'] = (isset($AllSettings['sp_pl2_titrebgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_pl2_titrebgcolor']) : $default_color_tab['pl2_titrebgcolor'];
+$hexa['pl2_entetecolor'] = (isset($AllSettings['sp_pl2_entetecolor']))? SecuChaine::ValideCouleur($AllSettings['sp_pl2_entetecolor']) : $default_color_tab["pl2_entetecolor"];
+$hexa['pl2_entetebgcolor'] = (isset($AllSettings['sp_pl2_entetebgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_pl2_entetebgcolor']) : $default_color_tab["pl2_entetebgcolor"];
+$hexa['pl2_cellcolor'] = (isset($AllSettings['sp_pl2_cellcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_pl2_cellcolor']) : $default_color_tab["pl2_cellcolor"];
+$hexa['pl2_cellbgcolor'] = (isset($AllSettings['sp_pl2_cellbgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_pl2_cellbgcolor']) : $default_color_tab["pl2_cellbgcolor"];
+$hexa['icons_color'] = (isset($AllSettings['sp_icons_color']))? SecuChaine::ValideCouleur($AllSettings['sp_icons_color']) : $default_color_tab["icons_color"];
+$hexa['btn_primary_color'] = (isset($AllSettings['sp_btn_primary_color']))? SecuChaine::ValideCouleur($AllSettings['sp_btn_primary_color']) : $default_color_tab["btn_primary_color"];
+$hexa['btn_primary_bgcolor'] = (isset($AllSettings['sp_btn_primary_bgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_btn_primary_bgcolor']) : $default_color_tab["btn_primary_bgcolor"];
+$hexa['btn_primary_bordcolor'] = (isset($AllSettings['sp_btn_primary_bordcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_btn_primary_bordcolor']) : $default_color_tab["btn_primary_bordcolor"];
+$hexa['active_btn_primary_color'] = (isset($AllSettings['sp_active_btn_primary_color']))? SecuChaine::ValideCouleur($AllSettings['sp_active_btn_primary_color']) : $default_color_tab["active_btn_primary_color"];
+$hexa['active_btn_primary_bgcolor'] = (isset($AllSettings['sp_active_btn_primary_bgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_active_btn_primary_bgcolor']) : $default_color_tab["active_btn_primary_bgcolor"];
+$hexa['active_btn_primary_bordcolor'] = (isset($AllSettings['sp_active_btn_primary_bordcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_active_btn_primary_bordcolor']) : $default_color_tab["active_btn_primary_bordcolor"];
+$hexa['focus_btn_primary_color'] = (isset($AllSettings['sp_focus_btn_primary_color']))? SecuChaine::ValideCouleur($AllSettings['sp_focus_btn_primary_color']) : $default_color_tab["focus_btn_primary_color"];
+$hexa['focus_btn_primary_bgcolor'] = (isset($AllSettings['sp_focus_btn_primary_bgcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_focus_btn_primary_bgcolor']) : $default_color_tab["focus_btn_primary_bgcolor"];
+$hexa['focus_btn_primary_bordcolor'] = (isset($AllSettings['sp_focus_btn_primary_bordcolor']))? SecuChaine::ValideCouleur($AllSettings['sp_focus_btn_primary_bordcolor']) : $default_color_tab["focus_btn_primary_bordcolor"];
 
 $fichier_css_perso = "../personnalisation/".$gcDossierCss."/perso-css.css";
 if(file_exists($fichier_css_perso)){

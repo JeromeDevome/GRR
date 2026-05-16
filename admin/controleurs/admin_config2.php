@@ -77,49 +77,49 @@ if (isset($_GET['allow_gestionnaire_modify_del']))
 
 // Enregistrement de allow_users_modify_profil
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de ses informations personnelles
-if ((isset($_GET['allow_users_modify_profil'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((isset($_GET['allow_users_modify_profil'])) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_profil", $_GET['allow_users_modify_profil']))
 		$msg .= get_vocab("message_records_error");
 }
 // Enregistrement de allow_users_modify_email
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de ses informations personnelles
-if ((isset($_GET['allow_users_modify_email'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((isset($_GET['allow_users_modify_email'])) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_email", $_GET['allow_users_modify_email']))
 		$msg .= get_vocab("message_records_error");;
 }
 // Enregistrement de allow_users_modify_mdp
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de son mot de passe
-if ((isset($_GET['allow_users_modify_mdp'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((isset($_GET['allow_users_modify_mdp'])) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_mdp", $_GET['allow_users_modify_mdp']))
 		$msg .= get_vocab("message_records_error");
 }
 // Enregistrement de allow_users_modify_affichage
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de son affichage par défaut
-if ((isset($_GET['allow_users_modify_affichage'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((isset($_GET['allow_users_modify_affichage'])) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_affichage", $_GET['allow_users_modify_affichage']))
 		$msg .= get_vocab("message_records_error");
 }
 // Enregistrement de allow_users_modify_domaine
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de son domaine par defaut
-if ((isset($_GET['allow_users_modify_domaine'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((isset($_GET['allow_users_modify_domaine'])) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_domaine", $_GET['allow_users_modify_domaine']))
 		$msg .= get_vocab("message_records_error");
 }
 // Enregistrement de allow_users_modify_theme
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de son theme
-if ((isset($_GET['allow_users_modify_theme'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((isset($_GET['allow_users_modify_theme'])) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_theme", $_GET['allow_users_modify_theme']))
 		$msg .= get_vocab("message_records_error");
 }
 // Enregistrement de allow_users_modify_langue
 // Un gestionnaire d'utilisateurs ne peut pas Autoriser ou non la modification par un utilisateur de sa langue
-if ((isset($_GET['allow_users_modify_langue'])) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((isset($_GET['allow_users_modify_langue'])) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	if (!Settings::set("allow_users_modify_langue", $_GET['allow_users_modify_langue']))
 		$msg .= get_vocab("message_records_error");
@@ -128,7 +128,7 @@ if ((isset($_GET['allow_users_modify_langue'])) && (authGetUserLevel(getUserName
 // Enregistrement de mail_user_obligatoire
 // Un gestionnaire d'utilisateurs ne peut pas modifier ce paramètre
 $mailUserObligatoire= isset($_GET["mail_user_obligatoire"]) ? "y" : "n";
-if (isset($_GET['ok']) && authGetUserLevel(getUserName(), -1, 'user') !=  1)
+if (isset($_GET['ok']) && SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1)
 {
 	if (!Settings::set("mail_user_obligatoire", $mailUserObligatoire))
 		$msg .= get_vocab("message_records_error");

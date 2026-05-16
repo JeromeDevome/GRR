@@ -20,13 +20,13 @@ $grr_script_name = "admin_user_modify.php";
 
 $trad = $vocab;
 
-if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1, 'user') !=  1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();
 }
 // un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
-if (isset($_GET["user_login"]) && (authGetUserLevel(getUserName(),-1,'user') ==  1))
+if (isset($_GET["user_login"]) && (SecuAccess::UserLevel(getUserName(),-1,'user') ==  1))
 {
 	$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$_GET["user_login"]."'");
 	if (($test_statut == "administrateur") or ($test_statut == "gestionnaire_utilisateur"))
@@ -62,8 +62,8 @@ if ($valid == "yes")
 	$reg_nom = isset($_GET["reg_nom"]) ? $_GET["reg_nom"] : NULL;
 	$reg_prenom = isset($_GET["reg_prenom"]) ? $_GET["reg_prenom"] : NULL;
 	$new_login = isset($_GET["new_login"]) ? $_GET["new_login"] : NULL;
-	$reg_password = isset($_GET["reg_password"]) ? SecuChaine::unslashes($_GET["reg_password"]) : NULL;
-	$reg_password2 = isset($_GET["reg_password2"]) ? SecuChaine::unslashes($_GET["reg_password2"]) : NULL;
+	$reg_password = isset($_GET["reg_password"]) ? SecuChaine::Unslashes($_GET["reg_password"]) : NULL;
+	$reg_password2 = isset($_GET["reg_password2"]) ? SecuChaine::Unslashes($_GET["reg_password2"]) : NULL;
 	$reg_changepwd = isset($_GET["reg_changepwd"]) ? $_GET["reg_changepwd"] : 0;
 	$reg_statut = isset($_GET["reg_statut"]) ? $_GET["reg_statut"] : NULL;
 	$reg_email = isset($_GET["reg_email"]) ? $_GET["reg_email"] : NULL;
@@ -100,7 +100,7 @@ if ($valid == "yes")
 			if($test_login == ""){
 				// un gestionnaire d'utilisateurs ne peut pas créer un administrateur général ou un gestionnaire d'utilisateurs
 				$test_statut = TRUE;
-				if (authGetUserLevel(getUserName(),-1) < 6)
+				if (SecuAccess::UserLevel(getUserName(),-1) < 6)
 				{
 					if (($reg_statut == "administrateur") || ($reg_statut == "gestionnaire_utilisateur"))
 						$test_statut = FALSE;
@@ -156,16 +156,16 @@ if ($valid == "yes")
 							$defautRessource = $settings->get("default_room");
 
 						$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET
-						nom='".SecuChaine::protect_data_sql($reg_nom)."',
-						prenom='".SecuChaine::protect_data_sql($reg_prenom)."',
-						login='".SecuChaine::protect_data_sql($new_login)."',
-						password='".SecuChaine::protect_data_sql($reg_password_c)."',
-						changepwd='".SecuChaine::protect_data_sql($reg_changepwd)."',
-						statut='".SecuChaine::protect_data_sql($reg_statut)."',
-						email='".SecuChaine::protect_data_sql($reg_email)."',
-						etat='".SecuChaine::protect_data_sql($reg_etat)."',
-						commentaire='".SecuChaine::protect_data_sql($reg_commentaire)."',
-						desactive_mail='".SecuChaine::protect_data_sql($reg_desactive_mail)."',
+						nom='".SecuChaine::ProtectDataSql($reg_nom)."',
+						prenom='".SecuChaine::ProtectDataSql($reg_prenom)."',
+						login='".SecuChaine::ProtectDataSql($new_login)."',
+						password='".SecuChaine::ProtectDataSql($reg_password_c)."',
+						changepwd='".SecuChaine::ProtectDataSql($reg_changepwd)."',
+						statut='".SecuChaine::ProtectDataSql($reg_statut)."',
+						email='".SecuChaine::ProtectDataSql($reg_email)."',
+						etat='".SecuChaine::ProtectDataSql($reg_etat)."',
+						commentaire='".SecuChaine::ProtectDataSql($reg_commentaire)."',
+						desactive_mail='".SecuChaine::ProtectDataSql($reg_desactive_mail)."',
 						default_site = '".$defautSite."',
 						default_area = '".$defautDomaine."',
 						default_room = '".$defautRessource."',
@@ -216,9 +216,9 @@ if ($valid == "yes")
 		{
 			// un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
 			$test_statut = TRUE;
-			if (authGetUserLevel(getUserName(),-1) < 6)
+			if (SecuAccess::UserLevel(getUserName(),-1) < 6)
 			{
-				$old_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::protect_data_sql($user_login)."'");
+				$old_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::ProtectDataSql($user_login)."'");
 				if (((($old_statut == "administrateur") || ($old_statut == "gestionnaire_utilisateur")) && ($old_statut != $reg_statut))
 					|| ((($old_statut == "utilisateur") || ($old_statut == "visiteur")) && (($reg_statut == "administrateur") || ($reg_statut == "gestionnaire_utilisateur"))))
 					$test_statut = FALSE;
@@ -233,7 +233,7 @@ if ($valid == "yes")
 				// On demande un changement de la source ext->local
 				if (($reg_password == '') && ($reg_password2 == ''))
 				{
-					$old_mdp = grr_sql_query1("SELECT password FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::protect_data_sql($user_login)."'");
+					$old_mdp = grr_sql_query1("SELECT password FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::ProtectDataSql($user_login)."'");
 					if (($old_mdp == '') || ($old_mdp == -1))
 					{
 						$msg = get_vocab("passwd_error");
@@ -254,29 +254,29 @@ if ($valid == "yes")
 			}
 			if ($retry != 'yes')
 			{
-				$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".SecuChaine::protect_data_sql($reg_nom)."',
-				prenom='".SecuChaine::protect_data_sql($reg_prenom)."',
-				statut='".SecuChaine::protect_data_sql($reg_statut)."',
-				changepwd='".SecuChaine::protect_data_sql($reg_changepwd)."',
-				email='".SecuChaine::protect_data_sql($reg_email)."',";
+				$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".SecuChaine::ProtectDataSql($reg_nom)."',
+				prenom='".SecuChaine::ProtectDataSql($reg_prenom)."',
+				statut='".SecuChaine::ProtectDataSql($reg_statut)."',
+				changepwd='".SecuChaine::ProtectDataSql($reg_changepwd)."',
+				email='".SecuChaine::ProtectDataSql($reg_email)."',";
 				if ($reg_source=="local")
 				{
 					$sql .= "source='local',";
 					if ($reg_password_c!='')
-						$sql .= "password='".SecuChaine::protect_data_sql($reg_password_c)."',";
+						$sql .= "password='".SecuChaine::ProtectDataSql($reg_password_c)."',";
 				}
 				else
 					$sql .= "source='ext',password='',";
-				$sql .= "etat='".SecuChaine::protect_data_sql($reg_etat)."',
-				commentaire='".SecuChaine::protect_data_sql($reg_commentaire)."',
-				desactive_mail='".SecuChaine::protect_data_sql($reg_desactive_mail)."',
-				default_site='".SecuChaine::protect_data_sql($reg_site)."',
-				default_area='".SecuChaine::protect_data_sql($reg_area)."',
-				default_room='".SecuChaine::protect_data_sql($reg_room)."',
-				default_style='".SecuChaine::protect_data_sql($reg_style)."',
-				default_list_type='".SecuChaine::protect_data_sql($reg_list)."',
-				default_language='".SecuChaine::protect_data_sql($reg_langue)."' 
-				WHERE login='".SecuChaine::protect_data_sql($user_login)."'";
+				$sql .= "etat='".SecuChaine::ProtectDataSql($reg_etat)."',
+				commentaire='".SecuChaine::ProtectDataSql($reg_commentaire)."',
+				desactive_mail='".SecuChaine::ProtectDataSql($reg_desactive_mail)."',
+				default_site='".SecuChaine::ProtectDataSql($reg_site)."',
+				default_area='".SecuChaine::ProtectDataSql($reg_area)."',
+				default_room='".SecuChaine::ProtectDataSql($reg_room)."',
+				default_style='".SecuChaine::ProtectDataSql($reg_style)."',
+				default_list_type='".SecuChaine::ProtectDataSql($reg_list)."',
+				default_language='".SecuChaine::ProtectDataSql($reg_langue)."' 
+				WHERE login='".SecuChaine::ProtectDataSql($user_login)."'";
 
 				if (grr_sql_command($sql) < 0)
 				{
@@ -453,7 +453,7 @@ if (isset($user_login) && ($user_login != ''))
 	}
 
 }
-if ((authGetUserLevel(getUserName(), -1) < 1) && (Settings::get("authentification_obli") == 1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 1) && (Settings::get("authentification_obli") == 1))
 {
 	showAccessDenied($back);
 	exit();
@@ -467,7 +467,7 @@ else
 if ((Settings::get("sso_statut") != "") || (Settings::get("ldap_statut") != '') || (Settings::get("imap_statut") != ''))
 	$d['connexionExterne'] = 1;
 
-if (authGetUserLevel(getUserName(),-1) >= 6)
+if (SecuAccess::UserLevel(getUserName(),-1) >= 6)
 	$d['estAdministrateur'] = 1;
 
 if (isset($user_login) && strtolower(getUserName()) != strtolower($user_login))

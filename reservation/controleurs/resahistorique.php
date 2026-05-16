@@ -67,7 +67,7 @@ if (!$resa || empty($resa))
 }
 
 // Contrôle d'accès - l'utilisateur doit être au minimum gestionnaire de la ressource (niveau >= 2)
-$user_level = authGetUserLevel(getUserName(), $resa['room_id']);
+$user_level = SecuAccess::UserLevel(getUserName(), $resa['room_id']);
 if ($user_level <= 2)
 {
 	showAccessDenied($back);

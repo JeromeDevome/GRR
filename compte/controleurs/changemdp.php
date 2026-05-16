@@ -34,7 +34,7 @@ $valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
 $msg = '';
 if ($valid == 'yes')
 {
-	if (IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
+	if (SecuAccess::IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
 	{
 		$reg_password_a = isset($_POST['reg_password_a']) ? $_POST['reg_password_a'] : NULL;
 		$reg_password1 = isset($_POST['reg_password1']) ? $_POST['reg_password1'] : NULL;
@@ -54,7 +54,7 @@ if ($valid == 'yes')
 				{
 					VerifyModeDemo();
 					$reg_password1 = password_hash($reg_password1, PASSWORD_DEFAULT);
-					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".SecuChaine::protect_data_sql($reg_password1)."', changepwd ='0' WHERE login='".getUserName()."'";
+					$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password='".SecuChaine::ProtectDataSql($reg_password1)."', changepwd ='0' WHERE login='".getUserName()."'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
 					else
@@ -75,7 +75,7 @@ if ($valid == 'yes')
 
 affiche_pop_up($msg,'user');
 
-if (IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
+if (SecuAccess::IsAllowedToModifyMdp() || $_SESSION['changepwd'] == 1)
     $d['droitChanger'] = 1;
 
 if($_SESSION['changepwd'] == 1)

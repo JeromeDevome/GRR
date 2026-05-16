@@ -18,12 +18,12 @@
 
 $grr_script_name = "admin_nettoyage_bdd.php";
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 
 $dateMax = isset($_POST["1cleanlog"]) ? $_POST["1cleanlog"] : NULL;
-$numForm = isset($_POST["numform"]) ? intval(SecuChaine::clean_input($_POST["numform"])) : 0;
-$numAction = isset($_POST["numaction"]) ? intval(SecuChaine::clean_input($_POST["numaction"])) : 0;
+$numForm = isset($_POST["numform"]) ? intval(SecuChaine::CleanInput($_POST["numform"])) : 0;
+$numAction = isset($_POST["numaction"]) ? intval(SecuChaine::CleanInput($_POST["numaction"])) : 0;
 
 $logconnexion1 = isset($_POST["1logconnexion"]) ? (($_POST["1logconnexion"])) : NULL;
 $logmail1 = isset($_POST["1logmail"]) ? (($_POST["1logmail"])) : NULL;
@@ -41,7 +41,7 @@ $resa2 = isset($_POST["2resa"]) ? (($_POST["2resa"])) : NULL;
 $uservisiteur2 = isset($_POST["2uservisiteur"]) ? (($_POST["2uservisiteur"])) : NULL;
 $userusager2 = isset($_POST["2userusager"]) ? (($_POST["2userusager"])) : NULL;
 $usergroupe2 = isset($_POST["2usergroupe"]) ? (($_POST["2usergroupe"])) : NULL;
-$usergroupeid2 = isset($_POST["2usergroupeid"]) ? intval(SecuChaine::clean_input($_POST["2usergroupeid"])) : 0;
+$usergroupeid2 = isset($_POST["2usergroupeid"]) ? intval(SecuChaine::CleanInput($_POST["2usergroupeid"])) : 0;
 
 $msg = "";
 $trad = $vocab;
@@ -65,7 +65,7 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 }
 
 // Form1 : Supression avant une date
-if ($numForm == 1 && SecuChaine::Valide_date($dateMax,"d/m/Y") ) {
+if ($numForm == 1 && SecuChaine::ValideDate($dateMax,"d/m/Y") ) {
 
     $dateMax = str_replace('/', '-', $dateMax);
 

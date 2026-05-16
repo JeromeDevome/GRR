@@ -40,7 +40,7 @@ get_vocab_admin("save_and_back");
 $trad['SousTitrePage'] = 'Administration';
 
 $ok = NULL;
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 // Initialisation
 $id_type = isset($_GET["id_type"]) ? $_GET["id_type"] : 0;
 $type_name = isset($_GET["type_name"]) ? $_GET["type_name"] : NULL;
@@ -84,7 +84,7 @@ if (isset($_GET['change_type']))
 		else
 		{
 			$sql = "UPDATE ".TABLE_PREFIX."_type_area SET
-			type_name='".SecuChaine::protect_data_sql($type_name)."',
+			type_name='".SecuChaine::ProtectDataSql($type_name)."',
 			order_display =";
 			if (is_numeric($order_display))
 				$sql= $sql .intval($order_display).",";
@@ -120,7 +120,7 @@ if (isset($_GET['change_type']))
 		else
 		{
 			$sql = "INSERT INTO ".TABLE_PREFIX."_type_area SET
-			type_name='".SecuChaine::protect_data_sql($type_name)."',
+			type_name='".SecuChaine::ProtectDataSql($type_name)."',
 			order_display =";
 			if (is_numeric($order_display))
 				$sql= $sql .intval($order_display).",";

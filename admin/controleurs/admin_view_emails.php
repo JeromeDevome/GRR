@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_view_emails.php";
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 $idlogmail = isset($_GET["idlogmail"]) ? $_GET["idlogmail"] : NULL;
 

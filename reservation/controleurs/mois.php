@@ -78,9 +78,9 @@ $d['ty'] = date("Y", $i);
 $d['tm'] = date("n", $i);
 
 $user_name = getUserName();
-$authGetUserLevel = authGetUserLevel($user_name,$room);
+$UserLevel = SecuAccess::UserLevel($user_name,$room);
 // si la ressource est restreinte, l'utilisateur peut-il réserver ?
-$user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_name,$room));
+$user_can_book = $who_can_book || ($UserLevel > 2) || (SecuAccess::UserBookingResourceRestrict($user_name,$room));
 
 // calcul du contenu du planning
 $all_day = preg_replace("/ /", " ", get_vocab("all_day2"));
@@ -237,10 +237,10 @@ if ($this_room_max  && $d['pview'] != 1)
 $d['moisActuel'] = ucfirst(utf8_strftime("%B ", $month_start));
 $d['anneeActuel'] = ucfirst(utf8_strftime("%Y ", $month_start));
 
-if (verif_display_fiche_ressource($user_name, $room) && $d['pview'] != 1)
+if (SecuAccess::UserSheetResource($user_name, $room) && $d['pview'] != 1)
 	$d['ficheRessource'] = true;
 
-$d['acces_config'] = ($authGetUserLevel >= $acces_config_level) && ($d['pview'] != 1);
+$d['acces_config'] = ($UserLevel >= $acces_config_level) && ($d['pview'] != 1);
 
 $d['ressourceEmpruntee'] = affiche_ressource_empruntee_twig($room);
 
@@ -274,9 +274,9 @@ if ($weekcol != $weekday_start)
             $cellulesMois[] = array('numJour' => 0);
     }
 }
-$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $room);
+$acces_fiche_reservation = SecuAccess::UserSheetReservation($user_name, $room);
 $userRoomMaxBooking = UserRoomMaxBooking($user_name, $room, 1);
-$auth_visiteur = auth_visiteur($user_name, $room);
+$accessVisitorBookingResource = SecuAccess::VisitorBookingResource($user_name, $room);
 for ($cday = 1; $cday <= $days_in_month; $cday++)
 {
     $class = "";
@@ -325,7 +325,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                     // On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
                     if($acces_fiche_reservation)
                     {
-                        if($resa_confidentiel == 1 && getUserName() != $da[$cday]["beneficiaire"][$i] && $authGetUserLevel < 3)
+                        if($resa_confidentiel == 1 && getUserName() != $da[$cday]["beneficiaire"][$i] && $UserLevel < 3)
                             $ficheResa = false;
                     }
                     $classeReservation = $da[$cday]["color"][$i];
@@ -344,12 +344,12 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 $date_now = time();
                 $heure = date("H",$date_now);
                 $date_booking = mktime(23,59, 0, $month, $cday, $year);
-                if ((($authGetUserLevel > 1) || ($auth_visiteur == 1))
+                if ((($UserLevel > 1) || ($accessVisitorBookingResource == 1))
                     && ($userRoomMaxBooking != 0)
                     && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods)
                     && verif_delais_max_resa_room($user_name, $room, $date_booking)
                     && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods)
-                    && (($d['statutRessource'] == "1") || (($d['statutRessource'] == "0") && ($authGetUserLevel > 2)))
+                    && (($d['statutRessource'] == "1") || (($d['statutRessource'] == "0") && ($UserLevel > 2)))
                     && $user_can_book
                     && $d['pview'] != 1)
                 {

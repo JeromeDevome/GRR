@@ -39,7 +39,7 @@ function reporton(&$row, $dformat)
 		list($start_date, $start_time, $duration, $dur_units, $end_date, $end_time) = describe_span($row[1], $row[2], $dformat);
 
 	// Gestion réservation confidentielle
-	if($row[18] == 0 || getUserName() == $row[6] || authGetUserLevel(getUserName(), $row[19]) >= 3)
+	if($row[18] == 0 || getUserName() == $row[6] || SecuAccess::UserLevel(getUserName(), $row[19]) >= 3)
 	{	// OK pas confidentiel ou user propriétaire ou user admin/gestionnaire de la ressource
 
 		// Breve description (title), avec un lien
@@ -92,7 +92,7 @@ function reporton(&$row, $dformat)
 	foreach ($overload_data as $fieldname=>$fielddata) // Pour chaque champ additionnel de la réservation
 	{
 		// if ($fielddata["confidentiel"] == 'n') filtrage trop strict
-        if ((authGetUserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
+        if ((SecuAccess::UserLevel(getUserName(),-1) > 5) || ($fielddata['affichage'] == 'y'))
         {
 			$keyTab = array_search($fieldname, $tablOverload);
 			$AddReservation[$keyTab] = $fielddata["valeur"];
@@ -127,7 +127,7 @@ function accumulate(&$row, &$count, &$hours, $report_start, $report_end, &$room_
 {
 	global $vocab;
 
-	$getSumby = SecuChaine::alphanum($_GET["sumby"]);
+	$getSumby = SecuChaine::Alphanumeric($_GET["sumby"]);
 
 	if ($getSumby == "5") //Type
 		$temp = grr_sql_query1("SELECT type_name FROM ".TABLE_PREFIX."_type_area WHERE type_letter = '".$row[$getSumby]."'");
@@ -172,7 +172,7 @@ function accumulate_periods(&$row, &$count, &$hours, $report_start, $report_end,
 {
 	global $vocab, $periods_name;
 
-	$getSumby = SecuChaine::alphanum($_GET["sumby"]);
+	$getSumby = SecuChaine::Alphanumeric($_GET["sumby"]);
 	$max_periods = count($periods_name);
 
 	if ($getSumby == "5")
@@ -233,7 +233,7 @@ function do_summary(&$count, &$hours, &$room_hash, &$breve_description_hash, $en
 {
 	global $vocab, $gListeResume;
 
-	$getSumby = SecuChaine::alphanum($_GET["sumby"]);
+	$getSumby = SecuChaine::Alphanumeric($_GET["sumby"]);
     $rooms = array_keys($room_hash);    
 	ksort($rooms);
     $breve_descriptions = array_keys($breve_description_hash);

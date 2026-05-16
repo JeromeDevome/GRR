@@ -51,7 +51,7 @@ $d['tm'] = date("m",$i);
 $d['td'] = date("d",$i);
 $am7 = mktime($morningstarts, 0, 0, $month, $day, $year);
 $pm7 = mktime($eveningends, $eveningends_minutes, 0, $month, $day, $year);
-$d['nomDomaine'] = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".SecuChaine::protect_data_sql($area)."'"); // nom du domaine
+$d['nomDomaine'] = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id='".SecuChaine::ProtectDataSql($area)."'"); // nom du domaine
 // les réservations associées à notre recherche, ce jour dans ce domaine
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name, type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.nbparticipantmax,
 COALESCE(participants_count.nbparticipants, 0) AS nbparticipants,
@@ -146,11 +146,11 @@ grr_sql_free($res);
 // Détermination des ressources à afficher
 if($room != 0) // Une seul ressrouce
 {
-	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room, confidentiel_resa FROM ".TABLE_PREFIX."_room WHERE id = '".SecuChaine::protect_data_sql($room)."' ";
+	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room, confidentiel_resa FROM ".TABLE_PREFIX."_room WHERE id = '".SecuChaine::ProtectDataSql($room)."' ";
 }
 else // Toute les ressources du domaine
 {
-	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room, confidentiel_resa FROM ".TABLE_PREFIX."_room WHERE area_id='".SecuChaine::protect_data_sql($area)."' ORDER BY order_display, room_name";
+	$sql = "SELECT room_name, capacity, id, description, statut_room, show_fic_room, delais_option_reservation, moderate, who_can_book, show_comment, comment_room, confidentiel_resa FROM ".TABLE_PREFIX."_room WHERE area_id='".SecuChaine::ProtectDataSql($area)."' ORDER BY order_display, room_name";
 }
 $ressRetour = $room;
 $ressources = grr_sql_query($sql);
@@ -200,7 +200,7 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 {
 	$id_room[$i] = $row["id"];
 	$nbcol++;
-	if (verif_acces_ressource($user_name, $id_room[$i]))
+	if (SecuAccess::UserResource($user_name, $id_room[$i]))
 	{
 		$room_name[$i] = $row["room_name"];
 		$statut_room[$id_room[$i]] =  $row["statut_room"];
@@ -208,10 +208,10 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
         $who_can_book[$id_room[$i]] = $row["who_can_book"];
 		$room_comment[$id_room[$i]] = $row["comment_room"];
 		$show_comment[$id_room[$i]] = $row["show_comment"];
-		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $id_room[$i]);
+		$acces_fiche_reservation = SecuAccess::UserSheetReservation($user_name, $id_room[$i]);
 		$confidentiel_resa[$id_room[$i]] = $row["confidentiel_resa"];
-		$ficheRessource = verif_display_fiche_ressource($user_name, $id_room[$i]);
-    $acces_config = (authGetUserLevel($user_name,$id_room[$i]) >= $acces_config_level);
+		$ficheRessource = SecuAccess::UserSheetResource($user_name, $id_room[$i]);
+    $acces_config = (SecuAccess::UserLevel($user_name,$id_room[$i]) >= $acces_config_level);
 
 		$ressourceEmpruntee = affiche_ressource_empruntee_twig($id_room[$i]);
 
@@ -270,7 +270,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
     // Pour les ressources
     foreach($rooms as $key=>$room)
 	{
-		if (verif_acces_ressource($user_name, $room))
+		if (SecuAccess::UserResource($user_name, $room))
 		{
 			$afficherCellule = 0;
 			$statutCellule = 0; //0 vide, 1 réservable, 2 déjà une reservation, 3 hors résa
@@ -280,8 +280,8 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 			$nbparticipants = 0;
 			$nbparticipantmax = 0;
 			$rowspan = 1;
-            $authLevel = authGetUserLevel($user_name,$room);
-            $user_can_book = $who_can_book[$room] || ($authLevel > 2) || (authBooking($user_name,$room));
+            $authLevel = SecuAccess::UserLevel($user_name,$room);
+            $user_can_book = $who_can_book[$room] || ($authLevel > 2) || (SecuAccess::UserBookingResourceRestrict($user_name,$room));
 			$ficheResa = $acces_fiche_reservation;
 
 			if (isset($today[$room][$t]["id"]))
@@ -341,7 +341,7 @@ for ($t = $am7; $t < $pm7; $t += $resolution)
 				}
 				else // plage libre
 				{
-					if ((($authLevel > 1) || (auth_visiteur($user_name, $room) == 1)) 
+					if ((($authLevel > 1) || (SecuAccess::VisitorBookingResource($user_name, $room) == 1)) 
                         && (UserRoomMaxBooking($user_name, $room, 1) != 0) 
                         && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) 
                         && verif_delais_max_resa_room($user_name, $room, $date_booking) 

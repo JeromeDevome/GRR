@@ -22,7 +22,7 @@ include('./modeles/admin_purge_accounts.php');
 $display = isset($_GET["display"]) ? $_GET["display"] : NULL;
 $order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
 
-if (((Settings::get("ldap_statut") == "") && (Settings::get("sso_statut") == "") && (Settings::get("imap_statut") == "")) || (authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') !=  1))
+if (((Settings::get("ldap_statut") == "") && (Settings::get("sso_statut") == "") && (Settings::get("imap_statut") == "")) || (SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1,'user') !=  1))
 {
 	showAccessDenied($back);
 	exit();

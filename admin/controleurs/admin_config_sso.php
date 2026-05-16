@@ -25,7 +25,7 @@ if ((isset($sso_restrictions)) && ($sso_restrictions==true))
 	showAccessDenied($back);
 	exit();
 }
-if (authGetUserLevel(getUserName(), -1) < 6)
+if (SecuAccess::UserLevel(getUserName(), -1) < 6)
 {
 	showAccessDenied($back);
 	exit();
@@ -34,8 +34,8 @@ if (isset($_POST['valid']))
 {
 	VerifyModeDemo();
 
-	$portCas	= isset($_POST["cas_port"]) ? SecuChaine::Valide_port_reseau($_POST["cas_port"]) : '';
-	$portProxy	= isset($_POST["cas_proxy_port"]) ? SecuChaine::Valide_port_reseau($_POST["cas_proxy_port"]) : '';
+	$portCas	= isset($_POST["cas_port"]) ? SecuChaine::ValideNetworkPort($_POST["cas_port"]) : '';
+	$portProxy	= isset($_POST["cas_proxy_port"]) ? SecuChaine::ValideNetworkPort($_POST["cas_proxy_port"]) : '';
 
 	if (!Settings::set("cas_serveur", $_POST['cas_serveur']))
 		echo "Erreur lors de l'enregistrement de cas_serveur !<br />";
@@ -148,7 +148,7 @@ if (isset($_POST['valid']))
 }
 
 
-if ((authGetUserLevel(getUserName(), -1) < 6) && ($valid != 'yes'))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && ($valid != 'yes'))
 {
 	showAccessDenied($back);
 	exit();

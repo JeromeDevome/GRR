@@ -439,7 +439,7 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 	
 	// Si il y a tentative de réserver pendant une durée dépassant la durée max
 	if ($error_duree_max_resa_area == 'yes') {
-		$area_id = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room where id='".SecuChaine::protect_data_sql($room_id)."'");
+		$area_id = grr_sql_query1("select area_id from ".TABLE_PREFIX."_room where id='".SecuChaine::ProtectDataSql($room_id)."'");
 		$duree_max_resa_area = grr_sql_query1("select duree_max_resa_area from ".TABLE_PREFIX."_area where id='".$area_id."'");
 		$temps_format = $duree_max_resa_area*60;
 		toTimeString($temps_format, $dur_units);
@@ -511,7 +511,7 @@ function entre_reservation($room_id,$jour_semaine,$name,$description, $day,$mont
 		if(!isset($hide_title))
 			$txtRetour .= "</UL>";
 			// possibilité de supprimer la (les) réservation(s) afin de valider la nouvelle réservation.
-			if(authGetUserLevel(getUserName(),$area,'area') >= 4)
+			if(SecuAccess::UserLevel(getUserName(),$area,'area') >= 4)
 				$txtRetour .= "<center><table border=\"1\" cellpadding=\"10\" cellspacing=\"1\"><tr><td class='avertissement'><h3><a href='".traite_grr_url("","y")."app.php?p=editentreetrt&amp;".$_SERVER['QUERY_STRING']."&amp;del_entry_in_conflict=yes'>".get_vocab("del_entry_in_conflict")."</a></h4></td></tr></table></center><br />";
 	}
 	return array(true, $txtRetour);

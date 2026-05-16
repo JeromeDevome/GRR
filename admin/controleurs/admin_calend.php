@@ -19,7 +19,7 @@
 $grr_script_name = "admin_calend.php";
 
 // vérification des droits d'accès 
-if(authGetUserLevel(getUserName(),-1,'area') < 5)
+if(SecuAccess::UserLevel(getUserName(),-1,'area') < 5)
 {
     showAccessDenied($day, $month, $year, '',$back);
     exit();

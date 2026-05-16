@@ -208,10 +208,10 @@ if (check_begin_end_bookings($day, $month, $year))
 
 $user_name = getUserName();
 // Calcul du niveau de droit de réservation
-$authGetUserLevel = authGetUserLevel($user_name, -1);
+$UserLevel = SecuAccess::UserLevel($user_name, -1);
 
 //Renseigne les droits de l'utilisateur, si les droits sont insuffisants, l'utilisateur est averti.
-if ((($authGetUserLevel < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
+if ((($UserLevel < 1) && (Settings::get("authentification_obli") == 1)) || SecuAccess::UserArea($user_name, $area) == 0)
 {
 	$d['messageErreur'] = showAccessDenied_twig($back);
   echo $twig->render('planningerreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));

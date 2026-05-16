@@ -52,7 +52,7 @@ if ((isset($imap_restrictions)) && ($imap_restrictions == true))
 	showAccessDenied($back);
 	exit();
 }
-if (authGetUserLevel(getUserName(),-1) < 5)
+if (SecuAccess::UserLevel(getUserName(),-1) < 5)
 {
 	showAccessDenied($back);
 	exit();

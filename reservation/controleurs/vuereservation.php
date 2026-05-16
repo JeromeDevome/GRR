@@ -47,7 +47,7 @@ $reg_statut_id = isset($_GET["statut_id"]) ? htmlspecialchars($_GET["statut_id"]
 
 if (isset($_GET["id"]))
 {
-	$id = SecuChaine::clean_input($_GET["id"]);
+	$id = SecuChaine::CleanInput($_GET["id"]);
 	settype($id, "integer");
 }
 else
@@ -74,7 +74,7 @@ grr_sql_free($res);
 if (strstr ($back, 'p=vuereservation'))
 {
     if (isset($year)&&isset($month)&&isset($day)){
-        $page = (isset($_GET['page']))? SecuChaine::clean_input($_GET['page']) : "day";
+        $page = (isset($_GET['page']))? SecuChaine::CleanInput($_GET['page']) : "day";
         $back = 'app.php?p='.$page.'&year='.$year.'&month='.$month.'&day='.$day;
         if (($page == "semaine_all") || ($page == "mois_all") || ($page == "mois2_all") || ($page == "jour") || ($page == "annee") || ($page == "annee_all"))
             $back .= "&area=".mrbsGetRoomArea($row1['1']);
@@ -196,8 +196,8 @@ $nbParticipantMax			= $row[24];
 $quiPeutParticiper          = $row[26];
 $resa_confidentielle        = $row[27];
 $rep_type 					= 0;
-$verif_display_email 		= verif_display_email($userName, $room_id);
-if ($verif_display_email)
+$displayMail 	        	= SecuAccess::DisplayMail($userName, $room_id);
+if ($displayMail)
 	$option_affiche_nom_prenom_email = "withmail";
 else
 	$option_affiche_nom_prenom_email = "nomail";
@@ -205,14 +205,14 @@ $msg='';
 
 $d['room_back'] = isset($_GET['room_back']) ? $_GET['room_back'] : '0' ;
 
-$d['droitRessource'] = authGetUserLevel($userName, $room_id);
+$d['droitRessource'] = SecuAccess::UserLevel($userName, $room_id);
 
 // traitement du formulaire d'inscription d'un autre participant
 if(isset($_GET["reg_part"]))
 {
     $reg_participant = array();
     if(isset($_GET["reg_participant"]))
-        $reg_participant = array_map('SecuChaine::clean_input',$_GET['reg_participant']);
+        $reg_participant = array_map('SecuChaine::CleanInput',$_GET['reg_participant']);
     // tester s'il est possible d'inscrire tout ce monde !
     $reg_users = array(); // participants déjà inscrits
     $resp = grr_sql_query("SELECT beneficiaire FROM ".TABLE_PREFIX."_participants WHERE idresa=$id");
@@ -277,7 +277,7 @@ if($nbParticipantMax > 0){
     $av_users = array_diff($all_users, $reg_users);
 }
 
-if (($fin_session == 'n') && ($userName!='') && (authGetUserLevel($userName, $room_id) >= 3) && (isset($_GET['commit'])))
+if (($fin_session == 'n') && ($userName!='') && (SecuAccess::UserLevel($userName, $room_id) >= 3) && (isset($_GET['commit'])))
 {
 	if (!$was_del)
 	{
@@ -324,7 +324,7 @@ if (($fin_session == 'n') && ($userName!='') && (authGetUserLevel($userName, $ro
 			if ($_SESSION['session_message_error'] == "")
 			{
 				$_SESSION['displ_msg'] = "yes";
-				$_SESSION["msg_a_afficher"] = get_vocab("un_email_envoye")." ".SecuChaine::clean_input($_GET["mail_exist"]);
+				$_SESSION["msg_a_afficher"] = get_vocab("un_email_envoye")." ".SecuChaine::CleanInput($_GET["mail_exist"]);
 			}
             else
                 display_mail_msg();
@@ -343,16 +343,16 @@ if (!isset($day) || !isset($month) || !isset($year))
 
 if (@file_exists("../personnalisation/".$gcDossierLangue."/lang_subst_".$area."_".$locale.".php"))
 	include "../personnalisation/".$gcDossierLangue."/lang_subst_".$area."_".$locale.".php";
-if ((authGetUserLevel($userName, -1) < 1) and (Settings::get("authentification_obli") == 1))
+if ((SecuAccess::UserLevel($userName, -1) < 1) and (Settings::get("authentification_obli") == 1))
 {
 	showAccessDenied($back);
 	exit();
 }
 
 // Vérification des droits d'accès à la fiche réservation
-$acces_fiche_reservation = (verif_acces_fiche_reservation($userName, $room_id))||($userName == $create_by);
+$acces_fiche_reservation = (SecuAccess::UserSheetReservation($userName, $room_id))||($userName == $create_by);
 if($acces_fiche_reservation)
-    if(($resa_confidentielle == 1) && ($userName != $beneficiaire) && (authGetUserLevel($userName, $room_id) < 3))
+    if(($resa_confidentielle == 1) && ($userName != $beneficiaire) && (SecuAccess::UserLevel($userName, $room_id) < 3))
         $acces_fiche_reservation = false;
 
 if (!$acces_fiche_reservation)
@@ -361,7 +361,7 @@ if (!$acces_fiche_reservation)
 	exit();
 }
 
-if (authUserAccesArea($userName, $area) == 0)
+if (SecuAccess::UserArea($userName, $area) == 0)
 {
 	if (isset($reservation_is_delete))
         $d['messageErreur'] = showNoReservation($day, $month, $year, $back);
@@ -462,7 +462,7 @@ $overload_data = mrbsEntryGetOverloadDesc($id);
 foreach ($overload_data as $fieldname=>$field)
 {
     if (((($field["affichage"] == 'y')||($field['confidentiel'] == 'n')) && ($field["valeur"]!=""))
-        ||((($fin_session == 'n')&&($userName != ''))&&(authGetUserLevel($userName, $room_id) >= 4) 
+        ||((($fin_session == 'n')&&($userName != ''))&&(SecuAccess::UserLevel($userName, $room_id) >= 4) 
             || ($beneficiaire == $userName)||($create_by == $userName)))
     {
         // ELM - Gestion des champs additionnels multivalués
@@ -500,11 +500,11 @@ elseif ($moderate == 2 || $moderate == 3)
 if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité participants est activée
     if(!$userParticipe)
     {
-        if( ($nbParticipantInscrit < $nbParticipantMax) && ((verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods))) && (authGetUserLevel($userName, $room_id) >= $quiPeutParticiper) )
+        if( ($nbParticipantInscrit < $nbParticipantMax) && ((verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods)) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods))) && (SecuAccess::UserLevel($userName, $room_id) >= $quiPeutParticiper) )
             $d["participationValidation"] = 1;
     } 
     else{
-        if( (verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods))) && (authGetUserLevel($userName, $room_id) >= $quiPeutParticiper) )
+        if( (verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods) || !(verif_participation_date($userName, $id, $room_id, -1, $date_now, $enable_periods))) && (SecuAccess::UserLevel($userName, $room_id) >= $quiPeutParticiper) )
            $d["participationAnnulation"] = 1;
     }
 
@@ -526,8 +526,8 @@ if($nbParticipantMax > 0){ // réservation pour laquelle la fonctionnalité part
     }
 }
 
-$can_book = verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && getWritable($userName, $id);
-$can_copy = verif_acces_ressource($userName, $room_id);
+$can_book = verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && SecuAccess::IsAllowedToModifyResa($userName, $id);
+$can_copy = SecuAccess::UserResource($userName, $room_id);
 
 if (($can_book || $can_copy) && (!$was_del))
 {
@@ -620,7 +620,7 @@ if ($repeat_id != 0)
 		}
 
 	}
-    if ((getWritable($userName, $id)) && verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && (!$was_del))
+    if ((SecuAccess::IsAllowedToModifyResa($userName, $id)) && verif_booking_date($userName, $id, $room_id, -1, $date_now, $enable_periods) && verif_delais_min_resa_room($userName, $room_id, $row[10], $enable_periods) && (!$was_del))
 	{	
         $d['lienPeriodeModifier'] = "app.php?p=editentree&id=".$id."&amp;edit_type=series&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
         $d['lienPeriodeSupprimer'] = "app.php?p=supreservation&amp;id=".$id."&amp;series=1&amp;day=".$day."&amp;month=".$month."&amp;year=".$year."&amp;page=".$page;
@@ -629,7 +629,7 @@ if ($repeat_id != 0)
 }
 
 // données liées aux fichiers attachés
-$droit_acces = authGetUserLevel($userName, $room_id);
+$droit_acces = SecuAccess::UserLevel($userName, $room_id);
 $res = grr_sql_query("SELECT access_file, user_right, upload_file FROM ".TABLE_PREFIX."_area WHERE id =$area");
 $attached_files = array();
 if(!$res)
@@ -662,7 +662,7 @@ if (!isset($area_id))
 if (!isset($room))
     $room = 1;
 if (Settings::get("pdf") == '1'){
-    if ((authGetUserLevel($userName, $area_id, "area") > 1) || (authGetUserLevel($userName, $room) >= 4))
+    if ((SecuAccess::UserLevel($userName, $area_id, "area") > 1) || (SecuAccess::UserLevel($userName, $room) >= 4))
         $d['lienPDF'] = 1;
 }
 // début du formulaire, n'a lieu d'être affiché que pour un utilisateur autorisé
@@ -681,13 +681,13 @@ if ($id != 0 && $droit_acces >= $user_right && $access_file==1){
 }
 
 if ($fin_session == 'n'){
-    if (($userName != '') && (authGetUserLevel($userName, $room_id) >= 3) && ($moderate == 1))
+    if (($userName != '') && (SecuAccess::UserLevel($userName, $room_id) >= 3) && ($moderate == 1))
     {
         $d['choixModeration'] = 1;
     }
     if ($active_ressource_empruntee == 'y')
     {
-        if ((!$was_del) && ($moderate != 1) && ($userName != '') && (authGetUserLevel($userName,$room_id) >= 3))
+        if ((!$was_del) && ($moderate != 1) && ($userName != '') && (SecuAccess::UserLevel($userName,$room_id) >= 3))
         {
             $d['choixEmprunter'] = 1;
             $d['ressourceEmpruntee'] = affiche_ressource_empruntee_twig($room_id, "texte");

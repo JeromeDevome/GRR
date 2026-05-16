@@ -21,7 +21,7 @@ include "./include/import.class.php";
 
 
 $action = isset($_GET["action"]) ? intval($_GET["action"]) : NULL;
-$id = getFormVar("id","int",-1);
+$id = SecuChaine::GetFormVar("id","int",-1);
 
 $uploadDir = realpath(".")."/personnalisation/".$gcDossierDoc."/";
 

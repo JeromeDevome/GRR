@@ -27,7 +27,7 @@ else
 $id_room = isset($_GET["id_room"]) ? $_GET["id_room"] : NULL;
 if (isset($id_room))
 	settype($id_room,"integer");
-if ((authGetUserLevel(getUserName(),$id_room) < 4) || (!verif_acces_ressource(getUserName(), $id_room)))
+if ((SecuAccess::UserLevel(getUserName(),$id_room) < 4) || (!SecuAccess::UserResource(getUserName(), $id_room)))
 {
 	showAccessDenied('');
 	exit();

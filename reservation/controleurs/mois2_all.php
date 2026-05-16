@@ -273,13 +273,13 @@ $li = 0;
 $ressourcesMois = array();
 for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement d'une ressource sur le mois
 {
-	$verif_acces_ressource = verif_acces_ressource($user_name, $row["id"]);
-	if ($verif_acces_ressource)
+	$AccesUserResource = SecuAccess::UserResource($user_name, $row["id"]);
+	if ($AccesUserResource)
 	{
-		$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $row["id"]);
-        $authGetUserLevel = authGetUserLevel($user_name, $row["id"]);
+		$acces_fiche_reservation = SecuAccess::UserSheetReservation($user_name, $row["id"]);
+        $UserLevel = SecuAccess::UserLevel($user_name, $row["id"]);
         // si la ressource est restreinte, l'utilisateur peut-il réserver ?
-        $user_can_book = $row["who_can_book"] || ($authGetUserLevel > 2) || (authBooking($user_name,$row['id']));
+        $user_can_book = $row["who_can_book"] || ($UserLevel > 2) || (SecuAccess::UserBookingResourceRestrict($user_name,$row['id']));
 
 		$li++;
         $joursRessource = array();
@@ -315,7 +315,7 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
 							$ficheResa = $acces_fiche_reservation;
 							if($acces_fiche_reservation)
 							{
-								if($dr[$cday]["resa_confidentielle"][$i] == 1 && getUserName() != $dr[$cday]["beneficiaire"][$i] && $authGetUserLevel < 3)
+								if($dr[$cday]["resa_confidentielle"][$i] == 1 && getUserName() != $dr[$cday]["beneficiaire"][$i] && $UserLevel < 3)
 								{
 									$ficheResa = false;
 									$dr[$cday]["lien"][$i] = $dr[$cday]["id"][$i];
@@ -338,12 +338,12 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
                 $date_booking = mktime(23,59,0,$month,$k,$year) ; // le jour courant à presque minuit
                 $hour =  date("H",$date_now); // l'heure courante, par défaut
                 if (!$estHorsReservation){
-                    if ((($authGetUserLevel > 1) || (auth_visiteur($user_name, $row["id"]) == 1)) 
+                    if ((($UserLevel > 1) || (SecuAccess::VisitorBookingResource($user_name, $row["id"]) == 1)) 
                         && (UserRoomMaxBooking($user_name, $row["id"], 1) != 0) 
                         && verif_booking_date($user_name, -1, $row["id"], $date_booking, $date_now, $enable_periods) 
                         && verif_delais_max_resa_room($user_name, $row["id"], $date_booking) 
                         && verif_delais_min_resa_room($user_name, $row["id"], $date_booking, $enable_periods) 
-                        && (($row["statut_room"] == "1") || (($row["statut_room"] == "0") && (authGetUserLevel($user_name,$row["id"]) > 2) )) 
+                        && (($row["statut_room"] == "1") || (($row["statut_room"] == "0") && (SecuAccess::UserLevel($user_name,$row["id"]) > 2) )) 
                         && $user_can_book
                         && $d['pview'] != 1){
 							if (Settings::get('calcul_plus_semaine_all') == 'n') {

@@ -31,7 +31,7 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 
-if (((authGetUserLevel(getUserName(),-1) < 1) && (Settings::get("authentification_obli") == 1)) || (!verif_acces_ressource(getUserName(), $id_room)))
+if (((SecuAccess::UserLevel(getUserName(),-1) < 1) && (Settings::get("authentification_obli") == 1)) || (!SecuAccess::UserResource(getUserName(), $id_room)))
 {
 	showAccessDenied('');
 	exit();
@@ -49,16 +49,16 @@ $d['area_name'] = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area wh
 $d['area_access'] = grr_sql_query1("select access from ".TABLE_PREFIX."_area where id='".$id_area."'");
 
 // Description
-if ((authGetUserLevel(getUserName(),-1) >= Settings::get("visu_fiche_description")) && ($ressource["description"] != ''))
+if ((SecuAccess::UserLevel(getUserName(),-1) >= Settings::get("visu_fiche_description")) && ($ressource["description"] != ''))
 	$d['visuDescription'] = 1;
 
 
 // Description complète
-if ((authGetUserLevel(getUserName(),-1) >= Settings::get("acces_fiche_reservation")) && ($ressource["comment_room"] != ''))
+if ((SecuAccess::UserLevel(getUserName(),-1) >= Settings::get("acces_fiche_reservation")) && ($ressource["comment_room"] != ''))
 	$d['visuDescriptionComplete'] = 1;
 
 // Limitation par domaine
-$d['max_booking_per_area'] = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".SecuChaine::protect_data_sql($id_area)."'");
+$d['max_booking_per_area'] = grr_sql_query1("SELECT max_booking FROM ".TABLE_PREFIX."_area WHERE id = '".SecuChaine::ProtectDataSql($id_area)."'");
 
 
 //Image de la ressource

@@ -155,7 +155,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 		return 0;
 	$sql = "SELECT beneficiaire, id, entry_type FROM ".TABLE_PREFIX."_entry WHERE ";
 	if (($series) and ($repeat_id > 0))
-		$sql .= "repeat_id='".SecuChaine::protect_data_sql($repeat_id)."'";
+		$sql .= "repeat_id='".SecuChaine::ProtectDataSql($repeat_id)."'";
 	else
 		$sql .= "id='".$id."'";
 	if($series == 2)
@@ -165,7 +165,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 	$removed = 0;
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		if (!getWritable($user, $id))
+		if (!SecuAccess::IsAllowedToModifyResa($user, $id))
 			continue;
 		if (!verif_booking_date($user, $row[1], $id_room, "", $date_now, $enable_periods, ""))
 			continue;
@@ -180,7 +180,7 @@ function mrbsDelEntry($user, $id, $series, $all)
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=" . $row[1]);
 	}
 	if ($repeat_id > 0 &&
-		grr_sql_query1("SELECT count(*) FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".SecuChaine::protect_data_sql($repeat_id)."'") == 0)
+		grr_sql_query1("SELECT count(*) FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".SecuChaine::ProtectDataSql($repeat_id)."'") == 0)
 		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_repeat WHERE id='".$repeat_id."'");
 	return $removed > 0;
 }
@@ -451,9 +451,9 @@ function mrbsCreateSingleEntry($id, $starttime, $endtime, $entry_type, $repeat_i
 	}
 	//Hugo - Commande sql insérant la nouvelle réservation dans la base de données
 	if($id == 0 || $id == NULL)
-		$sql = "INSERT INTO ".TABLE_PREFIX."_entry (start_time, end_time, entry_type, repeat_id, room_id, create_by, beneficiaire, beneficiaire_ext, name, type, description, statut_entry, option_reservation,overload_desc, moderate, jours, clef, courrier, nbparticipantmax) VALUES ($starttime, $endtime, '".SecuChaine::protect_data_sql($entry_type)."', $repeat_id, $room_id, '".SecuChaine::protect_data_sql($creator)."', '".SecuChaine::protect_data_sql($beneficiaire)."', '".SecuChaine::protect_data_sql($beneficiaire_ext)."', '".SecuChaine::protect_data_sql($name)."', '".SecuChaine::protect_data_sql($type)."', '".SecuChaine::protect_data_sql($description)."', '".SecuChaine::protect_data_sql($statut_entry)."', '".$option_reservation."','".SecuChaine::protect_data_sql($overload_data_string)."', ".$moderate.",".$rep_jour_c.", $keys, $courrier, '".SecuChaine::protect_data_sql($nbparticipantmax)."' )";
+		$sql = "INSERT INTO ".TABLE_PREFIX."_entry (start_time, end_time, entry_type, repeat_id, room_id, create_by, beneficiaire, beneficiaire_ext, name, type, description, statut_entry, option_reservation,overload_desc, moderate, jours, clef, courrier, nbparticipantmax) VALUES ($starttime, $endtime, '".SecuChaine::ProtectDataSql($entry_type)."', $repeat_id, $room_id, '".SecuChaine::ProtectDataSql($creator)."', '".SecuChaine::ProtectDataSql($beneficiaire)."', '".SecuChaine::ProtectDataSql($beneficiaire_ext)."', '".SecuChaine::ProtectDataSql($name)."', '".SecuChaine::ProtectDataSql($type)."', '".SecuChaine::ProtectDataSql($description)."', '".SecuChaine::ProtectDataSql($statut_entry)."', '".$option_reservation."','".SecuChaine::ProtectDataSql($overload_data_string)."', ".$moderate.",".$rep_jour_c.", $keys, $courrier, '".SecuChaine::ProtectDataSql($nbparticipantmax)."' )";
 	else
-		$sql = "UPDATE ".TABLE_PREFIX."_entry SET start_time = ".$starttime.", end_time = ".$endtime.", entry_type = '".SecuChaine::protect_data_sql($entry_type)."', repeat_id = ".$repeat_id.", room_id = ".$room_id.", create_by = '".SecuChaine::protect_data_sql($creator)."', beneficiaire = '".SecuChaine::protect_data_sql($beneficiaire)."', beneficiaire_ext = '".SecuChaine::protect_data_sql($beneficiaire_ext)."', name = '".SecuChaine::protect_data_sql($name)."', type = '".SecuChaine::protect_data_sql($type)."', description = '".SecuChaine::protect_data_sql($description)."', statut_entry = '".SecuChaine::protect_data_sql($statut_entry)."', option_reservation = '".$option_reservation."' ,overload_desc = '".SecuChaine::protect_data_sql($overload_data_string)."', moderate = ".$moderate.", jours = ".$rep_jour_c.", clef = ".$keys.", courrier = ".$courrier.", nbparticipantmax = '".SecuChaine::protect_data_sql($nbparticipantmax)."' WHERE id = ".$id."";
+		$sql = "UPDATE ".TABLE_PREFIX."_entry SET start_time = ".$starttime.", end_time = ".$endtime.", entry_type = '".SecuChaine::ProtectDataSql($entry_type)."', repeat_id = ".$repeat_id.", room_id = ".$room_id.", create_by = '".SecuChaine::ProtectDataSql($creator)."', beneficiaire = '".SecuChaine::ProtectDataSql($beneficiaire)."', beneficiaire_ext = '".SecuChaine::ProtectDataSql($beneficiaire_ext)."', name = '".SecuChaine::ProtectDataSql($name)."', type = '".SecuChaine::ProtectDataSql($type)."', description = '".SecuChaine::ProtectDataSql($description)."', statut_entry = '".SecuChaine::ProtectDataSql($statut_entry)."', option_reservation = '".$option_reservation."' ,overload_desc = '".SecuChaine::ProtectDataSql($overload_data_string)."', moderate = ".$moderate.", jours = ".$rep_jour_c.", clef = ".$keys.", courrier = ".$courrier.", nbparticipantmax = '".SecuChaine::ProtectDataSql($nbparticipantmax)."' WHERE id = ".$id."";
 
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, "Requete error  = ".$sql);
@@ -508,7 +508,7 @@ function mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $r
 			$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
 		}
 	}
-	$sql = "INSERT INTO ".TABLE_PREFIX."_repeat (start_time, end_time, rep_type, end_date, rep_opt, room_id, create_by, beneficiaire, beneficiaire_ext, type, name, description, rep_num_weeks, overload_desc, jours, courrier, nbparticipantmax) VALUES ($starttime, $endtime,  $rep_type, $rep_enddate, '$rep_opt', $room_id,   '".SecuChaine::protect_data_sql($creator)."','".SecuChaine::protect_data_sql($beneficiaire)."','".SecuChaine::protect_data_sql($beneficiaire_ext)."', '".SecuChaine::protect_data_sql($type)."', '".SecuChaine::protect_data_sql($name)."', '".SecuChaine::protect_data_sql($description)."', '$rep_num_weeks','".SecuChaine::protect_data_sql($overload_data_string)."',".$rep_jour_c." , ".$courrier.", '".SecuChaine::protect_data_sql($nbparticipantmax)."')";
+	$sql = "INSERT INTO ".TABLE_PREFIX."_repeat (start_time, end_time, rep_type, end_date, rep_opt, room_id, create_by, beneficiaire, beneficiaire_ext, type, name, description, rep_num_weeks, overload_desc, jours, courrier, nbparticipantmax) VALUES ($starttime, $endtime,  $rep_type, $rep_enddate, '$rep_opt', $room_id,   '".SecuChaine::ProtectDataSql($creator)."','".SecuChaine::ProtectDataSql($beneficiaire)."','".SecuChaine::ProtectDataSql($beneficiaire_ext)."', '".SecuChaine::ProtectDataSql($type)."', '".SecuChaine::ProtectDataSql($name)."', '".SecuChaine::ProtectDataSql($description)."', '$rep_num_weeks','".SecuChaine::ProtectDataSql($overload_data_string)."',".$rep_jour_c." , ".$courrier.", '".SecuChaine::ProtectDataSql($nbparticipantmax)."')";
 	if (grr_sql_command($sql) < 0)
 		return 0;
 	return grr_sql_insert_id();
@@ -806,7 +806,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 	global $dformat;
 	// On vérifie que l'utilisateur a bien le droit d'être ici
 	$room_id = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".$_id."'");
-	if (authGetUserLevel(getUserName(),$room_id) < 3)
+	if (SecuAccess::UserLevel(getUserName(),$room_id) < 3)
 	{
 		fatal_error(0,"Opération interdite");
 		exit();
@@ -935,7 +935,7 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 function PaticipationAjout($entry_id, $creator, $beneficiaire, $beneficiaire_ext)
 {
 
-	$sql = "INSERT INTO ".TABLE_PREFIX."_participants (idresa, cree_par, beneficiaire, beneficiaire_ext) VALUES (".$entry_id.", '".$creator."', '".SecuChaine::protect_data_sql($beneficiaire)."', '".SecuChaine::protect_data_sql($beneficiaire_ext)."' )";
+	$sql = "INSERT INTO ".TABLE_PREFIX."_participants (idresa, cree_par, beneficiaire, beneficiaire_ext) VALUES (".$entry_id.", '".$creator."', '".SecuChaine::ProtectDataSql($beneficiaire)."', '".SecuChaine::ProtectDataSql($beneficiaire_ext)."' )";
 
 	if (grr_sql_command($sql) < 0)
 		fatal_error(0, "Requete error  = ".$sql);

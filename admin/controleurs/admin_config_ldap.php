@@ -18,7 +18,7 @@
 
 $grr_script_name = "admin_config_ldap.php";
 
-if (authGetUserLevel(getUserName(), -1) < 6)
+if (SecuAccess::UserLevel(getUserName(), -1) < 6)
 {
 	showAccessDenied($back);
 	exit();
@@ -68,10 +68,10 @@ function validateLdapDn($dn) {
 $valid		= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $etape		= isset($_POST["etape"]) ? $_POST["etape"] : '0';
 $adresse	= isset($_POST["adresse"]) ? validateLdapAddress($_POST["adresse"]) : '';
-$port		= isset($_POST["port"]) ? SecuChaine::Valide_port_reseau($_POST["port"]) : '';
+$port		= isset($_POST["port"]) ? SecuChaine::ValideNetworkPort($_POST["port"]) : '';
 $login_ldap	= isset($_POST["login_ldap"]) ? $_POST["login_ldap"] : '';
 $pwd_ldap	= isset($_POST["pwd_ldap"]) ? $_POST["pwd_ldap"] : '';
-$pwd_ldap	= SecuChaine::unslashes($pwd_ldap);
+$pwd_ldap	= SecuChaine::Unslashes($pwd_ldap);
 $use_tls	= FALSE;
 if (isset($_POST["use_tls"]) && $_POST["use_tls"] == 'y')
 	$use_tls = TRUE;
@@ -177,7 +177,7 @@ if (isset($_POST['reg_ldap_statut']))
 		showAccessDenied($back);
 		exit();
 	}
-	if ((authGetUserLevel(getUserName(), -1) < 6) && ($valid != 'yes'))
+	if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && ($valid != 'yes'))
 	{
 		showAccessDenied($back);
 		exit();

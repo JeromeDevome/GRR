@@ -32,7 +32,7 @@ $twig->addExtension(new TwigGRR());
 $nom_fic	= "../personnalisation/connect.inc.php";
 $etape		= isset($_GET["etape"]) ? $_GET["etape"] : NULL;
 $adresse_db = isset($_POST["adresse_db"]) ? $_POST["adresse_db"] : NULL;
-$port_db	= isset($_POST["port_db"]) ? SecuChaine::Valide_port_reseau($_POST["port_db"]) : NULL;
+$port_db	= isset($_POST["port_db"]) ? SecuChaine::ValideNetworkPort($_POST["port_db"]) : NULL;
 $login_db	= isset($_POST["login_db"]) ? $_POST["login_db"] : NULL;
 $pass_db	= isset($_POST["pass_db"]) ? $_POST["pass_db"] : NULL;
 $choix_db	= isset($_POST["choix_db"]) ? $_POST["choix_db"] : NULL;

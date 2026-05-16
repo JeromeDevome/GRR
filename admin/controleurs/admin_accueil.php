@@ -23,7 +23,7 @@ $trad = $vocab;
 $trad['TitrePage'] = $trad['admin_accueil'];
 $trad['SousTitrePage'] = 'Administration';
 
-$d['level'] =  authGetUserLevel(getUserName(), -1, 'area');
+$d['level'] =  SecuAccess::UserLevel(getUserName(), -1, 'area');
 
 // Widget connexion
 $d['nombreConnecte'] = AdminFonctions::NombreDeConnecter();

@@ -73,14 +73,14 @@ class Pages {
 	{
 		if (isset(self::$grrPages[$_name]))
 		{
-			$sql = "UPDATE ".TABLE_PREFIX."_page set titre = '".SecuChaine::protect_data_sql($titre)."', valeur = '" . SecuChaine::protect_data_sql($_value) . "' where nom = '" . SecuChaine::protect_data_sql($_name) . "'";
+			$sql = "UPDATE ".TABLE_PREFIX."_page set titre = '".SecuChaine::ProtectDataSql($titre)."', valeur = '" . SecuChaine::ProtectDataSql($_value) . "' where nom = '" . SecuChaine::ProtectDataSql($_name) . "'";
 			$res = grr_sql_query($sql);
 			if (!$res)
 				return false;
 		}
 		else
 		{
-			$sql = "INSERT INTO ".TABLE_PREFIX."_page set nom = '" . SecuChaine::protect_data_sql($_name) . "', titre = '".SecuChaine::protect_data_sql($titre)."', valeur = '" . SecuChaine::protect_data_sql($_value) . "', systeme  = '0'  " ;
+			$sql = "INSERT INTO ".TABLE_PREFIX."_page set nom = '" . SecuChaine::ProtectDataSql($_name) . "', titre = '".SecuChaine::ProtectDataSql($titre)."', valeur = '" . SecuChaine::ProtectDataSql($_value) . "', systeme  = '0'  " ;
 			$res = grr_sql_query($sql);
 			if (!$res)
 				return (false);

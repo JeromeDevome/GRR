@@ -19,7 +19,7 @@
 require_once("../include/pages.class.php");
 $grr_script_name = "admin_cgu.php";
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 
 if (!Pages::load()) {
     die('Erreur chargement pages');

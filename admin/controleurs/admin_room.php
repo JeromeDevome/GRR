@@ -27,7 +27,7 @@ if (!isset($id_site))
 	$id_site = isset($_POST['id_site']) ? $_POST['id_site'] : (isset($_GET['id_site']) ? $_GET['id_site'] : -1);
 settype($id_site,"integer");
 
-check_access(4, $back);
+SecuAccess::CheckAccess(4, $back);
 
 // Afffichage d'un éventuel message
 if (isset($_GET['msg']))
@@ -53,7 +53,7 @@ if ((isset($id_area)) && ($id_area != -1))
 		grr_sql_free($res);
 	}
 	else
-		$area_name = SecuChaine::unslashes($area_name);
+		$area_name = SecuChaine::Unslashes($area_name);
 }
 else
 	$area_name='';
@@ -79,7 +79,7 @@ $sites = array();
 
 if (Settings::get("module_multisite") == "Oui")
 {
-	if (authGetUserLevel(getUserName(),-1,'area') >= 6)
+	if (SecuAccess::UserLevel(getUserName(),-1,'area') >= 6)
 		$sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site ORDER BY sitename ASC";
 	else
 	{
@@ -131,7 +131,7 @@ if ((isset($id_area)) && ($id_area != -1))
 	$trad['dRessourceDe'] =  get_vocab('in') . " " .htmlspecialchars($area_name);
 
 // Seul l'administrateur a le droit d'ajouter des domaines
-if ((authGetUserLevel(getUserName(),-1,'area') >= 5) && $id_area != -1)
+if ((SecuAccess::UserLevel(getUserName(),-1,'area') >= 5) && $id_area != -1)
 	$trad['dAjoutDomaine'] = "<a href=\"?p=admin_edit_domaine&id_site=".$id_site."&amp;add_area=yes\">".get_vocab('addarea')."</a>";
 
 if ((isset($id_area))&&($id_area != -1))
@@ -157,7 +157,7 @@ if (grr_sql_count($res) != 0)
 	// on détermine les domaines accessibles à l'utilisateur -> rangés dans $tareas
 	$tareas = array();
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-		if ((authGetUserLevel(getUserName(),$row[0],'area') >= 4))
+		if ((SecuAccess::UserLevel(getUserName(),$row[0],'area') >= 4))
 			$tareas[] = $row ;
 	}
 
@@ -167,7 +167,7 @@ if (grr_sql_count($res) != 0)
 
 		foreach($tareas as $row)
 		{
-			$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => authGetUserLevel(getUserName(),$row[0],'area'));
+			$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => SecuAccess::UserLevel(getUserName(),$row[0],'area'));
 		}
 
 		// RESSOURCES
@@ -175,7 +175,7 @@ if (grr_sql_count($res) != 0)
 		{
 			$sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$id_area ";
 			// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-			$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+			$tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
 			foreach ($tab_rooms_noaccess as $key){
 				$sql .= " and id != $key ";
 			}
@@ -200,12 +200,12 @@ if (grr_sql_count($res) != 0)
 
 		foreach($tareas as $row)
 		{
-			$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => authGetUserLevel(getUserName(),$row[0],'area'));
+			$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => SecuAccess::UserLevel(getUserName(),$row[0],'area'));
 
 			// RESSOURCES
 			$sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$row[0] ";
 			// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-			$tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
+			$tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
 			foreach ($tab_rooms_noaccess as $key){
 				$sql .= " and id != $key ";
 			}

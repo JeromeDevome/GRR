@@ -107,13 +107,13 @@ $d['tm'] = date("m", $i);
 $d['td'] = date("d", $i);
 
 // Calcul du niveau de droit de réservation
-$authGetUserLevel = authGetUserLevel($user_name, $room);
+$UserLevel = SecuAccess::UserLevel($user_name, $room);
 // Determine si un visiteur peut réserver une ressource
-$auth_visiteur = auth_visiteur($user_name, $room);
+$accessVisitorBookingResource = SecuAccess::VisitorBookingResource($user_name, $room);
 // si la ressource est restreinte, l'utilisateur peut-il réserver ?
-$user_can_book = $who_can_book || ($authGetUserLevel > 2) || (authBooking($user_name,$room));
+$user_can_book = $who_can_book || ($UserLevel > 2) || (SecuAccess::UserBookingResourceRestrict($user_name,$room));
 // Calcul du niveau d'accès aux fiches de réservation détaillées des ressources
-$acces_fiche_reservation = verif_acces_fiche_reservation($user_name, $room);
+$acces_fiche_reservation = SecuAccess::UserSheetReservation($user_name, $room);
 // Teste si l'utilisateur a la possibilité d'effectuer une réservation, compte tenu des limitations éventuelles de la ressource et du nombre de réservations déjà effectuées.
 $UserRoomMaxBooking = UserRoomMaxBooking($user_name, $room, 1);
 // calcul des cellules du planning
@@ -354,12 +354,12 @@ if ((!isset($d['pview'])) || ($d['pview'] != 1))
     $positionMenu = Settings::get("menu_gauche");
     $d['positionMenu'] = ($positionMenu != 0)? $positionMenu : 1; // il faut bien que le menu puisse s'afficher, par défaut ce sera à gauche sauf choix autre par setting
 }
-if (verif_display_fiche_ressource($user_name, $room) && $d['pview'] != 1)
+if (SecuAccess::UserSheetResource($user_name, $room) && $d['pview'] != 1)
 {
     $d['ficheRessource'] = true;
 }
 
-$d['acces_config'] = ($authGetUserLevel >= $acces_config_level) && ($d['pview'] != 1);
+$d['acces_config'] = ($UserLevel >= $acces_config_level) && ($d['pview'] != 1);
 
 $d['ressourceEmpruntee'] = affiche_ressource_empruntee_twig($room);
 $d['semaineActuel'] = get_vocab("week").get_vocab("deux_points").utf8_strftime($dformat, $week_start).' - '.utf8_strftime($dformat, $week_end);
@@ -557,7 +557,7 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
                     $statutCellule = 3;
                else
                 {
-                    if ((($authGetUserLevel > 1) || ($auth_visiteur == 1)) && ($UserRoomMaxBooking != 0) && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room($user_name, $room, $date_booking) && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods) && (($d['statutRessource'] == "1") || (($d['statutRessource'] == "0") && ($authGetUserLevel > 2))) && $user_can_book && $d['pview'] != 1)
+                    if ((($UserLevel > 1) || ($accessVisitorBookingResource == 1)) && ($UserRoomMaxBooking != 0) && verif_booking_date($user_name, -1, $room, $date_booking, $date_now, $enable_periods) && verif_delais_max_resa_room($user_name, $room, $date_booking) && verif_delais_min_resa_room($user_name, $room, $date_booking, $enable_periods) && (($d['statutRessource'] == "1") || (($d['statutRessource'] == "0") && ($UserLevel > 2))) && $user_can_book && $d['pview'] != 1)
                         $statutCellule = 1;
                 }
             }
@@ -595,7 +595,7 @@ for ($slot = $first_slot; $slot <= $last_slot; $slot++)
         // On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
         if($ficheResa)
         {
-            if($resa_confidentiel == 1 && getUserName() != $beneficiaire && $authGetUserLevel < 3)
+            if($resa_confidentiel == 1 && getUserName() != $beneficiaire && $UserLevel < 3)
                 $ficheResa = false;
         }
 

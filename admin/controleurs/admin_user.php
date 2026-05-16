@@ -22,7 +22,7 @@ $grr_script_name = "admin_user.php";
 $display = isset($_GET["display"]) ? $_GET["display"] : NULL;
 //$order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
 
-if ((authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
+if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1,'user') != 1))
 {
 	showAccessDenied($back);
 	exit();
@@ -40,7 +40,7 @@ if ((isset($_REQUEST['action_del'])) and (isset($_REQUEST['js_confirmed'])) and 
 	$temp = $_REQUEST['user_del'];
 	// un gestionnaire d'utilisateurs ne peut pas supprimer un administrateur général ou un gestionnaire d'utilisateurs
 	$can_delete = "yes";
-	if (authGetUserLevel(getUserName(), -1,'user') ==  1)
+	if (SecuAccess::UserLevel(getUserName(), -1,'user') ==  1)
 	{
 		$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$_GET['user_del']."'");
 		if (($test_statut == "gestionnaire_utilisateur") || ($test_statut == "administrateur"))
@@ -109,7 +109,7 @@ get_vocab_admin("action");
 get_vocab_admin("cancel");
 get_vocab_admin("delete");
 
-if (authGetUserLevel(getUserName(),-1) >= 6)
+if (SecuAccess::UserLevel(getUserName(),-1) >= 6)
 	$d['estAdministrateur'] = 1;
 
 $display == 'tous';
@@ -206,7 +206,7 @@ if ($res)
 
 
 			// un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
-			if ((authGetUserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur")))
+			if ((SecuAccess::UserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur")))
 				$col[$i][8] = 0;
 			else
 				$col[$i][8] = 1;
@@ -214,7 +214,7 @@ if ($res)
 			// Affichage du lien 'supprimer'
 			// un gestionnaire d'utilisateurs ne peut pas supprimer un administrateur général ou un gestionnaire d'utilisateurs
 			// Un administrateur ne peut pas se supprimer lui-même
-			if (((authGetUserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur"))) || (strtolower(getUserName()) == strtolower($user_login)))
+			if (((SecuAccess::UserLevel(getUserName(), -1, 'user') ==  1) && (($user_statut == "gestionnaire_utilisateur") || ($user_statut == "administrateur"))) || (strtolower(getUserName()) == strtolower($user_login)))
 				$col[$i][7] = 0;
 			else
 				$col[$i][7] = 1;

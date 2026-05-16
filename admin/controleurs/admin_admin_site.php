@@ -24,7 +24,7 @@ if (empty($id_site))
 if (!isset($id_site))
 	settype($id_site, "integer");
 
-check_access(6, $back);
+SecuAccess::CheckAccess(6, $back);
 if (Settings::get("module_multisite") != "Oui")
 {
 	showAccessDenied($back);

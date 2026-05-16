@@ -24,10 +24,10 @@ include "../../include/functions.inc.php";
 
 $id = intval($_GET['id']);
 
-if ($id != SecuChaine::protect_data_sql($id))
+if ($id != SecuChaine::ProtectDataSql($id))
     die('Donnée incorrecte');
 
-$res = grr_sql_query("SELECT room_name,id FROM ".TABLE_PREFIX."_room WHERE area_id = '".SecuChaine::protect_data_sql($id)."' ORDER BY room_name");
+$res = grr_sql_query("SELECT room_name,id FROM ".TABLE_PREFIX."_room WHERE area_id = '".SecuChaine::ProtectDataSql($id)."' ORDER BY room_name");
 $nbresult = mysqli_num_rows($res);
 $user_name = getUserName();
 if ($nbresult != 0)
@@ -36,7 +36,7 @@ if ($nbresult != 0)
 	for ($t = 0; ($row_roomName = grr_sql_row($res, $t)); $t++)
 	{
         $id_room = $row_roomName[1];
-        if (verif_acces_ressource($user_name,$id_room)){
+        if (SecuAccess::UserResource($user_name,$id_room)){
             $room_name = $row_roomName[0];
             $a .= " <option value =\"$room_name\">$room_name</option>";
         }

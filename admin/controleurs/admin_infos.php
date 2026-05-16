@@ -26,7 +26,7 @@ $version_old = isset($_POST["version_old"]) ? $_POST["version_old"] : '';
 
 $trad = $vocab;
 
-if ((authGetUserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionAdminMAJ == 1)
+if ((SecuAccess::UserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionAdminMAJ == 1)
 {
 	showAccessDenied($back);
 	exit();

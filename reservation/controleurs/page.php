@@ -19,9 +19,9 @@
 include_once('include/pages.class.php');
 $grr_script_name = 'page.php';
 
-$nomPage = SecuChaine::alphanum($_GET['pageaffiche']);
+$nomPage = SecuChaine::Alphanumeric($_GET['pageaffiche']);
 
-$validePopup = isset($_GET['validePopup']) ? SecuChaine::alphanum($_GET['validePopup']) : '';
+$validePopup = isset($_GET['validePopup']) ? SecuChaine::Alphanumeric($_GET['validePopup']) : '';
 
 
 if($nomPage == 'popup')

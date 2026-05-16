@@ -57,7 +57,7 @@ else
 	$back = '';
 	if (isset($_SERVER['HTTP_REFERER']))
 		$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-	if (authGetUserLevel(getUserName(),-1) < 6)
+	if (SecuAccess::UserLevel(getUserName(),-1) < 6)
 	{
 		showAccessDenied($back);
 		exit();
