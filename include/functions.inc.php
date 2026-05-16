@@ -753,7 +753,11 @@ function plages_libre_semaine_ressource($id_room, $month_week, $day_week, $year_
  		{
 			// La requête est adaptée à un serveur SE3...
 			//$result = @ldap_search($ds, "cn={$grp},{$ldap_group_base}",$ldap_group_filter, $members_attr);
-            $result = @ldap_search($ds, "{$ldap_group_base}","(& (cn={$grp}) $ldap_group_filter )", $members_attr);
+            
+            // Échapper le nom du groupe pour éviter les injections
+            $grp_escaped = ldap_escape($grp, "", LDAP_ESCAPE_FILTER);
+            // ldap_group_filter est déjà validé et stocké brut (non échappé)
+            $result = @ldap_search($ds, "{$ldap_group_base}","(& (cn={$grp_escaped}) $ldap_group_filter )", $members_attr);
             // sur la proposition de marylenepaillassa (Forum #255)
 			// Peut-être faudrait-il dans le $tab_grp_autorise mettre des chaines 'cn=$grp,ou=Groups'
  			if ($result)

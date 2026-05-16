@@ -1056,10 +1056,15 @@ function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "
 {
 	if (Settings::get("ActiveModeDiagnostic") == "y")
 		$diagnostic = "yes";
+	
+	// Échapper le login pour éviter les injections
+	$login_escaped = ldap_escape($login, "", LDAP_ESCAPE_FILTER);
+	
 	// Construction du filtre
-	$filter = "(".$login_attr."=".$login.")";
+	$filter = "(".$login_attr."=".$login_escaped.")";
 	if (!empty ($filtre_sup))
 	{
+		// Le filtre supplémentaire est déjà validé et stocké brut (non échappé)
 		$filter = "(& ".$filter.$filtre_sup.")";
 	}
 	$res = @ldap_search($ds, $basedn, $filter, array ("dn", $login_attr),0,0);

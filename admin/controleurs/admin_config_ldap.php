@@ -34,8 +34,8 @@ function validateLdapFilter($filter) {
     if (substr_count($filter, '(') !== substr_count($filter, ')')) {
         return '';
     }
-    // Échappe les caractères spéciaux LDAP
-    $filter = ldap_escape($filter, "", LDAP_ESCAPE_FILTER);
+    // NE PAS échapper ici - les filtres doivent être stockés bruts
+    // L'échappement se fera au moment de l'utilisation dans ldap_search()
     return $filter;
 }
 
