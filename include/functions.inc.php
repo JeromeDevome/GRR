@@ -5671,7 +5671,7 @@ function jQuery_TimePickerTwig($typeTime, $hour, $minute)
   $hour = str_pad($hour, 2, 0, STR_PAD_LEFT); // Affichage heure sur 2 digits
   $minute = str_pad($minute, 2, 0, STR_PAD_LEFT); // Affichage minutes sur 2 digits
 	$html = '<div class="input-group clockpicker" style="width:auto;">
-		<input name="' .$typeTime. '" type="time" id="clockpicker" class="form-control" value="' .$hour. ':' .$minute. '">
+		<input name="' .$typeTime. '" type="text" id="clockpicker" class="form-control" value="' .$hour. ':' .$minute. '">
 		<span class="input-group-addon">
 			<i class="fa-regular fa-clock"></i>
 		</span>

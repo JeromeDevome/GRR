@@ -94,9 +94,9 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
 		echo "<tr><td><div class=\"col-xs-12\">\n";
 		foreach ($overload_fields[$fieldname]["list"] as $value) {
 			$valeurs = explode("|", $data);
-			echo "<input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
+			echo "<input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" id=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
 			if (in_array(trim($value,"&"), $valeurs) or (empty($valeurs)=="" and $value[0]=="&")) echo " checked=\"checked\"";
-			echo ">\n<label>".(trim($value,"&"))."</label>\n";
+			echo ">\n<label for=\"addon_".$overload_fields[$fieldname]["id"]."[]\">".(trim($value,"&"))."</label>\n";
 		}
 		echo "</td></tr></div>\n";
 	}
