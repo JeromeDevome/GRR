@@ -239,11 +239,6 @@ function grr_sql_mutex_cleanup()
 		$grr_sql_mutex_unlock_name = "";
 	}
 }
-// Generate non-standard SQL for LIMIT clauses:
-function grr_sql_syntax_limit($count, $offset)
-{
-	return " LIMIT $offset,$count ";
-}
 // Generate non-standard SQL to output a TIMESTAMP as a Unix-time:
 /**
  * @param string $fieldname
