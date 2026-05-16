@@ -51,15 +51,6 @@ function validateLdapAddress($address) {
     return '';
 }
 
-// Fonction de validation du port LDAP
-function validateLdapPort($port) {
-    $port = intval($port);
-    if ($port >= 1 && $port <= 65535) {
-        return $port;
-    }
-    return '';
-}
-
 // Fonction de validation d'un DN LDAP
 function validateLdapDn($dn) {
     if (empty($dn)) {
@@ -77,7 +68,7 @@ function validateLdapDn($dn) {
 $valid		= isset($_POST["valid"]) ? $_POST["valid"] : 'no';
 $etape		= isset($_POST["etape"]) ? $_POST["etape"] : '0';
 $adresse	= isset($_POST["adresse"]) ? validateLdapAddress($_POST["adresse"]) : '';
-$port		= isset($_POST["port"]) ? validateLdapPort($_POST["port"]) : '';
+$port		= isset($_POST["port"]) ? SecuChaine::Valide_port_reseau($_POST["port"]) : '';
 $login_ldap	= isset($_POST["login_ldap"]) ? $_POST["login_ldap"] : '';
 $pwd_ldap	= isset($_POST["pwd_ldap"]) ? $_POST["pwd_ldap"] : '';
 $pwd_ldap	= SecuChaine::unslashes($pwd_ldap);

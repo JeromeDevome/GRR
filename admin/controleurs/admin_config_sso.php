@@ -34,15 +34,18 @@ if (isset($_POST['valid']))
 {
 	VerifyModeDemo();
 
+	$portCas	= isset($_POST["cas_port"]) ? SecuChaine::Valide_port_reseau($_POST["cas_port"]) : '';
+	$portProxy	= isset($_POST["cas_proxy_port"]) ? SecuChaine::Valide_port_reseau($_POST["cas_proxy_port"]) : '';
+
 	if (!Settings::set("cas_serveur", $_POST['cas_serveur']))
 		echo "Erreur lors de l'enregistrement de cas_serveur !<br />";
-	if (!Settings::set("cas_port", $_POST['cas_port']))
+	if (!Settings::set("cas_port", $portCas))
 		echo "Erreur lors de l'enregistrement de cas_port !<br />";
 	if (!Settings::set("cas_racine", $_POST['cas_racine']))
 		echo "Erreur lors de l'enregistrement de cas_racine !<br />";
     if (!Settings::set("cas_proxy_server", $_POST['cas_proxy_server']))
 		echo "Erreur lors de l'enregistrement de cas_proxy_server !<br />";
-    if (!Settings::set("cas_proxy_port", $_POST['cas_proxy_port']))
+    if (!Settings::set("cas_proxy_port", $portProxy))
 		echo "Erreur lors de l'enregistrement de cas_proxy_port !<br />";
 	if (!Settings::set("cas_version", $_POST['cas_version']))
 		echo "Erreur lors de l'enregistrement de cas_version !<br />";

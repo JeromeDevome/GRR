@@ -121,6 +121,15 @@ class SecuChaine {
         return false;
     }
 
+    // Fonction de validation du port réseau
+    public static function Valide_port_reseau($port) {
+        $port = intval($port);
+        if ($port >= 1 && $port <= 65535) {
+            return $port;
+        }
+        return '';
+    }
+
 }
 
 
