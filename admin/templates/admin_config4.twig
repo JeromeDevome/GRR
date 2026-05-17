@@ -128,6 +128,13 @@
 							{{ form.input('pass_nb_maj', trad.pass_nb_maj, settings.pass_nb_maj, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
 							{{ form.input('pass_nb_ch', trad.pass_nb_ch, settings.pass_nb_ch, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
 							{{ form.input('pass_nb_sp', trad.pass_nb_sp, settings.pass_nb_sp, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+
+							<div class="form-group row col-sm-12">
+								<input type="checkbox" name="pass_simple" value="1" id="pass_simple" {% if settings.pass_simple == '1' %} checked {% endif %} /> <label for="pass_simple">{{ trad.pass_faciles }}</label>
+							</div>
+							<div class="form-group row col-sm-12">
+								<input type="checkbox" name="pass_change_conditions" value="1" id="pass_change_conditions" {% if settings.pass_change_conditions == '1' %} checked {% endif %} /> <label for="pass_change_conditions">{{ trad.pass_change_conditions }}</label>
+							</div>
 						</section>
 						<hr>
 						<section id="urldeconnexion">

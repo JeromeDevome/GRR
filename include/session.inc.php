@@ -371,6 +371,20 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                 $est_auth = checkPassword($_password,$row['password'],$row['login']);
                 if(!$est_auth)
                     return "2";
+				else // Mot de passe OK alors on regade si critère sécurité OK sinon on demande à l'utilisateur de changer le mot de passe
+				{
+
+					if(Settings::get("pass_change_conditions") == 1)
+					{
+						$pwdDifficult = check_password_difficult($_password);
+						if($pwdDifficult == false){
+							$row['changepwd'] = 1;
+							$sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET changepwd = 1 WHERE login='".$row['login']."'";
+							if (grr_sql_command($sql) < 0)
+								fatal_error(0, get_vocab('update_pwd_failed') . grr_sql_error());
+						}
+					}
+				}
             }
         }
     }

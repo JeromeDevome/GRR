@@ -33,7 +33,6 @@ if(isset($_GET['p'])){
 
 
 include "../include/admin.inc.php";
-include "../include/mdp_faciles.inc.php";
 include "../include/hook.class.php";
 include "./modeles/AdminFonctions.php";
 

@@ -123,6 +123,19 @@ if (isset($_GET['pass_leng'])) {
 	}
 }
 
+// Enregistrement de pass_simple
+$pass_simple			= isset($_GET["pass_simple"]) ? 1 : 0;
+$pass_change_conditions	= isset($_GET["pass_change_conditions"]) ? 1 : 0;
+if (isset($_GET['ok']))
+{
+	if (!Settings::set("pass_simple", $pass_simple))
+		$msg .= get_vocab("message_records_error");
+	if (!Settings::set("pass_change_conditions", $pass_change_conditions))
+		$msg .= get_vocab("message_records_error");
+}
+
+
+
 // Log des mails
 if (isset($_GET['log_mail']))
 {

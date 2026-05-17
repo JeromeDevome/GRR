@@ -38,38 +38,6 @@ class AdminFonctions
 
 		return $nb_connect;
 	}
-	
-	public static function NombreUtilisateursMDPfacile() // Nombre d'utilisateurs avec un mot de passe trop simple
-	{
-		global $mdpFacile;
-        $nb_facile = 0;
-        // les utilisateurs à identification externe ont un mot de passe vide dans la base GRR, il est inutile de les compter
-        $sql = "SELECT nom, prenom, statut, login, etat, source, password FROM ".TABLE_PREFIX."_utilisateurs WHERE source = 'local'";
-        $res = grr_sql_query($sql);
-        if ($res)
-        {
-            foreach($res as $row)
-            {
-                // Les mdp faciles
-                // Tableau défini dans include/mdp_faciles.inc.php : $mdpFacile . On y ajoute les variables en liaison avec l'utilisateur
-                // on adjoint à $mdpFacile : login, login en majuscule, login en minuscule
-                $mdpPerso = array();
-                $mdpPerso[] = $row['login'];
-                $mdpPerso[] = strtoupper($row['login']);
-                $mdpPerso[] = strtolower($row['login']);
-                $mdpFaciles = $mdpFacile+ $mdpPerso;
-                foreach($mdpFaciles as $mdp)
-                {
-                    if(checkPassword($mdp, $row['password'], $row['login'], FALSE))// c'est un mot de passe facile
-                    {
-                        $nb_facile++;
-                    }
-                }
-            }
-        }
-        return $nb_facile;
-	}
-
 
 	public static function Warning() // Alerte
 	{

@@ -233,6 +233,7 @@ function checkPassword($pwd, $pwd_hash, $login, $test_rehash = TRUE){
  */
 function check_password_difficult($pwd)
 {
+	global $niveauDossier, $gMdpFacile;
 
 	$nb_min_caractere = Settings::get("pass_leng");
 	$nb_min_minuscules = Settings::get("pass_nb_min");
@@ -251,12 +252,34 @@ function check_password_difficult($pwd)
 		$minuscules >= $nb_min_minuscules &&
         $majuscules >= $nb_min_majuscules &&
         $chiffres >= $nb_min_chiffres &&
-        $speciaux >= $nb_min_speciaux) {
-        return true;
+        $speciaux >= $nb_min_speciaux)
+	{
+		if(Settings::get("pass_simple") == "1")
+		{
+			$pwdMin = strtolower($pwd);
+			$prefixeChemin = cheminDetermination($niveauDossier);
+			$fichier = $prefixeChemin."include/most_used_passwords.txt";
+
+			if (file_exists($fichier))
+				$listeMdp = file($fichier, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+			// Fusion avec la globale $gMdpFacile
+			if (is_array($gMdpFacile))
+				$listeMdp = array_merge($listeMdp, $gMdpFacile);
+
+			// Vérification
+			foreach ($listeMdp as $ligne)
+			{
+				if ($pwdMin === strtolower(trim($ligne)))
+					return false;
+			}
+		}
+		
     } else {
         return false;
     }
 
+	return true;
 }
 
 /**

@@ -224,6 +224,8 @@ $sso_super_admin = false;
 // Set the fixed URL that will be set as the CAS service parameter. When this method is not called, a phpCAS script uses its own URL.
  $Url_CAS_setFixedServiceURL = '';
 
+ // Liste des mots de passe faciles à éviter pour les comptes utilisateurs, en plus de ceux définis dans le fichier "most_used_passwords.txt"
+ $gMdpFacile = array("", "devome", "grr", "mygrr", "grradmin", "grradmin123", "grr123", "admin", "admin123", "administrateur", "administrateur123", "administrator", "administrator123");
 
 #####################################################
 # Paramètres propres à une authentification SSO LASSO
