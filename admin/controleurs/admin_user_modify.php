@@ -546,13 +546,13 @@ $dAdministrateurSite = "";
 					$nb_room = grr_sql_query1("SELECT count(r.room_name) FROM ".TABLE_PREFIX."_room r
 						left join ".TABLE_PREFIX."_area a on r.area_id=a.id
 						left join ".TABLE_PREFIX."_j_site_area sa on a.id=sa.id_area
-						left join ".TABLE_PREFIX."_site s on sa.site_id=s.id
+						left join ".TABLE_PREFIX."_site s on sa.id_site=s.id
 						where s.id='".$row_site[0]."'");
 					$req_room = "SELECT r.room_name FROM ".TABLE_PREFIX."_room r
 					left join ".TABLE_PREFIX."_j_user_room j on r.id=j.id_room
 					left join ".TABLE_PREFIX."_area a on r.area_id=a.id
 					left join ".TABLE_PREFIX."_j_site_area sa on a.id=sa.id_area
-					left join ".TABLE_PREFIX."_site s on sa.site_id=s.id
+					left join ".TABLE_PREFIX."_site s on sa.id_site=s.id
 					where j.login = '".$user_login."' and s.id='".$row_site[0]."'";
 					$res_room = grr_sql_query($req_room);
 					$is_gestionnaire = '';
@@ -572,7 +572,7 @@ $dAdministrateurSite = "";
 					left join ".TABLE_PREFIX."_j_mailuser_room j on r.id=j.id_room
 					left join ".TABLE_PREFIX."_area a on r.area_id=a.id
 					left join ".TABLE_PREFIX."_j_site_area sa on a.id=sa.id_area
-					left join ".TABLE_PREFIX."_site s on sa.site_id=s.id
+					left join ".TABLE_PREFIX."_site s on sa.id_site=s.id
 					where j.login = '".$user_login."' and s.id='".$row_site[0]."'";
 					$res_mail = grr_sql_query($req_mail);
 					$is_mail = '';
