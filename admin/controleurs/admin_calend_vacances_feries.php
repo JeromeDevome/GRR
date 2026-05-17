@@ -209,7 +209,7 @@ if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
 		$trad['dCocheVacances'] = "";
 		$zone = Settings::get("holidays_zone"); // en principe la zone est définie, au moins par défaut à A
 		$schoolHoliday = array();
-		$vacances = simplexml_load_file('../vacances.xml');
+		$vacances = simplexml_load_file('../include/vacances.xml');
 		$libelle = $vacances->libelles->children();
 		$node = $vacances->calendrier->children();
 		foreach ($node as $key => $value)

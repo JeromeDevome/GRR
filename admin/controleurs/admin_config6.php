@@ -517,7 +517,7 @@ while ($i < count($liste_language)) {
 // Choix de la zone de vacances scolaires (France), uniquement si l'affichage des vacances et fériés est activé
 if (Settings::get('show_holidays') == 'Oui'){
 	$d['optionVacances'] = "";
-    $vacances = simplexml_load_file('../vacances.xml');
+    $vacances = simplexml_load_file('../include/vacances.xml');
     $libelle = $vacances->academies->children();
     $acad = array();
     foreach ($libelle as $key => $value) {
