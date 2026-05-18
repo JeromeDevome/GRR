@@ -1,5 +1,6 @@
-Version 4.6.0 - En développement
+Version 4.6.0 - Version béta - 18/05/26
 [Ajout] Drag & Drop des réservations - @JeromeDevome
+[Ajout]Gestion des accès aux ressources restreintes par groupe - @JeromeDevome
 [Ajout] Ajout du style des cellules associées à des réservations dont la liste des participants est complète - af1c971dc - @ynaessens
 [Ajout] Définition du nombre maximal de réservations affichées dans la vue mensuelle via un paramètre configurable - 1a7e8cf41 & 36763442b - @JeromeDevome
 [Ajout] Affichage des e-mails dans l’historique des réservations - 9e3ca3931 - @JeromeDevome
@@ -34,7 +35,7 @@ Version 4.6.0 - En développement
 [Modification] Amélioration des logs e-mail (erreurs SMTP, templates…) - 9e3ca3931 - @JeromeDevome
 [Modification] Réorganisation des fonctions de sécurité - @JeromeDevome
 [Modification] Gestion des jours fériés et des vacances par année - 3065c739e - @JeromeDevome
-[Modification] Mise à jour des vacances scolaires 2026-2027, zones A, B, C et Corse - 0be37c8c1 - @JeromeDevome
+[Modification] Mise à jour des vacances scolaires 2026-2027 - 0be37c8c1 & 7fef7e0 - @JeromeDevome & @ynaessens
 [Modification] Mise à jour des librairies PHP (Symfony, Twig, phpCAS, TCPDF, PHPMailer) - @JeromeDevome
 [Modification] Mise à jour des librairies JS (pdfmake, DataTables, Ace Editor) - @JeromeDevome
 
