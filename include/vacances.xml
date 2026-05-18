@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root miseajour="2025/07/31">
+<root miseajour="2026/01/19">
 <academies>
 <academie libelle="Aix-Marseille" zone="B">
 <departement numero="04"/>
@@ -326,12 +326,12 @@
 <vacances debut="2026/05/14" fin="2026/05/18" libelle="12"/>
 <vacances debut="2026/07/04" fin="2026/09/01" libelle="5"/>
 <!--  Année 2026-2027  -->
-<vacances debut="2026/10/19" fin="2026/11/01" libelle="1"/>
-<vacances debut="2026/12/21" fin="2027/01/03" libelle="2"/>
-<vacances debut="2027/02/15" fin="2027/02/28" libelle="3"/>
-<vacances debut="2027/04/12" fin="2027/04/25" libelle="4"/>
-<vacances debut="2027/05/07" fin="2027/05/07" libelle="12"/>
-<vacances debut="2027/07/05" fin="2027/09/01" libelle="5"/>
+<vacances debut="2026/10/17" fin="2026/11/02" libelle="1"/>
+<vacances debut="2026/12/19" fin="2027/01/04" libelle="2"/>
+<vacances debut="2027/02/13" fin="2027/03/01" libelle="3"/>
+<vacances debut="2027/04/10" fin="2027/04/26" libelle="4"/>
+<vacances debut="2027/05/06" fin="2027/05/10" libelle="12"/>
+<vacances debut="2027/07/03" fin="2027/09/01" libelle="5"/>
 <!--  Date de fin non connue lors de la dernière mise à jour du fichier  -->
 </zone>
 <zone libelle="B">
@@ -432,12 +432,12 @@
 <vacances debut="2026/05/14" fin="2026/05/18" libelle="12"/>
 <vacances debut="2026/07/04" fin="2026/09/01" libelle="5"/>
 <!--  Année 2026-2027  -->
-<vacances debut="2026/10/19" fin="2026/11/01" libelle="1"/>
-<vacances debut="2026/12/21" fin="2027/01/03" libelle="2"/>
-<vacances debut="2027/02/22" fin="2027/03/09" libelle="3"/>
-<vacances debut="2027/04/19" fin="2027/05/02" libelle="4"/>
-<vacances debut="2027/05/07" fin="2027/05/07" libelle="12"/>
-<vacances debut="2027/07/05" fin="2027/09/01" libelle="5"/>
+<vacances debut="2026/10/17" fin="2026/11/02" libelle="1"/>
+<vacances debut="2026/12/19" fin="2027/01/04" libelle="2"/>
+<vacances debut="2027/02/20" fin="2027/03/08" libelle="3"/>
+<vacances debut="2027/04/17" fin="2027/05/03" libelle="4"/>
+<vacances debut="2027/05/06" fin="2027/05/10" libelle="12"/>
+<vacances debut="2027/07/03" fin="2027/09/01" libelle="5"/>
 <!--  Date de fin non connue lors de la dernière mise à jour du fichier  -->
 </zone>
 <zone libelle="ExZoneB2017">
@@ -548,12 +548,12 @@
 <vacances debut="2026/05/14" fin="2026/05/18" libelle="12"/>
 <vacances debut="2026/07/04" fin="2026/09/01" libelle="5"/>
 <!--  Année 2026-2027  -->
-<vacances debut="2026/10/19" fin="2026/11/01" libelle="1"/>
-<vacances debut="2026/12/21" fin="2027/01/03" libelle="2"/>
-<vacances debut="2027/02/08" fin="2027/02/21" libelle="3"/>
-<vacances debut="2027/04/05" fin="2027/04/18" libelle="4"/>
-<vacances debut="2027/05/07" fin="2027/05/07" libelle="12"/>
-<vacances debut="2027/07/05" fin="2027/09/01" libelle="5"/>
+<vacances debut="2026/10/17" fin="2026/11/02" libelle="1"/>
+<vacances debut="2026/12/19" fin="2027/01/04" libelle="2"/>
+<vacances debut="2027/02/06" fin="2027/02/22" libelle="3"/>
+<vacances debut="2027/04/03" fin="2027/04/19" libelle="4"/>
+<vacances debut="2027/05/06" fin="2027/05/10" libelle="12"/>
+<vacances debut="2027/07/03" fin="2027/09/01" libelle="5"/>
 <!--  Date de fin non connue lors de la dernière mise à jour du fichier  -->
 </zone>
 <zone libelle="Corse">
@@ -645,16 +645,7 @@
 <vacances debut="2026/02/14" fin="2026/03/02" libelle="3"/>
 <vacances debut="2026/04/11" fin="2026/04/27" libelle="4"/>
 <vacances debut="2026/05/14" fin="2026/05/18" libelle="12"/>
-<vacances debut="2026/07/04" fin="2026/09/02" libelle="5"/>
-<!--  Année 2026-2027  -->
-<vacances debut="2026/09/08" fin="2026/09/08" libelle="27"/>
-<vacances debut="2026/10/19" fin="2026/11/01" libelle="1"/>
-<vacances debut="2026/12/08" fin="2026/12/08" libelle="27"/>
-<vacances debut="2026/12/21" fin="2027/01/03" libelle="2"/>
-<vacances debut="2027/02/15" fin="2027/02/28" libelle="3"/>
-<vacances debut="2027/04/12" fin="2027/04/25" libelle="4"/>
-<vacances debut="2027/05/07" fin="2027/05/07" libelle="12"/>
-<vacances debut="2027/07/05" fin="2027/09/01" libelle="5"/>
+<vacances debut="2026/07/04" fin="2026/09/01" libelle="5"/>
 <!--  la date de la rentrée 2023 n'est pas encore publiée  -->
 <!--  non connues  -->
 </zone>
@@ -1082,7 +1073,13 @@
 <vacances debut="2025/12/19" fin="2026/01/21" libelle="19"/>
 <vacances debut="2026/02/28" fin="2026/03/16" libelle="17"/>
 <vacances debut="2026/05/02" fin="2026/05/18" libelle="18"/>
-<vacances debut="2026/07/04" fin="2026/08/16" libelle="20"/>
+<vacances debut="2026/07/04" fin="2026/08/18" libelle="20"/>
+<!--  Année 2026-2027  -->
+<vacances debut="2026/10/10" fin="2026/10/26" libelle="15"/>
+<vacances debut="2026/12/18" fin="2027/02/01" libelle="19"/>
+<vacances debut="2027/03/16" fin="2027/03/30" libelle="17"/>
+<vacances debut="2027/05/05" fin="2027/05/19" libelle="18"/>
+<vacances debut="2027/07/03" fin="2027/08/16" libelle="20"/>
 <!--  Date de fin non connue lors de la dernière mise à jour du fichier  -->
 </zone>
 <zone libelle="Mayotte">
@@ -1181,6 +1178,27 @@
 <vacances debut="2026/04/26" fin="2026/04/28" libelle="9"/>
 <vacances debut="2026/04/30" fin="2026/05/18" libelle="18"/>
 <vacances debut="2026/07/04" fin="2026/08/24" libelle="20"/>
+<!--  Année 2026-2027  -->
+<vacances debut="2026/10/10" fin="2026/10/26" libelle="1"/>
+<vacances debut="2026/12/12" fin="2027/01/11" libelle="2"/>
+<vacances debut="2027/02/20" fin="2027/03/08" libelle="17"/>
+<vacances debut="2027/04/26" fin="2027/04/28" libelle="9"/>
+<vacances debut="2027/05/01" fin="2027/05/17" libelle="18"/>
+<vacances debut="2027/07/10" fin="2027/08/23" libelle="20"/>
+<!--  Année 2027-2028  -->
+<vacances debut="2027/10/09" fin="2027/10/25" libelle="1"/>
+<vacances debut="2027/12/11" fin="2028/01/10" libelle="2"/>
+<vacances debut="2028/02/19" fin="2028/03/06" libelle="17"/>
+<vacances debut="2028/04/26" fin="2028/04/28" libelle="9"/>
+<vacances debut="2028/04/29" fin="2028/05/15" libelle="18"/>
+<vacances debut="2028/07/08" fin="2028/08/21" libelle="20"/>
+<!--  Année 2028-2029  -->
+<vacances debut="2028/10/07" fin="2028/10/23" libelle="1"/>
+<vacances debut="2028/12/09" fin="2029/01/08" libelle="2"/>
+<vacances debut="2029/02/17" fin="2029/03/05" libelle="17"/>
+<vacances debut="2029/04/26" fin="2029/04/28" libelle="9"/>
+<vacances debut="2029/04/28" fin="2029/05/14" libelle="18"/>
+<vacances debut="2029/07/07" fin="2029/08/20" libelle="20"/>
 </zone>
 <zone libelle="Calédonie">
 <!--  Année 2013  -->
@@ -1501,7 +1519,14 @@
 <vacances debut="2026/02/13" fin="2026/03/02" libelle="3"/>
 <vacances debut="2026/04/10" fin="2026/04/27" libelle="4"/>
 <vacances debut="2026/05/13" fin="2026/05/18" libelle="12"/>
-<vacances debut="2026/07/02" fin="2026/09/03" libelle="5"/>
+<vacances debut="2026/07/02" fin="2026/09/02" libelle="5"/>
+<!--  Année 2026-2027  -->
+<vacances debut="2026/10/20" fin="2026/11/02" libelle="1"/>
+<vacances debut="2026/12/18" fin="2027/01/04" libelle="2"/>
+<vacances debut="2027/02/19" fin="2027/03/08" libelle="3"/>
+<vacances debut="2027/04/16" fin="2027/05/03" libelle="4"/>
+<vacances debut="2027/05/05" fin="2027/05/10" libelle="12"/>
+<vacances debut="2027/07/01" fin="2027/09/03" libelle="5"/>
 <!--  date de fin non connue  -->
 <!--  non connues  -->
 </zone>
@@ -1588,7 +1613,13 @@
 <vacances debut="2025/06/06" fin="2025/06/23" libelle="16"/>
 <vacances debut="2025/08/08" fin="2025/08/25" libelle="17"/>
 <vacances debut="2025/10/10" fin="2025/10/27" libelle="18"/>
-<vacances debut="2025/12/19" fin="2026/02/14" libelle="19"/>
+<vacances debut="2025/12/19" fin="2026/02/16" libelle="19"/>
+<!--  Année 2026  -->
+<vacances debut="2026/04/03" fin="2026/04/20" libelle="15"/>
+<vacances debut="2026/06/05" fin="2026/06/22" libelle="16"/>
+<vacances debut="2026/08/07" fin="2026/08/24" libelle="17"/>
+<vacances debut="2026/10/09" fin="2026/10/26" libelle="18"/>
+<vacances debut="2026/12/18" fin="2027/02/14" libelle="19"/>
 <!--  Date de fin non connue lors de la dernière mise à jour du fichier  -->
 </zone>
 </calendrier>
