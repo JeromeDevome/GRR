@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-03-16 18:21$
+ * Dernière modification : $Date: 2026-05-19 18:02$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -217,8 +217,8 @@ else
   $row = grr_sql_row($res, 0);
 }
 grr_sql_free($res);
-$breve_description  = $row[0];
-$description      = bbcode(htmlspecialchars($row[1]),'');
+$breve_description  = htmlspecialchars_decode($row[0]);
+$description      = bbcode(htmlspecialchars_decode($row[1]),'');
 $beneficiaire     = htmlspecialchars($row[2]);
 $room_name        = htmlspecialchars($row[3]);
 $area_name        = htmlspecialchars($row[4]);
