@@ -3,9 +3,9 @@
  * admin_calend_jour_cycle.inc.php
  * Menu de la page de création du calendrier jours/cycles
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-08-27 12:50$
+ * Dernière modification : $Date: 2026-05-19 17:50$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2018 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -34,12 +34,12 @@ for ($k = 1; $k < 4; $k++)
 	if ($page_calend == $k)
 	{
 		echo "<div class=\"onglet_off\" >".
-		get_vocab('admin_config_calend'.$k.'.php')."</div>";
+		get_vocab('admin_config_calend'.$k)."</div>";
 	}
 	else
 	{
 		echo "<div onmouseover=\"changeclass(this, 'onglet_on');\" onmouseout=\"changeclass(this, 'onglet');\" class=\"onglet\" >".PHP_EOL;
-		echo "<a href=\"./admin_calend_jour_cycle.php?page_calend=".$k."\">".get_vocab('admin_config_calend'.$k.'.php')."</a></div>".PHP_EOL;
+		echo "<a href=\"./admin_calend_jour_cycle.php?page_calend=".$k."\">".get_vocab('admin_config_calend'.$k)."</a></div>".PHP_EOL;
 	}
 	echo "</td>\n";
 }

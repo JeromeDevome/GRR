@@ -3,7 +3,7 @@
  * admin_view_connexions.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-04-02 11:10$
+ * Dernière modification : $Date: 2026-05-18 11:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -85,7 +85,7 @@ else
 start_page_w_header("", "", "", $type="with_session");
 include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>".get_vocab('admin_view_connexions.php')."</h2>";
+echo "<h2>".get_vocab('admin_view_connexions')."</h2>";
 echo "<h3>".get_vocab("users_connected")."</h3>";
 echo '<div title="Utilisateur connecté">';
 echo '	<ul>';

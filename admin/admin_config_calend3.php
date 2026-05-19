@@ -3,7 +3,7 @@
  * admin_config_calend3.php
  * interface permettant la configuration des jours-cycles (étape 3)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-05-13 15:53$
+ * Dernière modification : $Date: 2026-05-18 16:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -102,6 +102,7 @@ $selection = (isset($_GET['selection']))? intval($_GET['selection']) : -1;
 $newdate = (isset($_GET['newdate']))? intval($_GET['newdate']) : 0;
 $newDay = (isset($_GET['newDay']))? intval($_GET['newDay']) : 0;
 $titre = (isset($_GET['titre']))? clean_input($_GET['titre']) : "";
+$msg = "";
 if(($titre != "")&&(!preg_match("/^[a-zA-Z]/",$titre))){
   $msg = get_vocab('invalid_parameters');
 }

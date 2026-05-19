@@ -151,7 +151,7 @@ $vocab['admin_user_modify_create.php'] = "Adding a new user";
 $vocab['admin_user_modify_modify.php'] = "Modifying an existing user";
 $vocab['admin_user_mdp_facile'] = "Users with a too easy password";
 $vocab['admin_user_mdp_facile_description'] = "We consider as simple password: identifier in password, azerty, empty, 123456, 12345678, 0123456789, 000000, 00000000, admin, azertyui, azertyuiop, grr, administrator, administrator. However other passwords are simple; it's up to you to advise users.";
-$vocab['admin_view_connexions.php'] = "Connection monitoring";
+$vocab['admin_view_connexions'] = "Connection monitoring";
 $vocab['advanced_search'] = "Advanced search";
 $vocab['affichage_calendriers'] = "Display of calendars";
 $vocab['affichage_calendriers_msg'] = "Number of monthly calendars to display on each reservation planning";
@@ -819,7 +819,7 @@ $vocab['reservation_en_bloc_result2'] = "<b>	 Number of deleted reservations cla
 $vocab['reservation_en_cours'] = "Reservation in hand.";
 $vocab['reservation_impossible'] = "Reservation is impossible";
 $vocab['reservee au nom de'] = "Reservation in the name of";
-$vocab['Reserver'] = "Book";
+$vocab['reserver'] = "Book";
 $vocab['reset'] = "Values by default";
 $vocab['resolution_area'] = "Smaller reservable block, in seconds (1800 seconds = 1/2 an hour)";
 $vocab['ressource_actuellement_empruntee'] = " The resource is currently borrowed.";

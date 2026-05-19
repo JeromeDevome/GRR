@@ -1198,7 +1198,6 @@ if($periodiciteConfig == 'y')
         if ($i == 6)
         {
           echo "<div id='menuP'>\n"; // choix des jours cycle
-          echo "<b>Jours/Cycle</b><br />\n";
           echo "<div class='form-inline'>";
           for ($d = 1; $d <= (Settings::get("nombre_jours_Jours_Cycles")); $d++)
           {

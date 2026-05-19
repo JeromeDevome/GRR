@@ -1,12 +1,10 @@
 <?php
 # GRR: Translations provided by: Marc HENNETIER and Antony AUDOUARD
 # GRR : fichier de langue italienne
-# Last modification : 2026-02-19
+# Last modification : 2026-05-15
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
-# Codage de certains caractères particuliers : http://www.unicode.org/charts/PDF/U0080.pdf
-# &#x00DF; -> "double s" allemand
 $vocab['a_acces_au_domaine'] = "Questo utente ha accesso a questo campo restringe.";
 $vocab['accepter_resa'] = "Accettare la prenotazione";
 $vocab['accepter_resa_serie'] = "Accettare la prenotazione e tutte le prenotazioni legate da periodicità che non sono state moderate ancora.";
@@ -14,7 +12,7 @@ $vocab['acces_config_msg'] = "Chi può accedere alla pagina di modifica di una r
 $vocab['access'] = "Accesso ristretto";
 $vocab['accessdenied'] = "Accesso rifiutato";
 $vocab['accessdeniedtoomanybooking'] = "Accesso rifiutato: La vostra domanda di prenotazione è respinta poiché supererebbe il massimo di prenotazioni autorizzato!";
-$vocab['acces_fiche_reservation_msg'] = "Chi ha accesso ai dettagli di prenotazione di una risorsa?"; // A traduire
+$vocab['acces_fiche_reservation_msg'] = "Chi ha accesso ai dettagli di prenotazione di una risorsa?";
 $vocab['action'] = "Azione";
 $vocab['activer_fonctionalite_ressource_empruntee_restituee'] = "Abilita la funzionalità \"risorsa presa in prestito/restituita\"";
 $vocab['activer_fonctionalite_gestion_cle'] = "Abilitare la funzione \"gestione chiavi\"";
@@ -149,7 +147,7 @@ $vocab['admin_user_modify_create.php'] = "Aggiunta di un nuovo utente";
 $vocab['admin_user_modify_modify.php'] = "Modifica di un utente esistente";
 $vocab['admin_user_mdp_facile'] = "Utilisateurs avec un mot de passe facile"; // A traduire
 $vocab['admin_user_mdp_facile_description'] = "Nous considérons comme mot de passe simple: identifiant en mot de passe, azerty, vide, 123456, 12345678,  0123456789, 000000, 00000000, admin, azertyui, azertyuiop, grr, administrateur, administrator. Cependant d'autres mots de passe sont simples ; à vous de sensibiliser les utilisateurs."; // A traduire
-$vocab['admin_view_connexions.php'] = "Seguito dei collegamenti";
+$vocab['admin_view_connexions'] = "Seguito dei collegamenti";
 $vocab['advanced_search'] = "Ricerca avanzata";
 $vocab['affichage_calendriers'] = "Affichage des calendriers"; // A traduire
 $vocab['affichage_calendriers_msg'] = "Nombre de calendriers mensuels à afficher sur chaque planning de réservation"; // A traduire
@@ -808,7 +806,7 @@ $vocab['reservation_en_bloc_result2'] = "<b>Dei prenotazioni che entrano in conf
 $vocab['reservation_en_cours'] = "Prenotazione in corso d'utilizzo.";
 $vocab['reservation_impossible'] = "Prenotazione impossible";
 $vocab['reservee au nom de'] = "Réservation au nom de "; // A traduire
-$vocab['Reserver'] = "Prenotare";
+$vocab['reserver'] = "Prenotare";
 $vocab['reset'] = "Valori per difetto";
 $vocab['resolution_area'] = "Più piccolo blocco prenotabile, in secondi (1800 secondi = 1/2 ora)";
 $vocab["ressource_actuellement_empruntee"] = "La ressource est actuellement empruntée."; // A traduire

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-05-12 15:57$
+ * Dernière modification : $Date: 2026-05-15 10:24$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2268,7 +2268,7 @@ function pageHeader2($day = '', $month = '', $year = '', $type_session = 'with_s
       if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
         $_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
             echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="Français" width="20" height="13" class="image" /></a>'.PHP_EOL;
-            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="Deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+            echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutsch" title="Deutsch" width="20" height="13" class="image" /></a>'.PHP_EOL;
             echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
             echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
             echo '<a  href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'&amp;default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Español" title="Español" width="20" height="13" class="image" /></a>'.PHP_EOL;
@@ -2941,7 +2941,7 @@ function print_header($day = '', $month = '', $year = '', $type_session = 'with_
         $parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
         $_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
         echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=fr"><img src="'.$racine.'img_grr/fr_dp.png" alt="France" title="france" width="20" height="13" class="image" /></a>'.PHP_EOL;
-        echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutch" title="deutch" width="20" height="13" class="image" /></a>'.PHP_EOL;
+        echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=de"><img src="'.$racine.'img_grr/de_dp.png" alt="Deutsch" title="Deutsch" width="20" height="13" class="image" /></a>'.PHP_EOL;
         echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=en"><img src="'.$racine.'img_grr/en_dp.png" alt="English" title="English" width="20" height="13" class="image" /></a>'.PHP_EOL;
         echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=it"><img src="'.$racine.'img_grr/it_dp.png" alt="Italiano" title="Italiano" width="20" height="13" class="image" /></a>'.PHP_EOL;
         echo '<a onclick="" href="'.traite_grr_url($grr_script_name).'?'.$parametres_url.'default_language=es"><img src="'.$racine.'img_grr/es_dp.png" alt="Spanish" title="Spanish" width="20" height="13" class="image" /></a>'.PHP_EOL;
