@@ -3,9 +3,9 @@
  * admin_right.php
  * Interface de gestion des droits de gestion des ressources par les utilisateurs sélectionnés
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-28 11:48$
+ * Dernière modification : $Date: 2026-05-19 18:04$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -299,7 +299,7 @@ if ($res)
 	foreach($res as $row)
 	{
 		if ($row['description'])
-			$temp = " (".htmlspecialchars($row['description']).")";
+			$temp = " (".htmlspecialchars_decode($row['description']).")";
 		else
 			$temp = "";
 		$selected = ($row['id'] == $room) ? "selected" : "";
