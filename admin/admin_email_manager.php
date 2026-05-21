@@ -3,9 +3,9 @@
  * admin_email_manager.php
  * Interface de gestion des mails automatiques
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-06-17 18:00$
+ * Dernière modification : $Date: 2026-05-21 11:28$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -129,10 +129,10 @@ if($id_area > 0){
     $all_rooms = array();
     foreach($res as $row){
       if ($row['description'])
-        $temp = " (".htmlspecialchars($row['description']).")";
+        $temp = " (".htmlspecialchars_decode($row['description']).")";
       else
         $temp="";
-      $all_rooms[$row['id']] = htmlspecialchars($row['room_name'].$temp);
+      $all_rooms[$row['id']] = htmlspecialchars_decode($row['room_name'].$temp);
     }
   }
   grr_sql_free($res);
