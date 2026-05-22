@@ -1,7 +1,7 @@
 <?php
 # GRR : fichier de langue allemande
-# GRR: Traduction by: JeromeB & Karsten Schinkel & Jean-Yves Migeon & Paul Friedli
-# Last modification : 2026-03-31
+# GRR: Traduction : JeromeB & Karsten Schinkel & Jean-Yves Migeon & Paul Friedli
+# Last modification : 2026-05-21
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -319,7 +319,7 @@ $vocab["cas_version"] = "Version des CAS-Protokolls";
 $vocab["causes_possibles"] = "Mögliche Gründe:";
 $vocab["Cette_journee_ne_correspond_pas_a_un_jour_cycle"] = "Dieser Tag entspricht keinem Zyklustag.";
 $vocab["cgu"] = "AGB";
-$vocab["cgu_grr"] = "Sie können die Seite „Allgemeine Geschäftsbedingungen“ ändern. Für den Inhalt sind Sie verantwortlich. Rechtliche Hinweise von GRR: Weder GRR noch die Entwickler sind für den Inhalt verantwortlich GRR ist Open-Source-Software unter der GPL-Lizenz Vom Herausgeber werden keine Daten von Ihrem GRR abgerufen Benutzerkennwörter werden verschlüsselt Die persönlichen Daten des Benutzers beschränken sich auf Name, Vorname und E-Mail-Adresse, die auf der Website verfügbar sind Seite „Mein Konto verwalten“.";
+$vocab["cgu_grr"] = "Sie können die Seite „Allgemeine Geschäftsbedingungen“ ändern.<br/>Für den Inhalt sind Sie verantwortlich.<br/>Rechtliche Hinweise von GRR: Weder GRR noch die Entwickler sind für den Inhalt verantwortlich.<br/>GRR ist Open-Source-Software unter der GPL-Lizenz.<br/>Vom Herausgeber werden keine Daten von Ihrem GRR abgerufen, Benutzerkennwörter werden verschlüsselt.<br/>Die persönlichen Daten des Benutzers beschränken sich auf Name, Vorname und E-Mail-Adresse, die auf der Website verfügbar sind Seite „Mein Konto verwalten“.";
 $vocab["cgu_titre"] = "AGB: Allgemeine Nutzungsbedingungen";
 $vocab["champ_confidentiel"] = "Vertrauliches Feld";
 $vocab["champ_obligatoire"] = "obligatorisches Feld";
@@ -1182,8 +1182,8 @@ $vocab["resa"] = "Meine Buchungen";
 $vocab["resa_menu_explain"] = "Liste Ihrer Reservierungen.";
 $vocab["resas_a_venir"] = "kommende Reservierungen.";
 $vocab["resas_toutes"] = "alle Reservierungen, ";
-$vocab["resasToModerate"] = "zu moderiernede Reservierungen";
-$vocab["resaToModerate"] = " zu moderierende Reservierung";
+$vocab["resasToModerate"] = " Reservierungen sollten moderat sein";
+$vocab["resaToModerate"] = " Reservierung sollte moderat sein.";
 $vocab["Reservation confirmee"] = "Reservierung ist bestätigt";
 $vocab["reservation_a_confirmer_au_plus_tard_le"] = "Reservierung bestätigen, am spätesten am:";
 $vocab["reservation_au_nom_de"] = "Reservierung im Namen von";

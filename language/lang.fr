@@ -1,8 +1,7 @@
 <?php
-# Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 # GRR: fichier de langue française
-# GRR: Traduction by JeromeB & Yan Naessens
-# Last modification : 2026-03-31
+# Last modification : 2026-05-21
+# Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
 $vocab["a_acces_au_domaine"] = "Cet utilisateur a accès à ce domaine restreint.";
@@ -340,7 +339,7 @@ $vocab["cas_version"] = "Version du protocole CAS";
 $vocab["causes_possibles"] = "Causes possibles :";
 $vocab["Cette_journee_ne_correspond_pas_a_un_jour_cycle"] = "Cette journée ne correspond pas à un jour cycle";
 $vocab["cgu"] = "CGU";
-$vocab["cgu_grr"] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu. Pour informations légales de GRR : Ni GRR, ni les developpeurs ne sont responsables du contenu. GRR est un logiciel Open Source sous la licence GPL. Aucune donnée n'est récupéré de votre GRR par l'éditeur. Les mots de passe des utilisateurs sont cryptés. Les informations personnelles des utilisateurs sont limitées au nom, prénom et adresse email, consultables dans la page \"Gérer mon compte\"";
+$vocab["cgu_grr"] = "Vous pouvez modifier la page CGU. Vous êtes responsable du contenu.<br/>Pour informations légales de GRR : ni GRR, ni les developpeurs ne sont responsables du contenu.<br/>GRR est un logiciel Open Source sous licence GPL.<br/>Aucune donnée n'est récupérée de votre GRR par l'éditeur.<br/>Les mots de passe des utilisateurs sont cryptés.<br/>Les informations personnelles des utilisateurs sont limitées au nom, prénom et adresse email, consultables dans la page \"Gérer mon compte\"";
 $vocab["cgu_titre"] = "CGU : Conditions Générales d'Utilisation";
 $vocab["champ_confidentiel"] = "Champ confidentiel";
 $vocab["champ_obligatoire"] = "Remplissage obligatoire";
@@ -1016,7 +1015,7 @@ $vocab["msg_clef"] = "Cocher si la clé est empruntée";
 $vocab["msg_courrier"] = "Cocher si courrier de validation";
 $vocab["msg_del_bookings"] = "Attention, les changements des dates de début et de fin des réservations que vous avez effectués vont entraîner la suppression définitive des réservations déjà effectuées en dehors des nouvelles dates autorisées ! Etes-vous sûr de vouloir continuer ?";
 $vocab["msg_explain_log"] = "Les dates apparaissant en rouge marquent les utilisateurs déconnectés automatiquement après un trop long délai d'inactivité. Les lignes apparaissant en vert marquent les utilisateurs actuellement connectés.";
-$vocab["msg_login1"] = "GRR est une sous licence GPL, adaptée de MRBS.
+$vocab["msg_login1"] = "GRR est une application sous licence GPL, adaptée de MRBS.<br/>
 Pour tout renseignement concernant GRR: ";
 $vocab["msg_login3"] = "Le site est momentanément inaccessible. Veuillez nous excuser de ce dérangement !";
 $vocab["msg_login_created"] = "Vous venez de créer un nouvel utilisateur. Par défaut, cet utilisateur est considéré comme actif.";
