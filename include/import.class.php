@@ -19,7 +19,7 @@ class Import {
 
 	public static function Image($dest, $nom)
 	{
-		global $gcDossierImg, $_FILES;
+		global $_FILES;
 
 		$msg = "";
 
@@ -43,14 +43,14 @@ class Import {
 		/* Test pour bloquer les double extensions */
         elseif (count(explode('.', $doc_file['name'])) > 2)
 		{
-            $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png et jpg.\\n";
+            $msg .= "L\'image n\'a pas pu être enregistrée : les seules extentions autorisées sont gif, png, jpg et webp.\\n";
         }
         elseif  (preg_match("`\.([^.]+)$`", $doc_file['name'], $match))
 		{
             $ext = strtolower($match[1]);
-            if ($ext != 'jpeg' && $ext != 'jpg' && $ext != 'png'&& $ext != 'gif')
+            if ($ext != 'jpeg' && $ext != 'jpg' && $ext != 'png' && $ext != 'gif' && $ext != 'webp')
             {
-                $msg .= "L\'image n\'a pas pu etre enregistree : les seules extentions autorisees sont gif, png et jpg.\\n";
+                $msg .= "L\'image n\'a pas pu etre enregistree : les seules extentions autorisees sont gif, png, jpg et webp.\\n";
             }
             else
 			{
@@ -78,6 +78,12 @@ class Import {
                         imageAlphaBlending($logoRecreated, true);
                         imageSaveAlpha($logoRecreated, true);
                         $extSafe = "png";
+                        break;
+                    case 'image/webp':
+                        if (function_exists('imagecreatefromwebp')) {
+                            $logoRecreated = @imagecreatefromwebp($doc_file['tmp_name']);
+                            $extSafe = 'webp';
+                        }
                         break;
                     default:
                         $msg .= "L\'image n\'a pas pu être enregistrée : type mime incompatible.\\n";
@@ -181,8 +187,8 @@ class Import {
             }
 
             $fileExt = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
-            if (!in_array($fileExt, ["jpg","jpeg","png","gif","pdf"])) {
-                $msg .= "<br>Type de fichier \"$fileExt\" non autorisé. Autorisés : jpg, jpeg, png, gif, pdf";
+            if (!in_array($fileExt, ["jpg","jpeg","png","gif","pdf","webp"])) {
+                $msg .= "<br>Type de fichier \"$fileExt\" non autorisé. Autorisés : jpg, jpeg, png, gif, webp, pdf";
                 continue;
             }
 
