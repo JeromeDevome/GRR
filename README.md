@@ -46,7 +46,7 @@
 
 
 > [!IMPORTANT]  
-> Versions disposant de support et de correctifs: 4.4.X, les versions précédentes doivent être mises à jour.
+> Versions disposant de support et de correctifs: 4.5.X, les versions précédentes doivent être mises à jour.
 
 
 ----------
