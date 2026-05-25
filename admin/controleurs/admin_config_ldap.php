@@ -31,9 +31,9 @@ function validateLdapFilter($filter) {
         return '';
     }
     // Vérifie les parenthèses
-    if (substr_count($filter, '(') !== substr_count($filter, ')')) {
-        return '';
-    }
+	if (substr_count($filter, '(') !== substr_count($filter, ')')) {
+ 		return '';
+	}
     // NE PAS échapper ici - les filtres doivent être stockés bruts
     // L'échappement se fera au moment de l'utilisation dans ldap_search()
     return $filter;

@@ -1068,12 +1068,14 @@ $diagnostic="no" :
 */
 function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "", $diagnostic = "no")
 {
-	if (Settings::get("ActiveModeDiagnostic") == "y")
-		$diagnostic = "yes";
+	$diagnostic = Settings::get("ActiveModeDiagnostic");
 	
 	// Échapper le login pour éviter les injections
-	$login_escaped = ldap_escape($login, "", LDAP_ESCAPE_FILTER);
-	
+	if($login == "*")
+		$login_escaped = "*";
+	else
+		$login_escaped = ldap_escape($login, "", LDAP_ESCAPE_FILTER);
+
 	// Construction du filtre
 	$filter = "(".$login_attr."=".$login_escaped.")";
 	if (!empty ($filtre_sup))
@@ -1087,8 +1089,8 @@ function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "
 		$info = @ldap_get_entries($ds, $res);
 		if ((!is_array($info)) or ($info['count'] == 0))
 		{
-					// Mode diagnostic
-			if ($diagnostic!="no")
+			// Mode diagnostic
+			if ($diagnostic =="y")
 				return "error_2";
 			else
 				return false;
@@ -1096,7 +1098,7 @@ function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "
 		else if ($info['count'] > 1)
 		{
 			// Si plusieurs entrées, on accepte uniquement en mode diagnostic
-			if ($diagnostic!="no")
+			if ($diagnostic=="y")
 				return "error_3";
 			else
 				return false;
@@ -1106,11 +1108,11 @@ function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "
 	}
 	else
 	{
-				// Mode diagnostic
-		if ($diagnostic != "no")
+		// Mode diagnostic
+		if ($diagnostic == "y")
 			return "error_1";
 		else
-					 // Mode normal
+			// Mode normal
 			return false;
 	}
 }

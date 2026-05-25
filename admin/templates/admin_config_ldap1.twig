@@ -41,7 +41,7 @@
 						<div class="form-group row col-sm-12">
 							<p>Utiliser TLS :</p>
 							<input type="radio" name="use_tls" value="y" id="label_1a" {% if trad.dUseTLS == 'y' %}checked{% endif %} /> <label for="label_1a">{{ trad.YES }}</label><br>
-							<input type="radio" name="use_tls" value="n" id="label_1b" {% if trad.dUseTLS == 'n' %}checked{% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
+							<input type="radio" name="use_tls" value="n" id="label_1b" {% if trad.dUseTLS != 'y' %}checked{% endif %} /> <label for="label_1b">{{ trad.NO }}</label><br>
 						</div>
 
 						<p><b>Remarque : pour le moment, aucune modification n'a été apportée au fichier de configuration "config_ldap.inc.php".</b>
