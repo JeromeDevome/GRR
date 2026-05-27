@@ -3,7 +3,7 @@
  * admin_calend.php
  * interface permettant de choisir des outils de réservation en blocs
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-05-27 18:22$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -19,9 +19,10 @@
 $grr_script_name = "admin_calend.php";
 
 // vérification des droits d'accès 
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFERER']) : "./admin.php";
 if(SecuAccess::UserLevel(getUserName(),-1,'area') < 5)
 {
-    showAccessDenied($day, $month, $year, '',$back);
+    showAccessDenied($back);
     exit();
 }
 
