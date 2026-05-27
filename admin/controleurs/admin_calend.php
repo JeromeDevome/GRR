@@ -20,7 +20,7 @@ $grr_script_name = "admin_calend.php";
 
 // vérification des droits d'accès 
 $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFERER']) : "./admin.php";
-if(SecuAccess::UserLevel(getUserName(),-1,'area') < 5)
+if(SecuAccess::UserLevel(getUserName(),-1,'area') < 4)
 {
     showAccessDenied($back);
     exit();
