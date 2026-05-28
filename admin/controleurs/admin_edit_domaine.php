@@ -1,8 +1,8 @@
 <?php
 /**
  * admin_edit_domaine.php
- * Interface de creation/modification des sites, domaines et des ressources de l'application GRR
- * Dernière modification : $Date: 2023-09-13 14:16$
+ * Interface de creation/modification des domaines de l'application GRR
+ * Dernière modification : $Date: 2026-05-28 10:11$
  * @author    JeromeB, Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -58,6 +58,7 @@ if (isset($_POST["change_area_and_back"]))
 	$change_done = "yes";
 }
 // memorisation du chemin de retour
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFERER']) : "./admin.php";
 if (!isset($retour_page))
 {
 	$retour_page = $back;
@@ -68,36 +69,36 @@ if (!isset($retour_page))
 	$long = strlen($retour_page) - $long_chaine_a_supprimer;
 	$retour_page = substr($retour_page, 0, $long);
 }
-// modification d'une resource : admin ou gestionnaire
+// modification d'une resource : administrateur de domaine ou plus
 if (SecuAccess::UserLevel(getUserName(),-1) < 6)
 {
-    if (isset($id_site)){
-        $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id='".$id_site."'");
-        if ($test == -1){
-            showAccessDenied($back);
-            exit();
-        }
-        elseif(SecuAccess::UserLevel(getUserName(),$id_site,'site')<5){
-            showAccessDenied($back);
-            exit();
-        }
-    }
-    elseif (isset($id_area))
+  if (isset($id_area))
 	{
 		// On verifie que le domaine $area existe
 		$test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
 		if ($test == -1)
 		{
-			showAccessDenied($back);
+			showAccessDenied($retour_page);
 			exit();
 		}
 		// Il s'agit de la modif d'un domaine
 		if ((SecuAccess::UserLevel(getUserName(), $id_area, 'area') < 4))
 		{
-			showAccessDenied($back);
+			showAccessDenied($retour_page);
 			exit();
 		}
 	}
+  elseif (isset($id_site)){
+        $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id='".$id_site."'");
+        if ($test == -1){
+            showAccessDenied($retour_page);
+            exit();
+        }
+        elseif(SecuAccess::UserLevel(getUserName(),$id_site,'site')<5){
+            showAccessDenied($retour_page);
+            exit();
+        }
+    }
 }
 $msg ='';
 
