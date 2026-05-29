@@ -346,7 +346,7 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
                         && (($row["statut_room"] == "1") || (($row["statut_room"] == "0") && (SecuAccess::UserLevel($user_name,$row["id"]) > 2) )) 
                         && $user_can_book
                         && $d['pview'] != 1){
-							if (Settings::get('calcul_plus_semaine_all') == 'n') {
+							if (Settings::get('calcul_plus_mois2_all') == 'n') {
 								$statutCellule = 1;
 							} elseif(plages_libre_semaine_ressource($row["id"], $month, $cday, $year))
 							{
