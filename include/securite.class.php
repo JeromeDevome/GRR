@@ -2,7 +2,7 @@
 /**
  * include/securite.class.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-05-16 18:55$
+ * Dernière modification : $Date: 2026-06-01 10:12$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -542,15 +542,15 @@ class SecuAccess {
                     {
                     //On regarde si l'utilisateur est administrateur d'un site quelconque
                         $res2 = grr_sql_query("SELECT u.login
-                            FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
-                            WHERE (u.login=j.login and u.login='".SecuChaine::ProtectDataSql($user)."')");
+                            FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_j_useradmin_site j ON u.login=j.login
+                            WHERE u.login='".SecuChaine::ProtectDataSql($user)."'");
                         if (grr_sql_count($res2) > 0)
                             return 5;
                     }
                     //On regarde si l'utilisateur est administrateur d'un domaine quelconque
                     $res2 = grr_sql_query("SELECT u.login
-                        FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
-                        WHERE (u.login=j.login and u.login='".SecuChaine::ProtectDataSql($user)."')");
+                        FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_j_useradmin_area j ON u.login=j.login
+                        WHERE u.login='".SecuChaine::ProtectDataSql($user)."'");
                     if (grr_sql_count($res2) > 0)
                         return 4;
                 }
@@ -566,8 +566,8 @@ class SecuAccess {
                     }
                     //On regarde si l'utilisateur est administrateur du domaine dont l'id est $id
                     $res3 = grr_sql_query("SELECT u.login
-                        FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_area j
-                        WHERE (u.login=j.login and j.id_area='".SecuChaine::ProtectDataSql($id)."' and u.login='".SecuChaine::ProtectDataSql($user)."')");
+                        FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_j_useradmin_area j ON u.login=j.login
+                        WHERE (j.id_area='".SecuChaine::ProtectDataSql($id)."' and u.login='".SecuChaine::ProtectDataSql($user)."')");
                     if (grr_sql_count($res3) > 0)
                         return 4;
                 }
@@ -581,8 +581,8 @@ class SecuAccess {
                 {
                     //On regarde si l'utilisateur est administrateur d'un site quelconque
                     $res2 = grr_sql_query("SELECT u.login
-                        FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
-                        WHERE (u.login=j.login and u.login='".SecuChaine::ProtectDataSql($user)."')");
+                        FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_j_useradmin_site j ON u.login=j.login
+                        WHERE (u.login='".SecuChaine::ProtectDataSql($user)."')");
                     if (grr_sql_count($res2) > 0)
                         return 5;
                 }
@@ -590,8 +590,8 @@ class SecuAccess {
                 {
                     //On regarde si l'utilisateur est administrateur du site dont l'id est $id
                     $res3 = grr_sql_query("SELECT u.login
-                        FROM ".TABLE_PREFIX."_utilisateurs u, ".TABLE_PREFIX."_j_useradmin_site j
-                        WHERE (u.login=j.login and j.id_site='".SecuChaine::ProtectDataSql($id)."' and u.login='".SecuChaine::ProtectDataSql($user)."')");
+                        FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_j_useradmin_site j ON u.login=j.login
+                        WHERE (j.id_site='".SecuChaine::ProtectDataSql($id)."' and u.login='".SecuChaine::ProtectDataSql($user)."')");
                     if (grr_sql_count($res3) > 0)
                         return 5;
                 }
@@ -623,10 +623,10 @@ class SecuAccess {
             $res = grr_sql_query($sql);
             if (!$res)
                 fatal_error(0, grr_sql_error());
-            for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+            foreach($res as $row)
             {
-                if (SecuAccess::UserLevel($user,$row[0]) < $row[1])
-                    $tab_rooms_noaccess[] = $row[0];
+                if (SecuAccess::UserLevel($user,$row['id']) < $row['who_can_see'])
+                    $tab_rooms_noaccess[] = $row['id'];
             }
             return $tab_rooms_noaccess;
         }
