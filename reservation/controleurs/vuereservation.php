@@ -204,7 +204,8 @@ else
 $msg='';
 
 $d['room_back'] = isset($_GET['room_back']) ? $_GET['room_back'] : '0' ;
-
+$d['area'] = $area;
+$d['room_id'] = $room_id;
 $d['droitRessource'] = SecuAccess::UserLevel($userName, $room_id);
 
 // traitement du formulaire d'inscription d'un autre participant
