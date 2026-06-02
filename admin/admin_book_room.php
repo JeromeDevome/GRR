@@ -3,9 +3,9 @@
  * admin_book_room.php
  * Interface de gestion des accès restreints aux ressources restreintes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-11-27 11:14$
+ * Dernière modification : $Date: 2026-06-02 11:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -188,7 +188,7 @@ if($id_room != -1){
         }
         $add_one.= '</select>';
         $add_one.= '<input type="hidden" name="id_room" value="'.$id_room.'" />';
-        $add_one.= '<input type="submit" value="Enregistrer" />';
+        $add_one.= '<input type="submit" value="'.get_vocab('save').'" />';
         $add_one.= '</form>';
         $nb_users = grr_sql_count($res);
         if ($nb_users > 0)
@@ -207,7 +207,7 @@ if($id_room != -1){
             $add_multi.= '<option> </option>';
             $add_multi.= '</select>';
             $add_multi.= '<input type="hidden" name="id_room" value="'.$id_room.'" />';
-            $add_multi.= '<input type="submit" value="Enregistrer"  onclick="selectionner_liste(this.form.reg_multi_user_login);"/>';
+            $add_multi.= '<input type="submit" value="'.get_vocab('save').'"  onclick="selectionner_liste(this.form.reg_multi_user_login);"/>';
             $add_multi.= '<script type="text/javascript">
                 vider_liste(document.getElementById(\'reg_multi_user_login\'));
             </script>';

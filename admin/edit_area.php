@@ -3,9 +3,9 @@
  * edit_area.php
  * Interface de creation/modification des domaines de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-09 11:12$
+ * Dernière modification : $Date: 2026-06-02 11:06$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -570,7 +570,7 @@ echo "<td><input type=\"checkbox\" name=\"access_file\" value='1' ";
 if ($Area["access_file"] == 1)
   echo " checked ";
 echo "</td></tr>\n";
-echo "<tr><td>Droit pour consulter les fichiers</td>\n";
+echo "<tr><td>".get_vocab("file_download_right")."</td>\n";
 echo "<td>";
 echo "<select class=\"form-control\" name='user_right'>";
 echo "<option value='1' ";
@@ -599,7 +599,7 @@ if($Area['user_right'] == 6)
 echo " />".get_vocab("visu_fiche_description6")."</option>";
 echo "</select>";
 echo "</td></tr>\n";
-echo "<tr><td>Droit pour téléverser les fichiers</td>\n";
+echo "<tr><td>".get_vocab("file_upload_right")."</td>\n";
 echo "<td >";
 echo "<select class=\"form-control\" name='upload_file'>";
 echo "<option value='1' ";

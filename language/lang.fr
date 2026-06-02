@@ -1,6 +1,6 @@
 <?php
 # GRR: fichier de langue française
-# Last modification : 2026-05-21
+# Last modification : 2026-06-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -67,15 +67,13 @@ $vocab["admin_calend_ignore_option_delai_exp"] = "Ainsi si le dimanche est hors 
 $vocab["admin_calend_ignore_vacances"] = "Cocher tous les jours de vacances ";
 $vocab["admin_calend_jour_cycle"] = "Calendrier des \"jours cycle\"";
 $vocab["admin_calend_vacances_feries"] = "Vacances et jours fériés";
-$vocab["admin_calendar_explain_1"] = "Cette procédure vous permet de réserver ou de libérer très rapidement des créneaux horaires simultanément sur plusieurs ressources de plusieurs domaines et selon un calendrier.
-
-Exemple : Vous pouvez ainsi bloquer à l'année certains jours tels que les week-end, les vacances, les jours fériés...
-Attention : s'il y a conflit avec des réservations existantes, celles-ci seront automatiquement et irrémédiablement supprimées au profit de la nouvelle réservation. De plus, les personnes concernées par les suppressions ne seront pas prévenues par email.
-
-Cette procédure se déroule en trois étapes :
-Choix du (des) domaine(s) et du type d'action
-Choix des ressources à réserver, nom, description et type des réservations
-Choix des dates et heures à réserver sur un calendrier
+$vocab["admin_calendar_explain_1"] = "Cette procédure vous permet de réserver ou de libérer très rapidement des créneaux horaires simultanément sur plusieurs ressources de plusieurs domaines et selon un calendrier.<br/>
+Exemple : Vous pouvez ainsi bloquer à l'année certains jours tels que les week-end, les vacances, les jours fériés...<br/>
+Attention : s'il y a conflit avec des réservations existantes, celles-ci seront automatiquement et irrémédiablement supprimées au profit de la nouvelle réservation. De plus, les personnes concernées par les suppressions ne seront pas prévenues par email.<br/>
+Cette procédure se déroule en trois étapes :<ol>
+<li>Choix du (des) domaine(s) et du type d'action</li>
+<li>Choix des ressources à réserver, nom, description et type des réservations</li>
+<li>Choix des dates et heures à réserver sur un calendrier</li></ol>
 Les modifications effectives des réservations n'interviennent qu'à l'issue de la troisième étape.";
 $vocab["admin_calendar_title"] = "Réservation/Suppression en bloc";
 $vocab["admin_cgu"] = "Pages personnalisables";
@@ -706,6 +704,8 @@ $vocab["familyName"] = "Nom de famille : ";
 $vocab["fiche_ressource"] = "Fiche de présentation de la ressource";
 $vocab["fieldname"] = "Intitulé du champ";
 $vocab["fieldtype"] = "Type du champ";
+$vocab["file_download_right"] = "Droit pour consulter les fichiers";
+$vocab["file_upload_right"] = "Droit pour téléverser des fichiers";
 $vocab["filtreLdapSupp"] = "Filtre LDAP supplémentaire";
 $vocab["fin_reservation"] = "Fin de la réservation";
 $vocab["first_name"] = "Prénom";
@@ -937,7 +937,7 @@ $vocab["maj_bdd_not_update"] = "ATTENTION : Votre base de données ne semble pas
 $vocab["maj_dispo"] = "Une mise à jour est disponible.";
 $vocab["maj_dispo_aucune"] = "Aucune mise à jour n'est disponible.";
 $vocab["maj_do_update"] = "Cliquez sur le bouton suivant pour effectuer la mise à jour vers la version ";
-$vocab["maj_go_www"] = "Rendez-vous sur le site de GRR pour connaître la dernière version : ";
+$vocab["maj_go_www"] = "Le site web de GRR : ";
 $vocab["maj_good"] = "Mise à jour effectuée (lisez attentivement le résultat de la mise à jour, en bas de la page).";
 $vocab["maj_impossible_rechercher"] = "Impossible de rechercher une mise à jour.";
 $vocab["maj_no_update_to_do"] = "Vous n'avez pas de mise à jour de la base de données à effectuer.";
@@ -1110,6 +1110,7 @@ $vocab["older_date_log"] = "Actuellement, le journal contient l'historique depui
 $vocab["one_connected"] = " personne connectée";
 $vocab["only_administrators"] = "Seulement les administrateurs";
 $vocab["only_letters_and_numbers"] = "L'identifiant de l'utilisateur doit être constitué uniquement de lettres et de chiffres !";
+$vocab["options_planning"] = "options  \\  planning";
 $vocab["optionsConnexion"] = "Options de connexion :";
 $vocab["order_display"] = "Ordre d'affichage";
 $vocab["OU"] = "OU";

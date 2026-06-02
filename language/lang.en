@@ -1,7 +1,7 @@
 <?php
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2026-05-22
+# Last modification : 2026-06-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -68,7 +68,11 @@ $vocab["admin_calend_ignore_option_delai"] = "<b>Option:</b> Check the box oppos
 $vocab["admin_calend_ignore_option_delai_exp"] = "Thus, if Sunday is non-bookable and the lead time before booking is three days (4320 minutes), a resource cannot be booked from Friday to Monday.";
 $vocab["admin_calend_jour_cycle"] = "Calendar of \"cycle days\"";
 $vocab["admin_calend_vacances_feries"] = "School holidays and public holidays";
-$vocab["admin_calendar_explain_1"] = "This procedure allows you to quickly reserve or release time slots simultaneously across multiple resources in several domains and according to a calendar.<br/>For example, you can block out certain days throughout the year, such as weekends, holidays, and public holidays.<br/>Warning: If there is a conflict with existing reservations, these will be automatically and permanently deleted in favor of the new reservation. Furthermore, those affected by the deletions will not be notified by email.<br/>This procedure takes place in three steps:<br/> 1. Selection of the domain(s) and the type of action;<br/> 2. Selection of the resources to reserve, name, description, and type of reservation;<br/> 3. Selection of the dates and times to reserve on a calendar. The actual changes to the reservations only occur after the third step.";
+$vocab["admin_calendar_explain_1"] = "This procedure allows you to quickly reserve or release time slots simultaneously across multiple resources in several domains and according to a calendar.<br/>For example, you can block out certain days throughout the year, such as weekends, holidays, and public holidays.<br/>Warning: If there is a conflict with existing reservations, these will be automatically and permanently deleted in favor of the new reservation. Furthermore, those affected by the deletions will not be notified by email.<br/>This procedure takes place in three steps:<ol>
+<li>Selection of the domain(s) and the type of action;</li>
+<li>Selection of the resources to reserve, name, description, and type of reservation;</li>
+<li>Selection of the dates and times to reserve on a calendar.</li></ol>
+The actual changes to the reservations only occur after the third step.";
 $vocab["admin_calendar_title"] = "Bulk Reservation/Deletion";
 $vocab["admin_cgu"] = "Customizable pages";
 $vocab["admin_cgu_accueil"] = "The home page";
@@ -667,6 +671,8 @@ $vocab["familyName"] = "Last name:";
 $vocab["fiche_ressource"] = "Presentation card of the ressource";
 $vocab["fieldname"] = "Field name";
 $vocab["fieldtype"] = "Field type";
+$vocab["file_download_right"] = "Right to view files";
+$vocab["file_upload_right"] = "Right to upload files";
 $vocab["filtreLdapSupp"] = "Additional LDAP filter";
 $vocab["fin_reservation"] = "End of reservation";
 $vocab["first_name"] = "First name";
@@ -886,7 +892,7 @@ $vocab["maj_bdd_not_update"] = "CAUTION: your database does not seem to have bee
 $vocab["maj_dispo"] = "An update is available.";
 $vocab["maj_dispo_aucune"] = "No update is available.";
 $vocab["maj_do_update"] = "Click on the following button to update towards GRR version ";
-$vocab["maj_go_www"] = "Go to GRR website to know the latest version: ";
+$vocab["maj_go_www"] = "GRR website: ";
 $vocab["maj_good"] = "Update carried out (read attentively the result of the update, in bottom of the page).";
 $vocab["maj_impossible_rechercher"] = "Impossible to check for updates.";
 $vocab["maj_no_update_to_do"] = "Database needn\'t be updated.";
@@ -1055,6 +1061,7 @@ $vocab["older_date_log"] = "Record currently contains the history since ";
 $vocab["one_connected"] = " connected person";
 $vocab["only_administrators"] = "Only administrators";
 $vocab["only_letters_and_numbers"] = "Login-name is to consist of letters and numbers only!";
+$vocab["options_planning"] = "options \\ planning";
 $vocab["optionsConnexion"] = "Connection options:";
 $vocab["order_display"] = "Display order";
 $vocab["OU"] = "OR";

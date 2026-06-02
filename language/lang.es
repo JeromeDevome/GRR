@@ -1,7 +1,7 @@
 <?php
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2026-05-22
+# Last modification : 2026-06-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -68,15 +68,13 @@ $vocab["admin_calend_ignore_option_delai_exp"] = "Por lo tanto, si el domingo no
 $vocab["admin_calend_ignore_vacances"] = "Marcar todos los días de vacaciones ";
 $vocab["admin_calend_jour_cycle"] = "Calendario de los \"días ciclo\"";
 $vocab["admin_calend_vacances_feries"] = "Vacaciones y festivos";
-$vocab["admin_calendar_explain_1"] = "Este procedimiento le permite reservar o liberar horarios muy rápidamente, simultáneamente sobre varios recursos de varios campos y según un calendario.
-
-Ejemplo : Puede así bloquear al año ciertos días como el fin de semana, las vacaciones, los días de fiesta...
-Cuidado: si hay un conflicto con reservas existentes, estas serán automáticamente e irremediablemente suprimidas en favor de la nueva reserva. Además, las personas afectadas por las supresiones no serán avisadas por email.
-
-Este procedimiento se desarrolla en tres etapas :
-Elección de los campos y del tipo de acción
-Elección de los recursos que deben reservarse, nombre, descripción y tipo de las reservas
-Elección de las próximas fechas sobre un calendario
+$vocab["admin_calendar_explain_1"] = "Este procedimiento le permite reservar o liberar horarios muy rápidamente, simultáneamente sobre varios recursos de varios campos y según un calendario.<br/>
+Ejemplo : Puede así bloquear al año ciertos días como el fin de semana, las vacaciones, los días de fiesta...<br/>
+Cuidado: si hay un conflicto con reservas existentes, estas serán automáticamente e irremediablemente suprimidas en favor de la nueva reserva. Además, las personas afectadas por las supresiones no serán avisadas por email.<br/>
+Este procedimiento se desarrolla en tres etapas :<ol>
+<li>Elección de los campos y del tipo de acción</li>
+<li>Elección de los recursos que deben reservarse, nombre, descripción y tipo de las reservas</li>
+<li>Elección de las próximas fechas sobre un calendario</li></ol>
 Las modificaciones efectivas de las reservas sólo se producen después de la tercera etapa.";
 $vocab["admin_calendar_title"] = "Reserva/Supresión en bloque de días enteros";
 $vocab["admin_cgu"] = "Páginas personalizables";
@@ -744,6 +742,8 @@ $vocab["familyName"] = "Apellido: ";
 $vocab["fiche_ressource"] = "Ficha de presentación del recurso";
 $vocab["fieldname"] = "Título del campo";
 $vocab["fieldtype"] = "Tipo del campo";
+$vocab["file_download_right"] = "Derecho a ver archivos";
+$vocab["file_upload_right"] = "Derecho a subir archivos";
 $vocab["filtreLdapSupp"] = "Filtro LDAP adicional";
 $vocab["fin_reservation"] = "Fin de la reserva";
 $vocab["first_name"] = "Nombre";
@@ -976,7 +976,7 @@ $vocab["maj_bdd_not_update"] = "CUIDADO: Su base de datos no parece estar al dí
 $vocab["maj_dispo"] = "Hay una actualización disponible.";
 $vocab["maj_dispo_aucune"] = "No hay actualización disponible.";
 $vocab["maj_do_update"] = "Haga clic en el siguiente botón para efectuar la actualización hacia la versión ";
-$vocab["maj_go_www"] = "Vayase en el sitio de GRR para conocer la última versión : ";
+$vocab["maj_go_www"] = "El sitio de GRR : ";
 $vocab["maj_good"] = "Actualización efectuada. (lea atentamente el resultado de la actualización, en la parte inferior de la página)";
 $vocab["maj_impossible_rechercher"] = "Imposible buscar una actualización.";
 $vocab["maj_no_update_to_do"] = "Usted no tiene que efectuar actualización de la base de datos.";
@@ -1149,6 +1149,7 @@ $vocab["older_date_log"] = "Actualmente, el diario contiene los antecedentes des
 $vocab["one_connected"] = " persona conectada";
 $vocab["only_administrators"] = "Solamente los administradores";
 $vocab["only_letters_and_numbers"] = "¡El identificador del usario debe estar constituido solamente con letras y cifras!";
+$vocab["options_planning"] = "options \\ planning";
 $vocab["optionsConnexion"] = "Opciones de conexión:";
 $vocab["order_display"] = "Orden de visualización";
 $vocab["OU"] = "O";

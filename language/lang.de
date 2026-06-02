@@ -1,7 +1,7 @@
 <?php
 # GRR : fichier de langue allemande
 # GRR: Traduction : JeromeB & Karsten Schinkel & Jean-Yves Migeon & Paul Friedli
-# Last modification : 2026-05-21
+# Last modification : 2026-06-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -68,7 +68,14 @@ $vocab["admin_calend_ignore_option_delai_exp"] = "Wenn also Sonntag nicht buchba
 $vocab["admin_calend_ignore_vacances"] = "Alle Urlaubstage ankreuzen";
 $vocab["admin_calend_jour_cycle"] = "Kalender der \"Zyklustage\"";
 $vocab["admin_calend_vacances_feries"] = "Ferien und Feiertage";
-$vocab["admin_calendar_explain_1"] = "Diesen Vorgang erlauben Sie eine schnelle und gleichzeitige Änderung von Zeitabstände für mehrere Domäne und Ressourcen (reservieren oder aufheben), gemäss einen bestimmten Zeitplan. Zum Beispiel : Dadurch können Sie bestimmte Tage (wie Wochenende, Urlaub, Freitage) für das ganze Jahr lang blockieren. Achtung : Wenn diesen Vorgang mit schon gemachten Reservierungen im Konflikt steht, werden sie automatisch und endgültig gelöscht, zugunsten dieses Vorgangs. Ausserdem werden die Benutzer per email nicht davon informiert. Der Vorgang findet in drei Phasen statt : Wahl der Domäne(n) und Aktionstyp Wahl der Ressourcen, Name, Beschreibung und Reservierungsart Wahl der Daten und Uhrzeiten auf einem Zeitplan Die Änderungen werden nur am Ende der Phase 3 in Betracht gezogen.";
+$vocab["admin_calendar_explain_1"] = "Diesen Vorgang erlauben Sie eine schnelle und gleichzeitige Änderung von Zeitabstände für mehrere Domäne und Ressourcen (reservieren oder aufheben), gemäss einen bestimmten Zeitplan.<br/>
+Zum Beispiel : Dadurch können Sie bestimmte Tage (wie Wochenende, Urlaub, Freitage) für das ganze Jahr lang blockieren.<br/>
+Achtung : Wenn diesen Vorgang mit schon gemachten Reservierungen im Konflikt steht, werden sie automatisch und endgültig gelöscht, zugunsten dieses Vorgangs. Ausserdem werden die Benutzer per email nicht davon informiert.<br/>
+Der Vorgang findet in drei Phasen statt:<ol>
+<li>Wahl der Domäne(n) und Aktionstyp</li>
+<li>Wahl der Ressourcen, Name, Beschreibung und Reservierungsart</li>
+<li>Wahl der Daten und Uhrzeiten auf einem Zeitplan</li></ol>
+Die Änderungen werden nur am Ende der Phase 3 in Betracht gezogen.";
 $vocab["admin_calendar_title"] = "Reservieren/Löschen in Blöcken";
 $vocab["admin_cgu"] = "Verwaltung der AGB und Startseiten";
 $vocab["admin_cgu_accueil"] = "Die Startseite";
@@ -668,6 +675,8 @@ $vocab["familyName"] = "Nachname:";
 $vocab["fiche_ressource"] = "Blatt der Ressource";
 $vocab["fieldname"] = "Feldname";
 $vocab["fieldtype"] = "Feldart";
+$vocab["file_download_right"] = "Recht zum Anzeigen von Dateien";
+$vocab["file_upload_right"] = "Recht zum Hochladen von Dateien";
 $vocab["filtreLdapSupp"] = "Additional LDAP filter";
 $vocab["fin_reservation"] = "Ende der Reservierung";
 $vocab["first_name"] = "Vorname";
@@ -888,7 +897,7 @@ $vocab["maj_bdd_not_update"] = "ACTUNG: Ihre Datenbank scheint nicht update zu s
 $vocab["maj_dispo"] = "Ein Update ist verfügbar.";
 $vocab["maj_dispo_aucune"] = "Es sind keine Updates verfügbar..";
 $vocab["maj_do_update"] = "Klicken Sie auf die folgende Schaltfläche, um das Update der GRR-Version auszuführen";
-$vocab["maj_go_www"] = "Besuchen Sie mal wieder die GRR-Webseite, um mehr über die neuste Version zu erfahren: ";
+$vocab["maj_go_www"] = "GRR-Webseite: ";
 $vocab["maj_good"] = "Das Update ist durchgeführt worden. (Bitte lesen Sie aufmerksam das Ergebnis des Updates auf der Seite unten.)";
 $vocab["maj_impossible_rechercher"] = "Aktualisierung kann nicht gesucht werden.";
 $vocab["maj_no_update_to_do"] = "Sie brauchen kein Update Ihrer Datenbank vorzunehmen.";
@@ -1057,6 +1066,7 @@ $vocab["older_date_log"] = "Zur Zeit enthält das Logbuch einen chronologischen 
 $vocab["one_connected"] = "Verbundene Person";
 $vocab["only_administrators"] = "Nur Administrators";
 $vocab["only_letters_and_numbers"] = "Der Identifikationscode des Benutzers darf nur aus Buchstaben und Ziffern bestehen!";
+$vocab["options_planning"] = "options \\ planning";
 $vocab["optionsConnexion"] = "Verbindungsoptionen:";
 $vocab["order_display"] = "Anzeigeordnung";
 $vocab["OU"] = "ODER";

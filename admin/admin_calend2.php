@@ -3,9 +3,9 @@
  * admin_calend2.php
  * interface permettant la réservation en bloc d'un créneau sur plusieurs Jours ou ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-02 12:12$
+ * Dernière modification : $Date: 2026-06-02 11:32$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -398,7 +398,7 @@ if ($etape == 3) //sélection des jours
 	}
 
 	echo "</table>";
-	echo "<div id=\"fixe\"><input type=\"submit\" class=\"btn btn-primary\" name=\"".get_vocab('save')."\" /></div>\n";
+	echo "<div id=\"fixe\"><input type=\"submit\" class=\"btn btn-primary\" value=\"".get_vocab('save')."\" /></div>\n";
 	echo "<div>\n<input type=\"hidden\" name=\"record\" value=\"yes\" />\n";
 	echo "<input type=\"hidden\" name=\"etape\" value=\"4\" />\n";
 	echo "<input type=\"hidden\" name=\"name\" value=\"".$name."\" />\n";

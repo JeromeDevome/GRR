@@ -39,7 +39,7 @@ include "../include/functions.inc.php";
 require_once("../include/settings.class.php");
 //Chargement des valeurs de la table settingS
 if (!Settings::load())
-    die("Erreur chargement settings");
+    die(get_vocab("error_settings_load"));
 
 function formatResult($echo,$dbt,$fin) {
     global $majscript;
@@ -1074,7 +1074,7 @@ if (isset($_POST['maj']) || isset($_GET['force_maj']) || $majscript)
     
     //Re-Chargement des valeurs de la table settingS
     if (!Settings::load())
-        die("Erreur chargement settings");
+        die(get_vocab("error_settings_load"));
     
     if(!$majscript) affiche_pop_up(get_vocab("maj_good"),"force");
 }
@@ -1134,20 +1134,20 @@ if(!$majscript) {
 
 // Recherche mise à jour sur dépôt Github JeromeDevome/GRR/
 if($recherche_MAJ == 1){
-$url = "https://api.github.com/repos/JeromeDevome/GRR/releases/latest";
-$opts = [
+  $url = "https://api.github.com/repos/JeromeDevome/GRR/releases/latest";
+  $opts = [
         'http' => [
                 'method' => 'GET',
                 'header' => [
                         'User-Agent: PHP'
                 ]
         ]
-];
+  ];
 
-$ctx = stream_context_create($opts);
+  $ctx = stream_context_create($opts);
 
-$json = @file_get_contents( $url, 0, $ctx );
-if($json != FALSE){
+  $json = @file_get_contents( $url, 0, $ctx );
+  if($json != FALSE){
     $tag_desc = json_decode($json);
     $tag_name = $tag_desc->tag_name;
     $tag_pub = $tag_desc->published_at;
@@ -1155,53 +1155,10 @@ if($json != FALSE){
     $tag_date = substr($tag_pub,0,$pos);
     echo get_vocab('derniere_version_publiee').get_vocab('deux_points').$tag_name.get_vocab('le').$tag_date."<br>";
     echo "<a href='https://github.com/JeromeDevome/GRR/releases' >".get_vocab('depot_grr_officiel')."</a><br/>";
+  }
 }
-}
-/*if($recherche_MAJ == 1)
-{
-    $fichier = $grr_devel_url.'versiongrr.xml';
-    
-    if (!$fp = @fopen($fichier,"r")) {
-        echo "<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
-    } else{
-        $reader = new XMLReader();
-        $reader->open($fichier);
-
-        while ($reader->read()) {
-            if ($reader->nodeType == XMLREADER::ELEMENT){
-                if ($reader->name == "numero"){
-                    $reader->read();
-                    $derniereVersion = $reader->value;
-                }
-                if ($reader->name == "sousversion"){
-                    $reader->read();
-                    $derniereSousVersion = $reader->value;
-                }
-                if ($reader->name == "rc"){
-                    $reader->read();
-                    $derniereRC = $reader->value;
-                }
-            }
-        }
-
-        if($version_grr != $derniereVersion || $sous_version_grr != $derniereSousVersion || $version_grr_RC != $derniereRC){
-            if($derniereRC <> ""){
-                $derniereRC = " RC ".$derniereRC;
-            }
-            echo "<p>".get_vocab("maj_dispo")." ".$derniereVersion."".$derniereSousVersion."".$derniereRC."</p>\n";
-        } else{
-            echo "<p>".get_vocab("maj_dispo_aucune")."</p>\n";
-        }
-
-        $reader->close();
-    }
-} 
-elseif(!$majscript) {
-    "<p>".get_vocab("maj_impossible_rechercher")."</p>\n";
-}*/
 if(!$majscript) {
-    //echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
-    echo "<p>"."Le site web de GRR :"."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
+    echo "<p>".get_vocab("maj_go_www")."<a href=\"".$grr_devel_url."\">".get_vocab("mrbs")."</a></p>\n";
     echo "<hr />\n";
 
     // Mise à jour de la base de donnée

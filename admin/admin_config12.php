@@ -3,9 +3,9 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2025-05-06 17:40$
+ * Dernière modification : $Date: 2026-06-02 10:48$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -254,14 +254,14 @@ else
     $msg = '';
 // données
 if (Settings::get('module_multisite') == 'Oui') {
-    $use_site = 'y';
+    $use_site = 1;
 } else {
-    $use_site = 'n';
+    $use_site = 0;
 }
 /*
  * Liste des sites
  */
-if (Settings::get('module_multisite') == 'Oui') {
+if ($use_site) {
     $sql = 'SELECT id,sitecode,sitename
 	FROM '.TABLE_PREFIX.'_site
 	ORDER BY id ASC';
@@ -333,12 +333,12 @@ echo ' />'.PHP_EOL;
 echo '<label for="alf3">'.get_vocab('item_area_list_format').'</label>'.PHP_EOL;
 echo '<br />'.PHP_EOL;
 echo '</div>'.PHP_EOL;
-if ($use_site == 'y') 
+if ($use_site) 
     echo('<h4>'.get_vocab('explain_default_area_and_room_and_site').'</h4>');
 else 
     echo('<h4>'.get_vocab('explain_default_area_and_room').'</h4>');
 // sélecteur de site
-if ($use_site == 'y') {
+if ($use_site) {
     echo '<div id="div_liste_sites" class="col col-xs-12">'.PHP_EOL;
     echo '<div class="form-group">'.PHP_EOL;
     echo '<label for="id_site" class="control-label col-md-3 col-sm-3 col-xs-4">'.get_vocab('default_site').get_vocab('deux_points').'</label>'.PHP_EOL;
@@ -502,7 +502,7 @@ echo '<div id="contenu_popup">'.PHP_EOL;
 echo '<table class="table">'.PHP_EOL;
 echo '    <thead>'.PHP_EOL;
 echo '    <tr>'.PHP_EOL;
-echo '      <th>'.'options \\ planning'.'</th>';
+echo '      <th>'.get_vocab('options_planning').'</th>';
 foreach($plan as $t){
     echo '<th>'.$t.'</th>';
 }    
@@ -529,7 +529,7 @@ echo '<p><em>'.get_vocab('display_planning_resa_msg').'</em></p>';
 echo '<table class="table">'.PHP_EOL;
 echo '    <thead>'.PHP_EOL;
 echo '    <tr>'.PHP_EOL;
-echo '      <th>'.'options \\ planning'.'</th>';
+echo '      <th>'.get_vocab('options_planning').'</th>';
 foreach($plan as $t){
     echo '<th>'.$t.'</th>';
 }    
@@ -843,7 +843,7 @@ echo '</form>';
 				id_site: $('#id_site').val(),
 				default_area : '<?php echo Settings::get('default_area'); ?>',
 				session_login:'<?php echo getUserName(); ?>',
-				use_site:'<?php echo $use_site; ?>',
+				use_site:'<?php ($use_site)? "y":"n" ; ?>',
 				type:'domaine',
 			},
 			success: function(returnData){

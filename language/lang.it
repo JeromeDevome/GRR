@@ -1,7 +1,7 @@
 <?php
 # GRR : fichier de langue italienne
 # GRR: Translations provided by JeromeB & Marc HENNETIER & Antony AUDOUARD
-# Last modification : 2026-05-22
+# Last modification : 2026-06-02
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -68,15 +68,13 @@ $vocab["admin_calend_ignore_option_delai_exp"] = "Pertanto, se la domenica non �
 $vocab["admin_calend_ignore_vacances"] = "Selezionare tutti i giorni di vacanza";
 $vocab["admin_calend_jour_cycle"] = "Calendario dei \"giorni ciclo\"";
 $vocab["admin_calend_vacances_feries"] = "Vacanze e giorni festivi";
-$vocab["admin_calendar_explain_1"] = "Questa procedura consente di prenotare o liberare molto rapidamente fasce orarie simultaneamente su più risorse di più domini e secondo un calendario.
-
-Esempio: è possibile bloccare per l'anno determinati giorni come i fine settimana, le vacanze, i giorni festivi...
-Attenzione: in caso di conflitto con prenotazioni esistenti, queste saranno automaticamente e irrimediabilmente eliminate a favore della nuova prenotazione. Inoltre, le persone interessate dalle eliminazioni non saranno avvisate via email.
-
-Questa procedura si svolge in tre fasi:
-Scelta del/i dominio/i e del tipo di azione
-Scelta delle risorse da prenotare, nome, descrizione e tipo di prenotazioni
-Scelta delle date e degli orari da prenotare su un calendario
+$vocab["admin_calendar_explain_1"] = "Questa procedura consente di prenotare o liberare molto rapidamente fasce orarie simultaneamente su più risorse di più domini e secondo un calendario.<br/>
+Esempio: è possibile bloccare per l'anno determinati giorni come i fine settimana, le vacanze, i giorni festivi...<br/>
+Attenzione: in caso di conflitto con prenotazioni esistenti, queste saranno automaticamente e irrimediabilmente eliminate a favore della nuova prenotazione. Inoltre, le persone interessate dalle eliminazioni non saranno avvisate via email.<br/>
+Questa procedura si svolge in tre fasi:<ol>
+<li>Scelta del/i dominio/i e del tipo di azione</li>
+<li>Scelta delle risorse da prenotare, nome, descrizione e tipo di prenotazioni</li>
+<li>Scelta delle date e degli orari da prenotare su un calendario</li></ol>
 Le modifiche effettive alle prenotazioni avvengono solo al termine della terza fase.";
 $vocab["admin_calendar_title"] = "Prenotazione/Cancellazione in blocco";
 $vocab["admin_cgu"] = "CGU";
@@ -741,6 +739,8 @@ $vocab["familyName"] = "Cognome :";
 $vocab["fiche_ressource"] = "Scheda di presentazione della risorsa";
 $vocab["fieldname"] = "Titolo del campo";
 $vocab["fieldtype"] = "Tipo del campo";
+$vocab["file_download_right"] = "Diritto di visualizzare i file";
+$vocab["file_upload_right"] = "Diritto di caricare i file";
 $vocab["filtreLdapSupp"] = "Filtro LDAP aggiuntivo";
 $vocab["fin_reservation"] = "Fine della prenotazione";
 $vocab["first_name"] = "Nome";
@@ -973,7 +973,7 @@ $vocab["maj_bdd_not_update"] = "ATTENZIONE: Il vostro database non sembra essere
 $vocab["maj_dispo"] = "Un aggiornamento è disponibile.";
 $vocab["maj_dispo_aucune"] = "Nessun aggiornamento disponibile.";
 $vocab["maj_do_update"] = "Cliccare sul pulsante seguente per effettuare l'aggiornamento alla versione ";
-$vocab["maj_go_www"] = "Recarsi sul sito di GRR per conoscere l'ultima versione: ";
+$vocab["maj_go_www"] = "Il sito web di GRR: ";
 $vocab["maj_good"] = "Aggiornamento effettuato (leggete attentamente il risultato dell'aggiornamento, in fondo pagina)";
 $vocab["maj_impossible_rechercher"] = "Impossibile cercare un aggiornamento.";
 $vocab["maj_no_update_to_do"] = "Non hai aggiornamenti del database da effettuare.";
@@ -1147,6 +1147,7 @@ $vocab["older_date_log"] = "Attualmente, il log contiene lo storico dal ";
 $vocab["one_connected"] = " persona connessa";
 $vocab["only_administrators"] = "Solo gli amministratori";
 $vocab["only_letters_and_numbers"] = "L'identificativo dell'utente deve essere composto solo da lettere e cifre!";
+$vocab["options_planning"] = "opzioni \\ planning";
 $vocab["optionsConnexion"] = "Opzioni di connessione:";
 $vocab["order_display"] = "Ordine di visualizzazione";
 $vocab["OU"] = "OPPURE";

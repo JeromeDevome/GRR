@@ -3,7 +3,7 @@
  * admin_right.php
  * Interface de gestion des droits de gestion des ressources par les utilisateurs sélectionnés
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-05-19 18:04$
+ * Dernière modification : $Date: 2026-06-02 11:13$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -491,7 +491,7 @@ foreach($candidats as $login => $value){
 echo '	</select>';
 echo '	<input type="hidden" name="id_area" value="'.$id_area.'" />';
 echo '	<input type="hidden" name="room" value="'.$room.'" />';
-echo '	<input type="submit" value="Enregistrer" />';
+echo '	<input type="submit" value="'.get_vocab('save').'" />';
 echo '</form>';
 echo '</td></tr>';
 // selection pour ajout de masse
@@ -512,7 +512,7 @@ if (count($candidats) > 0)
 	echo '</select>';
 	echo '	<input type="hidden" name="id_area" value="'.$id_area.'" />';
 	echo '	<input type="hidden" name="room" value="'.$room.'" />';
-	echo '	<input type="submit" value="Enregistrer"  onclick="selectionner_liste(this.form.reg_multi_admin_login);" />';
+	echo '	<input type="submit" value="'.get_vocab('save').'"  onclick="selectionner_liste(this.form.reg_multi_admin_login);" />';
 	echo '<script type="text/javascript">';
     echo '	vider_liste(document.getElementById(\'reg_multi_admin_login\')); ';
 	echo '</script>';
