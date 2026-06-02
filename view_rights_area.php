@@ -3,9 +3,9 @@
  * view_rights_area.php
  * Liste des privilèges d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-22 12:02$
+ * Dernière modification : $Date: 2026-06-01 11:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -59,6 +59,7 @@ $a_privileges = 'n';
 $req_admin = "SELECT u.login, u.nom, u.prenom, u.etat FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_useradmin_area j on u.login=j.login WHERE j.id_area =? ORDER BY u.nom, u.prenom";
 $res_admin = grr_sql_query($req_admin,"i",[$area_id]);
 $is_admin = '';
+$is_restreint = '';
 if ($res_admin)
 {
 	foreach($res_admin as $row)
