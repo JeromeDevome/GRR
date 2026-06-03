@@ -3,9 +3,9 @@
  * admin_import_entries_csv_direct.php
  * Importe un fichier de réservations au format csv comprenant les champs : date du jour, heure de début, heure de fin, ressource, description et type
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-04-28 17:52$
+ * Dernière modification : $Date: 2026-06-02 18:10$
  * @author    JeromeB & Yan Naessens & Denis Monasse & Laurent Delineau
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,7 +21,7 @@ include "../include/admin.inc.php";
 
 $back = "./admin_accueil.php?";
 $joursemaine=array("dim"=>0,"lun"=>1,"mar"=>2,"mer"=>3,"jeu"=>4,"ven"=>5,"sam"=>6);
-$journumero=array(0=>"dim",1=>"lundi",2=>"mardi",3=>"mercredi",4=>"jeudi",5=>"vendredi",6=>"samedi");
+$journumero=array(0=>"dimanche",1=>"lundi",2=>"mardi",3=>"mercredi",4=>"jeudi",5=>"vendredi",6=>"samedi");
 
 // $long_max : doit être plus grand que la plus grande ligne trouvée dans le fichier CSV
 $long_max = 8000;
@@ -46,7 +46,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
         // détermination du type de réservation
         $type_id = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_type_area WHERE type_letter=? ","s",[$type]);
         if($type_id == -1){
-            $erreur .= 'Type inconnu';
+            $erreur .= get_vocab('type_inconnu');
         }
         // on convertit la date en année, mois, jour
         $year = substr($date,0,4);settype($year,"integer");
@@ -58,21 +58,21 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
         $starttime = mktime($heure_deb, $minute_deb, 0, $month, $day, $year);
         // vérification du starttime 
         if($starttime < Settings::get("begin_bookings"))
-            $erreur .= 'Créneau hors limites';
+            $erreur .= get_vocab('out_of_bounds');
         // détermination de endtime
         $heure_fin = intval($heure_fin);
         $minute_fin = intval($minute_fin);
         $endtime = mktime($heure_fin,$minute_fin,0,$month,$day,$year);
         // vérification de endtime
         if($endtime > Settings::get("end_bookings")){
-            $erreur .= 'Créneau hors limites';
+            $erreur .= get_vocab('out_of_bounds');
         }
         if ($endtime <= $starttime)
-            $erreur .= 'Erreur début/fin';
+            $erreur .= get_vocab("error_begin_end_date");
         // On récupère la valeur de $area
         $area = mrbsGetRoomArea($room_id); 
         if(($room_id<=0) || ($area<=0)) 
-            $erreur .= "Erreur de salle";
+            $erreur .= get_vocab("error_room");
         
         if ($erreur != ''){// il y a une erreur, on sort
             return array(FALSE,$erreur);
@@ -98,7 +98,7 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
             // on vérifie que le créneau est bien libre
             $occupied=mrbsCheckFree($room_id, $starttime, $endtime, 0, 0,"../");
             if($occupied){ 
-                return array(FALSE, "créneau occupé".$occupied."</br>");
+                return array(FALSE, get_vocab("occupied_slot").$occupied."</br>");
                 $error_booking_room_out = true ;
             }
             //else{echo "créneau libre </br>";}
@@ -124,11 +124,11 @@ function ajoute_reservation($room_id,$date,$heure_deb,$minute_deb,$heure_fin,$mi
            $nbmaxparticipant = 0;
            $ecriture=mrbsCreateSingleEntry($starttime, $endtime, $entry_type, $repeat_id, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, "", $option_reservation,$overload_data, $moderate, $rep_jour_c, $statut_entry, $keys, $courrier, $nbmaxparticipant);
            if ($ecriture == 0){// erreur lors de la création de la réservation
-               return array(FALSE, "Erreur lors de la création de la réservation");
+               return array(FALSE, get_vocab("error_creating_entry"));
            }
            else {
                $room_name = grr_sql_query1("SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id =? ","i",[$room_id]);
-               $message = "Réservation ".$ecriture." posée ";
+               $message = sprintf(get_vocab('entry_recorded'),$ecriture);
                $message .= date('c',$starttime)." -> ".date('c',$endtime)." ; ".$room_name." ; ".$description." ; ".$type."</br>";
                return array(true,$message);
            }
@@ -163,19 +163,19 @@ function lit_csv_data(){
     $sql .= "KEY `id` (`id`)";
     $sql .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci";
     if(!grr_sql_query($sql)){
-        echo "Erreur dans la création de la table CSV";
+        echo get_vocab("error_creating_csv_table");
         die();
     }
     if(!grr_sql_query("TRUNCATE TABLE `".TABLE_PREFIX."_csv2` ")){
-        echo "Erreur dans le nettoyage de la table CSV";
+        echo get_vocab("error_cleaning_csv_table");
         die();
     }
     $file_path = $_FILES['csv']['tmp_name'];
     if($file_path == ""){
-      return [NULL,["Chemin de fichier vide"],0];
+      return [NULL,[get_vocab("empty_file_path")],0];
     }
     elseif(!$fp = fopen($file_path, 'r')){
-      return [NULL,["Erreur de lecture du fichier"],0];
+      return [NULL,[get_vocab("error_reading_file")],0];
     }
     else{
       $donnees = array();
@@ -239,7 +239,7 @@ function ecrit_csv_data(){
         return [$info,$erreur,$n];
     }
     else 
-        return ["","aucune donnée trouvée",0];
+        return ["",get_vocab("no_data_found"),0];
 }
 # print the page header
 start_page_w_header("","","","",$type="with_session", $page="admin");
@@ -251,12 +251,12 @@ if (isset($_GET['ok'])) {
 include "admin_col_gauche2.php";
 // affichage de la colonne de droite
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
-echo "<h2>Importation d'un fichier de réservations dans GRR</h2><hr />";
+echo "<h2>".get_vocab("csv_entries_title")."</h2><hr />";
 if(isset($_POST['import'])){
-    echo "<h2>Première étape de l'importation en cours, ne fermez pas la page</h2>";
+    echo "<h3>".get_vocab("csv_entries_intro1")."</h3>";
     $temps_debut=time();
     list($donnees,$erreurs,$nb_lignes) = lit_csv_data();
-    echo $nb_lignes." lignes de données ont été lues en ".(time()-$temps_debut)." secondes.<br />";
+    echo sprintf(get_vocab("csv_entries_read_time"),$nb_lignes,(time()-$temps_debut))."<br />";
     if (count($erreurs)>0)
       foreach($erreurs as $erreur){
         echo $erreur."<br/>";
@@ -267,7 +267,7 @@ if(isset($_POST['import'])){
       }
       echo '<form action="admin_import_entries_csv_direct.php" method="POST">';
       echo '<div class="center">'.PHP_EOL;
-      echo '<input type="submit" id="continue" value=" Importer les données lues ! " />'.PHP_EOL;
+      echo '<input type="submit" id="continue" value="'.get_vocab("import_data").'" />'.PHP_EOL;
       echo '</div>';
       echo '<input type="hidden" name="continue" value="1" />'.PHP_EOL;
       echo '</form>';
@@ -275,47 +275,40 @@ if(isset($_POST['import'])){
     else{
       echo '<form action="admin_import_entries_csv_direct.php" method="POST">';
       echo '<div class="center">'.PHP_EOL;
-      echo '<input type="submit" value=" Reprendre au début ! " />'.PHP_EOL;
+      echo '<input type="submit" value="'.get_vocab("redo_from_start").'" />'.PHP_EOL;
       echo '</div>';
       echo '</form>';
     }
 }
 elseif(isset($_POST['continue'])){
-    echo "<h2>Deuxième étape de l'importation : enregistrement des réservations</h2>";
+    echo "<h3>".get_vocab("csv_entries_intro2")."</h3>";
     $temps_debut=time();
     list($info,$erreurs,$nb_resas) = ecrit_csv_data();
-    echo "<p class='alert alert-info'>Importation de ".$nb_resas." réservations terminée au bout de ".(time()-$temps_debut)." secondes</p>";
+    echo "<p class='alert alert-info'>".sprintf(get_vocab("csv_entries_import_time"),$nb_resas,time()-$temps_debut)."</p>";
     if ($nb_resas != 0){
         echo $info;
     }
     if ($erreurs!=''){
-        echo "<br /><p class='alert alert-warning'>Des réservations n'ont pas pu être posées, veuillez consulter la liste ci-après :</p>";
+        echo "<br /><p class='alert alert-warning'>".get_vocab("csv_entries_missed")."</p>";
         echo $erreurs;
     }
 }
 else
 {   // show upload form
-    echo '<p>Utiliser ce script pour importer un fichier de réservation dans GRR</p>';
-    echo '<p class="text-warning">Il est conseillé de procéder à la sauvegarde de la base de données avant l\'importation</p>';
+    echo '<h3>'.get_vocab('csv_entries_intro').'</h3>';
+    echo '<p class="text-warning">'.get_vocab("admin_backup_recommande").'</p>';
     echo '<form action="admin_save_mysql.php" method="get">';
     echo '<input type="hidden" name="flag_connect" value="yes" />';
-    echo '<input type="submit" value="Lancer une sauvegarde" />';
+    echo '<input type="submit" value="'.get_vocab("submit_backup").'" />';
     echo '</form>';
     echo '<hr />';
-    echo '<p>Télécharger un fichier CSV codé en UTF-8 au format suivant:</p>';
-    echo '<code>date du jour; heure de début; heure de fin; ressource; description; type</code>';
-    echo '<p>par exemple</p>';
-    echo '<code>2001-01-01;12h00;14h00;Salle 1;Test;A</code>';
-    echo '<p>Le temps d\'importation est en général limité par le serveur à quelques minutes par fichier. 
-            Pour éviter une erreur de type "timeout" qui conduirait à une importation incomplète, 
-            scindez votre fichier en fichiers plus petits que vous importerez successivement.
-        </p>';
+    echo get_vocab('csv_entries_format');
     echo '<form enctype="multipart/form-data" action="./admin_import_entries_csv_direct.php" id="nom_formulaire" method="post" style="width: 100%;">'.PHP_EOL;
-    echo '<p><b>Fichier CSV</b>';
+    echo '<p><b>'.get_vocab("admin_import_users_csv0").'</b>';
     echo '<input type="file" name="csv" />';
     echo '<input type="hidden" name="import" id="import" value="1" /></p>'.PHP_EOL;
     echo '<div class="center">'.PHP_EOL;
-    echo '<input type="submit" id="import" value=" Importer le fichier de réservation ! " />'.PHP_EOL;
+    echo '<input type="submit" id="import" value="'.get_vocab('csv_entries_import').'" />'.PHP_EOL;
     echo '</div>';
     echo '</form>';
 }
