@@ -1,4 +1,4 @@
-Version 4.6.0 - Version béta - 18/05/26
+Version 4.6.0 - 04/06/2026 Généré par @JeromeDevome
 [Ajout] Drag & Drop des réservations - @JeromeDevome
 [Ajout]Gestion des accès aux ressources restreintes par groupe - @JeromeDevome
 [Ajout] Ajout du style des cellules associées à des réservations dont la liste des participants est complète - af1c971dc - @ynaessens
@@ -34,6 +34,7 @@ Version 4.6.0 - Version béta - 18/05/26
 [Correction] Demande de compte - Identifiant par défaut email - 72dd3db55 - @JeromeDevome
 [Correction] Ajout contrôle des droits de gestion pour les fichiers résa - d59e2ce1c - @JeromeDevome
 [Correction] Sécurité SQL - 6489a81bc - @JeromeDevome
+[Correction] Retour sur la bonne vue après supression d'un document dans la réservation - 429733f31 @JeromeDevome
 [Modification] Mise à jour des fichiers de langue - @ynaessens & @JeromeDevome
 [Modification] Refonte de l’envoi des e-mails - b47bedfbd - @JeromeDevome
 [Modification] Réorganisation des fonctions d’envoi des e-mails dans l’administration - d5ea2771e - @JeromeDevome
