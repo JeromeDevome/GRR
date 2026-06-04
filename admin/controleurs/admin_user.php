@@ -144,7 +144,7 @@ if ($res)
 
 			// Affichage des ressources gérées
 			$col[$i][3] = "";
-			if (Settings::get("module_multisite") == "Oui")
+			if (Settings::get("module_multisite") == 1)
 			{
 			// On teste si l'utilisateur administre un site
 				$test_admin_site = grr_sql_query1("SELECT count(s.id) FROM ".TABLE_PREFIX."_site s

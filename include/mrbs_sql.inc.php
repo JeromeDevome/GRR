@@ -123,7 +123,7 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
 	//Efface les résas concernées
 	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 	{
-		if (Settings::get("automatic_mail") == 'yes')
+		if (Settings::get("automatic_mail") == 1)
 			$_SESSION['session_message_error'] = send_mail($row[0],3,$dformat);
 		$result = mrbsDelEntry(getUserName(), $row[0], NULL , 1);
 	}
@@ -788,7 +788,7 @@ function mrbsGetRoomArea($id)
 }
 function mrbsGetAreaSite($id)
 {
-	if (Settings::get("module_multisite") == "Oui")
+	if (Settings::get("module_multisite") == 1)
 	{
 		$id = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area WHERE (id_area = '".$id."')");
 		return $id;

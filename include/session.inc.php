@@ -215,7 +215,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
                     $libelle_fonction_user = $tab_login["user_libelle_fonction"];
                     $language_user = $tab_login["user_language"];
                     $default_style_user = $tab_login["user_default_style"];
-                    if (Settings::get("sso_ac_corr_profil_statut")=='y')
+                    if (Settings::get("sso_ac_corr_profil_statut")== 1)
                         $_statut = effectuer_correspondance_profil_statut($code_fonction_user, $libelle_fonction_user);
 				}
                 //CAS ou :
@@ -592,7 +592,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
         }
     }
     // On teste si la connexion est active ou non
-    if ((Settings::get("disable_login")=='yes') and ($row['statut'] != "administrateur"))
+    if ((Settings::get("disable_login")==1) and ($row['statut'] != "administrateur"))
         return "2";
 
     // On teste si l'ip est autorisé
@@ -861,7 +861,7 @@ function grr_resumeSession()
 	}
 	if ((!isset($_SESSION)) or (!isset($_SESSION['login'])))
 		return (false);
-	if ((Settings::get("disable_login")=='yes') and ($_SESSION['statut'] != "administrateur"))
+	if ((Settings::get("disable_login")==1) and ($_SESSION['statut'] != "administrateur"))
 		return (false);
 	
 	// Si on à des heures de connexions autorisés
@@ -1059,14 +1059,14 @@ $basedn : chemin de recherche
 $login_attr : attribut de recherche
 $login : valeur prise par l'attribut
 $filtre_sup : filtre supplémentaire de recherche
-$diagnostic : "no" ou "yes"
-$diagnostic="yes" :
+$diagnostic : 0 ou 1
+$diagnostic=1 :
 -> mode utilisé dans les tests de connexion à l'annuaire (admin_config_ldap.php) et quand le mode diagnostic est activé.
 -> On renvoie différents codes d'erreur pour aider à l'analyse des résultats
-$diagnostic="no" :
+$diagnostic=0 :
 -> mode "normal" utilisé lors des connexions à l'annuaire pour se connecter à GRR.
 */
-function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "", $diagnostic = "no")
+function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "", $diagnostic = 0)
 {
 	$diagnostic = Settings::get("ActiveModeDiagnostic");
 	
@@ -1090,7 +1090,7 @@ function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "
 		if ((!is_array($info)) or ($info['count'] == 0))
 		{
 			// Mode diagnostic
-			if ($diagnostic =="y")
+			if ($diagnostic == 1)
 				return "error_2";
 			else
 				return false;
@@ -1098,7 +1098,7 @@ function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "
 		else if ($info['count'] > 1)
 		{
 			// Si plusieurs entrées, on accepte uniquement en mode diagnostic
-			if ($diagnostic=="y")
+			if ($diagnostic== 1)
 				return "error_3";
 			else
 				return false;
@@ -1109,7 +1109,7 @@ function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "
 	else
 	{
 		// Mode diagnostic
-		if ($diagnostic == "y")
+		if ($diagnostic == 1)
 			return "error_1";
 		else
 			// Mode normal

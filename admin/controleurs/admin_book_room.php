@@ -183,7 +183,7 @@ if ($action=='del_user')
 }
 
 // première étape : choisir parmi les ressources restreintes
-$multisite = Settings::get("module_multisite") == "Oui";
+$multisite = Settings::get("module_multisite") == 1;
 if($multisite)
   $sql = "SELECT r.id,room_name,area_name,sitename
           FROM ((`".TABLE_PREFIX."_room` r JOIN `".TABLE_PREFIX."_area` a ON r.area_id = a.id)

@@ -7,7 +7,7 @@
         </div>
 
         <!-- Sélection date directe -->
-        {% if settings.select_date_directe == "y" %}
+        {% if settings.select_date_directe == 1 %}
             <form method="GET" action="app.php" style="text-align: left;">
                 <input type="hidden" name="p" value="jour">
                 <input type='hidden' name='area' value='{{area}}'>
@@ -40,7 +40,7 @@
     <div id ="menuGauche2">
 
         <!-- Sélection date directe -->
-        {% if settings.select_date_directe == "y" %}
+        {% if settings.select_date_directe == 1 %}
             <form method="GET" action="app.php">
                 <input type="hidden" name="p" value="jour">
                 <input type='hidden' name='area' value='{{area}}'>
@@ -128,7 +128,7 @@
 {% endmacro %}
 
 {% macro dragAndDrop(settings, trad, d) %}
-	{% if settings.fct_drag_drop == 'y' and d.levelUser >= 2 %} <!-- Si le drag&drop est activé et que l'utilisateur est au minimum USAGER -->
+	{% if settings.fct_drag_drop == 1 and d.levelUser >= 2 %} <!-- Si le drag&drop est activé et que l'utilisateur est au minimum USAGER -->
         <script type="text/javascript">
 		$(function(){
 			// Réinitialiser le Drag&Drop dans un bloc propre (l'original peut contenir une erreur de syntaxe)

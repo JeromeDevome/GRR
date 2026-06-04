@@ -63,7 +63,7 @@ if ($info = mrbsGetEntryInfo($id))
 		showAccessDenied($back, 'SecuAccess::UserArea');
 		exit();
 	}
-	//if (Settings::get("automatic_mail") == 'yes')
+	//if (Settings::get("automatic_mail") == 1)
 	//	$_SESSION['session_message_error'] = send_mail($id,3,$dformat);
 	$room_id = grr_sql_query1("SELECT ".TABLE_PREFIX."_entry.room_id FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id AND ".TABLE_PREFIX."_entry.id='".$id."'");
 	$date_now = time();

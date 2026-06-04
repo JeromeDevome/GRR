@@ -23,7 +23,7 @@ $trad = $vocab;
 if (isset($_GET['url']))
 	$d['url'] = rawurlencode($_GET['url']);
 
-if(Settings::get("redirection_https") == "yes"){
+if(Settings::get("redirection_https") == 1){
 	if(!isset($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on")
 	{
 		header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"], true, 301);

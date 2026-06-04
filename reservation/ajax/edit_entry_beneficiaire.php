@@ -116,7 +116,7 @@ echo '      <input class="form-control" type="text" name="benef_ext_nom" value="
 echo '    </div>'.PHP_EOL;
 echo '  </div>'.PHP_EOL;
 $affiche_mess_asterisque = true;
-if (Settings::get("automatic_mail") == 'yes')
+if (Settings::get("automatic_mail") == 1)
 {
 	echo '<div class="form-group">'.PHP_EOL;
 	echo '    <div class="input-group">'.PHP_EOL;

@@ -40,11 +40,11 @@ if (isset($_GET['valid']) && ($_GET['valid'] == "yes"))
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE (start_time > ".Settings::get('end_bookings').")");
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_calendar WHERE DAY > ".Settings::get("end_bookings"));
 	}
-	header("Location: ?p=admin_config");
+	header("Location: ?p=admin_page_reservation");
 
 }
 else if (isset($_GET['valid']) && ($_GET['valid'] == "no"))
-	header("Location: ?p=admin_config");
+	header("Location: ?p=admin_page_reservation");
 
 
 get_vocab_admin("admin_confirm_change_date_bookings");

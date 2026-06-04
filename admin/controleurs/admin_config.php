@@ -26,18 +26,7 @@ get_vocab_admin("admin_config5");
 get_vocab_admin("admin_config6");
 get_vocab_admin("admin_config7");
 
-if (isset($_POST['title_home_page'])) {
-    if (!Settings::set('title_home_page', $_POST['title_home_page'])) {
-        echo "Erreur lors de l'enregistrement de title_home_page !<br />";
-        die();
-    }
-}
-if (isset($_POST['message_home_page'])) {
-    if (!Settings::set('message_home_page', $_POST['message_home_page'])) {
-        echo "Erreur lors de l'enregistrement de message_home_page !<br />";
-        die();
-    }
-}
+
 if (isset($_POST['company'])) {
     if (!Settings::set('company', $_POST['company'])) {
         echo "Erreur lors de l'enregistrement de company !<br />";
@@ -76,9 +65,9 @@ if (isset($_POST['grr_url'])) {
 }
 if (isset($_POST['ok'])) {
     if (isset($_POST['use_grr_url'])) {
-        $use_grr_url = 'y';
+        $use_grr_url = 1;
     } else {
-        $use_grr_url = 'n';
+        $use_grr_url = 0;
     }
     if (!Settings::set('use_grr_url', $use_grr_url)) {
         echo "Erreur lors de l'enregistrement de use_grr_url !<br />";
@@ -129,12 +118,11 @@ if (isset($_POST['ok'])) {
 		}
 	}
 
-
     // Selection date directe
     if(isset($_POST['select_date_directe']) && $_POST['select_date_directe'] = 'on')
-        $selectDateDirecte = 'y';
+        $selectDateDirecte = 1;
     else
-        $selectDateDirecte = 'n';
+        $selectDateDirecte = 0;
 
     if (!Settings::set('select_date_directe', $selectDateDirecte))
         $msg .= "Erreur lors de l'enregistrement de select_date_directe !<br />";

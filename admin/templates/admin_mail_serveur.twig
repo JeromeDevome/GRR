@@ -104,7 +104,11 @@
 
 							{{ form.input('mail_test', trad.mail_test, '', {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
 
-							<label><input type="checkbox" name="grr_mail_Bcc" value="y"  {% if settings.grr_mail_Bcc == 'y' %} checked {% endif %} /> {{ trad.copie_cachee }}</label>
+							<label><input type="checkbox" name="grr_mail_Bcc" value="1" {% if settings.grr_mail_Bcc == 1 %} checked {% endif %} /> {{ trad.copie_cachee }}</label>
+							<br>
+							<label><input type="checkbox" name="log_mail" value="1" {% if settings.log_mail == 1 %} checked {% endif %} /> {{ trad.Activer_log_email }}</label>
+
+
 							
 						</section>
 

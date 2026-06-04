@@ -171,6 +171,154 @@ $config_variables = array(
 	"gcTailleMaxDocResa",
 	);
 
+// Liste des paramètres de la table setting, avec leur valeur par défaut
+$liste_settings = array(
+	"acces_fiche_reservation" => "0",
+	"ActiveModeDemo" => "0",
+	"ActiveModeDiagnostic" => "0", // n => 0
+	"allow_gestionnaire_modify_del" => "1",
+	"allow_search_level" => "1",
+	"allow_user_delete_after_begin" => "0",
+	"allow_users_modify_affichage" => "2",
+	"allow_users_modify_domaine" => "2",
+	"allow_users_modify_email" => "2",
+	"allow_users_modify_langue" => "2",
+	"allow_users_modify_mdp" => "2",
+	"allow_users_modify_profil" => "2",
+	"allow_users_modify_theme" => "2",
+	"area_list_format" => "item",
+	"authentification_obli" => "1",
+	"automatic_mail" => "1", // n => no
+	"backup_date" => "",
+	"begin_bookings" => mktime(0, 0, 0, 1, 1, date('Y')),
+	"cacher_lien_deconnecter" => "0", // n => 0
+	"calcul_plus_mois" => "1", // n => 0
+	"calcul_plus_mois2_all" => "1", // n => 0
+	"calcul_plus_semaine_all" => "1",// n => 0
+	"cas_port" => "",
+	"cas_racine" => "",
+	"cas_serveur" => "",
+	"cas_version" => "CAS_VERSION_2_0",
+	"company" => "Nom de votre organisation",
+	"ConvertLdapUtf8toIso" => "0",// n => 0
+	"default_css" => "default",
+	"default_language" => "fr-fr",
+	"default_report_days" => "30",
+	"default_room" => "-1",
+	"default_site" => "-1",
+	"disable_login" => "0", // n => 0
+	"display_beneficiaire_ad" => "1",
+	"display_beneficiaire_gr" => "1",
+	"display_beneficiaire_nc" => "1",
+	"display_beneficiaire_us" => "1",
+	"display_beneficiaire_vi" => "1",
+	"display_full_description_ad" => "1",
+	"display_full_description_gr" => "1",
+	"display_full_description_nc" => "1",
+	"display_full_description_us" => "1",
+	"display_full_description_vi" => "1",
+	"display_horaires_ad" => "1",
+	"display_horaires_gr" => "1",
+	"display_horaires_nc" => "1",
+	"display_horaires_us" => "1",
+	"display_horaires_vi" => "1",
+	"display_level_email" => "0",
+	"display_level_view_entry" => "0",
+	"display_short_description_ad" => "1",
+	"display_short_description_gr" => "1",
+	"display_short_description_nc" => "1",
+	"display_short_description_us" => "1",
+	"display_short_description_vi" => "1",
+	"display_type_ad" => "1",
+	"display_type_gr" => "1",
+	"display_type_nc" => "1",
+	"display_type_us" => "1",
+	"display_type_vi" => "1",
+	"end_bookings" => mktime(23, 59, 59, 12, 31, date('Y') + 3),
+	"envoyer_email_avec_formulaire" => "0", // n => no
+	"fct_crea_cpt" => "0", // n => 0
+	"fct_drag_drop" => "0", // n => 0
+	"fct_echange_resa" => "0", // n => 0
+	"file" => "1",
+	"firstversion" => "",
+	"gestion_lien_aide" => "ext",
+	"grr_mail_Bcc" => "0", // n => 0
+	"grr_mail_method" => "bloque",
+	"grr_mail_Password" => "",
+	"grr_mail_smtp" => "",
+	"grr_mail_Username" => "",
+	"grr_url" => "",
+	"holidays_zone" => "A",
+	"horaireconnexiona" => "",
+	"horaireconnexionde" => "",
+	"imprimante" => "1",
+	"ip_autorise" => "",
+	"javascript_info_admin_disabled" => "0",
+	"javascript_info_disabled" => "0",
+	"jour_debut_Jours_Cycles" => "1",
+	"jours_cycles_actif" => "0", // n => no
+	"langues_dispo" => "fr-fr;en-gb;de-de;it-it;es-es",
+	"ldap_champ_email" => "mail",
+	"ldap_champ_nom" => "sn",
+	"ldap_champ_prenom" => "givenname",
+	"ldap_champ_recherche" => "uid",
+	"legend" => "1",
+	"lien_aide" => "",
+	"log_mail" => "0",
+	"login_logo" => "1",
+	"login_nom" => "1",
+	"login_template" => "1",
+	"longueur_liste_ressources_max" => "20",
+	"mail_contact_resa_captcha" => "0", // n => 0
+	"mail_destinataire" => "test@test.fr",
+	"mail_etat_destinataire" => "0",
+	"mail_user_destinataire" => "1", // n => 0
+	"mail_user_obligatoire" => "0", // n => 0
+	"maj194_champs_additionnels" => "1",
+	"maj195_champ_rep_type_grr_repeat" => "1",
+	"maj196_qui_peut_reserver_pour" => "1",
+	"menu_gauche" => "1",
+	"message_home_page" => "En raison du caractère personnel du contenu, ce site est soumis à des restrictions utilisateurs. Pour accéder aux outils de réservation, identifiez-vous :",
+	"module_multisite" => "0", // n => 0
+	"nb_calendar" => "1",
+	"nextalertemailhebdo" => "1735686000",
+	"nombre_jours_Jours_Cycles" => "1",
+	"pass_leng" => "8",
+	"pass_nb_ch" => "1",
+	"pass_nb_maj" => "1",
+	"pass_nb_min" => "1",
+	"pass_nb_sp" => "1",
+	"periodicite" => "1", // n => 0
+	"pview_new_windows" => "1",
+	"redirection_https" => "0", // n => 0
+	"remplissage_description_breve" => "1",
+	"remplissage_description_complete" => "0",
+	"select_date_directe" => "1", // n => 0
+	"sessionMaxLength" => "60",
+	"show_courrier" => "0", // n => 0
+	"show_holidays" => "0", // n => 0
+	"smtp_allow_self_signed" => "false",
+	"smtp_port" => "25",
+	"smtp_secure" => "",
+	"smtp_verify_depth" => "3",
+	"smtp_verify_peer_name" => "true",
+	"smtp_verify_peer" => "true",
+	"sso_ac_corr_profil_statut" => "0", // n => 0
+	"sso_IsNotAllowedModify" => "0", // n => 0
+	"sso_redirection_accueil_grr" => "0", // n => 0
+	"technical_support_email" => "",
+	"title_home_page" => "Gestion et Réservation de Ressources",
+	"url_disconnect" => "",
+	"use_fckeditor" => "1",
+	"use_grr_url" => "0", // n => 0
+	"UserAllRoomsMaxBooking" => "-1",
+	"verif_reservation_auto" => "0",
+	"version" => $version_bdd,
+	"visu_fiche_description" => "0",
+	"webmaster_email" => "",
+	"webmaster_name" => "Webmestre de GRR"
+);
+
 # Compatibilité avec les version inférieures à 1.9.6
 if ((!isset($table_prefix)) or ($table_prefix==''))
 	$table_prefix="grr";

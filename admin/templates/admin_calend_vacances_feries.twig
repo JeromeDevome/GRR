@@ -22,7 +22,7 @@
 				<div class="box-body no-padding">
 					<p>{{ trad.vacances_feries_description }}</p>
 
-					{% if settings.show_holidays != 'Oui' %}
+					{% if settings.show_holidays != 1 %}
 						<p>Il faut activer l'affichage des vacances et jours fériés pour continuer...</p>
 						<p><a href="?p=admin_config6" >Cliquer ici pour activer l'affichage des vacances et jours fériés</a>
 					{% elseif trad.dTypeDefinition == 'F' %}

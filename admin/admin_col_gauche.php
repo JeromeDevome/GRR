@@ -69,18 +69,41 @@ $menuAdminTN2 = array();
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 4)
 	afficheLienNiveau1('admin_accueil', 'fa fa-tachometer-alt', 1);
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
-	afficheLienNiveau1('admin_config', 'fa fa-cogs', 1);
+	afficheLienNiveau1('admin_config3', 'fa fa-cogs', 1);
+
+// Affichage
+$liste = array();
+if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_page_generale';
+if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_page_connexion';
+if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_page_compte';
+if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 4)
+	$liste[] = 'admin_page_reservation';
+if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_page_stat';
+if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_cgu';
+foreach ($menuAdminComplNiv2Mail as list($droit, $lien, $icone)) {
+	if(SecuAccess::UserLevel(getUserName(), -1, 'area') >= $droit)
+		$liste[] = $lien;
+}
+
+afficheLienNiveau2("admin_menu_page", "fa fa-pager",$liste,$iN2++);
+
+
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	afficheLienNiveau1('admin_type', 'fa fa-tags', 1);
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	afficheLienNiveau1('admin_calend_ignore', 'fa fa-calendar-times', 1);
-if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get('show_holidays') == 'Oui'))
+if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get('show_holidays') == 1))
 	afficheLienNiveau1('admin_calend_vacances_feries', 'fa fa-calendar-minus', 1);
-if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("jours_cycles_actif") == "Oui"))
+if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("jours_cycles_actif") == 1))
 	afficheLienNiveau1('admin_calend_jour_cycle1', 'fa fa-redo ', 1);
 
 
-if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("module_multisite") == "Oui"))
+if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("module_multisite") == 1))
 	afficheLienNiveau1('admin_site', 'fa fa-building', 1);
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 4)
 	afficheLienNiveau1('admin_room', 'fa fa-folder', 1);
@@ -92,13 +115,13 @@ if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 4)
 $liste = array();
 if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) || (SecuAccess::UserLevel(getUserName(), -1, 'user') == 1))
 	$liste[] = 'admin_user';
-if ( ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) || (SecuAccess::UserLevel(getUserName(), -1, 'user') == 1)) && (Settings::get('fct_crea_cpt') == 'y'))
+if ( ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) || (SecuAccess::UserLevel(getUserName(), -1, 'user') == 1)) && (Settings::get('fct_crea_cpt') == 1))
 	$liste[] = 'admin_user_demandes';
 if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) || (SecuAccess::UserLevel(getUserName(), -1, 'user') == 1))
 	$liste[] = 'admin_groupe';
-if ((Settings::get("module_multisite") == "Oui") && (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6))
+if ((Settings::get("module_multisite") == 1) && (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6))
 	$liste[] = 'admin_admin_site';
-if ((Settings::get("module_multisite") == "Oui") && (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6))
+if ((Settings::get("module_multisite") == 1) && (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6))
 	$liste[] = 'admin_access_site';
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_right_admin';
@@ -109,7 +132,7 @@ if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 4)
 	$liste[] = 'admin_book_room';
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 4)
 	$liste[] = 'admin_right';
-if ( (Settings::get("sso_ac_corr_profil_statut") == 'y') && (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 5) )
+if ( (Settings::get("sso_ac_corr_profil_statut") == 1) && (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 5) )
 	$liste[] = 'admin_corresp_statut';
 foreach ($menuAdminComplNiv2User as list($droit, $lien, $icone)) {
 	if(SecuAccess::UserLevel(getUserName(), -1, 'area') >= $droit)
@@ -146,9 +169,9 @@ if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 4)
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_page';
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
-	$liste[] = 'admin_cgu';
-if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_couleurs';
+if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_config5';
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_infos';
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)

@@ -59,7 +59,7 @@
 										<option value="2" {% if ressource.who_can_see == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
 										<option value="3" {% if ressource.who_can_see == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
 										<option value="4" {% if ressource.who_can_see == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
-										{% if settings.module_multisite == 'Oui' %}
+										{% if settings.module_multisite == 1 %}
 											<option value="5" {% if ressource.who_can_see == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
 										{% endif %}
 										<option value="6" {% if ressource.who_can_see == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>

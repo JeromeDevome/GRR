@@ -33,7 +33,7 @@
 									<input type="checkbox" name="access" value="y" {% if domaine.access == 'r' %} checked {% endif %}>
 								</div>
 							</div>
-							{% if settings.module_multisite == 'Oui' %}
+							{% if settings.module_multisite == 1 %}
 								<div class="form-group row col-sm-12">
 									<label class="col col-sm-4" for="id_site">{{ trad.site }}</label>
 									<div class="col col-sm-8">

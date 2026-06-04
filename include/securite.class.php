@@ -28,6 +28,7 @@ class SecuChaine {
     CleanLogin: Supprime les caractères non autorisés d’un identifiant utilisateur.
     Alphanumeric: Conserve uniquement les caractères Alphanumericériques, - et _.
     GetFormVar: Récupère une variable GET, POST ou COOKIE avec typage optionnel.
+    Numeric: Conserve uniquement les caractères numériques d’une chaîne.
     ProtectDataSql: Protège une donnée contre les injections SQL via mysqli_real_escape_string.
     Unslashes: Supprime les antislashs ajoutés par magic_quotes_gpc.
     ValideCouleur: Valide et reformate une couleur hexadécimale.
@@ -81,6 +82,69 @@ class SecuChaine {
         if ((isset($valeur)) && (($type =='int')||($type =='string')))
             settype($valeur,$type);
         return $valeur;
+    }
+
+    /* récupère les variables passées par GET ou POST ou bien par COOKIE, avec validation de sécurité
+     * @param string $nom - The name of the variable to retrieve
+     * @param string $type - The expected type of the variable (default is empty, can be 'int', 'string', 'alphanumeric', 'email', 'ip', 'port', 'color')
+     * @param mixed $default - The default value if the variable is not found
+     * @return mixed - The retrieved and secured variable or the default value
+    */
+    public static function GetFormVarSecure($nom, $type='', $default=NULL){
+        $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE[$nom])? $_COOKIE[$nom] : $default));
+        
+        if (isset($valeur) && $valeur !== '') {
+            switch($type) {
+                case 'int':
+                    $valeur = SecuChaine::Numeric($valeur);
+                    break;
+                case 'alphanumeric':
+                    $valeur = SecuChaine::Alphanumeric($valeur);
+                    break;
+                case 'string':
+                    $valeur = SecuChaine::CleanInput($valeur);
+                    break;
+                case 'email':
+                    $valeur = trim($valeur);
+                    if (!SecuChaine::ValideMail($valeur))
+                        $valeur = $default;
+                    break;
+                case 'ip':
+                    if (!SecuChaine::ValideNetworkIp($valeur))
+                        $valeur = $default;
+                    break;
+                case 'port':
+                    $valeur = SecuChaine::ValideNetworkPort($valeur);
+                    if ($valeur === '')
+                        $valeur = $default;
+                    break;
+                case 'color':
+                    $valeur = SecuChaine::ValideCouleur($valeur);
+                    break;
+                default:
+                    // Pour les types PHP standards (int, string, etc.)
+                    if (in_array($type, ['int', 'integer', 'string', 'bool', 'boolean', 'float', 'double', 'array', 'object'])) {
+                        settype($valeur, $type);
+                    }
+                    break;
+            }
+        }
+        
+        return $valeur;
+    }
+
+    /* Elimine d'une chaîne tous les caractères non numériques
+     * @param string $data - The input data to clean
+     * @return int - The cleaned data
+    */
+    public static function Numeric($data){
+
+        if($data == 'on')
+            return 1;
+        elseif($data == 'off')
+            return 0;
+
+        return (int) preg_replace('/(?!^)-|[^\d-]/', '', (string) $data);
     }
 
     /* Transforms a string into a format safe for SQL queries, preventing SQL injection.
@@ -420,7 +484,7 @@ class SecuAccess {
         $res = grr_sql_query($sql);
         if (grr_sql_count($res) != "0")
             return 1;
-        if (Settings::get("module_multisite") == "Oui")
+        if (Settings::get("module_multisite") == 1)
         {
             $id_site = mrbsGetAreaSite($id);
             $sql = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".$id_site."' AND j.login='".SecuChaine::ProtectDataSql($user)."'";
@@ -506,7 +570,7 @@ class SecuAccess {
                 $id_area = grr_sql_query1("SELECT area_id FROM ".TABLE_PREFIX."_room WHERE id='".SecuChaine::ProtectDataSql($id)."'");
                 // calcul de l'id du site
                 $id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".SecuChaine::ProtectDataSql($id_area)."'");
-                if (Settings::get("module_multisite") == "Oui")
+                if (Settings::get("module_multisite") == 1)
                 {
                     $res3 = grr_sql_query("SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".SecuChaine::ProtectDataSql($id_site)."' AND j.login='".SecuChaine::ProtectDataSql($user)."'");
                     if (grr_sql_count($res3) > 0)
@@ -538,7 +602,7 @@ class SecuAccess {
             {
                 if ($id == '-1')
                 {
-                    if (Settings::get("module_multisite") == "Oui")
+                    if (Settings::get("module_multisite") == 1)
                     {
                     //On regarde si l'utilisateur est administrateur d'un site quelconque
                         $res2 = grr_sql_query("SELECT u.login
@@ -556,7 +620,7 @@ class SecuAccess {
                 }
                 else
                 {
-                    if (Settings::get("module_multisite") == "Oui")
+                    if (Settings::get("module_multisite") == 1)
                     {
                     // On regarde si l'utilisateur est administrateur du site auquel le domaine $id appartient
                         $id_site = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area  WHERE id_area='".SecuChaine::ProtectDataSql($id)."'");
@@ -575,7 +639,7 @@ class SecuAccess {
                 return 2;
             }
             // On regarde si l'utilisateur est administrateur d'un site
-            if (($type == 'site') and (Settings::get("module_multisite") == "Oui"))
+            if (($type == 'site') and (Settings::get("module_multisite") == 1))
             {
                 if ($id == '-1')
                 {
@@ -687,7 +751,7 @@ class SecuAccess {
         $res = grr_sql_query($sql);
         if (grr_sql_count($res) != "0")
             return 1;
-        if (Settings::get("module_multisite") == "Oui")
+        if (Settings::get("module_multisite") == 1)
         {
             $id_site = mrbsGetAreaSite($id);
             $sql = "SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site j WHERE j.id_site='".$id_site."' AND j.login='".SecuChaine::ProtectDataSql($user)."'";

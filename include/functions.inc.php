@@ -311,7 +311,7 @@ function get_request_uri()
 	{
 		if (!isset($_SERVER['QUERY_STRING']))
 			$_SERVER['QUERY_STRING'] = "";
-		if ((Settings::get("use_grr_url") == "y") && (Settings::get("grr_url") != ""))
+		if ((Settings::get("use_grr_url") == 1) && (Settings::get("grr_url") != ""))
 		{
 			if (substr(Settings::get("grr_url"), -1) != "/")
 				$ad_signe = "/";
@@ -374,7 +374,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 		}
 	}
 
-	if (Settings::get("envoyer_email_avec_formulaire") == "yes")
+	if (Settings::get("envoyer_email_avec_formulaire") == 1)
 	{
 		if ($_email == "")
 		{
@@ -603,7 +603,7 @@ function resaToModerate($user)
 
     if (SecuAccess::UserLevel($user,-1) > 5) // admin général
     {
-        if (Settings::get("module_multisite") == "Oui")
+        if (Settings::get("module_multisite") == 1)
         {
             $sql = "SELECT e.id,r.room_name,e.start_time,e.create_by,e.beneficiaire,a.area_name,s.sitename FROM ".TABLE_PREFIX."_entry e JOIN ".TABLE_PREFIX."_room r ON e.room_id = r.id JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id JOIN ".TABLE_PREFIX."_j_site_area jsa ON a.id = jsa.id_area JOIN ".TABLE_PREFIX."_site s ON jsa.id_site = s.id WHERE e.moderate = 1 AND e.supprimer = 0 ";
             $res = grr_sql_query($sql);
@@ -636,7 +636,7 @@ function resaToModerate($user)
 
     // Requête optimisée qui récupère directement les réservations à modérer
     // sans charger toutes les ressources en mémoire
-    if (Settings::get("module_multisite") == "Oui")
+    if (Settings::get("module_multisite") == 1)
     {
         $sql = "
             SELECT DISTINCT e.id, r.room_name, e.start_time, e.create_by, e.beneficiaire, a.area_name, s.sitename
@@ -687,7 +687,7 @@ function resaToModerate($user)
         $i = 0;
         while (($a = grr_sql_row($res, $i++)))
         {
-            if (Settings::get("module_multisite") == "Oui")
+            if (Settings::get("module_multisite") == 1)
             {
                 $resas[$i] = array('id' => $a[0],'room' => $a[1],'start_time' => $a[2],'create_by' => $a[3],'beneficiaire' => $a[4],'area' => $a[5],'site' => $a[6]);
             }
@@ -990,7 +990,7 @@ function page_accueil($param = 'no')
 		$page_accueil = 'app.php?p=mois2_all&area='.$defaultarea;
 	else
 		$page_accueil = 'app.php?p=semaine&area='.$defaultarea.'&amp;room='.$defaultroom;
-	if ((Settings::get("module_multisite") == "Oui") && ($defaultsite > 0))
+	if ((Settings::get("module_multisite") == 1) && ($defaultsite > 0))
 		$page_accueil .= '&amp;id_site='.$defaultsite;
 	if ($param == 'yes')
 		$page_accueil .= '&amp;';
@@ -1252,7 +1252,7 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 					$d['lienConnexion'] = $resulHook['hookLienConnexion3'];
 				// Déconnexion
 				$disconnect_link = false;
-				if (!((Settings::get("cacher_lien_deconnecter") == 'y') && (isset($_SESSION['est_authentifie_sso']))))
+				if (!((Settings::get("cacher_lien_deconnecter") == 1) && (isset($_SESSION['est_authentifie_sso']))))
 				{
 					$disconnect_link = true;
 					if (Settings::get("authentification_obli") == 1)
@@ -1622,7 +1622,7 @@ function compare_ip_adr($ip1, $ips2)
 function get_default_area($id_site = -1)
 {
 	global $gOptionIp;
-	if (Settings::get("module_multisite") == "Oui")
+	if (Settings::get("module_multisite") == 1)
 		$use_multisite = true;
 	else
 		$use_multisite = false;
@@ -2120,7 +2120,7 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 {
 	global $vocab;
     $out_html = "";//$link. $current_site. $current_area. $year. $month. $day. $user.'<br />'.PHP_EOL;
-	if (Settings::get("module_multisite") == "Oui")
+	if (Settings::get("module_multisite") == 1)
 	{
 		// on a activé les sites
 		if ($current_site != -1)
@@ -2183,7 +2183,7 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 function make_area_select_all_html( $link, $current_site, $current_area, $year, $month, $day, $user)
 {
 	global $vocab;
-	if (Settings::get("module_multisite") == "Oui")
+	if (Settings::get("module_multisite") == 1)
 		$use_multi_site = 'y';
 	else
 		$use_multi_site = 'n';
@@ -2311,7 +2311,7 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 {
 	global $vocab;
 	// On affiche le site
-	if (Settings::get("module_multisite") == "Oui")
+	if (Settings::get("module_multisite") == 1)
 	{
 		$sql = "SELECT id,sitename
 		FROM ".TABLE_PREFIX."_site
@@ -2400,7 +2400,7 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 function make_area_list_html($link, $current_site, $current_area, $year, $month, $day, $user)
 {
 	global $vocab;
-	if (Settings::get("module_multisite") == "Oui")
+	if (Settings::get("module_multisite") == 1)
 		$use_multi_site = 'y';
 	else
 		$use_multi_site = 'n';
@@ -2588,7 +2588,7 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 function make_area_item_html( $link, $current_site, $current_area, $year, $month, $day, $user)
 {
 	global $vocab;
-	if (Settings::get("module_multisite") == "Oui")
+	if (Settings::get("module_multisite") == 1)
 	{// on a activé les sites
 		if ($current_site != -1)
 			$sql = "SELECT a.id, a.area_name,a.access
@@ -2903,7 +2903,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		}
 		elseif ($rep_type == 6) // Cycles de jours
 		{
-			if (Settings::get("jours_cycles_actif") == "Oui")
+			if (Settings::get("jours_cycles_actif") == 1)
 				$resaPeriodique .= $vocab["rep_type_6"].preg_replace("/ /", " ",$vocab["deux_points"]).ucfirst(substr($vocab["rep_type_6"],0,1)).$jours_cycle."\n";
 		}
 		$resaPeriodique .= $vocab["rep_end_date"]." ".$rep_end_date."\n";
@@ -3602,15 +3602,22 @@ function verif_heure_debut_fin($start_time,$end_time,$area)
  *
  * Returns: Nothing
  */
-function VerifyModeDemo() {
-	if (Settings::get("ActiveModeDemo") == 'y')
+function VerifyModeDemo($force = true) {
+	if (Settings::get("ActiveModeDemo") == 1)
 	{
-		//print_header_twig();
-		echo "<h1>Opération non autorisée</h1>
-		<p>Vous êtes dans une <b>version de démonstration de GRR</b>.
-			<br />Certaines fonctions ont été volontairement bridées. C'est le cas pour l'opération que vous avez tenté d'effectuer.</p>
-		</body></html>";
-		die();
+		if($force == true)
+		{
+			//print_header_twig();
+			echo "<h1>Opération non autorisée</h1>
+			<p>Vous êtes dans une <b>version de démonstration de GRR</b>.
+				<br />Certaines fonctions ont été volontairement bridées. C'est le cas pour l'opération que vous avez tenté d'effectuer.</p>
+			</body></html>";
+			die();
+		}
+		else // Cas dans certaines fonctions (Paramètres settings) sont bridées mais pas toutes, on retourne juste false pour que la fonction appelante puisse gérer le cas.
+		{
+			return true;
+		}
 	}
 }
 /* MajMysqlModeDemo()
@@ -3619,9 +3626,10 @@ function VerifyModeDemo() {
  *
  */
 function MajMysqlModeDemo() {
+	global $vocab;
 		// Nom du fichier sql à exécuter
 	$fic_sql = "grr_maj_quotidienne.sql";
-	if ((Settings::get("ActiveModeDemo") == 'y') && (file_exists($fic_sql)))
+	if ((Settings::get("ActiveModeDemo") == 1) && (file_exists($fic_sql)))
 	{
 		$date_now = mktime(0,0,0,date("m"),date("d"),date("Y"));
 		if ((Settings::get("date_verify_demo") == "") || (Settings::get("date_verify_demo") < $date_now))
@@ -3936,7 +3944,7 @@ function verify_confirm_reservation()
 				{
 					for ($j = 0; ($row2 = grr_sql_row($res2, $j)); $j++)
 					{
-						if (Settings::get("automatic_mail") == 'yes')
+						if (Settings::get("automatic_mail") == 1)
 							$_SESSION['session_message_error'] = send_mail($row2[0],4,$dformat);
 						// On efface la réservation
 						grr_sql_command("UPDATE ".TABLE_PREFIX."_entry SET supprimer = 1 WHERE id=" . $row2[0]);
@@ -3965,7 +3973,7 @@ function verify_retard_reservation()
 	$month = date("m");
 	$year  = date("Y");
 	$date_now = mktime(0, 0, 0, $month, $day, $year);
-	if (((Settings::get("date_verify_reservation2") == "") || (Settings::get("date_verify_reservation2") < $date_now )) && (Settings::get("automatic_mail") == 'yes'))
+	if (((Settings::get("date_verify_reservation2") == "") || (Settings::get("date_verify_reservation2") < $date_now )) && (Settings::get("automatic_mail") == 1))
 	{
 		$res = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_room");
 		if (!$res)
@@ -4008,7 +4016,7 @@ function mail_hebdo()
 	if (Settings::get('grr_mail_method') == 'bloque') // Mail désactivé
 		$envoisOk = false;
 	
-	if (Settings::get("automatic_mail") != 'yes') // Mail automatique désactivé
+	if (Settings::get("automatic_mail") != 1) // Mail automatique désactivé
 		$envoisOk = false;
 
 	if($envoisOk){
@@ -4315,7 +4323,7 @@ function find_active_user_room ($id_room)
 		}
 	}
 	// Si la table des emails des administrateurs du domaines est vide, on avertit les administrateurs des sites
-	if (Settings::get("module_multisite") == "Oui")
+	if (Settings::get("module_multisite") == 1)
 	{
 		if (count($emails) == 0)
 		{
@@ -4416,7 +4424,7 @@ function traite_grr_url($grr_script_name = "", $force_use_grr_url = "n")
 {
 	// Dans certaines configuration (reverse proxy, ...) les variables $_SERVER["SCRIPT_NAME"] ou $_SERVER['PHP_SELF']
 	// sont mal interprétées entraînant des liens erronés sur certaines pages.
-	if (((Settings::get("use_grr_url") == "y") && (Settings::get("grr_url") != "")) || ($force_use_grr_url == "y"))
+	if (((Settings::get("use_grr_url") == 1) && (Settings::get("grr_url") != "")) || ($force_use_grr_url == "y"))
 	{
 		if (substr(Settings::get("grr_url"), -1) != "/")
 			$ad_signe = "/";
@@ -4644,7 +4652,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		$affichage .= "<i class=\"icone fa-solid fa-key\"></i> ";
 	
 	// Courrier
-	if (Settings::get('show_courrier') == 'y')
+	if (Settings::get('show_courrier') == 1)
 	{
 		if($resa[14] == 1)
 			$affichage .= "<i class=\"icone fa-solid fa-envelope\"></i> ";
@@ -4903,7 +4911,7 @@ function lien_compact($resa)
 	if($resa[13] == 1)
 		$affichage .= "<i class=\"icone fa-solid fa-key\"></i> ";
 	// Courrier
-	if (Settings::get('show_courrier') == 'y')
+	if (Settings::get('show_courrier') == 1)
 	{
 		if($resa[14] == 1)
 			$affichage .= " <i class=\"icone fa-solid fa-envelope\"></i> ";

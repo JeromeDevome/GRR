@@ -463,7 +463,7 @@ if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_
 }
 
 
-if (Settings::get('module_multisite') == 'Oui') {
+if (Settings::get('module_multisite') == 1) {
 	$d['use_site'] = 'y';
 	$trad['explain_default_area_and_room'] = get_vocab('explain_default_area_and_room_and_site');
 } else {
@@ -473,7 +473,7 @@ if (Settings::get('module_multisite') == 'Oui') {
 
 
 // Liste des sites
-if (Settings::get('module_multisite') == 'Oui') {
+if (Settings::get('module_multisite') == 1) {
     $sql = 'SELECT id,sitecode,sitename
 	FROM '.TABLE_PREFIX.'_site
 	ORDER BY id ASC';
@@ -515,7 +515,7 @@ while ($i < count($liste_language)) {
 }
 
 // Choix de la zone de vacances scolaires (France), uniquement si l'affichage des vacances et fériés est activé
-if (Settings::get('show_holidays') == 'Oui'){
+if (Settings::get('show_holidays') == 1){
 	$d['optionVacances'] = "";
     $vacances = simplexml_load_file('../include/vacances.xml');
     $libelle = $vacances->academies->children();

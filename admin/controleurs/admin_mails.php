@@ -26,6 +26,9 @@ if (!Pages::load()) {
 }
 $msg = "";
 /* Enregistrement de la page */
+
+// ! A faire, selon langues activé ou non. Ne pas oublier de mettre un hidden par langue pour ne pas reset les templates non chargés
+
 if(isset($_POST['ok']))
 {
     foreach($liste_language as $langue)

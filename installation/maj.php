@@ -127,6 +127,47 @@ if (isset($_POST['maj']) || $majscript)
 	echo "<h3>".$version_depart." => ".$version_bdd."</h3>";
 	$result2 = execute_maj4($version_depart, $version_bdd);
 	echo encode_message_utf8($result2);
+
+	// Contrôle des paramètres settings
+	echo "<h3>".encode_message_utf8("Vérification des paramètres settings")."</h3>";
+	
+	$params_ajoutes = 0;
+	$params_existants = 0;
+	$resultats_settings = "<ul>";
+	
+	foreach ($liste_settings as $param_name => $param_value) {
+		// Vérifier si le paramètre existe dans la table settings
+		$sql_check = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_setting WHERE name = '".SecuChaine::ProtectDataSql($param_name)."'";
+		$count = grr_sql_query1($sql_check);
+		
+		if ($count == 0) {
+			// Le paramètre n'existe pas, on l'ajoute
+			$sql_insert = "INSERT INTO ".TABLE_PREFIX."_setting (name, value) VALUES (
+				'".SecuChaine::ProtectDataSql($param_name)."',
+				'".SecuChaine::ProtectDataSql($param_value)."'
+			)";
+			$res_insert = grr_sql_command($sql_insert);
+			if ($res_insert >= 0) {
+				$resultats_settings .= "<li>✓ Paramètre <b>".$param_name."</b> ajouté avec la valeur: <i>".$param_value."</i></li>";
+				$params_ajoutes++;
+			} else {
+				$resultats_settings .= "<li>✗ Erreur lors de l'ajout du paramètre <b>".$param_name."</b></li>";
+			}
+		} else {
+			$params_existants++;
+		}
+	}
+	
+	$resultats_settings .= "</ul>";
+	$resultats_settings .= "<p><b>Résumé:</b></p>";
+	$resultats_settings .= "<ul>";
+	$resultats_settings .= "<li>Paramètres existants: <b>".$params_existants."</b></li>";
+	$resultats_settings .= "<li>Paramètres ajoutés: <b>".$params_ajoutes."</b></li>";
+	$resultats_settings .= "</ul>";
+	
+	echo encode_message_utf8($resultats_settings);
+	
+
     // echo "<p style=\"text-align:center;\"><a href=\"../\">".get_vocab("welcome")."</a></p>";
 
 	// On met une pop up à tout les administrateurs pour les prévenir de la MaJ

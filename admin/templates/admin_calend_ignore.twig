@@ -30,7 +30,7 @@
 							</tr>
 						{% endfor %}
 
-						{% if settings.show_holidays == 'Oui'  %}
+						{% if settings.show_holidays == 1 %}
 							<tr>
 								<td><span class="small"><a href="?p=admin_calend_ignore" onclick="{{ d.CocheVacances }} return false;">{{ trad.admin_calend_ignore_vacances }}</a></span></td>
 								<td><span class="small"><a href="?p=admin_calend_ignore" onclick="{{ d.Cocheferies }} return false;">{{ trad.admin_calend_ignore_feries }}</a></span></td>

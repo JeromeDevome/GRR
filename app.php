@@ -78,7 +78,7 @@ $year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? intval(
 
 print_header_twig($day, $month, $year, $userConnecte);
 
-$d['listeLangues'] = $liste_language;
+$d['listeLangues'] = explode(';', Settings::get('langues_dispo'));
 
 $d['gDay'] = $day;
 $d['gMonth'] = $month;

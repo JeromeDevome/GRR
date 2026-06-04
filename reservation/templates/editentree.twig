@@ -74,7 +74,7 @@
 							</div>
 						</div>
 
-						{% if settings.automatic_mail == "yes" %}
+						{% if settings.automatic_mail == 1 %}
 							<div class="form-group col-sm-6">
 								<div class="input-group">
 									<div class="input-group-addon"><i class="fa-solid fa-envelope"></i></div>
@@ -210,7 +210,7 @@
 					{% endif %}
 				
 				<!-- Courrier -->
-					{% if settings.show_courrier == "y" %}
+					{% if settings.show_courrier == 1 %}
 						<div class="E">
 							<label for="courrier">{{trad.status_courrier}}{{trad.deux_points}}</label>
 							<input name="courrier" id="courrier" type="checkbox" value="1" {% if d.courrier == 1%}checked{% endif %} > {{trad.msg_courrier}}
@@ -240,7 +240,7 @@
 			<div class='col-sm-6 col-xs-12'>
 				{% if d.periodiciteAttache == 0 %}
 
-					{% if settings.periodicite == "y" %}
+					{% if settings.periodicite == 1 %}
 					<div id="ouvrir" class="CC">
 						<input type="button" class="btn btn-primary" value="{{trad.click_here_for_series_open|raw}}" onclick="clicMenu(1);check_5();" />
             		</div>
@@ -315,7 +315,7 @@
 						</div>
 
 						<!-- 6: Chaque jour cycle -->
-						{% if settings.jours_cycles_actif == "Oui" %}
+						{% if settings.jours_cycles_actif == 1 %}
 						<div>
 							<input name="rep_type" id="rep_type6" type="radio" value="6" class="form-check-input" onclick="check_1()" {% if d.rep_type == 6 %}checked{% endif %}/>
 							<label for="rep_type6" class="form-check-label">{{trad.rep_type_6}}</label>
@@ -497,7 +497,7 @@
 			err = 1;
 		}
 
-		{% if d.edit_type == "series" and settings.periodiciteConfig == "y" %}
+		{% if d.edit_type == "series" and settings.periodiciteConfig == 1 %}
 			i1 = parseInt(document.forms["main"].id.value);
 			i2 = parseInt(document.forms["main"].rep_id.value);
 			n = parseInt(document.forms["main"].rep_num_weeks.value);
@@ -632,7 +632,7 @@
 				menu.style.display = "";
 			}
 		}
-		{% if settings.jours_cycles_actif == 'Oui' %}
+		{% if settings.jours_cycles_actif == 1 %}
 			menu = document.getElementById('menuP');
 			if (menu)
 			{

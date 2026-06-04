@@ -49,7 +49,7 @@ $user_etat = '';
 $display = "";
 $retry = '';
 
-if (Settings::get('module_multisite') == 'Oui') {
+if (Settings::get('module_multisite') == 1) {
 	$d['use_site'] = 'y';
 } else {
 	$d['use_site'] = 'n';
@@ -411,7 +411,7 @@ if (isset($user_login) && ($user_login != ''))
 	grr_sql_free($res);
 
 	// Liste des sites
-	if (Settings::get('module_multisite') == 'Oui') {
+	if (Settings::get('module_multisite') == 1) {
 		$sql = 'SELECT id,sitecode,sitename
 		FROM '.TABLE_PREFIX.'_site
 		ORDER BY id ASC';
@@ -513,7 +513,7 @@ $dAdministrateurSite = "";
 	{
 		$a_privileges = 'n';
 
-		// if (Settings::get("module_multisite") == "Oui")
+		// if (Settings::get("module_multisite") == 1)
 		// {
 		// 	$req_site = "SELECT id, sitename FROM ".TABLE_PREFIX."_site ORDER BY sitename";
 		// 	$res_site = grr_sql_query($req_site);
@@ -531,7 +531,7 @@ $dAdministrateurSite = "";
 		// 	}
 		// }
 
-		if (Settings::get("module_multisite") == "Oui"){
+		if (Settings::get("module_multisite") == 1){
 			$req_site = "SELECT id, sitename, access FROM ".TABLE_PREFIX."_site ORDER BY sitename";
 			$res_site = grr_sql_query($req_site);
 			if ($res_site)

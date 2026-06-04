@@ -290,10 +290,10 @@ if (isset($_GET["is_posted"]))
     .  grr_sql_syntax_timestamp_to_unix("e.timestamp")
     . ", a.area_name, r.room_name, r.description, a.id, e.overload_desc, r.order_display, t.type_name"
 	. ", e.beneficiaire_ext, e.supprimer, e.moderate, r.confidentiel_resa, e.room_id";
-	if (Settings::get("module_multisite") == 'Oui')
+	if (Settings::get("module_multisite") == 1)
 		$sql .= ", s.sitename";
 	$sql .= " FROM ".TABLE_PREFIX."_entry e, ".TABLE_PREFIX."_area a, ".TABLE_PREFIX."_room r, ".TABLE_PREFIX."_type_area t";
-	if (Settings::get("module_multisite") == 'Oui')
+	if (Settings::get("module_multisite") == 1)
 		$sql .= ", ".TABLE_PREFIX."_site s, ".TABLE_PREFIX."_j_site_area sa";
 
 	// Si l'utilisateur n'est pas administrateur, seuls les domaines auxquels il a accès sont pris en compte
@@ -359,7 +359,7 @@ if (isset($_GET["is_posted"]))
 		$sql .= ")";
 	}
 	$sql .= " AND  t.type_letter = e.type ";
-	if (Settings::get("module_multisite") == 'Oui')
+	if (Settings::get("module_multisite") == 1)
 		$sql .= " AND  sa.id_area = a.id AND s.id = sa.id_site ";
 
 //	if ( $sortby == "a" )

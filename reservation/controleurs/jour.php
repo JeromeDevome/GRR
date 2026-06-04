@@ -165,7 +165,7 @@ if (grr_sql_count($ressources) == 0)
 }
 
 $title = "";
-if ($settings->get("show_holidays") == "Oui")
+if ($settings->get("show_holidays") == 1)
 {   
 	$now = mktime(0,0,0,$month,$day,$year);
 	if (isHoliday($now)){
@@ -176,7 +176,7 @@ if ($settings->get("show_holidays") == "Oui")
 	}
 }
 
-if ($settings->get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+if ($settings->get("jours_cycles_actif") == 1 && intval($jour_cycle) >- 1)
 {
 	if (intval($jour_cycle) > 0)
 		$d['jourCycle'] = ' - '.get_vocab("rep_type_6")." ".$jour_cycle;

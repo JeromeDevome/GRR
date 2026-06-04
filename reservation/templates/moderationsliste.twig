@@ -27,7 +27,7 @@
                                             <th style="width: 30px;">
                                                 <input type="checkbox" id="selectAll" title="Sélectionner tout">
                                             </th>
-                                            {% if settings.module_multisite == 'Oui' %}
+                                            {% if settings.module_multisite == 1 %}
                                             <th>Site</th>
                                             {% else %}
                                             <th>Domaine</th>
@@ -45,7 +45,7 @@
                                                 <td>
                                                     <input type="checkbox" name="moderation_ids[]" value="{{ resaMode.id }}" class="moderation-checkbox">
                                                 </td>
-                                                {% if settings.module_multisite == 'Oui' %}
+                                                {% if settings.module_multisite == 1 %}
                                                 <td>{{ resaMode.site }}</td>
                                                 {% else %}
                                                 <td>{{ resaMode.domaine }}</td>

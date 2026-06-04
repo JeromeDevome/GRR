@@ -135,16 +135,16 @@ if (isset($_POST['reg_ldap_statut']))
 		VerifyModeDemo();
 
 		if (!isset($_POST['ConvertLdapUtf8toIso']))
-			$ConvertLdapUtf8toIso = "n";
+			$ConvertLdapUtf8toIso = 0;
 		else
-			$ConvertLdapUtf8toIso = "y";
+			$ConvertLdapUtf8toIso = 1;
 		if (!Settings::set("ConvertLdapUtf8toIso", $ConvertLdapUtf8toIso))
 			echo "Erreur lors de l'enregistrement de ConvertLdapUtf8toIso !<br />";
 		$grrSettings['ConvertLdapUtf8toIso'] = $ConvertLdapUtf8toIso;
 		if (!isset($_POST['ActiveModeDiagnostic']))
-			$ActiveModeDiagnostic = "n";
+			$ActiveModeDiagnostic = 0;
 		else
-			$ActiveModeDiagnostic = "y";
+			$ActiveModeDiagnostic = 1;
 		if (!Settings::set("ActiveModeDiagnostic", $ActiveModeDiagnostic))
 			echo "Erreur lors de l'enregistrement de ActiveModeDiagnostic !<br />";
 		$grrSettings['ActiveModeDiagnostic'] = $ActiveModeDiagnostic;

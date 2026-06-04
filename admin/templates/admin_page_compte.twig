@@ -1,0 +1,171 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+        <form enctype="multipart/form-data" action="?p=admin_page_compte" method="post" class="col col-12">
+			<input type="hidden" name="p" value="admin_page_compte" />
+			<input type="hidden" name="submit" value="1" />
+
+			<div class="col col-12">
+
+				<!-- Accès & droits -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-lock"></i> {{ trad.admin_config2 }}
+						</h3>
+					</div>
+					<div class="card-body">
+
+						<section id="profilutilisateur">
+
+							<div class="form-group row">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_parametres_personnels }}</label>
+								<div class="col col-sm-6">
+									<select class="form-control" name="allow_users_modify_profil">
+										<option value="1" {% if settings.allow_users_modify_profil == 1 %} selected {% endif %}>{{ trad.all }}</option>
+										<option value="2" {% if settings.allow_users_modify_profil == 2 %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+										<option value="5" {% if settings.allow_users_modify_profil == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_parametre_email }}</label>
+								<div class="col col-sm-6">
+									<select class="form-control" name="allow_users_modify_email">
+										<option value="1" {% if settings.allow_users_modify_email == 1 %} selected {% endif %}>{{ trad.all }}</option>
+										<option value="2" {% if settings.allow_users_modify_email == 2 %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+										<option value="5" {% if settings.allow_users_modify_email == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_mdp }}</label>
+								<div class="col col-sm-6">
+									<select class="form-control" name="allow_users_modify_mdp">
+										<option value="1" {% if settings.allow_users_modify_mdp == 1 %} selected {% endif %}>{{ trad.all }}</option>
+										<option value="2" {% if settings.allow_users_modify_mdp == 2 %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+										<option value="5" {% if settings.allow_users_modify_mdp == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_parametre_affichage }}</label>
+								<div class="col col-sm-6">
+									<select class="form-control" name="allow_users_modify_affichage">
+										<option value="1" {% if settings.allow_users_modify_affichage == 1 %} selected {% endif %}>{{ trad.all }}</option>
+										<option value="2" {% if settings.allow_users_modify_affichage == 2 %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+										<option value="5" {% if settings.allow_users_modify_affichage == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_parametre_domaine }}</label>
+								<div class="col col-sm-6">
+									<select class="form-control" name="allow_users_modify_domaine">
+										<option value="1" {% if settings.allow_users_modify_domaine == 1 %} selected {% endif %}>{{ trad.all }}</option>
+										<option value="2" {% if settings.allow_users_modify_domaine == 2 %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+										<option value="5" {% if settings.allow_users_modify_domaine == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_parametre_theme }}</label>
+								<div class="col col-sm-6">
+									<select class="form-control" name="allow_users_modify_theme">
+										<option value="1" {% if settings.allow_users_modify_theme == 1 %} selected {% endif %}>{{ trad.all }}</option>
+										<option value="2" {% if settings.allow_users_modify_theme == 2 %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+										<option value="5" {% if settings.allow_users_modify_theme == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col col-sm-6" for="default_css">{{ trad.modification_parametre_langue }}</label>
+								<div class="col col-sm-6">
+									<select class="form-control" name="allow_users_modify_langue">
+										<option value="1" {% if settings.allow_users_modify_langue == 1 %} selected {% endif %}>{{ trad.all }}</option>
+										<option value="2" {% if settings.allow_users_modify_langue == 2 %} selected {% endif %}>{{ trad.all_but_visitors }}</option>
+										<option value="5" {% if settings.allow_users_modify_langue == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
+									</select>
+								</div>
+							</div>
+
+							{{ form.switch('mail_user_obligatoire', trad.mail_user_obligatoire, settings.mail_user_obligatoire, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+
+
+						</section>
+			  		</div>
+				</div>
+
+				<!-- Mot de passe -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-key"></i> {{ trad.pwd }}
+						</h3>
+					</div>
+					<div class="card-body">
+						{{ form.input('pass_leng', trad.pass_leng_explain, settings.pass_leng, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+						{{ form.input('pass_nb_min', trad.pass_nb_min, settings.pass_nb_min, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+						{{ form.input('pass_nb_maj', trad.pass_nb_maj, settings.pass_nb_maj, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+						{{ form.input('pass_nb_ch', trad.pass_nb_ch, settings.pass_nb_ch, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+						{{ form.input('pass_nb_sp', trad.pass_nb_sp, settings.pass_nb_sp, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+
+						{{ form.switch('pass_simple', trad.pass_faciles, settings.pass_simple, {classGroup: 'col-12 custom-switch-on-success', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('pass_change_conditions', trad.pass_change_conditions, settings.pass_change_conditions, {classGroup: 'col-12 custom-switch-on-success', classLabel: 'col-10', classInput: 'col-2'}) }}
+					</div>
+			  	</div>
+
+
+			</div><!-- /.col 12 -->
+
+			
+
+			<!-- Enregistrer -->
+			<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+				<i class="fas fa-save"></i> {{ trad.save }}
+			</button>
+
+		</form>
+	</div><!-- /.row -->
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../jslib/toastr/toastr.min.js"></script>
+	<script>
+		$(function () {
+			{%if d.settings_results%}
+				let ok = false;
+
+				{% for result in d.settings_results %}
+					{% if result[0] == 1 %}
+						if (!ok) {
+							ok = true;
+							toastr.success("{{trad.message_records}}")
+						}
+					{% elseif result[0] == 2 %}
+						toastr.info("{{ result[1]|raw }}")
+					{% elseif result[0] == 3 %}
+						toastr.warning("{{ result[1]|raw }}")
+					{% elseif result[0] == 4 %}
+						toastr.error("{{ result[1]|raw }}")
+					{% endif %}
+				{% endfor %}
+			{%endif%}
+		}); 
+	</script>
+{% endblock %}

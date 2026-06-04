@@ -7,6 +7,34 @@
 {% endblock %}
 
 {% block content %}
+
+	<div class="row">
+		<div class="col col-12 col-sm-12">
+			<div class="card card-primary card-outline card-tabs">
+				<table class="table table-striped">
+					<tr>
+					<th>{{trad.name}}</th>
+					<th>{{trad.sum_by_descrip}}</th>
+					<th>{{trad.action}}</th>
+					</tr>
+
+					<tr>
+					<td>{{trad.Activer_module_multisite}}</td>
+					<td>{{trad.explain_multisite}}</td>
+					<td>
+						<div class="form-group">
+							<div class="custom-control custom-switch">
+							<input type="checkbox" class="custom-control-input" id="module_multisite" onclick='window.location.assign("?p=admin_room&amp;module_multisite=a")' {% if settings.module_multisite == 1 %} checked {% endif %} > 
+							<label class="custom-control-label" for="module_multisite"></label>
+							</div>
+						</div>
+					</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col col-md-12">
 
@@ -37,7 +65,7 @@
 						</div>
 					{% endif %}
 
-					{% if settings.module_multisite != 'Oui' or (settings.module_multisite == 'Oui' and trad.dIdSite > 0) %}
+					{% if settings.module_multisite != 1 or (settings.module_multisite == 1 and trad.dIdSite > 0) %}
 						<table class="table table-bordered">
 							<tr>
 								<th class="col col-sm-6">{{ trad.areas }}</th>

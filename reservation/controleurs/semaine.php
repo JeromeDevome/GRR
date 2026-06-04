@@ -403,7 +403,7 @@ for ($t = $week_start; $t < $week_end; $t += 86400)
   {
     $class = "cell_hours";
     $title = "";
-    if ($settings->get("show_holidays") == "Oui")
+    if ($settings->get("show_holidays") == 1)
     {
       if (isHoliday($tt)){
         $class .= ' ferie';
@@ -413,7 +413,7 @@ for ($t = $week_start; $t < $week_end; $t += 86400)
       }
     }
     $nomJour = utf8_strftime($dformat, $t);
-    if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+    if (Settings::get("jours_cycles_actif") == 1 && intval($jour_cycle) >- 1)
       if (intval($jour_cycle) > 0)
         $nomCycle = get_vocab("rep_type_6")." ".$jour_cycle;
       else

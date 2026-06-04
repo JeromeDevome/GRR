@@ -218,7 +218,7 @@
                 {% if d.lienCopier %}
                     <input class="btn btn-info" type="button" onclick="location.href='{{d.lienCopier|raw}}'" value="{{trad.copyentry}}"/>
                 {% endif %}
-                {% if settings.fct_echange_resa == "y" %}
+                {% if settings.fct_echange_resa == 1 %}
                     {% if d.lienEchanger %}
                         <input class="btn btn-warning" type="button" onclick="location.href='{{d.lienEchanger|raw}}'" value="{{trad.swapentry}}"/>
                     {% endif %}
@@ -315,12 +315,12 @@
                     {{d.ressourceEmpruntee|raw}}
                     <br><input type="radio" name="statut_id" value="-" {% if resa.idStatut == "-" %}{% if d.ressourceEmprunteeYes !="yes" %}checked="checked"{% endif %}{% endif %} />{{trad.signaler_reservation_en_cours_option_0 | raw}}
                     <br><br><input type="radio" name="statut_id" value="y" {% if resa.idStatut == "y" %}checked="checked"{% endif %} />{{trad.signaler_reservation_en_cours_option_1}}
-                    <br><br><input type="radio" name="statut_id" value="e" {% if resa.idStatut == "e" %}checked="checked"{% endif %} {% if settings.automatic_mail != "yes" or d.mailBeneficiaire == "" %}checked="checked"{% endif %} />{{trad.signaler_reservation_en_cours_option_2}}
+                    <br><br><input type="radio" name="statut_id" value="e" {% if resa.idStatut == "e" %}checked="checked"{% endif %} {% if settings.automatic_mail != 1 or d.mailBeneficiaire == "" %}checked="checked"{% endif %} />{{trad.signaler_reservation_en_cours_option_2}}
 
-                    {% if settings.automatic_mail != "yes" or d.mailBeneficiaire == "" %}
+                    {% if settings.automatic_mail != 1 or d.mailBeneficiaire == "" %}
                         <br><i>({{trad.necessite_fonction_mail_automatique}})</i>
                     {% endif %}
-                    {% if settings.automatic_mail == "yes" %}
+                    {% if settings.automatic_mail == 1 %}
                         <br><br><input type="checkbox" name="envoyer_mail" value="y" {% if d.mailBeneficiaire == "" %}disabled{% endif %} />{{ trad.envoyer_maintenant_mail_retard }}
                         <input type="hidden" name="mail_exist" value="{{d.mailBeneficiaire}}" />
                     {% endif %}
@@ -333,7 +333,7 @@
                         <br><input type="checkbox" name="clef" value="y" {% if resa.clef == 1 %}checked{% endif %} /> {{trad.msg_clef}}
                     {% endif %}
 
-                    {% if settings.show_courrier == "y" %}
+                    {% if settings.show_courrier == 1 %}
                         <br><span class="larger">{{trad.status_courrier}}{{trad.deux_points}}</span>
                         <br><input type="checkbox" name="courrier" value="y" {% if resa.courrier == 1 %}checked{% endif %} /> {{trad.msg_courrier}}
                     {% endif %}

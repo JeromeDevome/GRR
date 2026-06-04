@@ -127,7 +127,7 @@ if ((isset($_GET['allow_users_modify_langue'])) && (SecuAccess::UserLevel(getUse
 
 // Enregistrement de mail_user_obligatoire
 // Un gestionnaire d'utilisateurs ne peut pas modifier ce paramètre
-$mailUserObligatoire= isset($_GET["mail_user_obligatoire"]) ? "y" : "n";
+$mailUserObligatoire= isset($_GET["mail_user_obligatoire"]) ? 1 : 0;
 if (isset($_GET['ok']) && SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1)
 {
 	if (!Settings::set("mail_user_obligatoire", $mailUserObligatoire))

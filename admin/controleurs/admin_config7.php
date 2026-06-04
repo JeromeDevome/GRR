@@ -17,7 +17,7 @@
  */
 
 require_once("../include/pages.class.php");
-
+    
 
 $trad = $vocab;
 
@@ -32,36 +32,36 @@ if (isset($_POST['p'])) { // On a validé le formulaire
 
 // Périodicité
     if(isset($_POST['periodicite']) && $_POST['periodicite'] = 'on')
-        $fonctionPeriodite = 'y';
+        $fonctionPeriodite = 1;
     else
-        $fonctionPeriodite = 'n';
+        $fonctionPeriodite = 0;
 
    if (!Settings::set('periodicite', $fonctionPeriodite))
         $msg .= "Erreur lors de l'enregistrement de periodicite !<br />";
 
 // Gestion courrier
     if(isset($_POST['show_courrier']) && $_POST['show_courrier'] = 'on')
-        $fonctionCourrier = 'y';
+        $fonctionCourrier = 1;
     else
-        $fonctionCourrier = 'n';
+        $fonctionCourrier = 0;
 
     if (!Settings::set('show_courrier', $fonctionCourrier))
         $msg .= "Erreur lors de l'enregistrement de show_courrier !<br />";
 
 // Echange de réservation
     if(isset($_POST['fct_echange_resa']) && $_POST['fct_echange_resa'] = 'on')
-        $fonctionEchangeResa = 'y';
+        $fonctionEchangeResa = 1;
     else
-        $fonctionEchangeResa = 'n';
+        $fonctionEchangeResa = 0;
 
     if (!Settings::set('fct_echange_resa', $fonctionEchangeResa))
         $msg .= "Erreur lors de l'enregistrement de fct_echange_resa !<br />";
 
 // Drag & Drop
     if(isset($_POST['fct_drag_drop']) && $_POST['fct_drag_drop'] = 'on')
-        $fct_drag_drop = 'y';
+        $fct_drag_drop = 1;
     else
-        $fct_drag_drop = 'n';
+        $fct_drag_drop = 0;
 
     if (!Settings::set('fct_drag_drop', $fct_drag_drop))
         $msg .= "Erreur lors de l'enregistrement de fct_drag_drop !<br />";
@@ -78,25 +78,25 @@ if (isset($_POST['p'])) { // On a validé le formulaire
     }
 
     if (isset($_POST['mail_user_destinataire']))
-        $mail_user_destinataire = "y";
+        $mail_user_destinataire = 1;
     else
-        $mail_user_destinataire = "n";
+        $mail_user_destinataire = 0;
     if (!Settings::set("mail_user_destinataire", $mail_user_destinataire))
         $msg .= "Erreur lors de l'enregistrement de mail_user_destinataire !<br />";
 
     if (isset($_POST['mail_contact_resa_captcha']))
-        $mail_contact_resa_captcha = "y";
+        $mail_contact_resa_captcha = 1;
     else
-        $mail_contact_resa_captcha = "n";
+        $mail_contact_resa_captcha = 0;
     if (!Settings::set("mail_contact_resa_captcha", $mail_contact_resa_captcha))
         $msg .= "Erreur lors de l'enregistrement de mail_contact_resa_captcha !<br />";
 
 // Demande de création de compte
     if(isset($_POST['fct_crea_cpt']) && $_POST['fct_crea_cpt'] = 'on')
-        $fonctionCreaCompte = 'y';
+        $fonctionCreaCompte = 1;
     else
-        $fonctionCreaCompte = 'n';
-    
+        $fonctionCreaCompte = 0;
+
     if (!Settings::set('fct_crea_cpt', $fonctionCreaCompte))
         $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt !<br />";
 
@@ -107,9 +107,9 @@ if (isset($_POST['p'])) { // On a validé le formulaire
         $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_statut !<br />";
 
     if (isset($_POST['fct_crea_cpt_captcha']))
-        $fct_crea_cpt_captcha = "y";
+        $fct_crea_cpt_captcha = 1;
     else
-        $fct_crea_cpt_captcha = "n";
+        $fct_crea_cpt_captcha = 0;
     if (!Settings::set("fct_crea_cpt_captcha", $fct_crea_cpt_captcha))
         $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_captcha !<br />";       
 
@@ -123,27 +123,27 @@ if (isset($_POST['p'])) { // On a validé le formulaire
 
 // Calcul plage libre vue semaine_all
     if(isset($_POST['calcul_plus_semaine_all']) && $_POST['calcul_plus_semaine_all'] = 'on')
-        $calcul_plus_semaine_all = 'y';
+        $calcul_plus_semaine_all = 1;
     else
-        $calcul_plus_semaine_all = 'n';
+        $calcul_plus_semaine_all = 0;
 
     if (!Settings::set('calcul_plus_semaine_all', $calcul_plus_semaine_all))
         $msg .= "Erreur lors de l'enregistrement de calcul_plus_semaine_all !<br />";
 
 // Calcul plage libre vue mois
     if(isset($_POST['calcul_plus_mois']) && $_POST['calcul_plus_mois'] = 'on')
-        $calcul_plus_mois = 'y';
+        $calcul_plus_mois = 1;
     else
-        $calcul_plus_mois = 'n';
+        $calcul_plus_mois = 0;
 
     if (!Settings::set('calcul_plus_mois', $calcul_plus_mois))
         $msg .= "Erreur lors de l'enregistrement de calcul_plus_mois !<br />";
 
 // Calcul plage libre vue mois2_all
     if(isset($_POST['calcul_plus_mois2_all']) && $_POST['calcul_plus_mois2_all'] = 'on')
-        $calcul_plus_mois2_all = 'y';
+        $calcul_plus_mois2_all = 1;
     else
-        $calcul_plus_mois2_all = 'n';
+        $calcul_plus_mois2_all = 0;
 
     if (!Settings::set('calcul_plus_mois2_all', $calcul_plus_mois2_all))
         $msg .= "Erreur lors de l'enregistrement de calcul_plus_mois2_all !<br />";

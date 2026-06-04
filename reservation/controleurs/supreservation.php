@@ -50,7 +50,7 @@ if ($info = mrbsGetEntryInfo($id))
 		showAccessDenied($back);
 		exit();
 	}
-	if (Settings::get("automatic_mail") == 'yes')
+	if (Settings::get("automatic_mail") == 1)
 		$_SESSION['session_message_error'] = send_mail($id,3,$dformat);
     // traitement des réservations modérées : envoie un mail au modérateur
 	// ! Sup en version 4.5.2 car doublons dans l'envois au modérateur

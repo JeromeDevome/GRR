@@ -23,7 +23,7 @@
       <label class="control-label col-md-2 col-sm-3 col-xs-4" for="nom">{{ trad.last_name }}*</label>
       <div class="col col-md-4 col-sm-6 col-xs-8">
         <input class="form-control" id="nom" type="text" name="reg_nom" value="{{ d.user_nom }}" size="30" 
-        {% if d.modificationNom %} required {% else %} disabled {% endif%}
+        {% if d.modificationNom %} required {% else %} disabled {% endif %}
         />
       </div>
     </div>
@@ -31,15 +31,15 @@
       <label class="control-label col-md-2 col-sm-3 col-xs-4" for="prenom">{{ trad.first_name }}*</label>
       <div class="col col-md-4 col-sm-6 col-xs-8">
         <input class="form-control" id="prenom" type="text" name="reg_prenom" value="{{ d.user_prenom }}" size="30" 
-        {% if d.modificationNom %} required {% else %} disabled {% endif%}
+        {% if d.modificationNom %} required {% else %} disabled {% endif %}
         />
       </div>
     </div>
     <div class="form-group col-xs-12">
-      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="mail">{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 'y'%}*{%endif%}</label>
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="mail">{{ trad.mail_user }}{% if settings.mail_user_obligatoire == 1 %}*{%endif%}</label>
       <div class="col col-md-4 col-sm-6 col-xs-8">
         <input class="form-control" id="mail" type="text" name="reg_email" value="{{ d.user_email }}" size="30" 
-        {% if settings.mail_user_obligatoire == 'y'%} required{%endif%}
+        {% if settings.mail_user_obligatoire == 1 %} required {% endif %}
         {% if not d.modificationMail %} disabled {% endif %}
         />
       </div>
@@ -125,7 +125,7 @@
 		{% if d.levelUser < settings.allow_users_modify_domaine %}
 
 		{% else %}
-			{% if settings.module_multisite == 'Oui' %}
+			{% if settings.module_multisite == 1 %}
 			<h4>{{ trad.explain_default_area_and_room_and_site }}</h4>
 
 			<div class="col-xs-12" id="div_liste_sites">

@@ -29,7 +29,7 @@ function reporton(&$row, $dformat)
 
 
 	$site = "";
-	if (Settings::get("module_multisite") == 'Oui')
+	if (Settings::get("module_multisite") == 1)
 		$site = $row[20];
 
 	//Affichage de l'heure et de la durée de réservation

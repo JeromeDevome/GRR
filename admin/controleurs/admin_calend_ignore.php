@@ -130,7 +130,7 @@ for ($i = 0; $i < 7; $i++)
 	$jourssemaines[] = utf8_strftime('%A',$show);
 }
 
-if (Settings::get("show_holidays") == 'Oui'){ // on n'affiche ce choix que si les jours fériés et les vacances sont définis
+if (Settings::get("show_holidays") == 1){ // on n'affiche ce choix que si les jours fériés et les vacances sont définis
     // définir les jours fériés
     $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_feries";
     $ans = grr_sql_query($req);

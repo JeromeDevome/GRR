@@ -217,7 +217,7 @@
                    $class = "cell_hours";
    
                $cycle = "";
-               if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle)>-1)
+               if (Settings::get("jours_cycles_actif") == 1 && intval($jour_cycle)>-1)
                {
                    if (intval($jour_cycle) > 0)
                        $cycle = ucfirst(substr(get_vocab("rep_type_6"),0,1)).$jour_cycle;

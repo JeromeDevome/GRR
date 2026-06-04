@@ -17,6 +17,8 @@
 
 $grr_script_name = "admin_room.php";
 
+$trad = $vocab;
+
 $id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
 if ((isset($id_area))&&($id_area != -1))
 {
@@ -35,6 +37,51 @@ if (isset($_GET['msg']))
 	$d['enregistrement'] = $_GET['ok'];
 	$d['msgToast'] = $_GET['msg'];
 }
+
+// Met à jour dans la BD "multisite"
+if (isset($_GET['module_multisite']))
+{
+	if (Settings::get("module_multisite") == 1)
+		$activeModuleInt = 0;
+	else
+		$activeModuleInt = 1;
+
+	if (!Settings::set("module_multisite", $activeModuleInt))
+		echo "Erreur lors de l'enregistrement de module_multisite ! <br />";
+	else
+	{
+		if ($activeModuleInt == 1)
+		{
+			// On crée un site par défaut s'il n'en existe pas
+			$id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site");
+			if ($id_site == -1)
+			{
+				$sql="INSERT INTO ".TABLE_PREFIX."_site SET sitecode='1', sitename='site par defaut'";
+				if (grr_sql_command($sql) < 0)
+					fatal_error(0,'<p>'.grr_sql_error().'</p>');
+				$id_site = mysqli_insert_id($GLOBALS['db_c']);
+			}
+			// On affecte tous les domaines à un site.
+			$sql = "SELECT id FROM ".TABLE_PREFIX."_area";
+			$res = grr_sql_query($sql);
+			if ($res)
+			{
+				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+				{
+					// l'area est-elle déjà affectée à un site ?
+					$test_site = grr_sql_query1("SELECT count(id_area) FROM ".TABLE_PREFIX."_j_site_area WHERE id_area='".$row[0]."'");
+					if ($test_site == 0)
+					{
+						$sql="INSERT INTO ".TABLE_PREFIX."_j_site_area SET id_site='".$id_site."', id_area='".$row[0]."'";
+						if (grr_sql_command($sql) < 0)
+							fatal_error(0,'<p>'.grr_sql_error().'</p>');
+					}
+				}
+			}
+		}
+	}
+}
+
 // If area is set but area name is not known, get the name.
 if ((isset($id_area)) && ($id_area != -1))
 {
@@ -77,7 +124,7 @@ get_vocab_admin('fiche_ressource');
 
 $sites = array();
 
-if (Settings::get("module_multisite") == "Oui")
+if (Settings::get("module_multisite") == 1)
 {
 	if (SecuAccess::UserLevel(getUserName(),-1,'area') >= 6)
 		$sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site ORDER BY sitename ASC";
@@ -138,7 +185,7 @@ if ((isset($id_area))&&($id_area != -1))
 	$trad['dAjoutRessource'] = "<a href=\"?p=admin_edit_room&id_site=".$id_site."&amp;area_id=$id_area\">".get_vocab('addroom')."</a>";
 
 // A partir de ce niveau, on sait qu'il existe un site
-if ((Settings::get("module_multisite") == "Oui") && ($id_site > 0))
+if ((Settings::get("module_multisite") == 1) && ($id_site > 0))
 	$sql="SELECT ".TABLE_PREFIX."_area.id,".TABLE_PREFIX."_area.area_name,".TABLE_PREFIX."_area.access
 		FROM ".TABLE_PREFIX."_j_site_area,".TABLE_PREFIX."_area
 		WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$id_site."'
@@ -223,6 +270,9 @@ if (grr_sql_count($res) != 0)
 		}
 	} // Fin CAS 2
 }
+if (!Settings::load())
+	die("Erreur chargement settings");
+$AllSettings = Settings::getAll();
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites, 'domaines' => $domaines, 'ressources' => $ressources));
 ?>

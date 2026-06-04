@@ -1,0 +1,192 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
+	<style>select option {
+    overflow: visible;
+}</style>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<form action="?p=admin_page_general" method="post" class="col col-12">
+			<input type="hidden" name="p" value="admin_page_general" />
+
+			<div class="col col-12">
+
+				<!-- Accès & droits -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-lock"></i> {{ trad.admin_config2 }}
+						</h3>
+					</div>
+					<div class="card-body">
+						<section id="accesgrr">
+							<h4 class="page-header">{{ trad.authentification_obli_msg }}</h4>
+							<input type="radio" name="authentification_obli" value="0" id="label_1a" {% if settings.authentification_obli == 0 %} checked {% endif %} /> <label for="label_1a">{{ trad.authentification_obli0 }}</label><br>
+							<input type="radio" name="authentification_obli" value="1" id="label_1b" {% if settings.authentification_obli == 1 %} checked {% endif %} /> <label for="label_1b">{{ trad.authentification_obli1 }}</label><br>
+						</section>
+					</div>
+				</div>
+
+				<!-- Apparence -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-brush"></i> {{ trad.admin_config6 }}
+						</h3>
+					</div>
+					<div class="card-body">
+						<h4 class="page-header">{{ trad.default_parameter_values_title }}</h4>
+						<p>{{ trad.explain_default_parameter }}</p>
+
+						<!-- Style -->
+						<div class="form-group row">
+							<label class="col col-sm-6 col-xl-4" for="default_css">{{ trad.explain_css }}</label>
+							<div class="col col-sm-5 col-xl-3">
+								<select class="form-control" name="default_css">
+									<option value="test">test</option>
+									{{ d.optionTheme | raw }}
+								</select>
+							</div>
+							<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
+						</div>
+						<hr>
+						<!--Langue  -->
+						<div class="form-group row">
+							<label class="col col-sm-6 col-xl-4" for="default_language">{{ trad.choose_language }}</label>
+							<div class="col col-sm-5 col-xl-3">
+								<select class="form-control" name="default_language">
+									{{ d.optionLangue | raw }}
+								</select>
+							</div>
+							<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsynchro="2"><i class="icon fa fa-sync"></i></button></div>
+						</div>
+			  		</div>
+				</div>
+
+			</div><!-- /.col 12 -->
+
+			<!-- Enregistrer -->
+			<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+				<i class="fas fa-save"></i> {{ trad.save }}
+			</button>
+
+		</form>
+	</div><!-- /.row -->
+
+
+
+	<div class="modal fade" id="modal-warning" style="display: none;" aria-hidden="true">
+	  <form action="?p=admin_config6" id="formmodal">
+        <div class="modal-dialog">
+          <div class="modal-content bg-warning">
+            <div class="modal-header">
+              <h4 class="modal-title">Synchronisation</h4>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <span class="modaltexte" id="modaltexte"></span><span class="modalidsync" id="modalidsync" hidden></span>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.NO}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.YES}}</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+	  </form>
+    </div><!-- /.modal -->
+
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../jslib/toastr/toastr.min.js"></script>
+	<script type="text/javascript">
+		function modifier_liste_domaines(){
+			$.ajax({
+				url: "../compte/my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_site: $('#id_site').val(),
+					default_area : '{{ settings.default_area }}',
+					session_login:'{{ d.nomUtilisateur }}',
+					use_site:'{{ d.use_site }}',
+					type:'domaine',
+				},
+				success: function(returnData){
+					$("#div_liste_domaines").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+		function modifier_liste_ressources(action){
+			$.ajax({
+				url: "../compte/my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_area:$('id_area').serialize(true),
+					default_room : '{{ settings.default_room }}',
+					type:'ressource',
+					action:+action,
+				},
+				success: function(returnData){
+					$("#div_liste_ressources").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+		modifier_liste_domaines();
+		modifier_liste_ressources(1);
+
+		// Modal
+		$('#modal-warning').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var idsynchro = button.data('idsynchro')// Extract info from data-* attributes
+			var texte = button.data('texte')
+		    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		    var modal = $(this)
+		    modal.find('.modalidsync').text(idsynchro)
+			modal.find('.modaltexte').text(texte)
+		})
+
+		$(function(){
+			$('#formmodal').submit(function(e) {
+			  e.preventDefault()
+			  var $form = $(this)
+			  var v=document.getElementById('modalidsync').innerHTML
+			  $.post($form.attr('action'), $form.serialize())
+			  .done(function(data) {
+				$('#html').html(data);
+				$('#modal-warning').modal('hide');
+				document.location.href='?p=admin_config6&sync='+v;
+			  })
+			  .fail(function() {
+				alert('Une erreur est survenue : GRRJS')
+			  })
+			})
+
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
+		})
+	</script>
+
+{% endblock %}

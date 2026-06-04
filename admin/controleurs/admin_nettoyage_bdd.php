@@ -235,6 +235,8 @@ if ($res)
     }
 }
 
+$d['dbSys'] = $dbsys;
+$d['restaureBBD'] = $restaureBBD;
 
 
 

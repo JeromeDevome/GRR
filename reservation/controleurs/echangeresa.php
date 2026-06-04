@@ -38,7 +38,7 @@ else {
 	die();    
 }
 
-if (Settings::get("fct_echange_resa") != "y"){
+if (Settings::get("fct_echange_resa") != 1){
     header("Location: ./app.php?p=jour");
 	die();    
 }
@@ -100,7 +100,7 @@ if (isset($idAlt)){ // les paramètres sont connus
                     $res4 = grr_sql_query($sql4);
                     if ($res4){
                         $d['etape'] = 3; // échange réussi, envoyer un mail si programmé
-                        if (Settings::get("automatic_mail") == 'yes'){
+                        if (Settings::get("automatic_mail") == 1){
                             $_SESSION['session_message_error'] = send_mail($data1[0],2,$dformat,array(),$data1[5], array());
                             $_SESSION['session_message_error'] = send_mail($data2[0],2,$dformat,array(),$data2[5], array());
                         }

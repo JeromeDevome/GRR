@@ -21,7 +21,7 @@ include('../include/fichier.class.php');
 $grr_script_name = "admin_edit_room.php";
 
 $ok = NULL;
-if (Settings::get("module_multisite") == "Oui")
+if (Settings::get("module_multisite") == 1)
 	$id_site = isset($_POST["id_site"]) ? $_POST["id_site"] : (isset($_GET["id_site"]) ? $_GET["id_site"] : -1);
 $action = isset($_POST["action"]) ? $_POST["action"] : (isset($_GET["action"]) ? $_GET["action"] : NULL);
 $area_id = isset($_POST["area_id"]) ? $_POST["area_id"] : (isset($_GET["area_id"]) ? $_GET["area_id"] : NULL);

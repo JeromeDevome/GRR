@@ -60,7 +60,7 @@ if(isset($_POST['nom'])){
 		$message .= "Aucune année choisie <br/>";
 	if (empty($_POST['duree']))
 		$message .= "Aucune durée choisie <br/>";
-	if(Settings::get("mail_contact_resa_captcha") == 'y')
+	if(Settings::get("mail_contact_resa_captcha") == 1)
 	{
 		// Checking that the posted captcha match the captcha stored in the session
 		if (isset($_SESSION['phrase']) && PhraseBuilder::comparePhrases($_SESSION['phrase'], $_POST['captcha'])) {

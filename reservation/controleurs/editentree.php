@@ -875,7 +875,7 @@ for ($da = 0; $da < 7; $da++)
   $d['day'.$wday] = day_name($wday);
 }
 
-if($periodiciteConfig == 'y')
+if($periodiciteConfig == 1)
 {
 
   if ( ($edit_type == "series") || ($flag_periodicite == 'y') || ($copier == "copier"))

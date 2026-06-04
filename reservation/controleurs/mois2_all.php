@@ -253,7 +253,7 @@ for ($k = 1; $k <= $days_in_month; $k++)
         else
             $class = "cell_hours";
 
-        if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) > -1)
+        if (Settings::get("jours_cycles_actif") == 1 && intval($jour_cycle) > -1)
         {
             if (intval($jour_cycle) > 0)
                 $nomCycle = ucfirst(substr(get_vocab("rep_type_6"), 0, 1)).$jour_cycle;
@@ -346,7 +346,7 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
                         && (($row["statut_room"] == "1") || (($row["statut_room"] == "0") && (SecuAccess::UserLevel($user_name,$row["id"]) > 2) )) 
                         && $user_can_book
                         && $d['pview'] != 1){
-							if (Settings::get('calcul_plus_semaine_all') == 'n') {
+							if (Settings::get('calcul_plus_mois2_all') == 0) {
 								$statutCellule = 1;
 							} elseif(plages_libre_semaine_ressource($row["id"], $month, $cday, $year))
 							{

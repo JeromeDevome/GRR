@@ -292,7 +292,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
     {
         $heure = "";
 
-        if ($settings->get("show_holidays") == "Oui")
+        if ($settings->get("show_holidays") == 1)
         {   
             $now = $t;
             if (isHoliday($now)){
@@ -338,7 +338,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                     $reservations[] = array ('idresa' => $da[$cday]["id"][$i],'td' => tdcellT($classeReservation), 'titre' => $da[$cday]["infobulle"][$i], 'texte' => $da[$cday]["resa"][$i], 'lienFiche' => $ficheResa);
                 }
             }
-            if (Settings::get('calcul_plus_mois') == 'n') {
+            if (Settings::get('calcul_plus_mois') == 0) {
                 $plageLibre = true;
             } elseif (plages_libre_semaine_ressource($room, $month, $cday, $year)){
                 $date_now = time();

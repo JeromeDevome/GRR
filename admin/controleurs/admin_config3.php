@@ -20,18 +20,6 @@
 $msg = "";
 $trad = $vocab;
 
-if (isset($_GET['envoyer_email_avec_formulaire']))
-{
-	if (!Settings::set("envoyer_email_avec_formulaire", $_GET['envoyer_email_avec_formulaire']))
-		$msg .= "Erreur lors de l'enregistrement de envoyer_email_avec_formulaire !<br />";
-}
-// javascript_info_disabled
-if (isset($_GET['javascript_info_disabled']))
-{
-	if (!Settings::set("javascript_info_disabled", $_GET['javascript_info_disabled']))
-		$msg .= "Erreur lors de l'enregistrement de javascript_info_disabled !<br />";
-}
-
 if (isset($_GET['verif_reservation_auto']))
 {
 	if (!Settings::set("verif_reservation_auto", $_GET['verif_reservation_auto']))

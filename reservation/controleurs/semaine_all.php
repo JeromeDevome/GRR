@@ -273,7 +273,7 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
 		$title = "";
         $nomJour = day_name(($weekcol + $weekstarts) % 7) . ' '.$num_day.' '.$temp_month2;
         $nomCycle = "";
-		if ($settings->get("show_holidays") == "Oui")
+		if ($settings->get("show_holidays") == 1)
 		{   
 			if (isHoliday($tt)){
 				$class = 'ferie ';
@@ -283,7 +283,7 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
 			}
 		}
 
-        if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+        if (Settings::get("jours_cycles_actif") == 1 && intval($jour_cycle) >- 1)
 		{
 			if (intval($jour_cycle) > 0)
 				$nomCycle = get_vocab("rep_type_6")." ".$jour_cycle;
@@ -405,7 +405,7 @@ foreach($ressources as $row)
                     $user_can_book && 
                     $d['pview'] != 1)
 					{
-						if (Settings::get('calcul_plus_semaine_all') == 'n') {
+						if (Settings::get('calcul_plus_semaine_all') == 0) {
 							$plageLibre = true;
 						} elseif(plages_libre_semaine_ressource($row['id'], $cmonth, $cday, $cyear))
 						{

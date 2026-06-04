@@ -1,0 +1,79 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<form enctype="multipart/form-data" action="?p=admin_page_stat" method="post" class="col col-12">
+			<input type="hidden" name="p" value="admin_page_stat" />
+			<input type="hidden" name="submit" value="1" />
+
+        	<div class="col col-12">
+
+				<!-- Accès & droits -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-lock"></i> {{ trad.admin_config2 }}
+						</h3>
+					</div>
+					<div class="card-body">
+						<section id="accesstat">
+							<h5 class="page-header">{{ trad.allow_search_level_msg }}</h5>
+							<input type="radio" name="allow_search_level" value="0" id="label_4a" {% if settings.allow_search_level == 0 %} checked {% endif %} /> <label for="label_4a">{{ trad.allow_search_level0 }}</label><br>
+							<input type="radio" name="allow_search_level" value="1" id="label_4b" {% if settings.allow_search_level == 1 %} checked {% endif %} /> <label for="label_4b">{{ trad.allow_search_level1 }}</label><br>
+							<input type="radio" name="allow_search_level" value="2" id="label_4c" {% if settings.allow_search_level == 2 %} checked {% endif %} /> <label for="label_4c">{{ trad.allow_search_level2 }}</label><br>
+							<input type="radio" name="allow_search_level" value="6" id="label_4d" {% if settings.allow_search_level == 6 %} checked {% endif %} /> <label for="label_4d">{{ trad.allow_search_level5 }}</label><br>
+						</section>
+					</div>
+				</div>
+
+				<!-- Apparence -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-brush"></i> {{ trad.admin_config6 }}
+						</h3>
+					</div>
+					<div class="card-body">
+
+						<!-- Valeur par défaut de l'intervalle -->
+						<section id="default_report_days_msg">
+							{{ form.input('default_report_days', trad.default_report_days_explain, settings.default_report_days, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+							<br>
+						</section>
+
+					</div>
+			  	</div><!-- /.card-Apparence -->
+
+			</div><!-- /.col 12 -->
+
+			<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+				<i class="fas fa-save"></i> {{ trad.save }}
+			</button>
+
+		</form>
+
+	</div><!-- /.row -->
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../jslib/toastr/toastr.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
+		})
+	</script>
+{% endblock %}

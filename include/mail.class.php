@@ -78,7 +78,7 @@ class Email{
 
 				$lesDestinataires = explode(";", $A);
 				for($i=0;$i<count($lesDestinataires);$i++){
-					if (Settings::get("grr_mail_Bcc") == "y"){
+					if (Settings::get("grr_mail_Bcc") == 1){
 						$mail->addCC($lesDestinataires[$i]);
 					} else{
 						$mail->AddAddress($lesDestinataires[$i]);

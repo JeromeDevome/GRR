@@ -265,7 +265,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
         // On affiche les jours du mois dans le coin supérieur gauche de chaque cellule
         $heure = "";
 
-        if ($settings->get("show_holidays") == "Oui")
+        if ($settings->get("show_holidays") == 1)
             {   
                 if (isHoliday($t)){
                     $class .= 'ferie ';

@@ -84,6 +84,34 @@ class Settings {
 		return true;
 	}
 
+	//Returne un tableau avec le résultat de l'enregistrement et un message d'erreur éventuel 1: enregistrement réussi, 2: info, 3: Avertissement, 4: Erreur
+	static function set2($_name, $_value, $demo = false)
+	{
+		if ($demo == true && VerifyModeDemo(false))
+		{
+			if (Settings::get($_name) <> $_value)
+				return array(3, $_name . " ne peut pas être modifié en mode démo !");
+		}
+
+		if (isset(self::$grrSettings[$_name]))
+		{
+			$sql = "UPDATE ".TABLE_PREFIX."_setting set VALUE = '" . SecuChaine::ProtectDataSql($_value) . "' where NAME = '" . SecuChaine::ProtectDataSql($_name) . "'";
+			$res = grr_sql_query($sql);
+			if (!$res)
+				return array(4, get_vocab("message_records_error"). " " . $_name);
+		}
+		else
+		{
+			$sql = "INSERT INTO ".TABLE_PREFIX."_setting set NAME = '" . SecuChaine::ProtectDataSql($_name) . "', VALUE = '" . SecuChaine::ProtectDataSql($_value) . "'";
+			$res = grr_sql_query($sql);
+			if (!$res)
+				return array(4, get_vocab("message_records_error"). " " . $_name);
+		}
+		self::$grrSettings[$_name] = $_value;
+
+		return  array(1, "");
+	}
+
 	static function delette($name)
 	{
 		$AllSettings = array();

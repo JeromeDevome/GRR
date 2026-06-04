@@ -19,7 +19,8 @@ $grr_script_name = "admin_edit_domaine.php";
 
 $trad = $vocab;
 $ok = NULL;
-if (Settings::get("module_multisite") == "Oui")
+$id_site = -1;
+if (Settings::get("module_multisite") == 1)
 	$id_site = isset($_POST["id_site"]) ? $_POST["id_site"] : (isset($_GET["id_site"]) ? $_GET["id_site"] : -1);
 $action = isset($_POST["action"]) ? $_POST["action"] : (isset($_GET["action"]) ? $_GET["action"] : NULL);
 $add_area = isset($_POST["add_area"]) ? $_POST["add_area"] : (isset($_GET["add_area"]) ? $_GET["add_area"] : NULL);
@@ -108,7 +109,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 	if (isset($change_area))
 	{
 	// Affectation e un site : si aucun site n'a ete affecte
-		if ((Settings::get("module_multisite") == "Oui") && ($id_site == -1))
+		if ((Settings::get("module_multisite") == 1) && ($id_site == -1))
 		{
 	  		// On affiche un message d'avertissement
 			/*
@@ -233,7 +234,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 				$id_area = grr_sql_insert_id();
 			}
 	  		// Affectation e un site
-			if (Settings::get("module_multisite") == "Oui")
+			if (Settings::get("module_multisite") == 1)
 			{
 				$sql = "delete from ".TABLE_PREFIX."_j_site_area where id_area='".$id_area."'";
 				if (grr_sql_command($sql) < 0)
@@ -351,7 +352,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 		}
 		if ($domaine["enable_periods"] != 'y')
 			$domaine["enable_periods"] = 'n';
-		if (Settings::get("module_multisite") == "Oui")
+		if (Settings::get("module_multisite") == 1)
 			$id_site=grr_sql_query1("select id_site from ".TABLE_PREFIX."_j_site_area where id_area='".$id_area."'");
 	}
 	else
@@ -388,7 +389,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 
 		// Sites
         $sites = array();
-		if (Settings::get("module_multisite") == "Oui")
+		if (Settings::get("module_multisite") == 1)
 		{
 
 			if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)

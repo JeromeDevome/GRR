@@ -16,7 +16,7 @@
  * (at your option) any later version.
  */
 //Arguments passés par la méthode GET :
-//$use_site : 'y' (fonctionnalité multisite activée) ou 'n' (fonctionnalité multisite désactivée)
+//$use_site : '1' (fonctionnalité multisite activée) ou '0' (fonctionnalité multisite désactivée)
 //$id_site : l'identifiant du site
 //$default_area : domaine par défaut
 //$default_room : ressource par défaut
@@ -61,7 +61,7 @@ if ($_GET['type'] == "domaine")
 	}
 	else
 		die();
-	if ($use_site == 'y'){
+	if ($use_site == 1){
  		// on a activé les sites
 		if ($id_site != -1){
 			$sql = "SELECT a.id, a.area_name,a.access
@@ -77,11 +77,11 @@ if ($_GET['type'] == "domaine")
 		FROM ".TABLE_PREFIX."_area
 		ORDER BY order_display, area_name";
 	}
-	if (($id_site!=-1) || ($use_site=='n')){
+	if (($id_site!=-1) || ($use_site==0)){
 		$resultat = grr_sql_query($sql);
 	}
 	$display_liste = '<div class="form-group row col-sm-12"><label class="col-sm-6" for="id_area">'.get_vocab('default_area').'</label><div class="col-sm-6"><select class="form-control" id="id_area" name="id_area" onchange="modifier_liste_ressources(1)"><option value="-1">'.get_vocab('choose_an_area').'</option>'."\n";
-	if (($id_site!=-1) || ($use_site=='n')){
+	if (($id_site!=-1) || ($use_site==0)){
 
 		for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
 		{

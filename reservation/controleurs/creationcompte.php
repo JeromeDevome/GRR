@@ -30,7 +30,7 @@ $d['caractMini'] = $pass_leng." caractères minimum"; // $pass_leng est définit
 /*  */
 use Gregwar\Captcha\PhraseBuilder;
 
-if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
+if( Settings::get("fct_crea_cpt") == 1 && isset($_POST["nom"])){
 
 	/// Init des variables
 	$reg_nom = isset($_POST["nom"]) ? $_POST["nom"] : NULL;
@@ -55,7 +55,7 @@ if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 	if (empty($reg_mdp1) || empty($reg_mdp2))
 		$msg_erreurIncomplet .= "Le mot de passe<br/>";
 
-	if(Settings::get("fct_crea_cpt_captcha") == 'y')
+	if(Settings::get("fct_crea_cpt_captcha") == 1)
 	{
 		// Checking that the posted captcha match the captcha stored in the session
 		if (isset($_SESSION['phrase']) && PhraseBuilder::comparePhrases($_SESSION['phrase'], $_POST['captcha'])) {
@@ -175,7 +175,7 @@ if( Settings::get("fct_crea_cpt") == "y" && isset($_POST["nom"])){
 	}
 }
 
-if( Settings::get("fct_crea_cpt") == "y")
+if( Settings::get("fct_crea_cpt") == 1)
 	echo $twig->render('creationcompte.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
 else
 	echo "<h3>Erreur : Fonction non active</h3>"

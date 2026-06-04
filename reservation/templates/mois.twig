@@ -102,7 +102,7 @@
 							<div class="dragdrop monthday {{cellule.class}}" data-day="{{cellule.numJour}}" data-month="{{d.gMonth}}" data-year="{{d.gYear}}" data-plage-libre="{{cellule.plageLibre ? '1' : '0'}}">
 								<!-- Numéro du jour -->
 								<a title="{{trad.see_all_the_rooms_for_the_day}}" href="app.php?p=jour&amp;year={{d.gYear}}&amp;month={{d.gMonth}}&amp;day={{cellule.numJour}}&amp;area={{d.area}}">{{cellule.numJour}}
-									{% if settings.jours_cycles_actif == "Oui" and cellule.jourCycle > -1 %}
+									{% if settings.jours_cycles_actif == 1 and cellule.jourCycle > -1 %}
 										<span class="tiny"> - {% if cellule.jourCycle > 0 %}{{trad.rep_type_6}} {% endif %}{{cellule.jourCycle}}</span>
 									{% endif %}
 								</a>

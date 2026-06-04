@@ -32,42 +32,13 @@ if (isset($_GET['motdepasse_backup']))
 	if (!Settings::set("motdepasse_backup", $_GET['motdepasse_backup']))
 		$msg = "Erreur lors de l'enregistrement de motdepasse_backup !<br />";
 }
-if (isset($_GET['disable_login']))
-{
-	if (!Settings::set("disable_login", $_GET['disable_login']))
-		$msg .= "Erreur lors de l'enregistrement de disable_login !<br />";
-}
-if (isset($_GET['url_disconnect']))
-{
-	if (!Settings::set("url_disconnect", $_GET['url_disconnect']))
-		$msg .= "Erreur lors de l'enregistrement de url_disconnect ! <br />";
-}
+
 if (isset($_GET['redirection_https']))
 {
 	if (!Settings::set("redirection_https", $_GET['redirection_https']))
 		$msg .= "Erreur lors de l'enregistrement de redirection_https ! <br />";
 }
-// Restriction iP
-if (isset($_GET['ip_autorise']))
-{
-	$ctrlIp = true;
-	if($_GET['ip_autorise'] != "")
-		$ctrlIp = SecuChaine::ValideNetworkIp($_GET['ip_autorise']);
 
-	if ($ctrlIp == false || !Settings::set("ip_autorise", $_GET['ip_autorise']))
-		$msg .= "Erreur lors de l'enregistrement de ip_autorise !<br />";
-}
-// Heure de connexion
-if (isset($_GET['horaireconnexionde']))
-{
-	if (!Settings::set("horaireconnexionde", $_GET['horaireconnexionde']))
-		$msg .= "Erreur lors de l'enregistrement de horaireconnexionde !<br />";
-}
-if (isset($_GET['horaireconnexiona']))
-{
-	if (!Settings::set("horaireconnexiona", $_GET['horaireconnexiona']))
-		$msg .= "Erreur lors de l'enregistrement de horaireconnexiona !<br />";
-}
 // Max session length
 if (isset($_GET['sessionMaxLength']))
 {
@@ -136,15 +107,6 @@ if (isset($_GET['ok']))
 }
 
 
-
-// Log des mails
-if (isset($_GET['log_mail']))
-{
-	if (!Settings::set("log_mail", $_GET['log_mail']))
-		$msg .= "Erreur lors de l'enregistrement de log_mail !<br />";
-}
-
-
 if (!Settings::load())
 	die("Erreur chargement settings");
 
@@ -161,8 +123,8 @@ if (isset($_GET['ok'])) {
 // Affichage
 
 $AllSettings = Settings::getAll();
-$trad['dDbSys'] = $dbsys;
-$trad['dRestaureBBD'] = $restaureBBD;
+$d['dbSys'] = $dbsys;
+$d['restaureBBD'] = $restaureBBD;
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 

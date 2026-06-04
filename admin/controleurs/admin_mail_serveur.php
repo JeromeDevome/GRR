@@ -98,6 +98,7 @@ if (isset($_GET['smtp_verify_depth']))
 		$msg .= "Erreur lors de l'enregistrement de smtp_verify_depth !<br />";
 }
 
+
 // Si Email test renseigné on y envois un mail
 if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 {
@@ -121,11 +122,18 @@ if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
 if (isset($_GET['ok']))
 {
 	if (isset($_GET['grr_mail_Bcc']))
-		$grr_mail_Bcc = "y";
+		$grr_mail_Bcc = 1;
 	else
-		$grr_mail_Bcc = "n";
+		$grr_mail_Bcc = 0;
 	if (!Settings::set("grr_mail_Bcc", $grr_mail_Bcc))
 		$msg .= "Erreur lors de l'enregistrement de grr_mail_Bcc !<br />";
+
+	if (isset($_GET['log_mail']))
+		$log_mail = 1;
+	else
+		$log_mail = 0;
+	if (!Settings::set("log_mail", $log_mail))
+		$msg .= "Erreur lors de l'enregistrement de log_mail !<br />";
 }
 
 

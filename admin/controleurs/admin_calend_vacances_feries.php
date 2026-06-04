@@ -23,7 +23,7 @@ SecuAccess::CheckAccess(6, $back);
 
 
 // premier test : l'affichage des vacances et fériés est-il activé ?
-if (Settings::get("show_holidays") == 'Oui' && isset($_POST['define_holidays']))
+if (Settings::get("show_holidays") == 1 && isset($_POST['define_holidays']))
 {
 
 	$annee = isset($_POST['From_year']) ? $_POST['From_year'] : (isset($_GET['From_year']) ? intval($_GET['From_year']) : date('Y'));

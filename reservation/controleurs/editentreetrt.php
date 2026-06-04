@@ -742,7 +742,7 @@ try {
 		if ($rep_type != 0) // Réservation périodique
 		{
 			$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $ignore);
-			if (Settings::get("automatic_mail") == 'yes' && $envoy_notif == 1)
+			if (Settings::get("automatic_mail") == 1 && $envoy_notif == 1)
 			{
                 if (isset($id_first_resa) && ($id_first_resa != 0))
                 {
@@ -782,7 +782,7 @@ try {
 			{
 				$id = grr_sql_insert_id();
 				insertLogResa($id, 1, 'Création via calendrier');
-				if (Settings::get("automatic_mail") == 'yes' && $envoy_notif == 1)
+				if (Settings::get("automatic_mail") == 1 && $envoy_notif == 1)
 				{
 					if ($send_mail_moderate)
 						$message_error = send_mail($id,5,$dformat);
@@ -793,7 +793,7 @@ try {
 			else // Modification réservation unique
 			{
 				insertLogResa($id, 2, $differenceAvAp);
-				if (Settings::get("automatic_mail") == 'yes' && $envoy_notif == 1)
+				if (Settings::get("automatic_mail") == 1 && $envoy_notif == 1)
 				{
 					if ($send_mail_moderate)
 						$message_error = send_mail($id,5,$dformat);

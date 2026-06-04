@@ -9,30 +9,17 @@
 
 {% block content %}
 	<div class="row">
+		<div class="col col-md-12"><div class="callout callout-danger">Cette page à vocation à être supprimée dans une future version de GRR.</div></div>
+
         <div class="col col-sm-12">
             <div class="card card-primary card-outline card-tabs">
               <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-home-tab" href="?p=admin_config">{{ trad.admin_config1 }}</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-profile-tab" href="?p=admin_config6">{{ trad.admin_config6 }}</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-messages-tab" href="?p=admin_config2">{{ trad.admin_config2 }}</a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link active" id="custom-tabs-three-settings-tab" href="?p=admin_config3">{{ trad.admin_config3 }}</a>
                   </li>
 				  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-profile-tab" href="?p=admin_config7">{{ trad.admin_config7 }}</a>
-                  </li>
-				  <li class="nav-item">
                     <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config4">{{ trad.admin_config4 }}</a>
-                  </li>
-				  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config5" >{{ trad.admin_config5 }}</a>
                   </li>
                 </ul>
               </div>
@@ -41,27 +28,12 @@
 					<form action="?p=admin_config3" id="nom_formulaire" method="get">
 						<input type="hidden" name="p" value="admin_config3" />
 
-						<section id="liensemail">
-							<h4 class="page-header">{{ trad.configuration_liens_adresses }}</h4>
-							<input type="radio" name="envoyer_email_avec_formulaire" value="yes" id="label_2a" {% if settings.envoyer_email_avec_formulaire == 'yes' %} checked {% endif %} /> <label for="label_2a">{{ trad.envoyer_email_avec_formulaire_oui }}</label><br>
-							<input type="radio" name="envoyer_email_avec_formulaire" value="no" id="label_2b" {% if settings.envoyer_email_avec_formulaire == 'no' %} checked {% endif %} /> <label for="label_2b">{{ trad.envoyer_email_avec_formulaire_non }}</label><br>
-						</section>
-
-						<hr>	
-						
-						<section id="popupreservation">
-							<h4 class="page-header">{{ trad.javascript_info_disabled_msg }}</h4>
-							<input type="radio" name="javascript_info_disabled" value="0" id="label_4a" {% if settings.javascript_info_disabled == '0' %} checked {% endif %} /> <label for="label_4a">{{ trad.javascript_info_disabled0 }}</label><br>
-							<input type="radio" name="javascript_info_disabled" value="1" id="label_4b" {% if settings.javascript_info_disabled == '1' %} checked {% endif %} /> <label for="label_4b">{{ trad.javascript_info_disabled1 }}</label><br>
-						</section>
-
-						<hr>	
 						
 						<section id="popupadmin">
 							<h4 class="page-header">{{ trad.suppression_automatique_des_reservations }}</h4>
 							<p>{{ trad.Explications_suppression_automatique_des_reservations |raw}}</p>
-							<input type="radio" name="verif_reservation_auto" value="0" id="label_6a" {% if settings.verif_reservation_auto == '0' %} checked {% endif %} /> <label for="label_6a">{{ trad.verif_reservation_auto0 }}</label><br>
-							<input type="radio" name="verif_reservation_auto" value="1" id="label_6b" {% if settings.verif_reservation_auto == '1' %} checked {% endif %} /> <label for="label_6b">{{ trad.verif_reservation_auto1 }}</label><br>
+							<input type="radio" name="verif_reservation_auto" value="0" id="label_6a" {% if settings.verif_reservation_auto == 0 %} checked {% endif %} /> <label for="label_6a">{{ trad.verif_reservation_auto0 }}</label><br>
+							<input type="radio" name="verif_reservation_auto" value="1" id="label_6b" {% if settings.verif_reservation_auto == 1 %} checked {% endif %} /> <label for="label_6b">{{ trad.verif_reservation_auto1 }}</label><br>
 							<br>
 							{{ form.input('motdepasse_verif_auto_grr', trad.verif_reservation_auto2, settings.motdepasse_verif_auto_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classInput: 'col col-sm-4 control-label', type: 'password'}) }}
 							{{ form.input('chemin_complet_grr', trad.verif_reservation_auto3, settings.chemin_complet_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classInput: 'col col-sm-4 control-label'}) }}

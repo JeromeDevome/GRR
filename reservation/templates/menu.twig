@@ -7,7 +7,7 @@
         </div>
 
         <!-- Sélection date directe -->
-        {% if settings.select_date_directe == "y" %}
+        {% if settings.select_date_directe == 1 %}
             <form method="GET" action="app.php?p=jour" style="text-align: left;">
 
                 <button class="btn btn-default btn-sm" type="submit">
@@ -36,7 +36,7 @@
     <div id ="menuGauche2">
 
         <!-- Sélection date directe -->
-        {% if settings.select_date_directe == "y" %}
+        {% if settings.select_date_directe == 1 %}
             <form method="GET" action="app.php?p=jour">
                 <center>
 

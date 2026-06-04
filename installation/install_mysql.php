@@ -174,8 +174,25 @@ if ($etape == 4)
 						echo "<br /><font color=\"red\">ERROR</font> : '$query'";
 						$result_ok = 'no';
 					}
-					//else
-					//	echo "<br /><font color=\"green\">OK</font> : '$query'";
+					else
+					{
+						foreach ($liste_settings as $param_name => $param_value) {
+							// Vérifier si le paramètre existe dans la table settings
+							$sql_check = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_setting WHERE name = '".SecuChaine::ProtectDataSql($param_name)."'";
+							$count = grr_sql_query1($sql_check);
+							
+							if ($count == 0) {
+								// Le paramètre n'existe pas, on l'ajoute
+								$sql_insert = "INSERT INTO ".TABLE_PREFIX."_setting (name, value) VALUES (
+									'".SecuChaine::ProtectDataSql($param_name)."',
+									'".SecuChaine::ProtectDataSql($param_value)."'
+								)";
+								$res_insert = grr_sql_command($sql_insert);
+								if ($res_insert >= 0)
+									$params_ajoutes++;
+							}
+						}
+					}
 				}
 			}
 			fclose($fd);

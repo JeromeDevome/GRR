@@ -17,7 +17,7 @@
 
 $grr_script_name = "admin_corresp_statut.php";
 
-if (Settings::get("sso_ac_corr_profil_statut") != 'y')
+if (Settings::get("sso_ac_corr_profil_statut") != 1)
 {
 	showAccessDenied($back);
 	exit();

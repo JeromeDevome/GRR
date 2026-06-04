@@ -51,10 +51,10 @@ class AdminFonctions
 
 		if ( time() < Settings::get("begin_bookings") || time() > Settings::get("end_bookings"))
 		{
-            $alerteTDB[] = array('type' =>"danger", 'MessageWarning' => "Les dates d'ouverture des réservations sont actuellements fermées !", 'NomLien' => "Configurer les dates", 'lien' => "?p=admin_config");
+            $alerteTDB[] = array('type' =>"danger", 'MessageWarning' => "Les dates d'ouverture des réservations sont actuellements fermées !", 'NomLien' => "Configurer les dates", 'lien' => "?p=admin_page_reservation");
 		} elseif( (time() + 2592000) < Settings::get("begin_bookings") || (time() + 2592000) > Settings::get("end_bookings"))
 		{
-            $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "Les dates d'ouverture des réservations seront prochainement fermées.", 'NomLien' => "Configurer les dates", 'lien' => "?p=admin_config");
+            $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "Les dates d'ouverture des réservations seront prochainement fermées.", 'NomLien' => "Configurer les dates", 'lien' => "?p=admin_page_reservation");
 		}
 
 		if ($gWarningBackup == 1  && (time() - 2592000) > Settings::get("backup_date") ){
@@ -69,7 +69,7 @@ class AdminFonctions
             $alerteTDB[] = array('type' =>"warning", 'MessageWarning' => "Le dossier d'installation doit être supprimé pour une installation sécurisée !", 'NomLien' => "", 'lien' => "");
         }
 
-       if(Settings::get("ActiveModeDemo") == "y"){
+       if(Settings::get("ActiveModeDemo") == 1){
             $alerteTDB[] = array('type' =>"info", 'MessageWarning' => "Ceci est une version de démonstration ! Certaines options sont désactivées.", 'NomLien' => "", 'lien' => "");
         }
 

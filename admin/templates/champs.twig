@@ -1,10 +1,16 @@
 {% macro input(name, label, value = null, options = []) %}
-	<div class="form-group row {{ options.classGroup }}">
+	{% set row = options.row|default(1) %}
+	
+	{% if row == 1 %}
+		<div class="form-group row {{ options.classGroup }}">
+	{% endif %}
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }} {% if options.require == 1 %}*{% endif %}</label>
 		<div class="{{ options.classInput }}">
 			<input class="form-control" type="{{ options.type ?: 'text' }}" id="{{ name }}" name="{{ name }}" value="{{ value }}" {% if options.maxlength %}maxlength="{{options.maxlength}}"{% endif %} {% if options.require == 1 %}required{% endif %} {% if options.disabled == 1 %}disabled{% endif %} {% if options.autocomplete %}autocomplete="{{options.autocomplete}}"{% endif %}>
 		</div>
+		{% if row == 1 %}
 	</div>
+	{% endif %}
 {% endmacro %}
 
 {% macro textarea(name, label, value = null, options = []) %}
@@ -12,6 +18,15 @@
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
 		<div class="{{ options.classInput }}">
 			<textarea class="form-control" id="{{ name }}" name="{{ name }}" rows="{{ options.rows ?: 4 }}">{{ value }}</textarea>
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro switch(name, label, value = null, options = []) %}
+	<div class="form-group row">
+		<div class="custom-control custom-switch {{ options.classGroup }}">
+			<input type="checkbox" class="custom-control-input {{ options.classInput }}" id="{{ name }}" name="{{ name }}" {% if value == 1 %}checked{% endif %} > 
+			<label class="custom-control-label {{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
 		</div>
 	</div>
 {% endmacro %}

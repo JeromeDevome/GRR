@@ -116,7 +116,7 @@ if ($valid == 'yes')
 		}
 		if (SecuAccess::IsAllowedToModifyEmail())
 		{
-			if(Settings::get('mail_user_obligatoire') != "y" || (Settings::get('mail_user_obligatoire') == "y" && $reg_email != "")){
+			if(Settings::get('mail_user_obligatoire') != 1 || (Settings::get('mail_user_obligatoire') == 1 && $reg_email != "")){
 				if ($flag_virgule == 'y')
 					$sql .= ",";
 				$sql .= "email = '" . SecuChaine::ProtectDataSql($reg_email)."'";
@@ -191,7 +191,7 @@ if (($valid == 'yes') || ($valid=='reset'))
 $use_prototype = 'y';
 
 echo "\n    <!-- Repere ".$grr_script_name." -->\n";
-if (Settings::get("module_multisite") == "Oui")
+if (Settings::get("module_multisite") == 1)
 	$d['use_site'] = 'y';
 else
 	$d['use_site'] = 'n';
@@ -288,12 +288,13 @@ $d['default_room'] = $default_room;
 	}
 
 	$i = 0;
-	while ($i < count($liste_language))
+
+	$langues_dispo = explode(';', Settings::get('langues_dispo'));
+	while ($i < count($langues_dispo))
 	{
-		$langues[] = array('idlangue' => $liste_language[$i], 'nomlangue' => encode_message_utf8($liste_name_language[$i]));
+		$langues[] = array('idlangue' => $langues_dispo[$i], 'nomlangue' => encode_message_utf8($langues_dispo[$i]));
 		$i++;
 	}
-
 
 	echo $twig->render('moncompte.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites, 'themes' => $themes, 'langues' => $langues));
 ?>

@@ -59,7 +59,7 @@
 
 							<hr>
 							<!-- Site / Domaine et ressource par défaut -->
-							{% if settings.module_multisite == 'Oui' %}
+							{% if settings.module_multisite == 1 %}
 								<div class="form-group row col-sm-12">
 									<label class="col col-sm-6" for="default_css">{{ trad.default_site }}</label>
 									<div class="col col-sm-6">
@@ -377,7 +377,7 @@
 							<input type="radio" name="display_level_email" value="2" id="label_6c" {% if settings.display_level_email == '2' %} checked {% endif %} /> <label for="label_6c">{{ trad.visu_fiche_description2 }}</label><br>
 							<input type="radio" name="display_level_email" value="3" id="label_6d" {% if settings.display_level_email == '3' %} checked {% endif %} /> <label for="label_6d">{{ trad.visu_fiche_description3 }}</label><br>
 							<input type="radio" name="display_level_email" value="4" id="label_6e" {% if settings.display_level_email == '4' %} checked {% endif %} /> <label for="label_6e">{{ trad.visu_fiche_description4 }}</label><br>
-							{% if settings.module_multisite == 'Oui' %}
+							{% if settings.module_multisite == 1 %}
 								<input type="radio" name="display_level_email" value="5" id="label_6f" {% if settings.display_level_email == '5' %} checked {% endif %} /> <label for="label_6f">{{ trad.visu_fiche_description5 }}</label><br>
 							{% endif %}
 							<input type="radio" name="display_level_email" value="6" id="label_6g" {% if settings.display_level_email == '6' %} checked {% endif %} /> <label for="label_6g">{{ trad.visu_fiche_description6 }}</label><br>
@@ -432,26 +432,26 @@
 									</tr>
 									<tr>
 										<td>{{ trad.legend_msg }}</td>
-										<td><input type="radio" name="legend" value="0" id="label_11a" {% if settings.legend == '0' %} checked {% endif %} /></td>
-										<td><input type="radio" name="legend" value="1" id="label_11b" {% if settings.legend == '1' %} checked {% endif %} /></td>
+										<td><input type="radio" name="legend" value="0" id="label_11a" {% if settings.legend == 0 %} checked {% endif %} /></td>
+										<td><input type="radio" name="legend" value="1" id="label_11b" {% if settings.legend == 1 %} checked {% endif %} /></td>
 										<td></td>
 									</tr>
 									<tr>
 										<td>{{ trad.imprimante_msg }}</td>
-										<td><input type="radio" name="imprimante" value="0" id="label_12a" {% if settings.imprimante == '0' %} checked {% endif %} /></td>
-										<td><input type="radio" name="imprimante" value="1" id="label_12b" {% if settings.imprimante == '1' %} checked {% endif %} /></td>
+										<td><input type="radio" name="imprimante" value="0" id="label_12a" {% if settings.imprimante == 0 %} checked {% endif %} /></td>
+										<td><input type="radio" name="imprimante" value="1" id="label_12b" {% if settings.imprimante == 1 %} checked {% endif %} /></td>
 										<td></td>
 									</tr>
 									<tr>
 										<td>{{ trad.affichage_pdf }}</td>
-										<td><input type="radio" name="pdf" value="1" id="label_14a" {% if settings.pdf == '1' %} checked {% endif %} /></td>
-										<td><input type="radio" name="pdf" value="0" id="label_14b" {% if settings.pdf == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="pdf" value="1" id="label_14a" {% if settings.pdf == 1 %} checked {% endif %} /></td>
+										<td><input type="radio" name="pdf" value="0" id="label_14b" {% if settings.pdf == 0 %} checked {% endif %} /></td>
 										<td></td>
 									</tr>
 									<tr>
 										<td>{{ trad.holidays_msg }}</td>
-										<td><input type="radio" name="show_holidays" value="Oui" id="label_13a" {% if settings.show_holidays == 'Oui' %} checked {% endif %} /></td>
-										<td><input type="radio" name="show_holidays" value="Non" id="label_13b" {% if settings.show_holidays == 'Non' %} checked {% endif %} /></td>
+										<td><input type="radio" name="show_holidays" value="1" id="label_13a" {% if settings.show_holidays == 1 %} checked {% endif %} /></td>
+										<td><input type="radio" name="show_holidays" value="0" id="label_13b" {% if settings.show_holidays == 0 %} checked {% endif %} /></td>
 										<td>
 											<select class="form-control" name="holidays_zone">
 												<option>{{ trad.holidays_zone_msg }}</option>
@@ -474,8 +474,8 @@
 								<label class="col col-sm-6" for="login_template">Template de la page de connexion</label>
 								<div class="col col-sm-6">
 									<select class="form-control" name="login_template">
-										<option value="1" {% if settings.login_template == '1' %} selected {% endif %}>1 - Centré</option>
-										<option value="2" {% if settings.login_template == '2' %} selected {% endif %}>2 - A droite</option>
+										<option value="1" {% if settings.login_template == 1 %} selected {% endif %}>1 - Centré</option>
+										<option value="2" {% if settings.login_template == 2 %} selected {% endif %}>2 - A droite</option>
 									</select>
 								</div>
 							</div>
@@ -490,14 +490,14 @@
 									</tr>
 									<tr>
 										<td>Logo</td>
-										<td><input type="radio" name="login_logo" value="1" id="label_11a" {% if settings.login_logo == '1' %} checked {% endif %} /></td>
-										<td><input type="radio" name="login_logo" value="0" id="label_11b" {% if settings.login_logo == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="login_logo" value="1" id="label_11a" {% if settings.login_logo == 1 %} checked {% endif %} /></td>
+										<td><input type="radio" name="login_logo" value="0" id="label_11b" {% if settings.login_logo == 0 %} checked {% endif %} /></td>
 										<td></td>
 									</tr>
 									<tr>
 										<td>{{trad.company}}</td>
-										<td><input type="radio" name="login_nom" value="1" id="label_12a" {% if settings.login_nom == '1' %} checked {% endif %} /></td>
-										<td><input type="radio" name="login_nom" value="0" id="label_12b" {% if settings.login_nom == '0' %} checked {% endif %} /></td>
+										<td><input type="radio" name="login_nom" value="1" id="label_12a" {% if settings.login_nom == 1 %} checked {% endif %} /></td>
+										<td><input type="radio" name="login_nom" value="0" id="label_12b" {% if settings.login_nom == 0 %} checked {% endif %} /></td>
 										<td></td>
 									</tr>
 								</tbody>

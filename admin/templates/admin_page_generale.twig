@@ -1,0 +1,251 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
+	<link rel="stylesheet" href="../jslib/select2/css/select2.min.css">
+	<link rel="stylesheet" href="../jslib/select2-bootstrap-5-theme/select2-bootstrap-5-theme.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<form enctype="multipart/form-data" action="?p=admin_page_generale" method="post" class="col col-12">
+			<input type="hidden" name="p" value="admin_page_generale" />
+			<input type="hidden" name="submit" value="1" />
+
+			<div class="col col-12">
+
+				<!-- Accès & droits -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-lock"></i> {{ trad.admin_config2 }}
+						</h3>
+					</div>
+					<div class="card-body">
+						{{ form.switch('authentification_obli', trad.authentification_obli1, settings.authentification_obli, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						<i>{{ trad.authentification_obli0 }}</i>
+					</div>
+				</div>
+
+				<!-- Configuration -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-cogs"></i> {{ trad.admin_config }}
+						</h3>
+					</div>
+					<div class="card-body">
+						{{ form.input('company', trad.company, settings.company, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('grr_url', trad.grr_url, settings.grr_url, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.switch('use_grr_url', trad.grr_url_explain, settings.use_grr_url, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.input('webmaster_name', trad.webmaster_name, settings.webmaster_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+
+						{{ form.input('webmaster_email', trad.webmaster_email, settings.webmaster_email, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('technical_support_email', trad.technical_support_email, settings.technical_support_email, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						<div class="form-group row col-sm-12">
+							<br><i>{{ trad.plusieurs_adresses_separees_points_virgules }}</i>
+						</div>
+					</div>
+				</div>
+				<!-- Apparence -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-brush"></i> {{ trad.admin_config6 }}
+						</h3>
+					</div>
+					<div class="card-body">
+
+						<!-- Logo -->
+						<div class="form-group row">
+							<label class="col col-sm-4">{{ trad.logo_msg }}</label>
+							<div class="input-group col-sm-8">
+								<div class="custom-file">
+									<input type="file" class="custom-file-input col col-sm-4" for="doc_file" id="doc_file" name="doc_file" />
+									<label class="custom-file-label" for="file">{{ trad.select_fichier }}</label>
+								</div>
+								<div class="input-group-append">
+									{% if settings.logo != '' %}
+										<a href="?p=admin_page_generale&amp;sup_img=1" class="btn btn-danger">
+											Supprimer
+										</a>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+
+						{% if settings.logo %}
+							<div class="form-group row col-sm-12">
+								<img src="{{d.dossierLogo}}{{ settings.logo }}" alt="logo" title="{{ settings.logo }}" height="100"/>
+							</div>
+						{% endif %}
+
+						<hr>
+
+						<!-- Message personnalisé dans le bandeau -->
+						<section id="message_accueil">
+							<h5 class="page-header">{{ trad.message_perso }}</h5>
+							<p>{{ trad.message_perso_explain }}</p>
+							{{ form.summernote('summernote', '', settings.message_accueil, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-12 control-label', name: 'message_accueil'}) }}
+						</section>
+
+						<hr>
+
+						<!-- Langues disponibles -->
+						<div class="form-group row">
+							<label class="col col-sm-4">Langues disponibles</label>
+							<div class="col col-sm-8">
+								<select class="select2" multiple="multiple" name="langues_dispo" style="width:100%">
+									{% for langue in liste_language %}
+										<option value="{{ langue }}" {% if langue in d.langues_dispo_saved %} selected {% endif %}>{{ langue }}</option>
+									{% endfor %}
+							</select>
+							</div>
+						</div>
+
+						<hr>
+
+						<h5 class="page-header">{{ trad.default_parameter_values_title }}</h5>
+						<p>{{ trad.explain_default_parameter }}</p>
+
+						<!-- Style -->
+						<div class="form-group row">
+							<label class="col col-sm-6 col-xl-4" for="default_css">{{ trad.explain_css }}</label>
+							<div class="col col-sm-5 col-xl-3">
+								<select class="form-control" name="default_css">
+									<option value="test">test</option>
+									{{ d.optionTheme | raw }}
+								</select>
+							</div>
+							<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
+						</div>
+
+						<!--Langue  -->
+						<div class="form-group row">
+							<label class="col col-sm-6 col-xl-4" for="default_language">{{ trad.choose_language }}</label>
+							<div class="col col-sm-5 col-xl-3">
+								<select class="form-control" name="default_language">
+									{{ d.optionLangue | raw }}
+								</select>
+							</div>
+							<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsynchro="2"><i class="icon fa fa-sync"></i></button></div>
+						</div>
+
+						<hr>
+
+						<!-- Mail, choix formulaire ou mailto -->
+						<section id="liensemail">
+							<h5 class="page-header">{{ trad.configuration_liens_adresses }}</h5>
+							<input type="radio" name="envoyer_email_avec_formulaire" value="1" id="label_2a" {% if settings.envoyer_email_avec_formulaire == 1 %} checked {% endif %} /> <label for="label_2a">{{ trad.envoyer_email_avec_formulaire_oui }}</label><br>
+							<input type="radio" name="envoyer_email_avec_formulaire" value="0" id="label_2b" {% if settings.envoyer_email_avec_formulaire == 0 %} checked {% endif %} /> <label for="label_2b">{{ trad.envoyer_email_avec_formulaire_non }}</label><br>
+						</section>
+
+						<hr>
+
+						<p>{{ trad.adapter_fichiers_langue_explain }}</p>
+			  		</div>
+
+				</div>
+
+			</div><!-- /.col 12 -->
+
+			<!-- Enregistrer -->
+			<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+				<i class="fas fa-save"></i> {{ trad.save }}
+			</button>
+
+		</form>
+	</div><!-- /.row -->
+
+
+	<!-- Modal de confirmation pour les synchronisations -->
+	<div class="modal fade" id="modal-warning" style="display: none;" aria-hidden="true">
+		<form action="?p=admin_page_generale" id="formmodal">
+			<div class="modal-dialog">
+				<div class="modal-content bg-warning">
+					<div class="modal-header">
+						<h4 class="modal-title">Synchronisation</h4>
+						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<span class="modaltexte" id="modaltexte"></span><span class="modalidsync" id="modalidsync" hidden></span>
+					</div>
+					<div class="modal-footer justify-content-between">
+						<button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.NO}}</button>
+						<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.YES}}</button>
+					</div>
+				</div>
+			</div>
+		</form>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../jslib/toastr/toastr.min.js"></script>
+	<script src="../jslib/select2/js/select2.full.min.js"></script>
+	<script type="text/javascript">
+		// Modal
+		$('#modal-warning').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var idsynchro = button.data('idsynchro')// Extract info from data-* attributes
+			var texte = button.data('texte')
+			// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+			// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+			var modal = $(this)
+			modal.find('.modalidsync').text(idsynchro)
+			modal.find('.modaltexte').text(texte)
+		})
+
+		$(function(){
+			$('#formmodal').submit(function(e) {
+			  e.preventDefault()
+			  var $form = $(this)
+			  var v=document.getElementById('modalidsync').innerHTML
+			  $.post($form.attr('action'), $form.serialize())
+			  .done(function(data) {
+				$('#html').html(data);
+				$('#modal-warning').modal('hide');
+				document.location.href='?p=admin_page_generale&sync='+v;
+			  })
+			  .fail(function() {
+				alert('Une erreur est survenue : GRRJS')
+			  })
+			})
+
+			//Initialize Select2 Elements
+			$('.select2').select2({
+				theme: 'bootstrap-5'
+			});
+
+			// Avant soumission: convertir la sélection Select2 en format sérialisable
+			$('form').on('submit', function(e) {
+				var selectedValues = $('[name="langues_dispo"]').val();
+				console.log('Submit - Selected values:', selectedValues);
+				
+				// Créer des input hidden pour chaque valeur sélectionnée
+				$('[name="langues_dispo_hidden"]').remove();
+				if (selectedValues && selectedValues.length > 0) {
+					$.each(selectedValues, function(i, val) {
+						$('form').append('<input type="hidden" name="langues_dispo_array[]" value="' + val + '" />');
+					});
+				}
+			});
+
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
+		})
+	</script>
+
+{% endblock %}

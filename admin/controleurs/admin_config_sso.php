@@ -51,9 +51,9 @@ if (isset($_POST['valid']))
 		echo "Erreur lors de l'enregistrement de cas_version !<br />";
 	
 	if (!isset($_POST['cacher_lien_deconnecter']))
-		$cacher_lien_deconnecter = "n";
+		$cacher_lien_deconnecter = 0;
 	else
-		$cacher_lien_deconnecter = "y";
+		$cacher_lien_deconnecter = 1;
 	if (!Settings::set("cacher_lien_deconnecter", $cacher_lien_deconnecter))
 		echo "Erreur lors de l'enregistrement de cacher_lien_deconnecter !<br />";
 	if (isset($_POST['Url_portail_sso']))
@@ -120,13 +120,13 @@ if (isset($_POST['valid']))
 	if (!Settings::set("sso_ac_corr_profil_statut", $sso_active_correspondance_profil_statut))
 		echo "Erreur lors de l'enregistrement de sso_active_correspondance_profil_statut !<br />";
 	if (($_POST['sso_statut'] != "cas_visiteur") && ($_POST['sso_statut'] != "cas_utilisateur"))
-		$sso_redirection_accueil_grr = "n";
+		$sso_redirection_accueil_grr = 0;
 	else
 	{
 		if (!isset($_POST['sso_redirection_accueil_grr']))
-			$sso_redirection_accueil_grr = "n";
+			$sso_redirection_accueil_grr = 0;
 		else
-			$sso_redirection_accueil_grr = "y";
+			$sso_redirection_accueil_grr = 1;
 	}
 	if (!Settings::set("sso_redirection_accueil_grr", $sso_redirection_accueil_grr))
 		echo "Erreur lors de l'enregistrement de sso_redirection_accueil_grr !<br />";

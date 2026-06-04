@@ -1,0 +1,774 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" href="../jslib/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<form enctype="multipart/form-data" action="?p=admin_page_reservation" method="post" class="col col-12">
+			<input type="hidden" name="p" value="admin_page_reservation" />
+			<input type="hidden" name="submit" value="1" />
+
+        	<div class="col col-12">
+
+				<!-- Accès & droits -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-lock"></i> {{ trad.admin_config2 }}
+						</h3>
+					</div>
+					<div class="card-body">
+
+						<section id="calendries">
+
+							<div class="form-group row col-sm-12">
+								<label class="col col-sm-4" for="plageresa">{{ trad.title_begin_end_bookings }}</label>
+								<div class="input-group col-sm-8">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+									</div>
+									<input type="text" class="form-control pull-right" id="plageresa" name="plageresa" value="{{ d.begin_bookings }} - {{ d.end_bookings }}">
+								</div>
+							</div>
+							<i>{{ trad.begin_bookings_explain }}</i>
+						</section>
+
+						<hr>
+
+						<div class="form-group row">
+							<label class="col-sm-4" for="visu_fiche_description"><p>{{ trad.visu_fiche_description_msg }}</p></label>
+							<div class="col-sm-8">
+								<select class="form-control" name="visu_fiche_description">
+									<option value="0" {% if settings.visu_fiche_description == 0 %} selected {% endif %}>{{ trad.visu_fiche_description0 }}</option>
+									<option value="1" {% if settings.visu_fiche_description == 1 %} selected {% endif %}>{{ trad.visu_fiche_description1 }}</option>
+									<option value="2" {% if settings.visu_fiche_description == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
+									<option value="3" {% if settings.visu_fiche_description == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
+									<option value="4" {% if settings.visu_fiche_description == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
+									{% if settings.module_multisite == 1 %}
+										<option value="5" {% if settings.visu_fiche_description == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
+									{% endif %}
+									<option value="6" {% if settings.visu_fiche_description == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-4" for="acces_fiche_reservation"><p>{{ trad.acces_fiche_reservation_msg }}</p></label>
+							<div class="col-sm-8">
+								<select class="form-control" name="acces_fiche_reservation">
+									<option value="0" {% if settings.acces_fiche_reservation == 0 %} selected {% endif %}>{{ trad.visu_fiche_description0 }}</option>
+									<option value="1" {% if settings.acces_fiche_reservation == 1 %} selected {% endif %}>{{ trad.visu_fiche_description1 }}</option>
+									<option value="2" {% if settings.acces_fiche_reservation == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
+									<option value="3" {% if settings.acces_fiche_reservation == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
+									<option value="4" {% if settings.acces_fiche_reservation == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
+									{% if settings.module_multisite == 1 %}
+										<option value="5" {% if settings.acces_fiche_reservation == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
+									{% endif %}
+									<option value="6" {% if settings.acces_fiche_reservation == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-4" for="acces_config"><p>{{ trad.acces_config_msg }}</p></label>
+							<div class="col-sm-8">
+								<select class="form-control" name="acces_config">
+									<option value="3" {% if settings.acces_config == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
+									<option value="4" {% if settings.acces_config == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
+									{% if settings.module_multisite == 1 %}
+										<option value="5" {% if settings.acces_config == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
+									{% endif %}
+									<option value="6" {% if settings.acces_config == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>
+								</select>
+							</div>
+						</div>
+
+						<hr>
+
+						<section id="accessmodifreservation">
+							<h5 class="page-header">{{ trad.allow_user_delete_after_beginning_msg }}</h5>
+							<input type="radio" name="allow_user_delete_after_begin" value="0" id="label_5a" {% if settings.allow_user_delete_after_begin == 0 %} checked {% endif %} /> <label for="label_5a">{{ trad.allow_user_delete_after_beginning0 }}</label><br>
+							<input type="radio" name="allow_user_delete_after_begin" value="1" id="label_5b" {% if settings.allow_user_delete_after_begin == 1 %} checked {% endif %} /> <label for="label_5b">{{ trad.allow_user_delete_after_beginning1 }}</label><br>
+							<input type="radio" name="allow_user_delete_after_begin" value="2" id="label_5c" {% if settings.allow_user_delete_after_begin == 2 %} checked {% endif %} /> <label for="label_5c">{{ trad.allow_user_delete_after_beginning2 }}</label><br>
+							<br>
+							<input type="radio" name="allow_gestionnaire_modify_del" value="0" id="label_6a" {% if settings.allow_gestionnaire_modify_del == 0 %} checked {% endif %} /> <label for="label_6a">{{ trad.allow_gestionnaire_modify_del0 }}</label><br>
+							<input type="radio" name="allow_gestionnaire_modify_del" value="1" id="label_6b" {% if settings.allow_gestionnaire_modify_del == 1 %} checked {% endif %} /> <label for="label_6b">{{ trad.allow_gestionnaire_modify_del1 }}</label><br>
+						</section>
+
+						<hr>
+					
+						<section id="quotas">
+							<h5 class="page-header">Quotas</h5>
+							{{ form.input('UserAllRoomsMaxBooking', trad.max_booking, settings.UserAllRoomsMaxBooking, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+						</section>
+					</div>
+				</div> <!-- /.card Accès & droits -->
+
+				<!-- Fonctionnalités -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-lock"></i> {{ trad.admin_config7 }}
+						</h3>
+					</div>
+					<div class="card-body">
+
+						<!-- Fonctions par switch-->
+						{{ form.switch('select_date_directe', trad.select_date_directe, settings.select_date_directe, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('periodicite', trad.periodicite_msg, settings.periodicite, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('show_courrier', trad.courrier_msg, settings.show_courrier, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('fct_echange_resa', trad.swapentry, settings.fct_echange_resa, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('fct_drag_drop', trad.drag_drop, settings.fct_drag_drop, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('jours_cycles_actif', trad.Activer_module_jours_cycles, settings.jours_cycles_actif, {classGroup: 'col-12 custom-switch-on-warning', classLabel: 'col-10', classInput: 'col-2'}) }}
+
+						<hr>
+						<!-- Formulaire de contact réservation -->
+						<section id="contactresa">
+							<h5 class="page-header">{{ trad.display_mail_etat_destinataire }} </h5>
+							<p>{{ trad.display_mail_etat_destinataire_1 }}</p>
+							<input type="radio" name="mail_etat_destinataire" value="0" id="label_0a" {% if settings.mail_etat_destinataire == 0 %} checked {% endif %} /> <label for="label_0a">{{ trad.display_mail_etat_destinataire_2 }}</label><br>
+							<input type="radio" name="mail_etat_destinataire" value="1" id="label_0b" {% if settings.mail_etat_destinataire == 1 %} checked {% endif %} /> <label for="label_0b">{{ trad.display_mail_etat_destinataire_3 }}</label><br>
+							<input type="radio" name="mail_etat_destinataire" value="2" id="label_0c" {% if settings.mail_etat_destinataire == 2 %} checked {% endif %} /> <label for="label_0c">{{ trad.display_mail_etat_destinataire_4 }}</label><br>
+
+							<div id="aff_dyn_form_contact_resa" {% if settings.mail_etat_destinataire == 0 %} style="display:none;" {% endif %}>
+								{{ form.input('mail_destinataire', trad.display_mail_destinataire, settings.mail_destinataire, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+								<input type="checkbox" name="mail_user_destinataire" value="1" id="label_0z" {% if settings.mail_user_destinataire == 1 %} checked {% endif %} /> <label for="label_0z">{{ trad.mail_user_destinataire }}</label><br>
+								<input type="checkbox" name="mail_contact_resa_captcha" value="1" id="label_0y" {% if settings.mail_contact_resa_captcha == 1 %} checked {% endif %} /> <label for="label_0y">{{ trad.captcha_utiliser }}</label><br>
+								<br><br>
+								<h5>Texte avant le formulaire :</h5>
+								<br>
+								{{ form.summernote('summernote', '', d.contactresa[1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: 'textecontactresa'}) }}
+							</div>
+						</section>
+					</div>
+				</div>
+
+				<!-- Apparence -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-brush"></i> {{ trad.admin_config6 }}
+						</h3>
+					</div>
+					<div class="card-body">
+						<section id="paramdefaut">
+							<h5 class="page-header">{{ trad.default_parameter_values_title }}</h5>
+							<p>{{ trad.explain_default_parameter }}</p>
+
+							<!-- Type d'affichage des ressources -->
+							<div class="form-group row">
+								<label class="col col-sm-6" for="area_list_format">{{ trad.explain_area_list_format }}</label>
+								<div class="col col-sm-5">
+									<select class="form-control" name="area_list_format">
+										<option value="list" {% if settings.area_list_format == 'list' %} selected {% endif %}>{{ trad.liste_area_list_format }}</option>
+										<option value="select" {% if settings.area_list_format == 'select' %} selected {% endif %}>{{ trad.select_area_list_format }}</option>
+										<option value="item" {% if settings.area_list_format == 'item' %} selected {% endif %}>{{ trad.item_area_list_format }}</option>
+									</select>
+								</div>
+								<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du type d'affichage avec tout les utilisateurs ?" data-idsynchro="3"><i class="icon fa fa-sync"></i></button></div>
+							</div>
+
+							<hr>
+							<!-- Site / Domaine et ressource par défaut -->
+							{% if settings.module_multisite == 1 %}
+								<div class="form-group row">
+									<label class="col col-sm-6" for="default_css">{{ trad.default_site }}</label>
+									<div class="col col-sm-6">
+										<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+											<option value="-1">{{ trad.choose_a_site }}</option>
+											{{ d.optionSite | raw }}
+										</select>
+									</div>
+								</div>
+							{% else %}
+								<input type="hidden" id="id_site" name="id_site" value="-1" />
+							{% endif %}
+							<div id="div_liste_domaines"></div>
+							<div id="div_liste_ressources"></div>
+							<div style="text-align:center;"><button type="button" class="btn btn-warning btn-md col col-sm-1" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="4"><i class="icon fa fa-sync"></i></button></div>
+
+						</section>
+
+						<hr>
+
+						<section id="menugauche">
+							<div class="form-group row">
+								<label class="col col-sm-6" for="menu_gauche">{{ trad.display_menu_1 }}</label>
+								<div class="col col-sm-6">
+									<select class="form-control" name="menu_gauche">
+										<option value="0" {% if settings.menu_gauche == 0 %} selected {% endif %}>{{ trad.display_menu_2 }}</option>
+										<option value="1" {% if settings.menu_gauche == 1 %} selected {% endif %}>{{ trad.display_menu_3 }}</option>
+										<option value="2" {% if settings.menu_gauche == 2 %} selected {% endif %}>{{ trad.display_menu_4 }}</option>
+									</select>
+								</div>
+							</div>
+						</section>
+
+						<hr>
+
+						<section id="display_planning_resa">
+							<h5 class="page-header">{{ trad.display_planning_resa }}</h5>
+
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<th style="width: 150px"></th>
+										<th style="width: 100px">{{trad.statut_non_connecte}}</th>
+										<th style="width: 100px">{{trad.statut_visitor}}</th>
+										<th style="width: 100px">{{trad.statut_user}}</th>
+										<th style="width: 100px">{{trad.statut_user_gestionnaire}}</th>
+										<th style="width: 100px">{{trad.statut_administrator}}</th>
+									</tr>
+									<tr>
+										<th>{{ trad.sum_by_creator }}</th>
+										<td>
+											<select class="form-control" name="display_beneficiaire_nc">
+												<option value="0" {% if settings.display_beneficiaire_nc == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_nc == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_nc == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_beneficiaire_vi">
+												<option value="0" {% if settings.display_beneficiaire_vi == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_vi == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_vi == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_beneficiaire_us">
+												<option value="0" {% if settings.display_beneficiaire_us == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_us == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_us == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_beneficiaire_gr">
+												<option value="0" {% if settings.display_beneficiaire_gr == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_gr == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_gr == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_beneficiaire_ad">
+												<option value="0" {% if settings.display_beneficiaire_ad == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_beneficiaire_ad == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_beneficiaire_ad == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>{{ trad.horaires }}</th>
+										<td>
+											<select class="form-control" name="display_horaires_nc">
+												<option value="0" {% if settings.display_horaires_nc == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_horaires_nc == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_nc == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_horaires_vi">
+												<option value="0" {% if settings.display_horaires_vi == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_horaires_vi == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_vi == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_horaires_us">
+												<option value="1" {% if settings.display_horaires_us == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_us == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_horaires_gr">
+												<option value="1" {% if settings.display_horaires_gr == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_gr == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_horaires_ad">
+												<option value="1" {% if settings.display_horaires_ad == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_horaires_ad == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>{{ trad.namebooker }}</th>
+										<td>
+											<select class="form-control" name="display_short_description_nc">
+												<option value="0" {% if settings.display_short_description_nc == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_nc == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_nc == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_short_description_vi">
+												<option value="0" {% if settings.display_short_description_vi == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_vi == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_vi == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_short_description_us">
+												<option value="0" {% if settings.display_short_description_us == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_us == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_us == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_short_description_gr">
+												<option value="0" {% if settings.display_short_description_gr == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_gr == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_gr == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_short_description_ad">
+												<option value="0" {% if settings.display_short_description_ad == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_short_description_ad == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_short_description_ad == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>{{ trad.match_descr }}</th>
+										<td>
+											<select class="form-control" name="display_full_description_nc">
+												<option value="0" {% if settings.display_full_description_nc == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_nc == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_nc == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_full_description_vi">
+												<option value="0" {% if settings.display_full_description_vi == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_vi == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_vi == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_full_description_us">
+												<option value="0" {% if settings.display_full_description_us == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_us == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_us == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_full_description_gr">
+												<option value="0" {% if settings.display_full_description_gr == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_gr == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_gr == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_full_description_ad">
+												<option value="0" {% if settings.display_full_description_ad == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_full_description_ad == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_full_description_ad == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>{{ trad.type }}</th>
+										<td>
+											<select class="form-control" name="display_type_nc">
+												<option value="0" {% if settings.display_type_nc == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_nc == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_nc == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_type_vi">
+												<option value="0" {% if settings.display_type_vi == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_vi == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_vi == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_type_us">
+												<option value="0" {% if settings.display_type_us == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_us == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_us == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_type_gr">
+												<option value="0" {% if settings.display_type_gr == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_gr == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_gr == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_type_ad">
+												<option value="0" {% if settings.display_type_ad == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_type_ad == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_type_ad == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>{{ trad.participants }}</th>
+										<td>
+											<select class="form-control" name="display_participants_nc">
+												<option value="0" {% if settings.display_participants_nc == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_participants_nc == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_participants_nc == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_participants_vi">
+												<option value="0" {% if settings.display_participants_vi == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_participants_vi == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_participants_vi == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_participants_us">
+												<option value="0" {% if settings.display_participants_us == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_participants_us == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_participants_us == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_participants_gr">
+												<option value="0" {% if settings.display_participants_gr == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_participants_gr == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_participants_gr == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+										<td>
+											<select class="form-control" name="display_participants_ad">
+												<option value="0" {% if settings.display_participants_ad == 0 %} selected {% endif %}>{{ trad.afficher_non }}</option>
+												<option value="1" {% if settings.display_participants_ad == 1 %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+												<option value="2" {% if settings.display_participants_ad == 2 %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+											</select>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</section>
+
+						<hr>
+
+						<section id="liensemail">
+							<h5 class="page-header">{{ trad.display_level_email_msg1 }}</h5>
+							<p>{{ trad.display_level_email_msg2 |raw}}</p>
+							<input type="radio" name="display_level_email" value="0" id="label_6a" {% if settings.display_level_email == 0 %} checked {% endif %} /> <label for="label_6a">{{ trad.visu_fiche_description0 }}</label><br>
+							<input type="radio" name="display_level_email" value="1" id="label_6b" {% if settings.display_level_email == 1 %} checked {% endif %} /> <label for="label_6b">{{ trad.visu_fiche_description1 }}</label><br>
+							<input type="radio" name="display_level_email" value="2" id="label_6c" {% if settings.display_level_email == 2 %} checked {% endif %} /> <label for="label_6c">{{ trad.visu_fiche_description2 }}</label><br>
+							<input type="radio" name="display_level_email" value="3" id="label_6d" {% if settings.display_level_email == 3 %} checked {% endif %} /> <label for="label_6d">{{ trad.visu_fiche_description3 }}</label><br>
+							<input type="radio" name="display_level_email" value="4" id="label_6e" {% if settings.display_level_email == 4 %} checked {% endif %} /> <label for="label_6e">{{ trad.visu_fiche_description4 }}</label><br>
+							{% if settings.module_multisite == 1 %}
+								<input type="radio" name="display_level_email" value="5" id="label_6f" {% if settings.display_level_email == 5 %} checked {% endif %} /> <label for="label_6f">{{ trad.visu_fiche_description5 }}</label><br>
+							{% endif %}
+							<input type="radio" name="display_level_email" value="6" id="label_6g" {% if settings.display_level_email == 6 %} checked {% endif %} /> <label for="label_6g">{{ trad.visu_fiche_description6 }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="remplissagedescriptionbreve">
+							<h5 class="page-header">{{ trad.remplissage_description_breve_msg }}</h5>
+							<input type="radio" name="remplissage_description_breve" value="0" id="label_8a" {% if settings.remplissage_description_breve == 0 %} checked {% endif %} /> <label for="label_8a">{{ trad.remplissage_description_breve0 }}</label><br>
+							<input type="radio" name="remplissage_description_breve" value="1" id="label_8b" {% if settings.remplissage_description_breve == 1 %} checked {% endif %} /> <label for="label_8b">{{ trad.remplissage_description_breve1 }}</label><br>
+							<input type="radio" name="remplissage_description_breve" value="2" id="label_8c" {% if settings.remplissage_description_breve == 2 %} checked {% endif %} /> <label for="label_8c">{{ trad.remplissage_description_breve2 }}</label><br>
+						</section>
+
+						<hr>
+
+						<section id="remplissagedescripcomplete">
+							<h5 class="page-header">{{ trad.remplissage_description_complete_msg }}</h5>
+							<input type="radio" name="remplissage_description_complete" value="2" id="label_9c" {% if settings.remplissage_description_complete == 2 %} checked {% endif %} /> <label for="label_9c">{{ trad.remplissage_description_complete2 }}</label><br>
+							<input type="radio" name="remplissage_description_complete" value="0" id="label_9a" {% if settings.remplissage_description_complete == 0 %} checked {% endif %} /> <label for="label_9a">{{ trad.remplissage_description_complete0 }}</label><br>
+							<input type="radio" name="remplissage_description_complete" value="1" id="label_9b" {% if settings.remplissage_description_complete == 1 %} checked {% endif %} /> <label for="label_9b">{{ trad.remplissage_description_complete1 }}</label><br>
+						</section>
+
+						<hr>
+
+						{{ form.switch('pview_new_windows', trad.pview_new_windows_msg, settings.pview_new_windows, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('display_level_view_entry', trad.display_level_view_entry, settings.display_level_view_entry, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('javascript_info_disabled', trad.javascript_info_disabled_msg, settings.javascript_info_disabled, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+
+
+						<hr>
+
+						<section id="affichageplanningsdivers">
+							<h5 class="page-header">Affichage plannings divers</h5>
+
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<th style="width: 300px"></th>
+										<th style="width: 50px">Afficher</th>
+										<th>Ne pas afficher</th>
+										<th></th>
+									</tr>
+									<tr>
+										<td>{{ trad.legend_msg }}</td>
+										<td><input type="radio" name="legend" value="0" id="label_11a" {% if settings.legend == 0 %} checked {% endif %} /></td>
+										<td><input type="radio" name="legend" value="1" id="label_11b" {% if settings.legend == 1 %} checked {% endif %} /></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>{{ trad.imprimante_msg }}</td>
+										<td><input type="radio" name="imprimante" value="0" id="label_12a" {% if settings.imprimante == 0 %} checked {% endif %} /></td>
+										<td><input type="radio" name="imprimante" value="1" id="label_12b" {% if settings.imprimante == 1 %} checked {% endif %} /></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>{{ trad.affichage_pdf }}</td>
+										<td><input type="radio" name="pdf" value="1" id="label_14a" {% if settings.pdf == 1 %} checked {% endif %} /></td>
+										<td><input type="radio" name="pdf" value="0" id="label_14b" {% if settings.pdf == 0 %} checked {% endif %} /></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>{{ trad.holidays_msg }}</td>
+										<td><input type="radio" name="show_holidays" value="1" id="label_13a" {% if settings.show_holidays == 1 %} checked {% endif %} /></td>
+										<td><input type="radio" name="show_holidays" value="0" id="label_13b" {% if settings.show_holidays == 0 %} checked {% endif %} /></td>
+										<td>
+											<select class="form-control" name="holidays_zone">
+												<option>{{ trad.holidays_zone_msg }}</option>
+												{{ d.optionVacances | raw }}
+											</select>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</section>
+
+						<hr>
+
+						<div class="form-group row col-sm-12">
+							<label class="col col-sm-4" for="nb_calendar">{{ trad.affichage_calendriers_msg }}</label>
+							<div class="col col-sm-8">
+							<select id="nb_calendar" class="form-control" name="nb_calendar">
+									<option value="0" {% if settings.nb_calendar == 0 %} selected {% endif %}>0</option>
+									<option value="1" {% if settings.nb_calendar == 1 %} selected {% endif %}>1</option>
+									<option value="2" {% if settings.nb_calendar == 2 %} selected {% endif %}>2</option>
+									<option value="3" {% if settings.nb_calendar == 3 %} selected {% endif %}>3</option>
+									<option value="4" {% if settings.nb_calendar == 4 %} selected {% endif %}>4</option>
+									<option value="5" {% if settings.nb_calendar == 5 %} selected {% endif %}>5</option>
+									<option value="6" {% if settings.nb_calendar == 6 %} selected {% endif %}>6</option>
+								</select>
+							</div>
+						</div>
+
+						<hr>
+
+						<section id="max_resa_affiche_msg">
+							<h5 class="page-header">{{ trad.max_resa_affiche }}</h5>
+							{{ form.input('max_resa_affiche', trad.max_resa_affiche_explain, settings.max_resa_affiche, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+							<br>
+						</section>
+
+						<hr>
+
+						<section id="formulaire_reservation">
+							<h5 class="page-header">{{ trad.formulaire_reservation }}</h5>
+							{{ form.input('longueur_liste_ressources_max', trad.longueur_liste_ressources, settings.longueur_liste_ressources_max, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+							<br>
+						</section>
+				
+					</div><!-- /.card-body -->
+
+				</div><!-- /.card apparence -->
+
+				<!-- Performance -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-gauge-high"></i> Performance
+						</h3>
+					</div>
+					<div class="card-body">
+						<!-- Calcul plage libre -->
+						{{ form.switch('calcul_plus_semaine_all', 'Calcul plage libre vue semaine ALL', settings.calcul_plus_semaine_all, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('calcul_plus_mois', 'Calcul plage libre vue mois', settings.calcul_plus_mois, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('calcul_plus_mois2_all', 'Calcul plage libre vue mois ALL', settings.calcul_plus_mois2_all, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+					</div>
+				</div> <!-- /.card Performance -->
+
+			</div><!-- /.col 12 -->
+
+			<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+				<i class="fas fa-save"></i> {{ trad.save }}
+			</button>
+
+		</form>
+
+	</div><!-- /.row -->
+
+
+
+	<div class="modal fade" id="modal-warning" style="display: none;" aria-hidden="true">
+	  <form action="?p=admin_config6" id="formmodal">
+        <div class="modal-dialog">
+          <div class="modal-content bg-warning">
+            <div class="modal-header">
+              <h4 class="modal-title">Synchronisation</h4>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <span class="modaltexte" id="modaltexte"></span><span class="modalidsync" id="modalidsync" hidden></span>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.NO}}</button>
+				<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.YES}}</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+	  </form>
+    </div><!-- /.modal -->
+
+
+{% endblock %}
+
+{% block javascript %}
+	<script src="../jslib/moment/moment.min.js"></script>
+	<script src="../jslib/daterangepicker/daterangepicker.js"></script>
+	<script src="../jslib/toastr/toastr.min.js"></script>
+	<script type="text/javascript">
+
+		function modifier_liste_domaines(){
+			$.ajax({
+				url: "../compte/my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_site: $('#id_site').val(),
+					default_area : '{{ settings.default_area }}',
+					session_login:'{{ d.nomUtilisateur }}',
+					use_site:'{{ settings.module_multisite }}',
+					type:'domaine',
+				},
+				success: function(returnData){
+					console.log(returnData);
+					$("#div_liste_domaines").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+		function modifier_liste_ressources(action){
+			$.ajax({
+				url: "../compte/my_account_modif_listes.php",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_area:$('id_area').serialize(true),
+					default_room : '{{ settings.default_room }}',
+					type:'ressource',
+					action:+action,
+				},
+				success: function(returnData){
+					$("#div_liste_ressources").html(returnData);
+				},
+				error: function(e){
+					alert(e);
+				}
+			});
+		}
+		modifier_liste_domaines();
+		modifier_liste_ressources(1);
+
+		// Modal
+		$('#modal-warning').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget) // Button that triggered the modal
+			var idsynchro = button.data('idsynchro')// Extract info from data-* attributes
+			var texte = button.data('texte')
+		    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+		    var modal = $(this)
+		    modal.find('.modalidsync').text(idsynchro)
+			modal.find('.modaltexte').text(texte)
+		})
+
+		$(function(){
+			$('#formmodal').submit(function(e) {
+			  e.preventDefault()
+			  var $form = $(this)
+			  var v=document.getElementById('modalidsync').innerHTML
+			  $.post($form.attr('action'), $form.serialize())
+			  .done(function(data) {
+				$('#html').html(data);
+				$('#modal-warning').modal('hide');
+				document.location.href='?p=admin_config6&sync='+v;
+			  })
+			  .fail(function() {
+				alert('Une erreur est survenue : GRRJS')
+			  })
+			})
+
+			// Plage de réservation
+			$('#plageresa').daterangepicker({
+				"locale": {
+					"format": "DD/MM/YYYY",
+					"separator": " - ",
+					"applyLabel": "Valider",
+					"cancelLabel": "Annuler",
+					"fromLabel": "De",
+					"toLabel": "à",
+					"customRangeLabel": "Custom",
+					"daysOfWeek": [
+						"Dim",
+						"Lun",
+						"Mar",
+						"Mer",
+						"Jeu",
+						"Ven",
+						"Sam"
+					],
+					"monthNames": [
+						"Janvier",
+						"Février",
+						"Mars",
+						"Avril",
+						"Mai",
+						"Juin",
+						"Juillet",
+						"Août",
+						"Septembre",
+						"Octobre",
+						"Novembre",
+						"Décembre"
+					],
+					"firstDay": 1
+				}
+			});
+
+			{%if d.enregistrement%}
+				{%if d.enregistrement == 1 %}
+					toastr.success("{{trad.message_records}}")
+				{% else %}
+					toastr.warning("{{d.enregistrement|raw}}")
+				{%endif%}
+			{%endif%}
+
+			// Afficher/masquer la section de contact réservation
+			var $radioFormContactResa = $('input[name="mail_etat_destinataire"]');
+			var $sectionContactResa = $('#aff_dyn_form_contact_resa');
+
+			// À la modification des radio buttons
+			$radioFormContactResa.on('change', function() {
+				var selectedValue = $('input[name="mail_etat_destinataire"]:checked').val();
+				if (selectedValue == 0) {
+					$sectionContactResa.slideUp();
+				} else {
+					$sectionContactResa.slideDown();
+				}
+			});
+		})
+
+	</script>
+
+{% endblock %}

@@ -1436,6 +1436,17 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter = '';
 	}
 
+	if (intval($version_old_bdd) < 400012) // Version GRR 4.7.0
+	{
+		// ! A faire convertion des valaeurs table settings y/n, yes/no, oui/non en 1/0
+
+		if ($result_inter == '')
+			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
+		else
+			$result .= $result_inter;
+		$result_inter = '';
+	}
+
 
 	// Mise à jour du numéro de version BDD précédent
 	$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='previousversion'");

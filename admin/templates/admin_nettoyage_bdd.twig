@@ -34,7 +34,7 @@
                                     </table>
                                 </div>
                                 <div class="card-footer">
-                                    <a class="btn btn-success btn-md" href="?p=admin_config4">{{ trad.submit_backup }}</a>
+                                
                                 </div>
                                 <!-- /.card-body -->
                             </div>
@@ -43,12 +43,52 @@
 
                         <div class="col-sm-6">
 
+                            {% if d.dbSys == "mysql" %}
+                                <form action="admin_save_mysql.php" method="get">
+                                    <input type="hidden" name="flag_connect" value="yes" />
+
+                                    <div class="card card-success">
+                                        <div class="card-header">
+                                            <h3 class="card-title">{{ trad.title_backup }}</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>{{ trad.explain_backup }}</p>
+                                            <p><i>{{ trad.warning_message_backup }}</i></p>
+                                                </div>
+                                                <div class="card-footer">
+                                            <input class="btn btn-success" type="submit" value="{{ trad.submit_backup }}" />
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% if d.restaureBBD == 1 %}
+
+                                    <form method="post" enctype="multipart/form-data" action="?p=admin_open_mysql">
+                                        <input type="hidden" name="p" value="admin_open_mysql" />
+                                        <div class="card card-danger">
+                                            <div class="card-header">
+                                                <h3 class="card-title">{{ trad.Restauration_de_la_base_GRR }}</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.</p>
+                                                <p><i>Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.</i></p>
+                                                <br><input type="file" name="sql_file" size="30" /><br>
+                                            </div>
+                                            <div class="card-footer">
+                                                 <input class="btn btn-danger" type="submit" value="{{ trad.Restaurer_la_sauvegarde }}" />
+                                            </div>
+                                        </div>
+                                    </form>
+
+				        		{% endif %}
+                            {% endif %}
+
                             <div class="card card-warning">
                                 <div class="card-header">
                                   <h3 class="card-title">{{trad.action }}</h3>
                                 </div>
                                 <div class="card-body">
-                                    <a class="btn btn-outline-warning btn-block btn-flat" href="?p=admin_nettoyage_bdd&numaction=1"><i class="fa fa-check"></i> {{ trad.valide_toutes_moderation }}</a>
+                                    <a class="btn btn-outline-warning btn-block btn-flat" href="?p=admin_nettoyage_bdd&amp;numaction=1"><i class="fa fa-check"></i> {{ trad.valide_toutes_moderation }}</a>
                                 </div>
                                 <!-- /.card-body -->
                             </div>
@@ -167,6 +207,7 @@
                                
                                 </div> 
                             </form>
+
                         </div> <!-- Colonne droite -->
 				</div>
 

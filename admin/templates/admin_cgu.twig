@@ -9,32 +9,29 @@
 
 {% block content %}
 	<div class="row">
-        <div class="col col-xs-12">
-			<div class="nav-tabs-custom">
+        <div class="col col-12">
+			<form action="?p=admin_cgu" id="nom_formulaire" method="post">
 
-            <div class="tab-content">
-              <!-- Font Awesome Icons -->
-              <div class="tab-pane active" id="fa-icons">
-				<form action="?p=admin_cgu" id="nom_formulaire" method="post">
-					<section id="message">
-						<h4 class="page-header">{{ trad.cgu_titre }}</h4>
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-lock"></i> {{ trad.cgu_titre }}
+						</h3>
+					</div>
+					<div class="card-body">
 						<p>{{ trad.cgu_grr }}</p>
 						{{ form.input('titre', 'Titre', pages.cgu[0], {classGroup: 'col-sm-12', classLabel: 'col-sm-2', classInput: 'col-sm-10 control-label'}) }}
 						{{ form.summernote('summernote', '', pages.cgu[1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: 'CGU'}) }}
-					</section>
-
-					<div style="text-align:center;">
-						<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
 					</div>
-				</form>
-            </div>
-            <!-- /.tab-content -->
-          </div>
-          <!-- /.nav-tabs-custom -->
-        </div>
-        <!-- /.col -->
-      </div>
+            	</div>
 
+				<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+					<i class="fas fa-save"></i> {{ trad.save }}
+				</button>
+			</form>
+
+		</div>
+ 	</div>
 {% endblock %}
 
 {% block javascript %}

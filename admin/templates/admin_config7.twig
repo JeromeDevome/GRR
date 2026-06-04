@@ -58,46 +58,18 @@
 										<!-- Divers -->
 										<div class="tab-pane text-left fade active show" id="vert-tabs-divers" role="tabpanel" aria-labelledby="vert-tabs-divers-tab">
 
-											<!-- Périodicité -->
-											<div class="form-group row col-sm-12">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="periodicite" name="periodicite" {% if settings.periodicite == 'y' %}checked{% endif %} > 
-													<label class="custom-control-label" for="periodicite">{{ trad.periodicite_msg }}</label>
-												</div>
-											</div>
-											<!-- Gestion par courrier -->
-											<div class="form-group row col-sm-12">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="show_courrier" name="show_courrier" {% if settings.show_courrier == 'y' %}checked{% endif %} > 
-													<label class="custom-control-label" for="show_courrier">{{ trad.courrier_msg }}</label>
-												</div>
-											</div>
-											<!-- Fonction échange réservation -->
-											<div class="form-group row col-sm-12">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="fct_echange_resa" name="fct_echange_resa" {% if settings.fct_echange_resa == 'y' %}checked{% endif %} > 
-													<label class="custom-control-label" for="fct_echange_resa">{{ trad.swapentry }}</label>
-												</div>
-											</div>
-											<!-- Drag & Drop -->
-											<div class="form-group row col-sm-12">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="fct_drag_drop" name="fct_drag_drop" {% if settings.fct_drag_drop == 'y' %}checked{% endif %} > 
-													<label class="custom-control-label" for="fct_drag_drop">{{ trad.drag_drop }}</label>
-												</div>
-											</div>
 										</div>
 
 										<!-- Formulaire de contact réservation -->
 										<div class="tab-pane fade" id="vert-tabs-formresa" role="tabpanel" aria-labelledby="vert-tabs-formresa-tab">
 											<h4 class="page-header">{{ trad.display_mail_etat_destinataire }} </h4>
 											<p>{{ trad.display_mail_etat_destinataire_1 }}</p>
-											<input type="radio" name="mail_etat_destinataire" value="0" id="label_0a" {% if settings.mail_etat_destinataire == '0' %} checked {% endif %} /> <label for="label_0a">{{ trad.display_mail_etat_destinataire_2 }}</label><br>
-											<input type="radio" name="mail_etat_destinataire" value="1" id="label_0b" {% if settings.mail_etat_destinataire == '1' %} checked {% endif %} /> <label for="label_0b">{{ trad.display_mail_etat_destinataire_3 }}</label><br>
-											<input type="radio" name="mail_etat_destinataire" value="2" id="label_0c" {% if settings.mail_etat_destinataire == '2' %} checked {% endif %} /> <label for="label_0c">{{ trad.display_mail_etat_destinataire_4 }}</label><br>
+											<input type="radio" name="mail_etat_destinataire" value="0" id="label_0a" {% if settings.mail_etat_destinataire == 0 %} checked {% endif %} /> <label for="label_0a">{{ trad.display_mail_etat_destinataire_2 }}</label><br>
+											<input type="radio" name="mail_etat_destinataire" value="1" id="label_0b" {% if settings.mail_etat_destinataire == 1 %} checked {% endif %} /> <label for="label_0b">{{ trad.display_mail_etat_destinataire_3 }}</label><br>
+											<input type="radio" name="mail_etat_destinataire" value="2" id="label_0c" {% if settings.mail_etat_destinataire == 2 %} checked {% endif %} /> <label for="label_0c">{{ trad.display_mail_etat_destinataire_4 }}</label><br>
 											{{ form.input('mail_destinataire', trad.display_mail_destinataire, settings.mail_destinataire, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-											<input type="checkbox" name="mail_user_destinataire" value="y" id="label_0z" {% if settings.mail_user_destinataire == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.mail_user_destinataire }}</label><br>
-											<input type="checkbox" name="mail_contact_resa_captcha" value="y" id="label_0y" {% if settings.mail_contact_resa_captcha == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.captcha_utiliser }}</label><br>
+											<input type="checkbox" name="mail_user_destinataire" value="1" id="label_0z" {% if settings.mail_user_destinataire == 1 %} checked {% endif %} /> <label for="label_0z">{{ trad.mail_user_destinataire }}</label><br>
+											<input type="checkbox" name="mail_contact_resa_captcha" value="1" id="label_0y" {% if settings.mail_contact_resa_captcha == 1 %} checked {% endif %} /> <label for="label_0z">{{ trad.captcha_utiliser }}</label><br>
 											<br><br>
 											<h5>Texte avant le formulaire :</h5>
 											<br>
@@ -109,73 +81,13 @@
 
 
 										<div class="tab-pane fade" id="vert-tabs-creacompte" role="tabpanel" aria-labelledby="vert-tabs-creacompte-tab">
-											<div class="form-group row col-sm-12">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="fct_crea_cpt" name="fct_crea_cpt" {% if settings.fct_crea_cpt == 'y' %}checked{% endif %} > 
-													<label class="custom-control-label" for="fct_crea_cpt"><h4>Demande de création de compte</h4></label>
-												</div>
-											</div>
-
-											<p>Permettre aux personnes non connectées de demander la création d'un compte. L'utilisateur devra renseigner son nom, prénom, email et mot de passe, une fois. Le gestionnaire d'utilisateur ou l'administrateur pourra valider ou non la demande en lui assignant un identifiant et un statut.</p>
-						
-											<p class="text-danger"><b>Avertissement :</b> Il est conseillé d'activer l'envoi de mails, dans le cas contraire l'utilisateur ne pourrait recevoir son identifiant.</p>
-
-											<div class="form-group row row col-sm-12">
-												<label class="col-sm-6" for="fct_creation_compte_identifiant"><p>Par défaut l'identifiant est sous le format :</p></label>
-												<div class="col-sm-6 control-label">
-													<select class="form-control" name="fct_crea_cpt_login">
-														<option value="1" {% if settings.fct_crea_cpt_login == '1' %} selected {% endif %}>NOM</option>
-														<option value="2" {% if settings.fct_crea_cpt_login == '2' %} selected {% endif %}>NOM.PRENOM</option>
-														<option value="3" {% if settings.fct_crea_cpt_login == '3' %} selected {% endif %}>NOMPRENOM</option>
-														<option value="4" {% if settings.fct_crea_cpt_login == '4' %} selected {% endif %}>PRENOM</option>
-														<option value="5" {% if settings.fct_crea_cpt_login == '5' %} selected {% endif %}>P.NOM</option>
-														<option value="6" {% if settings.fct_crea_cpt_login == '6' %} selected {% endif %}>PNOM</option>
-														<option value="7" {% if settings.fct_crea_cpt_login == '7' %} selected {% endif %}>PR.NOM</option>
-														<option value="8" {% if settings.fct_crea_cpt_login == '8' %} selected {% endif %}>PRENOM.NOM</option>
-														<option value="9" {% if settings.fct_crea_cpt_login == '9' %} selected {% endif %}>PRENOMNOM</option>
-														<option value="9" {% if settings.fct_crea_cpt_login == '9' %} selected {% endif %}>E-Mail</option>
-													</select>
-												</div>
-											</div>
-
-
-											<div class="form-group row row col-sm-12">
-												<label class="col-sm-6" for="fct_creation_compte_statut"><p>Statut par défaut :</p></label>
-												<div class="col-sm-6 control-label">
-													<select class="form-control" name="fct_crea_cpt_statut">
-														<option value="1" {% if settings.fct_crea_cpt_statut == '1' %} selected {% endif %}>Visiteur</option>
-														<option value="2" {% if settings.fct_crea_cpt_statut == '2' %} selected {% endif %}>Usager</option>
-													</select>
-												</div>
-											</div>
-											<input type="checkbox" name="fct_crea_cpt_captcha" value="y" id="label_3y" {% if settings.fct_crea_cpt_captcha == 'y' %} checked {% endif %} /> <label for="label_0z">{{ trad.captcha_utiliser }}</label><br>
 
 										</div><!---->
 
 										<!-- Performance -->
 										<div class="tab-pane fade" id="vert-tabs-performance" role="tabpanel" aria-labelledby="vert-tabs-performance-tab">
 
-											<!-- Calcul plage libre vue semaine_all -->
-											<div class="form-group row col-sm-12">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="calcul_plus_semaine_all" name="calcul_plus_semaine_all" {% if settings.calcul_plus_semaine_all == 'y' %}checked{% endif %} > 
-													<label class="custom-control-label" for="calcul_plus_semaine_all">Calcul plage libre vue semaine ALL</label>
-												</div>
-											</div>
-											<!-- Calcul plage libre vue mois -->
-											<div class="form-group row col-sm-12">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="calcul_plus_mois" name="calcul_plus_mois" {% if settings.calcul_plus_mois == 'y' %}checked{% endif %} > 
-													<label class="custom-control-label" for="calcul_plus_mois">Calcul plage libre vue mois</label>
-												</div>
-											</div>
-											<!-- Calcul plage libre vue mois2_all -->
-											<div class="form-group row col-sm-12">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="calcul_plus_mois2_all" name="calcul_plus_mois2_all" {% if settings.calcul_plus_mois2_all == 'y' %}checked{% endif %} > 
-													<label class="custom-control-label" for="calcul_plus_mois2_all">Calcul plage libre vue mois ALL</label>
-												</div>
-											</div>
+
 
 										</div>
 

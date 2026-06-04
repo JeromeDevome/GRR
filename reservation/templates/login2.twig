@@ -76,7 +76,7 @@
                     {% endif %}
                     <p>{{settings.message_home_page|raw}}</p>
 
-                    {% if settings.disable_login == "yes" %}
+                    {% if settings.disable_login == 1 %}
                         <br><br><p><span class="avertissement">{{trad.msg_login3}}</span></p>
                     {% endif %}
 
@@ -119,7 +119,7 @@
 
                         <input class="btn btn-primary" type="submit" name="submit" value="{{trad.connect}}" />
 
-                        {% if settings.fct_crea_cpt == "y" %}
+                        {% if settings.fct_crea_cpt == 1 %}
                             <a href="app.php?p=creationcompte" class="btn btn-primary" >{{trad.crea_compte_inscrivez}}</a>
                         {% endif %}
                     </form>

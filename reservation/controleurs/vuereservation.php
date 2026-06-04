@@ -318,7 +318,7 @@ if (($fin_session == 'n') && ($userName!='') && (SecuAccess::UserLevel($userName
 			if (grr_sql_command($upd) < 0)
 				fatal_error(0, grr_sql_error());
 		}
-		if ((isset($_GET["envoyer_mail"])) && (Settings::get("automatic_mail") == 'yes'))
+		if ((isset($_GET["envoyer_mail"])) && (Settings::get("automatic_mail") == 1))
 		{
 			$_SESSION['session_message_error'] = send_mail($id, 7, $dformat);
 			if ($_SESSION['session_message_error'] == "")
@@ -612,7 +612,7 @@ if ($repeat_id != 0)
             }
 		elseif ($rep_type == 6)
 		{
-			if (Settings::get("jours_cycles_actif") == "Oui" && intval($jour_cycle) >- 1)
+			if (Settings::get("jours_cycles_actif") == 1 && intval($jour_cycle) >- 1)
             {
                 $d['repDay'] = get_vocab("rep_rep_day");
                 $resa['opt'] = get_vocab('jour_cycle')." ".$jour_cycle;

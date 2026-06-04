@@ -55,7 +55,7 @@ if (!empty($resasAModerer)) {
 
     foreach($resasAModerer as $resa) {
         $link = "?p=vuereservation&id=".$resa['id']."&mode=page";
-        if (Settings::get("module_multisite") == "Oui")
+        if (Settings::get("module_multisite") == 1)
         {
             $listeModeration[] = array(
                 'id' => $resa['id'],
