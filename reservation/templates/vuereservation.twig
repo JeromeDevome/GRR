@@ -175,8 +175,6 @@
             <div class="upload">
                 <h4>Choisissez le fichier que vous allez insérer dans cette réservation :</h4>
                 <form id="uploadForm" method="post" action="app.php?p=gestionfichier&amp;action=1" enctype="multipart/form-data">
-                    <input type="hidden" name="p" value="gestionfichier"/>
-                    <input type="hidden" name="action" value="1"/>
                     <input type="file" id="hiddenfile" style="display:none" name="myFiles[]" onChange="getvalue();"/>
                     <input type="button" value="Parcourir..." onclick="getfile();"/>
                     <input type="text" id="selectedfile" name="selectedfile" value="Nom du fichier" />
