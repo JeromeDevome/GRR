@@ -3,7 +3,7 @@
  * gestionfichier.php
  * Utilitaire de téléversement d'un fichier attaché à une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-18-01 21:30$
+ * Dernière modification : $Date: 2026-06-04 15:54$
  * @author    Cédric Berthomé & Yan Naessens & JeromeB
  * @copyright Copyright 2003-206 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -21,74 +21,88 @@ include "./include/import.class.php";
 
 
 $action = isset($_GET["action"]) ? intval($_GET["action"]) : NULL;
-$id = SecuChaine::GetFormVar("id","int",-1);
+$id = SecuChaine::GetFormVar("id","int",-1); // l'id du fichier à supprimer
+$resa = SecuChaine::GetFormVar("resa","int",-1); // l'id de la réservation
 
 $uploadDir = realpath(".")."/personnalisation/".$gcDossierDoc."/";
 
 
 if($action == 1) // import d'un fichier
 {
-  $result = Import::DocumentResa($id);
-
+  $result = Import::DocumentResa($resa);
   if($result != "")
   {
     $msg = $result[0];
     echo $msg;
     echo "<script>setTimeout(function() { window.location.href = '".$back."'; }, 5000);</script>";
   }
-
-
-} elseif($action == 2) // suppression d'un fichier
+} 
+elseif($action == 2) // suppression d'un fichier
 {
-  
   $msg = "";
 
-  if ($id != -1){
-    $id = intval($id);
-    $sql = "SELECT file_name FROM ".TABLE_PREFIX."_files where id = $id";
-    $res = grr_sql_query($sql);
-    if($res){
-      $name = grr_sql_row($res,0);
-      // prépare chemin du fichier à effacer
-      $toDelFile = $uploadDir.$name[0];
-      //prépare la requête de suppression
-      $delReq = "delete FROM ".TABLE_PREFIX."_files where id = $id";
-      //vérifie si le fichier existe
-      if (@file_exists($toDelFile)){
-        // efface le fichier du serveur
-        if (unlink($toDelFile)){
-          if (grr_sql_command($delReq) < 0){
-            $msg = "Erreur de suppression dans la base de donnée.";
+  //récupération des informations pour rediriger vers la page de la réservation
+  $res = grr_sql_query("SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id = $resa");
+  if(!$res){
+    $msg .= '<p>'.'Erreur, réservation non trouvée'."</p>";
+  }
+  else{
+    $row = grr_sql_row($res,0);
+    $day = date("d",$row[0]);
+    $month = date("m",$row[0]);
+    $year = date("Y",$row[0]);
+    $room_id = intval($row[1]);
+
+    if ($id != -1){
+      $id = intval($id);
+      $sql = "SELECT file_name FROM ".TABLE_PREFIX."_files where id = $id";
+      $res = grr_sql_query($sql);
+      if($res){
+        $name = grr_sql_row($res,0);
+        // prépare chemin du fichier à effacer
+        $toDelFile = $uploadDir.$name[0];
+        //prépare la requête de suppression
+        $delReq = "delete FROM ".TABLE_PREFIX."_files where id = $id";
+        //vérifie si le fichier existe
+        if (@file_exists($toDelFile)){
+          // efface le fichier du serveur
+          if (unlink($toDelFile)){
+            if (grr_sql_command($delReq) < 0){
+              $msg = "Erreur de suppression dans la base de donnée.";
+            }
+            else{
+              $msg = "Fichier supprimé.";
+            }
           }
           else{
-            $msg = "Fichier supprimé.";
+            $msg = "Erreur, le fichier n'a pu être supprimé.";
           }
         }
         else{
-          $msg = "Erreur, le fichier n'a pu être supprimé.";
+          $msg = "Le fichier n'existe pas, maj de la base de donnée.";
+          // fichier n'existe pas, efface sa référence de la base de donnée.
+          if (grr_sql_command($delReq) < 0){
+            $msg.= "<br/>Erreur de suppression dans la base de donnée.";
+          }
+          else{
+            $msg.= "La base de donnée à été corrigée avec succès.";
+          }
         }
+        grr_sql_free($res);
       }
-      else{
-        $msg = "Le fichier n'existe pas, maj de la base de donnée.";
-        // fichier n'existe pas, efface sa référence de la base de donnée.
-        if (grr_sql_command($delReq) < 0){
-          $msg.= "<br/>Erreur de suppression dans la base de donnée.";
-        }
-        else{
-          $msg.= "La base de donnée à été corrigée avec succès.";
-        }
-      }
-      grr_sql_free($res);
+      else
+        $msg = "Erreur de lecture en base de données.";
     }
-    else
-      $msg = "Erreur de lecture en base de données.";
-  }
-  else {
-    $msg = "Erreur, aucune donnée reçue.";
+    else {
+      $msg = "Erreur, aucune donnée reçue.";
+    }
   }
   $_SESSION['displ_msg'] = 'yes';
   affiche_pop_up($msg,"user");
-  header("Location: ./app.php?p=semaine_all&msg=".$msg);
+  if(isset($room_id))
+    header("Location: ./app.php?p=semaine&day=$day&month=$month&year=$year&room=$room_id&msg=$msg");
+  else 
+    header("Location: ./app.php?p=semaine_all&msg=$msg");
 }
 else{
     echo "<br><span style='color:red'>Erreur, aucune action définie</span></p>";

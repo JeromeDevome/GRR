@@ -2,7 +2,7 @@
 /* import.class.php
  * Permet d'importer des éléments dans GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-18 21:30$
+ * Dernière modification : $Date: 2026-06-04 15:30$
  * @author    JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -141,6 +141,20 @@ class Import {
     public static function DocumentResa($idResa)
 	{
         global $gcDossierDoc, $gcTailleMaxDocResa, $_FILES;
+        
+        //récupération des informations pour rediriger vers la page de la réservation
+        $res = grr_sql_query("SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id = $idResa");
+        if(!$res){
+          $msg .= '<p>'.'Erreur, réservation non trouvée'."</p>";
+          return array($msg);
+        }
+        else{
+          $row = grr_sql_row($res,0);
+          $day = date("d",$row[0]);
+          $month = date("m",$row[0]);
+          $year = date("Y",$row[0]);
+          $room_id = intval($row[1]);
+        }
 
         $uploadDir = realpath(".")."/personnalisation/".$gcDossierDoc."/";
         $msg = "";
@@ -225,7 +239,7 @@ class Import {
                 } else {
                     if ($copie) {
                         $msg .= "<br> <span style='color:green'>Fichier enregistré</span></p>";
-                        header('Location: app.php?p=semaine_all');
+                        header('Location: app.php?p=semaine&day='.$day.'&month='.$month.'&yera='.$year.'&room='.$room_id);
                     } else {
                         $msg .= "<br><span style='color:red'>Erreur d'enregistrement</span></p>";
                     }
