@@ -3,7 +3,7 @@
  * upload.php
  * Utilitaire de téléversement d'un fichier attaché à une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 11:23$
+ * Dernière modification : $Date: 2026-06-04 16:18$
  * @author    Cédric Berthomé & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -51,22 +51,37 @@ if (isset ($_FILES) && is_array($_FILES)){
             $copie = move_uploaded_file($_FILES["myFiles"]["tmp_name"][$i], $uploadDir.$_FILES["myFiles"]["name"][$i]);
             //prepare le rename du fichier en concaténant l'id_entry de la réservation, un nombre aléatoire et l'extension du fichier.
             $strf = ""; $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
-            srand(time()*$id);			
+            srand(time()*$id);
             for($c=0; $c<12; $c++) 
             {
               $strf .= $str[rand(0,strlen($str)-1)];
             }
             $fileName = $id.$strf.".".$fileExt;
             if (rename($uploadDir.$_FILES["myFiles"]["name"][$i], $uploadDir.$fileName)){
-              //ajout dans la base de donnée.
+              //ajout dans la base de données
               $req = "INSERT INTO ".TABLE_PREFIX."_files (id_entry, file_name, public_name) VALUES (?,?,?)";
               if (grr_sql_command($req,"iss",[$id,protect_data_sql($fileName),protect_data_sql(substr($_FILES["myFiles"]["name"][$i],0,50))]) < 0){
-                echo "<br>erreur d'enregistrement sur base de donnée";
+                echo "<br>erreur d'enregistrement en base de données";
               }
               else{
                 if ($copie){
-                  echo "<br> <span style='color:green'>Fichier enregistré</span></p>";
-                  header('Location: week_all.php?');
+                  $msg= "Fichier enregistré";
+                  // calcul du chemin de retour vers la page de la réservation
+                  $res = grr_sql_query("SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id = ?","i",[$id]);
+                  if(!$res){
+                    $msg .= '<p>'.'Erreur, réservation non trouvée'."</p>";
+                    header("Location: week_all.php?msg=$msg");
+                    die();
+                  }
+                  else{
+                    $row = grr_sql_row($res,0);
+                    $day = date("d",$row[0]);
+                    $month = date("m",$row[0]);
+                    $year = date("Y",$row[0]);
+                    $room_id = intval($row[1]);
+                    header("Location: week.php?day=$day&month=$month&year=$year&room=$room_id&msg=$msg");
+                    die();
+                  }
                 }
                 else{
                   echo "<br><span style='color:red'>Erreur d'enregistrement</span></p>";

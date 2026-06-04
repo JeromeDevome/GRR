@@ -3,9 +3,9 @@
  * deleteFile.php
  * Utilitaire de suppression d'un fichier attaché à une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-09 11:48$
+ * Dernière modification : $Date: 2026-06-04 16:33$
  * @author    Cédric Berthomé & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -26,6 +26,7 @@ include "include/functions.inc.php";
 include "include/settings.class.php";
 
 $id = getFormVar("id","int",-1);
+$resa = getFormVar("resa","int",-1);
 $msg = "";
 
 if ($id != -1){
@@ -74,5 +75,20 @@ else {
 }
 $_SESSION['displ_msg'] = 'yes';
 affiche_pop_up($msg,"user");
-header("Location: ./week_all.php?msg=".$msg);
+// calcul du chemin de retour vers la page de la réservation
+$res = grr_sql_query("SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id = ?","i",[$resa]);
+if(!$res){
+  $msg .= '<br/>'.'Erreur, réservation non trouvée';
+  header("Location: week_all.php?msg=$msg");
+  die();
+}
+else{
+  $row = grr_sql_row($res,0);
+  $day = date("d",$row[0]);
+  $month = date("m",$row[0]);
+  $year = date("Y",$row[0]);
+  $room_id = intval($row[1]);
+  header("Location: week.php?day=$day&month=$month&year=$year&room=$room_id&msg=$msg");
+  die();
+}
 ?>
