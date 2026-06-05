@@ -167,6 +167,8 @@ $liste_settings = array(
 	"acces_fiche_reservation" => "0",
 	"ActiveModeDemo" => "0",
 	"ActiveModeDiagnostic" => "0", // n => 0
+	"allow_my_connections" => "0",
+	"allow_my_reservations" => "0",
 	"allow_gestionnaire_modify_del" => "1",
 	"allow_search_level" => "1",
 	"allow_user_delete_after_begin" => "0",

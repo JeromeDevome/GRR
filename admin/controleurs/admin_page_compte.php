@@ -33,7 +33,9 @@ $form_vars = array(
     'pass_nb_ch' => 'int',
     'pass_nb_sp' => 'int',
     'pass_simple' => 'int',
-    'pass_change_conditions' => 'int'
+    'pass_change_conditions' => 'int',
+    'allow_my_connections' => 'int',
+    'allow_my_reservations' => 'int'
 );
 // récupération des valeurs des variables passées en paramètres
 foreach($form_vars as $var => $var_type)
@@ -52,6 +54,8 @@ foreach($form_vars as $var => $var_type)
             $settings_results[] = Settings::set2("allow_users_modify_theme", $allow_users_modify_theme);
             $settings_results[] = Settings::set2("allow_users_modify_langue", $allow_users_modify_langue);
             $settings_results[] = Settings::set2("mail_user_obligatoire", $mail_user_obligatoire);
+            $settings_results[] = Settings::set2("allow_my_connections", $allow_my_connections);
+            $settings_results[] = Settings::set2("allow_my_reservations", $allow_my_reservations);
         }
     }
 

@@ -35,6 +35,11 @@ $user_login = isset($_POST['user_login']) ? $_POST['user_login'] : ($user_login 
 $valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
 $msg = '';
 
+if(Settings::get('allow_my_connections') == 0)
+{
+	echo "Accès refusé";
+	die();
+}
 
 // on commence par récupérer les données de connexion
 $sql = "SELECT START, SESSION_ID, REMOTE_ADDR, USER_AGENT, REFERER, AUTOCLOSE, END FROM ".TABLE_PREFIX."_log WHERE LOGIN = '".getUserName()."' ORDER by START desc";

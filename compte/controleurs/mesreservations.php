@@ -29,6 +29,13 @@ if (!grr_resumeSession())
 
 include_once('../include/language.inc.php');
 
+
+if(Settings::get('allow_my_reservations') == 0)
+{
+	echo "Accès refusé";
+	die();
+}
+
 ### !!! Definitions des variables !!! ###
 	$pChoix = intval((isset($_POST['choix'])&&(($_POST['choix']==0)||($_POST['choix']==1)))? $_POST['choix'] : 1);
 

@@ -248,20 +248,23 @@ else
 
 
 
-$d['identifiant'] = getUserName();
-$d['modificationNom'] = SecuAccess::IsAllowedToModifyProfil();
-$d['modificationMail'] = SecuAccess::IsAllowedToModifyEmail();
-$d['modificationMDP'] = SecuAccess::IsAllowedToModifyMdp();
-$d['user_nom'] = $user_nom;
-$d['user_prenom'] = $user_prenom;
-$d['user_email'] = $user_email;
-$d['text_user_statut'] = $text_user_statut;
+$d['identifiant']		= getUserName();
+$d['modificationNom']	= SecuAccess::IsAllowedToModifyProfil();
+$d['modificationMail']	= SecuAccess::IsAllowedToModifyEmail();
+$d['modificationMDP']	= SecuAccess::IsAllowedToModifyMdp();
+$d['user_nom']			= $user_nom;
+$d['user_prenom']		= $user_prenom;
+$d['user_email']		= $user_email;
+$d['text_user_statut']	= $text_user_statut;
 $d['default_list_type'] = $default_list_type;
-$d['default_site'] = $default_site;
-$d['default_area'] = $default_area;
-$d['default_css'] = $default_css;
-$d['default_language'] = $default_language;
-$d['default_room'] = $default_room;
+$d['default_site']		= $default_site;
+$d['default_area']		= $default_area;
+$d['default_css']		= $default_css;
+$d['default_language']	= $default_language;
+$d['default_room']		= $default_room;
+
+if(Settings::get('allow_my_connections') == 0 && Settings::get('allow_my_reservations') == 0)
+	$d['masquerMenu'] = 1;
 
 	if (SecuAccess::IsAllowedToModifyProfil())
 	{

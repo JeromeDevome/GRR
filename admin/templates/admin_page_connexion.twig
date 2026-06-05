@@ -91,7 +91,7 @@
 						</section>
 						<hr>
 						<section id="dureesession">
-							{{ form.input('sessionMaxLength', trad.session_max_length, settings.sessionMaxLength, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+							{{ form.input('sessionMaxLength', trad.session_max_length, settings.sessionMaxLength, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number', min:1}) }}
 							<i>{{ trad.explain_session_max_length }}</i>
 						</section>
 						<hr>
