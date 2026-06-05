@@ -16,9 +16,6 @@
  * (at your option) any later version.
  */
 
-$trad   = $vocab;
-$msg    = '';
-
 // les variables attendues et leur type
 $form_vars = array(
     'submit' => 'int',
@@ -30,29 +27,20 @@ foreach($form_vars as $var => $var_type)
     $$var = SecuChaine::GetFormVarSecure($var, $var_type);
 
 
-
 /** Accès & Droits **/
     if ($submit == 1) {
-
-        if (!Settings::set("allow_search_level", $allow_search_level))
-            $msg .= "Erreur lors de l'enregistrement de allow_search_level !<br />";
+       $settings_results[] = Settings::set2("allow_search_level", $allow_search_level);
     }
 
 /** Apparence **/
     if ($submit == 1) {
-
-        if (!Settings::set("default_report_days", $default_report_days))
-            $msg .= "Erreur lors de l'enregistrement de default_report_days !<br />";
+        $settings_results[] = Settings::set2("default_report_days", $default_report_days);
     }
 
 
 /** Résultat de l'enregistrement **/
 if ($submit == 1){
-    $_SESSION['displ_msg'] = 'yes';
-    if ($msg == '')
-        $d['enregistrement'] = 1;
-    else
-        $d['enregistrement'] = $msg;
+    $d['settings_results'] = $settings_results;
 }
 
 /** Affichage de la page **/

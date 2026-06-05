@@ -6,7 +6,14 @@
 	{% endif %}
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }} {% if options.require == 1 %}*{% endif %}</label>
 		<div class="{{ options.classInput }}">
-			<input class="form-control" type="{{ options.type ?: 'text' }}" id="{{ name }}" name="{{ name }}" value="{{ value }}" {% if options.maxlength %}maxlength="{{options.maxlength}}"{% endif %} {% if options.require == 1 %}required{% endif %} {% if options.disabled == 1 %}disabled{% endif %} {% if options.autocomplete %}autocomplete="{{options.autocomplete}}"{% endif %}>
+			<input class="form-control" type="{{ options.type ?: 'text' }}" id="{{ name }}" name="{{ name }}" value="{{ value }}" 
+			{% if options.maxlength %}maxlength="{{options.maxlength}}"{% endif %} 
+			{% if options.min is defined %}min="{{ options.min }}"{% endif %}  
+			{% if options.max is defined %}max="{{ options.max }}"{% endif %} 
+			{% if options.require == 1 %}required{% endif %} 
+			{% if options.disabled == 1 %}disabled{% endif %} 
+			{% if options.autocomplete %}autocomplete="{{options.autocomplete}}"{% endif %}
+			>
 		</div>
 		{% if row == 1 %}
 	</div>

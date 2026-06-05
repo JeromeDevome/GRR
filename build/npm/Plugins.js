@@ -23,6 +23,18 @@ const jslib = [
     from: 'node_modules/jquery-ui/ui/i18n',
     to: 'jslib/jquery-ui/ui/i18n'
   },
+  // jQuery Validation
+  {
+    from: 'node_modules/jquery-validation/dist',
+    to: 'jslib/jquery-validation',
+    filterName: '.min'
+  },
+  // jQuery Validation (localization)
+  {
+    from: 'node_modules/jquery-validation/dist/localization',
+    to: 'jslib/jquery-validation/localization',
+    filterName: '.min'
+  },
   // Bootstrap
   {
     from: 'node_modules/bootstrap/dist',

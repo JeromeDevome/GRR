@@ -21,7 +21,6 @@ $niveauDossier = 2;
 
 require '../vendor/autoload.php';
 require '../include/twiggrr.class.php';
-
 // GRR
 require "../include/securite.class.php";
 require "../include/functions.inc.php";
@@ -78,21 +77,20 @@ $month = date("m",$date_);
 $year  = date("Y",$date_);
 
 
-get_vocab_admin('admin');
-get_vocab_admin('grr_version');
-get_vocab_admin('retour_planning');
-get_vocab_admin("manage_my_account");
-get_vocab_admin("display_add_user");
-get_vocab_admin('admin_view_connexions');
+
 
 $d = array();
+$d['langueUser'] 	= $locale;
 $d['version']		= $version_grr;
 $d['versionCache']	= hash('sha256', $version_grr.Settings::get("tokenpublic"));
 $d['nomAffichage']	= htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);;
 $d['lienRetour']	= "../".page_accueil('yes')."day=".$day."&year=".$year."&month=".$month;
 $d['lienCompte']	= "../compte/compte.php?day=".$day."&year=".$year."&month=".$month;
 $d['nomUtilisateur'] = getUserName();
-$AllSettings = Settings::getAll();
+
+$AllSettings		= Settings::getAll();
+$settings_results	= array();
+$trad				= $vocab;
 
 // Template Twig
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');

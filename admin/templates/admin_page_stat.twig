@@ -43,7 +43,7 @@
 
 						<!-- Valeur par défaut de l'intervalle -->
 						<section id="default_report_days_msg">
-							{{ form.input('default_report_days', trad.default_report_days_explain, settings.default_report_days, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+							{{ form.input('default_report_days', trad.default_report_days_explain, settings.default_report_days, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number', min:0, require:1}) }}
 							<br>
 						</section>
 
@@ -63,15 +63,6 @@
 {% endblock %}
 
 {% block javascript %}
-	<script type="text/javascript">
-		$(function(){
-			{%if d.enregistrement%}
-				{%if d.enregistrement == 1 %}
-					toastr.success("{{trad.message_records}}")
-				{% else %}
-					toastr.warning("{{d.enregistrement|raw}}")
-				{%endif%}
-			{%endif%}
-		})
-	</script>
+<script>
+</script>
 {% endblock %}

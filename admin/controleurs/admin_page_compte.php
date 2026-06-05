@@ -16,9 +16,6 @@
  * (at your option) any later version.
  */
 
-$trad               = $vocab;
-$settings_results   = array();
-
 // les variables attendues et leur type
 $form_vars = array(
     'submit' => 'int',
@@ -82,7 +79,6 @@ foreach($form_vars as $var => $var_type)
 
 /** Résultat de l'enregistrement **/
 if ($submit == 1){
-    $_SESSION['displ_msg'] = 'yes';
     $d['settings_results'] = $settings_results;
 }
 

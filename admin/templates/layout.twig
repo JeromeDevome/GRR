@@ -204,10 +204,31 @@ Font Awesome -->
 <script src="../js/adminlte.min.js"></script>
 <script src="../jslib/summernote/summernote-lite.min.js"></script>
 <script src="../jslib/toastr/toastr.min.js"></script>
+<script src="../jslib/jquery-validation/jquery.validate.min.js"></script>
+<script src="../jslib/jquery-validation/localization/messages_{{ d.langueUser|slice(0, 2) }}.min.js"></script>
+<script src="../jslib/jquery-validation/additional-methods.min.js"></script>
 
 <!-- Configuration globale Summernote Lite pour tous les éditeurs -->
 <script>
 	$(function() {
+      // Validation des formulaires
+      $(function() {
+        $("form").each(function() {
+          $(this).validate({
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+              error.addClass('invalid-feedback');
+              element.parent().append(error);
+            },
+            highlight: function(element) {
+              $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element) {
+              $(element).removeClass('is-invalid');
+            }
+          });
+        });
+      });
       // Toast
     	{%if d.settings_results%}
 				let ok = false;
