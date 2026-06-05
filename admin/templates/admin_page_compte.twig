@@ -4,7 +4,6 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
-	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
 {% endblock %}
 
 {% block content %}
@@ -145,27 +144,4 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../jslib/toastr/toastr.min.js"></script>
-	<script>
-		$(function () {
-			{%if d.settings_results%}
-				let ok = false;
-
-				{% for result in d.settings_results %}
-					{% if result[0] == 1 %}
-						if (!ok) {
-							ok = true;
-							toastr.success("{{trad.message_records}}")
-						}
-					{% elseif result[0] == 2 %}
-						toastr.info("{{ result[1]|raw }}")
-					{% elseif result[0] == 3 %}
-						toastr.warning("{{ result[1]|raw }}")
-					{% elseif result[0] == 4 %}
-						toastr.error("{{ result[1]|raw }}")
-					{% endif %}
-				{% endfor %}
-			{%endif%}
-		}); 
-	</script>
 {% endblock %}

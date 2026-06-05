@@ -1,7 +1,6 @@
 {% extends 'layout.twig' %}
 
 {% block css %}
-	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
 {% endblock %}
 
 {% import 'messagesysteme.twig' as msgSyst %}
@@ -119,7 +118,6 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../jslib/toastr/toastr.min.js"></script>
 	<script>
 		$(function () {
 			{%if d.enregistrement == 1 %}

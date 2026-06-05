@@ -14,6 +14,7 @@ Font Awesome -->
 
   <!-- Summernote CSS -->
   <link rel="stylesheet" href="../jslib/summernote/summernote-lite.min.css">
+  <link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
 
   {% block css %}{% endblock %}
   
@@ -202,10 +203,31 @@ Font Awesome -->
 <script src="../jslib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../js/adminlte.min.js"></script>
 <script src="../jslib/summernote/summernote-lite.min.js"></script>
+<script src="../jslib/toastr/toastr.min.js"></script>
 
 <!-- Configuration globale Summernote Lite pour tous les éditeurs -->
 <script>
 	$(function() {
+      // Toast
+    	{%if d.settings_results%}
+				let ok = false;
+
+				{% for result in d.settings_results %}
+					{% if result[0] == 1 %}
+						if (!ok) { // Si ok, on affiche le message de succès une seule fois
+							ok = true;
+							toastr.success("{{trad.message_records}}")
+						}
+					{% elseif result[0] == 2 %}
+						toastr.info("{{ result[1]|raw }}")
+					{% elseif result[0] == 3 %}
+						toastr.warning("{{ result[1]|raw }}")
+					{% elseif result[0] == 4 %}
+						toastr.error("{{ result[1]|raw }}")
+					{% endif %}
+				{% endfor %}
+			{%endif%}
+
 		// Initialiser tous les éditeurs Summernote avec configuration complète
 		$('.summernote').summernote({
 			height: 350,

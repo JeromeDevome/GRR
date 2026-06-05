@@ -1,7 +1,6 @@
 {% extends 'layout.twig' %}
 
 {% block css %}
-	<link rel="stylesheet" href="../jslib/toastr/toastr.min.css">
 {% endblock %}
 
 {% import 'messagesysteme.twig' as msgSyst %}
@@ -133,7 +132,7 @@
 									<td>{{ useradmin.login }}</td>
 									<td>{{ useradmin.nom }}</td>
 									<td>{{ useradmin.prenom }}</td>
-									<td><a href="?p=admin_access_area&action=del_user&login_user={{ useradmin.login }}&id_area={{ d.idDomaine }}"><i class="fa fa-trash"></i></a></td>
+									<td><a href="?p=admin_access_area&amp;action=del_user&amp;login_user={{ useradmin.login }}&amp;id_area={{ d.idDomaine }}"><i class="fa fa-trash"></i></a></td>
 								</tr>
 							{% endfor %}
 						</table>
@@ -149,7 +148,7 @@
 							{% for groupeadmin in groupesexep %}
 								<tr>
 									<td>{{ groupeadmin.nom }}</td>
-									<td><a href="?p=admin_access_area&action=del_groupe&groupe={{ groupeadmin.id }}&id_area={{ d.idDomaine }}"><i class="fa fa-trash"></i></a></td>
+									<td><a href="?p=admin_access_area&amp;action=del_groupe&amp;groupe={{ groupeadmin.id }}&amp;id_area={{ d.idDomaine }}"><i class="fa fa-trash"></i></a></td>
 								</tr>
 							{% endfor %}
 						</table>
@@ -162,7 +161,6 @@
 {% endblock %}
 
 {% block javascript %}
-	<script src="../jslib/toastr/toastr.min.js"></script>
 	<script>
 		$(function () {
 			{% if d.enregistrement == 1 %}
