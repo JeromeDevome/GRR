@@ -183,7 +183,11 @@ while ($j < count($liste_tables))
 					$lesDonnees = "";
 					for ($mp = 0; $mp < $num_fields; $mp++)
 					{
-						$lesDonnees .= "'" . mysqli_real_escape_string($GLOBALS['db_c'], $rowdata[$mp]) . "'";
+						if ($rowdata[$mp] === NULL) {
+							$lesDonnees .= "NULL";
+						} else {
+							$lesDonnees .= "'" . mysqli_real_escape_string($GLOBALS['db_c'], $rowdata[$mp]) . "'";
+						}
 						//on ajoute à la fin une virgule si nécessaire
 						if ($mp<$num_fields-1)
 							$lesDonnees .= ", ";
