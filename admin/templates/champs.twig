@@ -32,7 +32,8 @@
 {% macro switch(name, label, value = null, options = []) %}
 	<div class="form-group row">
 		<div class="custom-control custom-switch {{ options.classGroup }}">
-			<input type="checkbox" class="custom-control-input {{ options.classInput }}" id="{{ name }}" name="{{ name }}" {% if value == 1 %}checked{% endif %} > 
+			<input type="hidden" name="{{ name }}" value="0">
+			<input type="checkbox" class="custom-control-input {{ options.classInput }}" id="{{ name }}" name="{{ name }}" value="1" {% if value == 1 %}checked{% endif %} > 
 			<label class="custom-control-label {{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
 		</div>
 	</div>
