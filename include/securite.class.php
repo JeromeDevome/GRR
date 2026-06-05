@@ -144,7 +144,12 @@ class SecuChaine {
         elseif($data == 'off')
             return 0;
 
-        return (int) preg_replace('/(?!^)-|[^\d-]/', '', (string) $data);
+        $data = preg_replace('/(?!^)-|[^\d-]/', '', (string) $data);
+
+        if($data == '')
+            $data = 0;
+
+        return $data;
     }
 
     /* Transforms a string into a format safe for SQL queries, preventing SQL injection.
