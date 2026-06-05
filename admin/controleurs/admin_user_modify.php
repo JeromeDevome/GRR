@@ -448,7 +448,7 @@ if (isset($user_login) && ($user_login != ''))
 		if ($utilisateur['default_language'] == $liste_language[$i]) {
 			$d['optionLangue'] .= ' selected="selected"';
 		}
-		$d['optionLangue'] .= ' >'.encode_message_utf8($liste_name_language[$i]).'</option>'.PHP_EOL;
+		$d['optionLangue'] .= ' >'.encode_message_utf8($trad['langue_' . $liste_language[$i]]).'</option>'.PHP_EOL;
 		++$i;
 	}
 

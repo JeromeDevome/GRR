@@ -132,15 +132,6 @@ $liste_language = array(
 	"es-es"
 	);
 
-# Liste des noms des langues
-$liste_name_language = array(
-	"Français",
-	"Deutch",
-	"English",
-	"Italiano",
-	"Spanish"
-	);
-
 # Liste des noms des variables de config
 $config_variables = array(
 	"nb_year_calendar",

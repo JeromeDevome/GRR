@@ -100,7 +100,7 @@
 							<div class="col col-sm-8">
 								<select class="select2" multiple="multiple" name="langues_dispo" style="width:100%">
 									{% for langue in liste_language %}
-										<option value="{{ langue }}" {% if langue in d.langues_dispo_saved %} selected {% endif %}>{{ langue }}</option>
+										<option value="{{ langue }}" {% if langue in d.langues_dispo_saved %} selected {% endif %}> {{ trad['langue_' ~ langue] }}</option>
 									{% endfor %}
 							</select>
 							</div>
