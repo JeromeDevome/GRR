@@ -24,7 +24,20 @@ $error_message = "Une erreur est survenue sur le serveur.";
 // Parser l'URL pour déterminer le code d'erreur s'il est défini
 if (isset($_SERVER['REDIRECT_STATUS']) && is_numeric($_SERVER['REDIRECT_STATUS'])) {
     $error_code = (int)$_SERVER['REDIRECT_STATUS'];
+} elseif (isset($_GET['code']) && is_numeric($_GET['code'])) {
+    $error_code = (int)$_GET['code'];
 }
+
+if(isset($_GET['grr_script_name']))
+    $url = $_GET['grr_script_name'];
+else
+    $url = $_SERVER['REQUEST_URI'];
+
+if(isset($_GET['infosdebug']))
+    $infodebug = $_GET['infosdebug'];
+else
+    $infodebug = '';
+
 
 // Déterminer le message selon le code d'erreur
 switch ($error_code) {
@@ -38,7 +51,7 @@ switch ($error_code) {
         break;
     case 403:
         $error_title = "Accès refusé";
-        $error_message = "Vous n'avez pas les permissions pour accéder à cette ressource.";
+        $error_message = "Vous n'avez pas les permissions pour accéder à cette page.";
         break;
     case 404:
         $error_title = "Page non trouvée";
@@ -234,7 +247,10 @@ http_response_code($error_code);
         <div class="error-details">
             <strong>Informations techniques :</strong>
             Date/Heure : <?php echo date('d/m/Y à H:i:s'); ?><br>
-            URL demandée : <?php echo htmlspecialchars($_SERVER['REQUEST_URI'] ?? 'Non disponible'); ?>
+            URL demandée : <?php echo htmlspecialchars($url); ?><br>
+            <?php if (!empty($infodebug)): ?>
+                Détails de l'erreur : <?php echo htmlspecialchars($infodebug); ?>
+            <?php endif; ?>
         </div>
         
         <div class="button-group">

@@ -3659,13 +3659,12 @@ function MajMysqlModeDemo() {
  */
 function showAccessDenied($back, $infodebug = '')
 {
-	global $vocab, $debug_flag;
-	echo '<h1>'.get_vocab("accessdenied").'</h1>';
-	echo '<p>'.get_vocab("norights").'</p>';
-	if($debug_flag)
-		echo '<p>'.$infodebug.'</p>';
-	echo '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
-	echo '</section></body></html>';
+	global $niveauDossier, $grr_script_name;
+
+	$ch = cheminDetermination($niveauDossier);
+
+	header('Location: ' . $ch . 'erreur.php?code=403&grr_script_name='.$grr_script_name.'&infosdebug='.$infodebug);
+	exit;
 }
 function showAccessDenied_twig($back, $infodebug = '')
 {
