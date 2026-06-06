@@ -18,7 +18,7 @@
 
 function afficheLienNiveau1($lien, $image, $niveau = 1)
 {
-	global $twig, $page, $menuAdminT;
+	global $page, $menuAdminT;
 
 	if($page == $lien){
 		$classActive = " active";
@@ -31,7 +31,7 @@ function afficheLienNiveau1($lien, $image, $niveau = 1)
 
 function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 {
-	global $chaine, $menuAdminT, $menuAdminTN2, $page;
+	global $menuAdminT, $menuAdminTN2, $page;
 
 	$classLi = "";
 	$classA = "";
@@ -53,13 +53,14 @@ function afficheLienNiveau2($nomSection,$image,$liste,$iN2)
 	}
 }
 
+/*
 if (get_request_uri() != ''){
 	//$url_ = parse_url(get_request_uri());
 	//$pos = strrpos($url_['path'], "/") + 1;
 	//$chaine = substr($url_['path'], $pos);
 } else {
 	$chaine = '';
-}
+}*/
 
 //Construction du menu
 $iN2 = 0;
