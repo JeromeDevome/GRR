@@ -16,6 +16,11 @@
  * (at your option) any later version.
  */
 
+$grr_script_name = 'admin_page_stat.php';
+
+// Accès à la page
+SecuAccess::CheckAccess(6, $back);
+
 // les variables attendues et leur type
 $form_vars = array(
     'submit' => 'int',

@@ -16,6 +16,11 @@
  * (at your option) any later version.
  */
 
+$grr_script_name = 'admin_page_reservation.php';
+
+// Accès à la page
+SecuAccess::CheckAccess(6, $back);
+
 require_once("../include/pages.class.php");
 
 $trad   = $vocab;

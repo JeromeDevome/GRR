@@ -35,6 +35,7 @@ include "../include/admin.inc.php";
 include "../include/hook.class.php";
 include "./modeles/AdminFonctions.php";
 
+$grr_script_name = 'admin.php';
 $room = isset($_GET['room']) ? SecuChaine::Alphanumeric($_GET['room']) : -1;
 
 $back = '';

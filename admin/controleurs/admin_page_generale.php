@@ -16,6 +16,11 @@
  * (at your option) any later version.
  */
 
+$grr_script_name = 'admin_page_generale.php';
+
+// Accès à la page
+SecuAccess::CheckAccess(6, $back);
+
 include('../include/import.class.php');
 
 $trad   = $vocab;
