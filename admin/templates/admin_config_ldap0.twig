@@ -68,7 +68,7 @@
 										</div>
 									</div>
 
-									{{ form.input('ldap_champ_recherche', 'Attribut utilisé pour la recherche dans l\'annuaire', settings.ldap_champ_recherche, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+									{{ form.input('ldap_champ_recherche', 'Attribut utilisé pour la recherche dans l\'annuaire', settings.ldap_champ_recherche, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
 
 									<p>La valeur à indiquer ci-dessus varie selon le type d'annuaire utilisé et selon sa configuration
 										<br /><span class="small">Exemples de champs généralement utilisés pour les annuaires ldap : "uid", "cn", "sn".
@@ -78,9 +78,9 @@
 
 									<p><b>Liaisons GRR/LDAP :</b></p>
 
-									{{ form.input('ldap_champ_nom', trad.last_name, settings.ldap_champ_nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-									{{ form.input('ldap_champ_prenom', trad.first_name, settings.ldap_champ_prenom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-									{{ form.input('ldap_champ_email', trad.mail_user, settings.ldap_champ_email, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+									{{ form.input('ldap_champ_nom', trad.last_name, settings.ldap_champ_nom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
+									{{ form.input('ldap_champ_prenom', trad.first_name, settings.ldap_champ_prenom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
+									{{ form.input('ldap_champ_email', trad.mail_user, settings.ldap_champ_email, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 
 									<p><b>Cas particulier des serveur SE3</b> : <span class="small">dans le champs ci-dessous, vous pouvez préciser la liste des groupes SE3 autorisés à accéder à GRR.
 										Si le champ est laissé vide, il n'y a pas de restrictions.
@@ -88,7 +88,7 @@
 										Ecrivez les groupes en les séparant par un point-vigule, par exemple : "Profs;Administratifs".
 										Seuls les groupes de type "posixGroup" sont supportés (les groupes de type "groupOfNames" ne sont pas supportés).</span></p>
 
-									{{ form.input('se3_liste_groupes_autorises', '', settings.se3_liste_groupes_autorises, {classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
+									{{ form.input('se3_liste_groupes_autorises', '', settings.se3_liste_groupes_autorises, {classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
 
 									<div style="text-align:center;">
 										<input type="submit" name="Valider1" value="{{ trad.save }}" class="btn btn-success btn-md" />

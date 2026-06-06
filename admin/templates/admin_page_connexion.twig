@@ -73,30 +73,30 @@
 					</div>
 					<div class="card-body">
 						<section id="desactiveconnexion">
-							{{ form.switch('disable_login', trad.disable_login_on, settings.disable_login, {classGroup: 'col-12 custom-switch-on-danger', classLabel: 'col-10', classInput: 'col-2'}) }}
+							{{ form.switch('disable_login', trad.disable_login_on, settings.disable_login, {classGroup: 'col-12 custom-switch-on-danger', classLabel: 'col-10', classDivInput: 'col-2'}) }}
 							<i>{{ trad.explain_disable_login }}</i>
 						</section>
 						<hr>
 						<section id="ipautorise">
-							{{ form.input('ip_autorise', trad.title_ip_autorise, settings.ip_autorise, {classGroup: 'col-12', classLabel: 'col-4', classInput: 'col-sm-8 control-label'}) }}
+							{{ form.input('ip_autorise', trad.title_ip_autorise, settings.ip_autorise, {classGroup: 'col-12', classLabel: 'col-4', classDivInput: 'col-sm-8 control-label"', classInput: 'form-control is-warning'}) }}
 							<i>{{ trad.explain_ip_autorise }}</i>
 						</section>
 						<hr>
 						<section id="horaireconnexion">
 							<div class="form-group row">
-								{{ form.input('horaireconnexionde', trad.title_horaire_autorise, settings.horaireconnexionde, {row:0, classLabel: 'col-sm-3', classInput: 'col-sm-1 control-label', type: 'time'}) }}
-								{{ form.input('horaireconnexiona', trad.through, settings.horaireconnexiona, {row:0, classLabel: 'col-sm-1', classInput: 'col-sm-1 control-label', type: 'time'}) }}
+								{{ form.input('horaireconnexionde', trad.title_horaire_autorise, settings.horaireconnexionde, {row:0, classLabel: 'col-sm-3', classDivInput: 'col-sm-1 control-label', type: 'time'}) }}
+								{{ form.input('horaireconnexiona', trad.through, settings.horaireconnexiona, {row:0, classLabel: 'col-sm-1', classDivInput: 'col-sm-1 control-label', type: 'time'}) }}
 							</div>
 							<i>{{ trad.explain_horaire_autorise }}</i>
 						</section>
 						<hr>
 						<section id="dureesession">
-							{{ form.input('sessionMaxLength', trad.session_max_length, settings.sessionMaxLength, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number', min:1}) }}
+							{{ form.input('sessionMaxLength', trad.session_max_length, settings.sessionMaxLength, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label', type: 'number', min:1}) }}
 							<i>{{ trad.explain_session_max_length }}</i>
 						</section>
 						<hr>
 						<section id="urldeconnexion">
-							{{ form.input('url_disconnect', trad.Url_de_deconnexion, settings.url_disconnect, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+							{{ form.input('url_disconnect', trad.Url_de_deconnexion, settings.url_disconnect, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 							<i>{{ trad.Url_de_deconnexion_explain }}</i>
 							<p><i>{{ trad.Url_de_deconnexion_explain2 }}</i></p>
 						</section>
@@ -155,8 +155,8 @@
 
 						<section id="affichage_page_connexion">
 
-							{{ form.input('title_home_page', trad.title_home_page, settings.title_home_page, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-							{{ form.textarea('message_home_page', trad.message_home_page, settings.message_home_page, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+							{{ form.input('title_home_page', trad.title_home_page, settings.title_home_page, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
+							{{ form.textarea('message_home_page', trad.message_home_page, settings.message_home_page, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 
 							<table class="table table-condensed">
 								<tbody>
@@ -222,7 +222,7 @@
 
 						<p>Permettre aux personnes non connectées de demander la création d'un compte. L'utilisateur devra renseigner son nom, prénom, email et mot de passe, une fois. Le gestionnaire d'utilisateur ou l'administrateur pourra valider ou non la demande en lui assignant un identifiant et un statut.</p>
 
-						{{ form.switch('fct_crea_cpt', 'Demande de création de compte', settings.fct_crea_cpt, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('fct_crea_cpt', 'Demande de création de compte', settings.fct_crea_cpt, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}
 
 						<div id="aff_dyn_crea_compte" {% if not settings.fct_crea_cpt %}style="display:none"{% endif %}>
 							<p class="text-danger"><b>Avertissement :</b> Il est conseillé d'activer l'envoi de mails, dans le cas contraire l'utilisateur ne pourrait recevoir son identifiant.</p>
@@ -254,7 +254,7 @@
 									</select>
 								</div>
 							</div>
-							{{ form.switch('fct_crea_cpt_captcha', trad.captcha_utiliser, settings.fct_crea_cpt_captcha, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+							{{ form.switch('fct_crea_cpt_captcha', trad.captcha_utiliser, settings.fct_crea_cpt_captcha, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}
 						</div>
 					</div>
 				</div>

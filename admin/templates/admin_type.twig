@@ -63,42 +63,43 @@
 		<div class="card-header">
 			Fusionner des types :
 		</div>
-		<!-- /.card-header -->
 
-		<form action="?p=admin_type" method="post" id="formfusion">
-			<input type="hidden" name="p" value="admin_type">
-			<input type="hidden" name="actionpost" value="fusionner">
+		<div class="card-body">
+			<form action="?p=admin_type" method="post" id="formfusion">
+				<input type="hidden" name="p" value="admin_type">
+				<input type="hidden" name="actionpost" value="fusionner">
 
-			<div class="row align-items-center">
-				<div class="col-auto">
-					Fusionner l'identifiant
+				<div class="row align-items-center">
+					<div class="col-auto">
+						Fusionner l'identifiant
+					</div>
+					<div class="col-2">
+						<select id="type1" name="type1" class="form-control">
+							{% for type in types %}
+								<option value="{{type.id}}">{{type.type_letter}} - {{type.type_name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-auto">
+						avec l'identifiant
+					</div>
+					<div class="col-2">
+						<select id="type2" name="type2" class="form-control">
+							{% for type in types %}
+								<option value="{{type.id}}">{{type.type_letter}} - {{type.type_name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-auto">
+						<button type="submit" class="btn btn-warning btn-md" id="fusionnerbtn">
+							<i class="icon fa fa-retweet"></i> Fusionner
+						</button>
+					</div>
 				</div>
-				<div class="col-2">
-					<select id="type1" name="type1" class="form-control">
-						{% for type in types %}
-							<option value="{{type.id}}">{{type.type_letter}} - {{type.type_name}}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="col-auto">
-					avec l'identifiant
-				</div>
-				<div class="col-2">
-					<select id="type2" name="type2" class="form-control">
-						{% for type in types %}
-							<option value="{{type.id}}">{{type.type_letter}} - {{type.type_name}}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="col-auto">
-					<button type="submit" class="btn btn-warning btn-md" id="fusionnerbtn">
-						<i class="icon fa fa-retweet"></i> Fusionner
-					</button>
-				</div>
-			</div>
 
-		</form>
-		<p><small>Ce premier sera supprimé et toutes les réservations associées seront rattachées au second.</small></p>
+			</form>
+			<p><small>Ce premier sera supprimé et toutes les réservations associées seront rattachées au second.</small></p>
+		</div>
 
 	</div>
 

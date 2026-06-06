@@ -52,8 +52,8 @@
                         {% set namform = 'mails_test_'~ langue %}
 
                         <p>{{trad.mail_desc_admin_test}}</p>
-                        {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
+                        {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform}) }}
                       </div>
 
                       <!-- Mail Création réservation -->
@@ -65,12 +65,12 @@
                         {% set namform2 = 'mails_resa_1_2_'~ langue %}
 
                         <p>{{trad.mail_desc_dest_adm}}</p>
-                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform1}) }}
                         
                         <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform2}) }}
                       </div>
 
                       <!-- Mail Modification réservation -->
@@ -84,16 +84,16 @@
                         {% set namform3 = 'mails_resa_2_3_'~ langue %}
 
                         <p>{{trad.mail_desc_dest_adm}}</p>
-                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform1}) }}
                         
                         <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform2}) }}
 
                         <p>{{trad.mail_desc_dest_gestionnaire}}</p>
-                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
+                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform3}) }}
                       </div>
 
                       <!-- Mail Suppression réservation -->
@@ -107,16 +107,16 @@
                         {% set namform3 = 'mails_resa_3_3_'~ langue %}
 
                         <p>{{trad.mail_desc_dest_adm}}</p>
-                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform1}) }}
                         
                         <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform2}) }}
                         
                         <p>{{trad.mail_desc_dest_gestionnaire}}</p>
-                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
+                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform3}) }}
                       </div>
 
                       <!-- Mail Suppression automatique -->
@@ -128,12 +128,12 @@
                         {% set namform2 = 'mails_resa_4_2_'~ langue %}
 
                         <p>{{trad.mail_desc_dest_adm}}</p>
-                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform1}) }}
                         
                         <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform2}) }}
                       </div>
 
                       <!-- Mail Réservation & modération -->
@@ -147,16 +147,16 @@
                         {% set namform3 = 'mails_resa_5_3_'~ langue %}
 
                         <p>{{trad.mail_desc_dest_adm}}</p>
-                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform1}) }}
 
                         <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform2}) }}
 
                         <p>{{trad.mail_desc_dest_gestionnaire}}</p>
-                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
+                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform3}) }}
                       </div>
 
                       <!-- Mail Décision modération -->
@@ -168,12 +168,12 @@
                         {% set namform2 = 'mails_resa_6_2_'~ langue %}
                         
                         <p>{{trad.mail_desc_dest_adm}}</p>
-                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform1}) }}
 
                         <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform2}) }}
                       </div>
 
                       <!-- Mail Retard restitution -->
@@ -185,12 +185,12 @@
                         {% set namform2 = 'mails_resa_7_2_'~ langue %}
 
                         <p>{{trad.mail_desc_dest_adm}}</p>
-                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform1}) }}
+                        {{ form.input(titreform1, "", pages[namform1][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform1, '', pages[namform1][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform1}) }}
 
                         <p>{{trad.mail_desc_dest_beneficiaire}}</p>
-                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform2}) }}
                       </div>
 
                       <!-- Demande de compte -->
@@ -204,16 +204,16 @@
                         {% set namform3 = 'mails_demandecompte3_'~ langue %}
 
                         <p>{{trad.mail_desc_compte_creation}}</p>
-                        {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform}) }}
+                        {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform}) }}
 
                         <p>{{trad.mail_desc_compte_decision1}}</p>
-                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform2}) }}
+                        {{ form.input(titreform2, "", pages[namform2][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform2, '', pages[namform2][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform2}) }}
 
                         <p>{{trad.mail_desc_compte_decision2}}</p>
-                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classInput: 'col-sm-12 control-label'}) }}
-                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: namform3}) }}
+                        {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform3}) }}
                       </div>
 
                     </div>

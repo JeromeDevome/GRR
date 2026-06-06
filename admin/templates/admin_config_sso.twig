@@ -31,13 +31,13 @@
 											<input type="radio" name="sso_statut" value="no_sso" id="label_1a" {% if settings.sso_statut == '' %}checked{% endif %} /> <label for="label_1a">{{ trad.Ne_pas_activer_Service_sso }}</label><br>
 										</div>
 		
-										{{ form.input('cas_serveur', trad.cas_serveur, settings.cas_serveur, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-										{{ form.input('cas_port', trad.cas_port, settings.cas_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-										{{ form.input('cas_racine', trad.cas_racine, settings.cas_racine, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_serveur', trad.cas_serveur, settings.cas_serveur, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_port', trad.cas_port, settings.cas_port, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_racine', trad.cas_racine, settings.cas_racine, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
 		
 										<p>{{ trad.cas_proxy_explain }}</p>
-										{{ form.input('cas_proxy_server', trad.cas_proxy_server, settings.cas_proxy_server, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-										{{ form.input('cas_proxy_port', trad.cas_proxy_port, settings.cas_proxy_port, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_proxy_server', trad.cas_proxy_server, settings.cas_proxy_server, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_proxy_port', trad.cas_proxy_port, settings.cas_proxy_port, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
 									
 										<div class="form-group row">
 											<label class="col col-sm-6" for="environnement_sso">{{ trad.sso_environnement }}</label>
@@ -69,7 +69,7 @@
 													<input type="checkbox" name="sso_IsNotAllowedModify" id="sso_IsNotAllowedModify" value="1" {% if settings.sso_IsNotAllowedModify == 1 %} checked {% endif %}>
 												</div>
 											</div>
-											{{ form.input('Url_portail_sso', trad.Url_portail_sso_explain, settings.Url_portail_sso, {classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
+											{{ form.input('Url_portail_sso', trad.Url_portail_sso_explain, settings.Url_portail_sso, {classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label'}) }}
 											{% endif %}
 										</div>
 									</div>
@@ -185,15 +185,15 @@
 
 										<p>{{ trad.explain_champs_recherche |raw }}</p>
 
-										{{ form.input('http_champ_nom', trad.name, settings.http_champ_nom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-										{{ form.input('http_champ_prenom', trad.first_name, settings.http_champ_prenom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-										{{ form.input('http_champ_email', trad.mail_user, settings.http_champ_email, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('http_champ_nom', trad.name, settings.http_champ_nom, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('http_champ_prenom', trad.first_name, settings.http_champ_prenom, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('http_champ_email', trad.mail_user, settings.http_champ_email, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
 										
 										<hr>
 										<h4>{{ trad.Statut_pour_domaine_particulier }}</h4>
 										<p>{{ trad.http_explain_statut_domaine }}</p>
 
-										{{ form.input('http_sso_domain', trad.http_domaine_particulier, settings.http_sso_domain, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('http_sso_domain', trad.http_domaine_particulier, settings.http_sso_domain, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
 
 										<p>{{ trad.statut }}</p>
 										<div class="form-group row col-sm-12">
@@ -210,12 +210,12 @@
 									</div>
 									
 									<div class="card-body">
-										{{ form.input('cas_nom', trad.last_name, settings.cas_nom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-										{{ form.input('cas_prenom', trad.first_name, settings.cas_prenom, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-										{{ form.input('cas_language', trad.cas_language, settings.cas_language, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-										{{ form.input('cas_code_fonction', trad.cas_code_fonction, settings.cas_code_fonction, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}	
-										{{ form.input('cas_libelle_fonction', trad.cas_libelle_fonction, settings.cas_libelle_fonction, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-										{{ form.input('cas_mail', trad.mail_user, settings.cas_mail, {classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_nom', trad.last_name, settings.cas_nom, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_prenom', trad.first_name, settings.cas_prenom, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_language', trad.cas_language, settings.cas_language, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_code_fonction', trad.cas_code_fonction, settings.cas_code_fonction, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}	
+										{{ form.input('cas_libelle_fonction', trad.cas_libelle_fonction, settings.cas_libelle_fonction, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+										{{ form.input('cas_mail', trad.mail_user, settings.cas_mail, {classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
 									</div>
 								</div>
 

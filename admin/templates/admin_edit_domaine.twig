@@ -24,8 +24,8 @@
 
 						<section id="rensignementdivers">
 							<h4 class="page-header">{{ trad.miscellaneous }}</h4>
-							{{ form.input('area_name', trad.name, domaine.area_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-							{{ form.input('area_order', trad.order_display, domaine.order_display, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type: 'number'}) }}
+							{{ form.input('area_name', trad.name, domaine.area_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
+							{{ form.input('area_order', trad.order_display, domaine.order_display, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type: 'number'}) }}
 							<div class="form-group row col-sm-12">
 								<label class="col col-sm-4" for="access">{{ trad.access }}</label>
 								<div class="col col-sm-8">
@@ -46,7 +46,7 @@
 								</div>
 							{% endif %}
 							{% if trad.dIpClient == 1 %}
-								{{ form.input('ip_adr', trad.ip_adr, domaine.ip_adr, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+								{{ form.input('ip_adr', trad.ip_adr, domaine.ip_adr, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 								<p>{{ trad.ip_adr_explain |raw }}</p>
 							{% endif %}
 						</section>
@@ -195,9 +195,9 @@
 										</select>
 									</div>
 								</div>
-								{{ form.input('eveningends_minutes_area', trad.eveningends_minutes_area, domaine.eveningends_minutes_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
-								{{ form.input('resolution_area', trad.resolution_area, domaine.resolution_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
-								{{ form.input('duree_par_defaut_reservation_area', trad.duree_par_defaut_reservation_area, domaine.duree_par_defaut_reservation_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+								{{ form.input('eveningends_minutes_area', trad.eveningends_minutes_area, domaine.eveningends_minutes_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
+								{{ form.input('resolution_area', trad.resolution_area, domaine.resolution_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
+								{{ form.input('duree_par_defaut_reservation_area', trad.duree_par_defaut_reservation_area, domaine.duree_par_defaut_reservation_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 								<div class="form-groupcol-sm-12">
 									<label class="col col-sm-8" for="number_periodes">{{ trad.twentyfourhour_format_area }}</label>
 									<div class="col col-sm-4">
@@ -205,8 +205,8 @@
 										<input type="radio" name="twentyfourhour_format_area" value="1" id="label_2b" {% if domaine.twentyfourhour_format_area == '1' %} checked {% endif %} /> <label for="label_2b">{{ trad.twentyfourhour_format_24 }}</label><br>
 									</div>
 								</div>
-								{{ form.input('duree_max_resa_area1', trad.duree_max_resa_area, domaine.duree_max_resa_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
-								{{ form.input('max_booking', trad.max_booking, domaine.max_booking, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+								{{ form.input('duree_max_resa_area1', trad.duree_max_resa_area, domaine.duree_max_resa_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
+								{{ form.input('max_booking', trad.max_booking, domaine.max_booking, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 							</div>
 							
 							<!-- CAS 2 Basé sur les intitulés -->
@@ -219,7 +219,7 @@
 									</div>
 								</div>
 								{{ trad.dNomCrenaux |raw }}
-								{{ form.input('duree_max_resa_area2', trad.duree_max_resa_area2, trad.dNombreJourMax, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+								{{ form.input('duree_max_resa_area2', trad.duree_max_resa_area2, trad.dNombreJourMax, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 							</div>
 						</section>
 				

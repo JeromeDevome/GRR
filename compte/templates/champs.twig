@@ -1,7 +1,7 @@
 {% macro input(name, label, value = null, options = []) %}
 	<div class="form-group {{ options.classGroup }}">
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }} {% if options.require == 1 %}*{% endif %}</label>
-		<div class="{{ options.classInput }}">
+		<div class="{{ options.classDivInput }}">
 			<input class="form-control" type="{{ options.type ?: 'text' }}" id="{{ name }}" name="{{ name }}" value="{{ value }}" {% if options.require == 1 %}required{% endif %} {% if options.disabled == 1 %}disabled{% endif %}>
 		</div>
 	</div>
@@ -10,7 +10,7 @@
 {% macro textarea(name, label, value = null, options = []) %}
 	<div class="form-group {{ options.classGroup }}">
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
-		<div class="{{ options.classInput }}">
+		<div class="{{ options.classDivInput }}">
 			<textarea class="form-control" type="text" id="{{ name }}" name="{{ name }}" value="">{{ value }}</textarea>
 		</div>
 	</div>
@@ -19,7 +19,7 @@
 {% macro colorpicker2(name, label, value = null, options = []) %}
 	<div class="form-group {{ options.classGroup }}">
 		<label class="{{ options.classLabel }}" for="{{ name }}">{{ label }}</label>
-		<div class="input-group my-colorpicker2 {{ options.classInput }}">
+		<div class="input-group my-colorpicker2 {{ options.classDivInput }}">
 			<input type="text" class="form-control" id="{{ name }}" name="{{ name }}" value="{{ value }}">
 			<div class="input-group-addon"><i></i></div>
 		</div>

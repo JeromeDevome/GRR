@@ -19,7 +19,7 @@
 				<input type="hidden" name ="p" value="admin_type_modify">
 				<input type="hidden" name ="id_type" value="{{ type.id }}">
 				<div class="box-body">
-					{{ form.input('type_name', trad.type_name, type.type_name, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+					{{ form.input('type_name', trad.type_name, type.type_name, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 
 					<!-- A mettre menu deroulant -->
 					<div class="form-group row">
@@ -34,7 +34,7 @@
 						</div>
 					</div>
 
-					{{ form.input('order_display', trad.order_display, type.order_display, {type: 'number', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+					{{ form.input('order_display', trad.order_display, type.order_display, {type: 'number', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 
 					<div class="form-group row">
 						<label class="col col-sm-4" for="disponible">{{ trad.disponible_pour }}</label>
@@ -54,9 +54,9 @@
 						</div>
 					</div>
 
-					{{ form.colorpicker2('couleurhexa', trad.type_color_fond, type.couleurhexa, {classLabel: 'col-sm-4', classInput: 'col-sm-3'}) }}
-					{{ form.colorpicker2('couleurtexte', trad.type_color_texte, type.couleurtexte, {classLabel: 'col-sm-4', classInput: 'col-sm-3'}) }}
-					{{ form.colorpicker2('couleuricone', trad.type_color_icone, type.couleuricone, {classLabel: 'col-sm-4', classInput: 'col-sm-3'}) }}
+					{{ form.colorpicker2('couleurhexa', trad.type_color_fond, type.couleurhexa, {classLabel: 'col-sm-4', classDivInput: 'col-sm-3'}) }}
+					{{ form.colorpicker2('couleurtexte', trad.type_color_texte, type.couleurtexte, {classLabel: 'col-sm-4', classDivInput: 'col-sm-3'}) }}
+					{{ form.colorpicker2('couleuricone', trad.type_color_icone, type.couleuricone, {classLabel: 'col-sm-4', classDivInput: 'col-sm-3'}) }}
 
 					<div class="form-group row">
 						<label class="col col-sm-4" for="type_color_actuel">{{trad.previsualisation}}</label>

@@ -23,8 +23,8 @@
 				<div class="box-body">
 					<p>{{ trad.required }}</p>
 
-					{{ form.input('reg_nom', trad.name, groupe.nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
-					{{ form.textarea('reg_description', trad.description, groupe.description, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+					{{ form.input('reg_nom', trad.name, groupe.nom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+					{{ form.textarea('reg_description', trad.description, groupe.description, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 					<div class="custom-control custom-checkbox">
 						<input class="custom-control-input custom-control-input-danger" type="checkbox" id="reg_archive" name="reg_archive" {%if groupe.archive == 1 %}checked{%endif%}>
 						<label for="reg_archive" class="custom-control-label">{{ trad.archiver }}</label>

@@ -45,7 +45,7 @@
 									{
 										classGroup: 'col col-sm-12',
 										classLabel: 'col col-sm-6',
-										classInput: 'col col-sm-6 control-label',
+										classDivInput: 'col col-sm-6 control-label',
 										disabled: is_disabled
 									}
 								) }}
@@ -61,13 +61,13 @@
 									<h3 class="card-title">{{ trad.Explications_methode_smtp_1 }}</h3>
 								</div>
 
-								{{ form.input('grr_mail_smtp', trad.Explications_methode_smtp_1, settings.grr_mail_smtp, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
-								{{ form.input('grr_mail_Username', trad.utilisateur_smtp, settings.grr_mail_Username, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
-								{{ form.input('grr_mail_Password', trad.pwd, settings.grr_mail_Password, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label', type: 'password'}) }}<br>
-								{{ form.input('grr_mail_from', trad.Email_expediteur_messages_automatiques, settings.grr_mail_from, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
-								{{ form.input('grr_mail_fromname', trad.Nom_expediteur_messages_automatiques, settings.grr_mail_fromname, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
-								{{ form.input('smtp_secure', trad.smtp_secure, settings.smtp_secure, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
-								{{ form.input('smtp_port', trad.smtp_port, settings.smtp_port, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label', type: 'number'}) }}<br>
+								{{ form.input('grr_mail_smtp', trad.Explications_methode_smtp_1, settings.grr_mail_smtp, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classDivInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('grr_mail_Username', trad.utilisateur_smtp, settings.grr_mail_Username, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classDivInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('grr_mail_Password', trad.pwd, settings.grr_mail_Password, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classDivInput: 'col col-sm-6 control-label', type: 'password'}) }}<br>
+								{{ form.input('grr_mail_from', trad.Email_expediteur_messages_automatiques, settings.grr_mail_from, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classDivInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('grr_mail_fromname', trad.Nom_expediteur_messages_automatiques, settings.grr_mail_fromname, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classDivInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('smtp_secure', trad.smtp_secure, settings.smtp_secure, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classDivInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('smtp_port', trad.smtp_port, settings.smtp_port, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classDivInput: 'col col-sm-6 control-label', type: 'number'}) }}<br>
 					
 								<h5>{{ trad.smtp_param_sup }}</h5>
 								<div class="form-group row col col-sm-12">
@@ -79,7 +79,7 @@
 											</select>
 										</div>
 								</div>
-								{{ form.input('smtp_verify_depth', trad.smtp_verify_depth, settings.smtp_verify_depth, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+								{{ form.input('smtp_verify_depth', trad.smtp_verify_depth, settings.smtp_verify_depth, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classDivInput: 'col col-sm-6 control-label'}) }}<br>
 								<div class="form-group row col col-sm-12">
 									<label class="col col-sm-6" for="smtp_allow_self_signed">{{ trad.smtp_allow_self_signed }}</label>
 										<div class="col col-sm-6">
@@ -101,7 +101,7 @@
 
 							</div>
 
-							{{ form.input('mail_test', trad.mail_test, '', {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classInput: 'col col-sm-6 control-label'}) }}<br>
+							{{ form.input('mail_test', trad.mail_test, '', {classGroup: 'col col-sm-12', classLabel: 'col col-sm-6', classDivInput: 'col col-sm-6 control-label'}) }}<br>
 
 							<label><input type="checkbox" name="grr_mail_Bcc" value="1" {% if settings.grr_mail_Bcc == 1 %} checked {% endif %} /> {{ trad.copie_cachee }}</label>
 							<br>

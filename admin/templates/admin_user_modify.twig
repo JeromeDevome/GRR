@@ -33,12 +33,12 @@
 						<input type="hidden" name="user_login" id="new_login" value="{{ utilisateur.reg_login }}" />
 						</div>
 					{% else %}
-						{{ form.input('new_login', trad.login, utilisateur.reg_login, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
+						{{ form.input('new_login', trad.login, utilisateur.reg_login, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
 					{% endif %}
 
-					{{ form.input('reg_nom', trad.last_name, utilisateur.nom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
-					{{ form.input('reg_prenom', trad.first_name, utilisateur.prenom, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', require:1}) }}
-					{{ form.input('reg_email', trad.mail_user, utilisateur.email, {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'email', autocomplete:'off'}) }}
+					{{ form.input('reg_nom', trad.last_name, utilisateur.nom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+					{{ form.input('reg_prenom', trad.first_name, utilisateur.prenom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+					{{ form.input('reg_email', trad.mail_user, utilisateur.email, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type:'email', autocomplete:'off'}) }}
 
 					<!-- Statut: Visiteur, usager... -->
 					<div class="form-group row">
@@ -89,7 +89,7 @@
 							</div>
 						{% endif %}
 
-						{{ form.input('reg_password', trad.pwd, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password', autocomplete:'new-password'}) }}
+						{{ form.input('reg_password', trad.pwd, '', {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type:'password', autocomplete:'new-password'}) }}
 						<div class="form-group row row">
 							<div class="col-sm-4"></div>
 							<div class="col-sm-8">
@@ -104,7 +104,7 @@
 								{% if settings.pass_nb_sp > 1 %}, {{settings.pass_nb_sp}} {{trad.pass_x_sps}}{% endif %}
 							</div>
 						</div>
-						{{ form.input('reg_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label', type:'password'}) }}
+						{{ form.input('reg_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type:'password'}) }}
 
 						<div class="form-group row col-sm-12">
 							<label class="col col-sm-4" for="reg_changepwd">{{ trad.user_change_pwd_connexion }}</label>

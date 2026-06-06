@@ -25,10 +25,10 @@
 					<div class="box-body">
 						<p>Vous devez avoir en votre possession les codes de connexion au serveur {{ d.dbsys }}. Si ce n'est pas le cas, contactez votre hébergeur ou bien l'administrateur technique du serveur sur lequel vous voulez implanter GRR.</p>
 
-						{{ form.input('adresse_db', 'Adresse du serveur (Souvent cette adresse est «localhost»)', 'localhost', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-						{{ form.input('port_db', 'Port du serveur (Si vous ne le connaissez pas, laissez la valeur par défaut.)', '3306', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
-						{{ form.input('login_db', 'Utilisateur', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label'}) }}
-						{{ form.input('pass_db', 'Mot de passe', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'password'}) }}
+						{{ form.input('adresse_db', 'Adresse du serveur (Souvent cette adresse est «localhost»)', 'localhost', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+						{{ form.input('port_db', 'Port du serveur (Si vous ne le connaissez pas, laissez la valeur par défaut.)', '3306', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label', type: 'number'}) }}
+						{{ form.input('login_db', 'Utilisateur', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+						{{ form.input('pass_db', 'Mot de passe', '', {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label', type: 'password'}) }}
 					</div>
 					<div style="text-align:right;">
 						<input class="btn btn-primary" type="submit" name="Valider" value="Suivant" />

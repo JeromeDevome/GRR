@@ -24,7 +24,7 @@
 						</h3>
 					</div>
 					<div class="card-body">
-						{{ form.switch('authentification_obli', trad.authentification_obli1, settings.authentification_obli, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
+						{{ form.switch('authentification_obli', trad.authentification_obli1, settings.authentification_obli, {classGroup: 'col-12 custom-switch-off-warning custom-switch-on-success', classLabel: 'col-10', classDivInput: 'col-2'}) }}
 						<i>{{ trad.authentification_obli0 }}</i>
 					</div>
 				</div>
@@ -37,13 +37,13 @@
 						</h3>
 					</div>
 					<div class="card-body">
-						{{ form.input('company', trad.company, settings.company, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-						{{ form.input('grr_url', trad.grr_url, settings.grr_url, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-						{{ form.switch('use_grr_url', trad.grr_url_explain, settings.use_grr_url, {classGroup: 'col-12', classLabel: 'col-10', classInput: 'col-2'}) }}
-						{{ form.input('webmaster_name', trad.webmaster_name, settings.webmaster_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('company', trad.company, settings.company, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('grr_url', trad.grr_url, settings.grr_url, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+						{{ form.switch('use_grr_url', trad.grr_url_explain, settings.use_grr_url, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}
+						{{ form.input('webmaster_name', trad.webmaster_name, settings.webmaster_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 
-						{{ form.input('webmaster_email', trad.webmaster_email, settings.webmaster_email, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
-						{{ form.input('technical_support_email', trad.technical_support_email, settings.technical_support_email, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('webmaster_email', trad.webmaster_email, settings.webmaster_email, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('technical_support_email', trad.technical_support_email, settings.technical_support_email, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 						<div class="form-group row col-sm-12">
 							<br><i>{{ trad.plusieurs_adresses_separees_points_virgules }}</i>
 						</div>
@@ -88,7 +88,7 @@
 						<section id="message_accueil">
 							<h5 class="page-header">{{ trad.message_perso }}</h5>
 							<p>{{ trad.message_perso_explain }}</p>
-							{{ form.summernote('summernote', '', settings.message_accueil, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classInput: 'col-sm-12 control-label', name: 'message_accueil'}) }}
+							{{ form.summernote('summernote', '', settings.message_accueil, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-12 control-label', name: 'message_accueil'}) }}
 						</section>
 
 						<hr>
@@ -144,7 +144,7 @@
 
 						<hr>
 
-						<p>{{ trad.adapter_fichiers_langue_explain }}</p>
+						<p><small>{{ trad.adapter_fichiers_langue_explain }}</small></p>
 			  		</div>
 
 				</div>

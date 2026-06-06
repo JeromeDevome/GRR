@@ -51,6 +51,11 @@ Font Awesome -->
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto"> 
+      {% if settings.disable_login == 1 %}
+        <li class="nav-item">
+          <span class="nav-link text-danger">Les connexions sont désactivées</span>
+        </li>
+      {% endif %}
       <li class="nav-item">
         <a class="nav-link" href="{{ d.lienCompte |raw }}">
           {{ d.nomAffichage }}
@@ -75,7 +80,7 @@ Font Awesome -->
     <!-- Brand Logo -->
     <a href="admin.php?p=admin_accueil" class="brand-link">
       <span class="brand-text font-weight-light">GRR - Administration</span><br>
-      <h6 class="text-muted">{{settings.title_home_page}}</h6>
+      <h6 class="text-muted">{{settings.company}}</h6>
     </a>
     <section class="sidebar">
 	 <nav class="mt-2">

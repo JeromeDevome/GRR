@@ -24,13 +24,13 @@
 						<section id="renseignementdivers">
 							<h4 class="page-header">{{ trad.miscellaneous }}</h4>
 							{% if trad.dDroitsDomaine  >= 4 and trad.dDroitsRessource  >= 4 %}
-								{{ form.input('room_name', trad.name, ressource.room_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
+								{{ form.input('room_name', trad.name, ressource.room_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label'}) }}
 							{% else %}
 								<input type="hidden" name="room_name" value="{{ ressource.room_name }}" />
 								{{ ressource.room_name }}
 							{% endif %}
 
-							{{ form.input('description', trad.description, ressource.description, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label'}) }}
+							{{ form.input('description', trad.description, ressource.description, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label'}) }}
 
 							{% if trad.dDroitsDomaine  >= 4 and trad.dDroitsRessource  >= 4 and trad.dEnablePeriods == 'n' %}
 								<div class="form-group row col-sm-12">
@@ -48,7 +48,7 @@
 								<input type="hidden" name="area_id" value="{{ trad.dIdDomaine }}" />
 							{% endif %}
 
-							{{ form.input('area_order', trad.order_display, ressource.order_display, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+							{{ form.input('area_order', trad.order_display, ressource.order_display, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 						
 							<div class="form-group row col-sm-12">
 								<label class="col col-sm-8" for="who_can_see">{{ trad.qui_peut_voir_ressource }}</label>
@@ -119,7 +119,7 @@
 							</div>
 
 							<p>{{ trad.description_complete }} :</p>
-							{{ form.summernote('summernote', '', ressource.comment_room, {classGroup: 'col-sm-12', classInput: 'col-sm-12', name: 'comment_room'}) }}
+							{{ form.summernote('summernote', '', ressource.comment_room, {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: 'comment_room'}) }}
 
 						</section>
 
@@ -136,20 +136,20 @@
 								</div>
 							</div>
 
-							{{ form.input('capacity', trad.capacity, ressource.capacity, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+							{{ form.input('capacity', trad.capacity, ressource.capacity, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 
 							{% if trad.dDroitsDomaine  >= 4 and trad.dDroitsRessource  >= 4 %}
-								{{ form.input('max_booking', trad.msg_max_booking, ressource.max_booking, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+								{{ form.input('max_booking', trad.msg_max_booking, ressource.max_booking, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 							{% else %}
 								<input type="hidden" name="max_booking" value="{{ ressource.max_booking }}" />
 								{{ ressource.max_booking }}
 							{% endif %}
 
-							{{ form.input('delais_max_resa_room', trad.delais_max_resa_room, ressource.delais_max_resa_room, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+							{{ form.input('delais_max_resa_room', trad.delais_max_resa_room, ressource.delais_max_resa_room, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 
-							{{ form.input('delais_min_resa_room', trad.delais_min_resa_room, ressource.delais_min_resa_room, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+							{{ form.input('delais_min_resa_room', trad.delais_min_resa_room, ressource.delais_min_resa_room, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 
-							{{ form.input('delais_option_reservation', trad.msg_option_de_reservation, ressource.delais_option_reservation, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+							{{ form.input('delais_option_reservation', trad.msg_option_de_reservation, ressource.delais_option_reservation, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 
 							<div class="form-group row col-sm-12">
 								<label class="col col-sm-8" for="moderate">{{ trad.msg_moderation_reservation }}</label>
@@ -227,7 +227,7 @@
 								</div>
 							</div>
 
-							{{ form.input('nb_participant_defaut', "Nombre de participant par défaut", ressource.nb_participant_defaut, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classInput: 'col-sm-4 control-label', type: 'number'}) }}
+							{{ form.input('nb_participant_defaut', "Nombre de participant par défaut", ressource.nb_participant_defaut, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
 
 						</section>
 					

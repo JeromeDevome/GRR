@@ -34,8 +34,8 @@
 							<input type="radio" name="verif_reservation_auto" value="0" id="label_6a" {% if settings.verif_reservation_auto == 0 %} checked {% endif %} /> <label for="label_6a">{{ trad.verif_reservation_auto0 }}</label><br>
 							<input type="radio" name="verif_reservation_auto" value="1" id="label_6b" {% if settings.verif_reservation_auto == 1 %} checked {% endif %} /> <label for="label_6b">{{ trad.verif_reservation_auto1 }}</label><br>
 							<br>
-							{{ form.input('motdepasse_verif_auto_grr', trad.verif_reservation_auto2, settings.motdepasse_verif_auto_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classInput: 'col col-sm-4 control-label', type: 'password'}) }}
-							{{ form.input('chemin_complet_grr', trad.verif_reservation_auto3, settings.chemin_complet_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classInput: 'col col-sm-4 control-label'}) }}
+							{{ form.input('motdepasse_verif_auto_grr', trad.verif_reservation_auto2, settings.motdepasse_verif_auto_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classDivInput: 'col col-sm-4 control-label', type: 'password'}) }}
+							{{ form.input('chemin_complet_grr', trad.verif_reservation_auto3, settings.chemin_complet_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classDivInput: 'col col-sm-4 control-label'}) }}
 						</section>
 
 
