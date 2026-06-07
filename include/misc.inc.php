@@ -289,6 +289,7 @@ $liste_settings = array(
 	"select_date_directe" => "1", // n => 0
 	"sessionMaxLength" => "60",
 	"show_courrier" => "0", // n => 0
+	"show_feries" => "0", // 1=>1
 	"show_holidays" => "0", // n => 0
 	"smtp_allow_self_signed" => "false",
 	"smtp_port" => "25",

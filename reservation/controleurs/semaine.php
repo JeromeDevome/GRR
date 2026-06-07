@@ -403,14 +403,12 @@ for ($t = $week_start; $t < $week_end; $t += 86400)
   {
     $class = "cell_hours";
     $title = "";
-    if ($settings->get("show_holidays") == 1)
-    {
-      if (isHoliday($tt)){
-        $class .= ' ferie';
-      }
-      elseif (isSchoolHoliday($tt)){
-        $class .= ' vacance';
-      }
+    if ($settings->get("show_feries") == 1 && isHoliday($tt)){
+        $class .= 'ferie ';
+    }
+
+    if ($settings->get("show_holidays") == 1 && isSchoolHoliday($tt)){
+        $class .= 'vacance ';
     }
     $nomJour = utf8_strftime($dformat, $t);
     if (Settings::get("jours_cycles_actif") == 1 && intval($jour_cycle) >- 1)

@@ -40,6 +40,8 @@ if ($valid == 1)
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_repeat WHERE end_date < ".Settings::get("begin_bookings"));
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE (end_time < ".Settings::get('begin_bookings').")");
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_calendar WHERE DAY < ".Settings::get("begin_bookings"));
+		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_calendrier_feries WHERE DAY < ".Settings::get("begin_bookings"));
+		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_calendrier_vacances WHERE DAY < ".Settings::get("begin_bookings"));
 	}
 	if (!Settings::set("end_bookings", $end_bookings))
 		echo "Erreur lors de l'enregistrement de end_bookings !<br />";
@@ -49,6 +51,8 @@ if ($valid == 1)
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_repeat WHERE start_time > ".Settings::get("end_bookings"));
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE (start_time > ".Settings::get('end_bookings').")");
 		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_calendar WHERE DAY > ".Settings::get("end_bookings"));
+		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_calendrier_feries WHERE DAY > ".Settings::get("end_bookings"));
+		$del = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_calendrier_vacances WHERE DAY > ".Settings::get("end_bookings"));
 	}
 	header("Location: ?p=admin_page_reservation");
 

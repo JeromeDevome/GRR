@@ -265,15 +265,13 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
         // On affiche les jours du mois dans le coin supérieur gauche de chaque cellule
         $heure = "";
 
-        if ($settings->get("show_holidays") == 1)
-            {   
-                if (isHoliday($t)){
-                    $class .= 'ferie ';
-                }
-                elseif (isSchoolHoliday($t)){
-                    $class .= 'vacance ';
-                }
-            }
+        if ($settings->get("show_feries") == 1 && isHoliday($t)){
+            $class .= 'ferie ';
+        }
+
+        if ($settings->get("show_holidays") == 1 && isSchoolHoliday($t)){
+            $class .= 'vacance ';
+        }
 
         if (est_hors_reservation(mktime(0,0,0,$month,$cday,$year),$area))
             $horsResa = true;

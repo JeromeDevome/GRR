@@ -130,7 +130,7 @@ for ($i = 0; $i < 7; $i++)
 	$jourssemaines[] = utf8_strftime('%A',$show);
 }
 
-if (Settings::get("show_holidays") == 1){ // on n'affiche ce choix que si les jours fériés et les vacances sont définis
+if (Settings::get("show_feries") == 1){ // on n'affiche ce choix que si les jours fériés sont définis
     // définir les jours fériés
     $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_feries";
     $ans = grr_sql_query($req);
@@ -143,6 +143,8 @@ if (Settings::get("show_holidays") == 1){ // on n'affiche ce choix que si les jo
         $d['Cocheferies'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
     }
     unset($feries);
+}
+if (Settings::get("show_holidays") == 1){ // on n'affiche ce choix que si les vacances sont définis
     // définir les vacances
     $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances";
     $ans = grr_sql_query($req);
@@ -156,7 +158,6 @@ if (Settings::get("show_holidays") == 1){ // on n'affiche ce choix que si les jo
     }
     unset($vacances);
 }
-
 
 
 $debligne = 1;

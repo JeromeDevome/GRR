@@ -165,15 +165,13 @@ if (grr_sql_count($ressources) == 0)
 }
 
 $title = "";
-if ($settings->get("show_holidays") == 1)
-{   
-	$now = mktime(0,0,0,$month,$day,$year);
-	if (isHoliday($now)){
-		$d['classJour'] = 'ferie ';
-	}
-	elseif (isSchoolHoliday($now)){
-		$d['classJour'] = 'vacance ';
-	}
+
+$now = mktime(0,0,0,$month,$day,$year);
+if (($settings->get("show_feries") == 1) && isHoliday($now)){
+	$d['classJour'] = 'ferie ';
+}
+elseif (($settings->get("show_holidays") == 1) && isSchoolHoliday($now)){
+	$d['classJour'] = 'vacance ';
 }
 
 if ($settings->get("jours_cycles_actif") == 1 && intval($jour_cycle) >- 1)
@@ -211,7 +209,7 @@ for ($i = 0; ($row = grr_sql_row_keyed($ressources, $i)); $i++)
 		$acces_fiche_reservation = SecuAccess::UserSheetReservation($user_name, $id_room[$i]);
 		$confidentiel_resa[$id_room[$i]] = $row["confidentiel_resa"];
 		$ficheRessource = SecuAccess::UserSheetResource($user_name, $id_room[$i]);
-    $acces_config = (SecuAccess::UserLevel($user_name,$id_room[$i]) >= $acces_config_level);
+   		$acces_config = (SecuAccess::UserLevel($user_name,$id_room[$i]) >= $acces_config_level);
 
 		$ressourceEmpruntee = affiche_ressource_empruntee_twig($id_room[$i]);
 

@@ -98,8 +98,10 @@ if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	afficheLienNiveau1('admin_type', 'fa fa-tags', 1);
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	afficheLienNiveau1('admin_calend_ignore', 'fa fa-calendar-times', 1);
+if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get('show_feries') == 1))
+	afficheLienNiveau1('admin_calend_feries', 'fa fa-calendar-minus', 1);
 if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get('show_holidays') == 1))
-	afficheLienNiveau1('admin_calend_vacances_feries', 'fa fa-calendar-minus', 1);
+	afficheLienNiveau1('admin_calend_vacances', 'fa fa-calendar-minus', 1);
 if ((SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6) && (Settings::get("jours_cycles_actif") == 1))
 	afficheLienNiveau1('admin_calend_jour_cycle1', 'fa fa-redo ', 1);
 

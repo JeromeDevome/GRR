@@ -291,16 +291,14 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
     if ($display_day[$num_week_day] == 1)
     {
         $heure = "";
+         $now = $t;
 
-        if ($settings->get("show_holidays") == 1)
-        {   
-            $now = $t;
-            if (isHoliday($now)){
-                $class .= 'ferie ';
-            }
-            elseif (isSchoolHoliday($now)){
-                $class .= 'vacance ';
-            }
+        if ($settings->get("show_feries") == 1 && isHoliday($t)){
+            $class .= 'ferie ';
+        }
+
+        if ($settings->get("show_holidays") == 1 && isSchoolHoliday($t)){
+            $class .= 'vacance ';
         }
 
         if (est_hors_reservation(mktime(0, 0, 0, $month, $cday, $year), $area))

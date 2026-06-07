@@ -1,0 +1,93 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col col-md-12">
+
+			{% if trad.dNettoyageLiaison  %}
+				{{ msgSyst.messageInfo('Résultat', trad.dNettoyageLiaison) }}
+			{% endif %}
+
+
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">{{ trad.admin_calend_vacances_feries }}</h3>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<p>{{ trad.vacances_feries_description }}</p>
+
+					{% if settings.show_feries != 1 %}
+						<p>Il faut activer l'affichage des jours fériés pour continuer...</p>
+						<p><a href="?p=admin_page_reservation" >Cliquer ici pour activer l'affichage des jours fériés</a>
+					{% else %}
+						<div class="form-group row">
+							<form action="?p=admin_calend_feries" method="POST" id="annee">
+								<input type="hidden" name="p" value="admin_calend_feries" />
+								{{d.liste_annees |raw }}
+								<input class="btn-sm btn-primary" type="submit" name="{{ trad.OK }}" value="{{ trad.OK }}" />&nbsp;
+							</form>
+
+							<a href="?p=admin_calend_feries" class="btn btn-xs btn-info" onclick="{{ d.cocheFeries }} return false;">{{ trad.vacances_feries_FR }}</a>&nbsp;
+							<a href="?p=admin_calend_feries" class="btn btn-xs btn-info" onclick="setCheckboxesGrr(document.getElementById('formulaireF'), false, 'all'); return false;">{{ trad.uncheck_all_ }}</a>&nbsp; 
+						</div>
+						<form action="?p=admin_calend_feries" method="post" id="formulaireF">
+							<input type="hidden" name="p" value="admin_calend_feries" />
+							<input type="hidden" name="submitCalend" value="1" />
+							<input type="hidden" name="From_year" value="{{ d.From_year }}" />
+							<div class="row">
+								{{ d.calendrier |raw }}
+							</div>
+							<!-- Enregistrer -->
+							<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+								<i class="fas fa-save"></i> {{ trad.save }}
+							</button>
+						</form>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+	function setCheckboxesGrrName(elts, do_check, day)
+	{
+		for (i = 0; i < elts.length; i++)
+		{
+			type = elts.type;
+			if (type="checkbox")
+			{
+				if (elts[i].name== day)
+				{
+					elts[i].checked = do_check;
+				}
+			}
+		}
+		return true;
+	}
+
+	function setCheckboxesGrr(elts, do_check, day)
+	{
+		for (i = 0; i < elts.length; i++)
+		{
+			type = elts.type;
+			if (type="checkbox")
+			{
+				if ((elts[i].value== day) || (day=='all'))
+				{
+					elts[i].checked = do_check;
+				}
+			}
+		}
+		return true;
+	}
+</script>
+{% endblock %}

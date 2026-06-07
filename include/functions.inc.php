@@ -121,7 +121,7 @@ function isHoliday($now){
 	return $val;
 }
 
-// $type = 1: Fonction Calendrier hors réservation ; 2; Fonction Calendrier feries ; 3 : calendrier vacances (scolaires par défaut)
+// $type = 1: Fonction Calendrier hors réservation; 2: Fonction Calendrier feries; 3: calendrier vacances (scolaires par défaut)
 function cal($month, $year, $type)
 {
 	global $weekstarts;

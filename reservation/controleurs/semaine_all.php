@@ -273,15 +273,14 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
 		$title = "";
         $nomJour = day_name(($weekcol + $weekstarts) % 7) . ' '.$num_day.' '.$temp_month2;
         $nomCycle = "";
-		if ($settings->get("show_holidays") == 1)
-		{   
-			if (isHoliday($tt)){
-				$class = 'ferie ';
-			}
-			elseif (isSchoolHoliday($tt)){
-				$class = 'vacance ';
-			}
-		}
+
+        if ($settings->get("show_feries") == 1 && isHoliday($tt)){
+            $class .= 'ferie ';
+        }
+
+        if ($settings->get("show_holidays") == 1 && isSchoolHoliday($tt)){
+            $class .= 'vacance ';
+        }
 
         if (Settings::get("jours_cycles_actif") == 1 && intval($jour_cycle) >- 1)
 		{

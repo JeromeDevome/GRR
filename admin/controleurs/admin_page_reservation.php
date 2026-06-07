@@ -96,6 +96,7 @@ $form_vars = array(
     'legend' => 'int',
     'imprimante' => 'int',
     'pdf' => 'int',
+    'show_feries' => 'int',
     'show_holidays' => 'int',
     'holidays_zone' => 'alphanumeric',
     'nb_calendar' => 'int',
@@ -370,13 +371,16 @@ foreach($form_vars as $var => $var_type)
         if (!Settings::set('pdf', $pdf))
             $msg .= "Erreur lors de l'enregistrement de pdf !<br />";
 
-        // Affichage des vacances & jours fériés --> A séparer en deux
+        // Affichage des jours fériés
+        if (!Settings::set('show_feries', $show_feries))
+            $msg .= "Erreur lors de l'enregistrement de show_feries !<br />";
+
+        // Affichage des vacances
         if (!Settings::set('show_holidays', $show_holidays))
             $msg .= "Erreur lors de l'enregistrement de show_holidays !<br />";
 
-        if (isset($holidays_zone)) 
-            if (!Settings::set('holidays_zone', $holidays_zone)) 
-                $msg .= "Erreur lors de l'enregistrement de holidays_zone !<br />";
+        if (!Settings::set('holidays_zone', $holidays_zone)) 
+            $msg .= "Erreur lors de l'enregistrement de holidays_zone !<br />";
 
         // Nombre de mini-calendriers à afficher
         if (!Settings::set('nb_calendar', $nb_calendar))

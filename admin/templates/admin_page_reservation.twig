@@ -527,13 +527,19 @@
 										<td></td>
 									</tr>
 									<tr>
+										<td>Afficher les jours fériées</td>
+										<td><input type="radio" name="show_feries" value="1" id="label_14a" {% if settings.show_feries == 1 %} checked {% endif %} /></td>
+										<td><input type="radio" name="show_feries" value="0" id="label_14b" {% if settings.show_feries == 0 %} checked {% endif %} /></td>
+										<td></td>
+									</tr>
+									<tr>
 										<td>{{ trad.holidays_msg }}</td>
 										<td><input type="radio" name="show_holidays" value="1" id="label_13a" {% if settings.show_holidays == 1 %} checked {% endif %} /></td>
 										<td><input type="radio" name="show_holidays" value="0" id="label_13b" {% if settings.show_holidays == 0 %} checked {% endif %} /></td>
 										<td>
 											<div id="div_holidays_zone" style="{% if settings.show_holidays == 0 %}display:none;{% endif %}">
 												<select class="form-control" name="holidays_zone">
-													<option>{{ trad.holidays_zone_msg }}</option>
+													<option value="0">{{ trad.holidays_zone_msg }}</option>
 													{{ d.optionVacances | raw }}
 												</select>
 											</div>
