@@ -89,8 +89,6 @@ $form_vars = array(
     'display_participants_ad' => 'int',
     'display_level_email' => 'int',
     'display_level_view_entry' => 'int',
-    'remplissage_description_breve' => 'int',
-    'remplissage_description_complete' => 'int',
     'pview_new_windows' => 'int',
     'javascript_info_disabled' => 'int',
     'legend' => 'int',
@@ -342,14 +340,6 @@ foreach($form_vars as $var => $var_type)
         // Affichage de la fiche de réservation
         if (!Settings::set('display_level_view_entry', $display_level_view_entry))
             $msg .= "Erreur lors de l'enregistrement de display_level_view_entry !<br />";
-
-        // Remplissage de la description brève -> A migrer au niveau du domaine
-        if (!Settings::set('remplissage_description_breve', $remplissage_description_breve))
-            $msg .= "Erreur lors de l'enregistrement de remplissage_description_breve !<br />";
-
-        // Remplissage de la description complète -> A migrer au niveau du domaine
-        if (!Settings::set('remplissage_description_complete', $remplissage_description_complete)) 
-                $msg .= "Erreur lors de l'enregistrement de remplissage_description_complete !<br />";
 
         // Format d'ouverture de la fenêtre d'impression
         if (!Settings::set('pview_new_windows', $pview_new_windows))

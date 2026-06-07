@@ -472,24 +472,6 @@
 
 						<hr>
 
-						<section id="remplissagedescriptionbreve">
-							<h5 class="page-header">{{ trad.remplissage_description_breve_msg }}</h5>
-							<input type="radio" name="remplissage_description_breve" value="0" id="label_8a" {% if settings.remplissage_description_breve == 0 %} checked {% endif %} /> <label for="label_8a">{{ trad.remplissage_description_breve0 }}</label><br>
-							<input type="radio" name="remplissage_description_breve" value="1" id="label_8b" {% if settings.remplissage_description_breve == 1 %} checked {% endif %} /> <label for="label_8b">{{ trad.remplissage_description_breve1 }}</label><br>
-							<input type="radio" name="remplissage_description_breve" value="2" id="label_8c" {% if settings.remplissage_description_breve == 2 %} checked {% endif %} /> <label for="label_8c">{{ trad.remplissage_description_breve2 }}</label><br>
-						</section>
-
-						<hr>
-
-						<section id="remplissagedescripcomplete">
-							<h5 class="page-header">{{ trad.remplissage_description_complete_msg }}</h5>
-							<input type="radio" name="remplissage_description_complete" value="2" id="label_9c" {% if settings.remplissage_description_complete == 2 %} checked {% endif %} /> <label for="label_9c">{{ trad.remplissage_description_complete2 }}</label><br>
-							<input type="radio" name="remplissage_description_complete" value="0" id="label_9a" {% if settings.remplissage_description_complete == 0 %} checked {% endif %} /> <label for="label_9a">{{ trad.remplissage_description_complete0 }}</label><br>
-							<input type="radio" name="remplissage_description_complete" value="1" id="label_9b" {% if settings.remplissage_description_complete == 1 %} checked {% endif %} /> <label for="label_9b">{{ trad.remplissage_description_complete1 }}</label><br>
-						</section>
-
-						<hr>
-
 						{{ form.switch('pview_new_windows', trad.pview_new_windows_msg, settings.pview_new_windows, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}
 						{{ form.switch('display_level_view_entry', trad.display_level_view_entry, settings.display_level_view_entry, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}
 						{{ form.switch('javascript_info_disabled', trad.javascript_info_disabled_msg, settings.javascript_info_disabled, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}

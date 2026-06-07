@@ -1477,6 +1477,18 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		if(Settings::get('show_holidays') == 1) // Si affichage vac activé, alors on active les fériés sinon définit par misc
 			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('show_feries', '1');");
 
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_area ADD description_breve SMALLINT (1)  DEFAULT '1' AFTER upload_file;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_area ADD description_complete SMALLINT (1)  DEFAULT '0' AFTER description_breve;");
+
+		if(Settings::get('remplissage_description_breve') != "")
+			$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_area SET description_breve = '".Settings::get('remplissage_description_breve')."' WHERE 1;");
+
+		if(Settings::get('remplissage_description_complete') != "")
+			$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_area SET description_complete = '".Settings::get('remplissage_description_complete')."' WHERE 1;");
+
+		$del = traiteRequete("DELETE from ".TABLE_PREFIX."_setting where NAME='remplissage_description_breve'");
+		$del = traiteRequete("DELETE from ".TABLE_PREFIX."_setting where NAME='remplissage_description_complete'");
+
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

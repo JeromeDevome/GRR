@@ -3834,8 +3834,8 @@ function describe_span($starts, $ends, $dformat)
 // Récupère les données concernant l'affichage du planning du domaine
 function get_planning_area_values($id_area)
 {
-	global $resolution, $morningstarts, $eveningends, $eveningends_minutes, $weekstarts, $twentyfourhour_format, $enable_periods, $periods_name, $display_day, $nb_display_day;
-	$sql = "SELECT calendar_default_values, resolution_area, morningstarts_area, eveningends_area, eveningends_minutes_area, weekstarts_area, twentyfourhour_format_area, enable_periods, display_days
+	global $resolution, $morningstarts, $eveningends, $eveningends_minutes, $weekstarts, $twentyfourhour_format, $enable_periods, $periods_name, $display_day, $nb_display_day, $description_breve, $description_complete;
+	$sql = "SELECT calendar_default_values, resolution_area, morningstarts_area, eveningends_area, eveningends_minutes_area, weekstarts_area, twentyfourhour_format_area, enable_periods, display_days, description_breve, description_complete 
 	FROM ".TABLE_PREFIX."_area
 	WHERE id = '".SecuChaine::ProtectDataSql($id_area)."'";
 	$res = grr_sql_query($sql);
@@ -3847,6 +3847,8 @@ function get_planning_area_values($id_area)
 	}
 	$row_ = grr_sql_row($res, 0);
 	$nb_display_day = 0;
+	$description_breve = $row_[9];
+	$description_complete = $row_[10];
 	for ($i = 0; $i < 7; $i++)
 	{
 		if (substr($row_[8],$i,1) == 'y')

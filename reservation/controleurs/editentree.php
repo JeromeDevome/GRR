@@ -227,6 +227,8 @@ if (isset($room) && ($room != -1)){// on vérifie que la ressource n'est pas res
 // récupérons les paramètres du domaine en cours
 get_planning_area_values($area);
 $d['enable_periods'] = $enable_periods;
+$d['description_breve'] = $description_breve;
+$d['description_complete'] = $description_complete;
 
 if (isset($room) && ($room != -1)){ // on récupère les propriétés de la ressource
     $sql = "SELECT * FROM ".TABLE_PREFIX."_room WHERE id='".$room."'";
@@ -466,7 +468,7 @@ else // nouvelle réservation
     $duration = $duree_par_defaut_reservation_area ;
   }
   if(!isset($name))
-    if (Settings::get("remplissage_description_breve") == '2')
+    if ($description_breve == '2')
       $name = $_SESSION['prenom']." ".$_SESSION['nom'];
     else
       $name = "";

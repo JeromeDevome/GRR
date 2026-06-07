@@ -37,6 +37,8 @@ $max_booking = isset($_POST["max_booking"]) ? $_POST["max_booking"] : NULL;
 $access_file = isset($_POST['access_file'])? 1:0;
 $user_right = (int)SecuChaine::GetFormVar("user_right","int");
 $upload_file = (int)SecuChaine::GetFormVar("upload_file","int");
+$description_breve = (int)SecuChaine::GetFormVar("description_breve","int");
+$description_complete = (int)SecuChaine::GetFormVar("description_complete","int");
 settype($max_booking, "integer");
 if ($max_booking<-1)
 	$max_booking = -1;
@@ -197,7 +199,9 @@ if ((!empty($id_area)) || (isset($add_area)))
 				display_days = '".$display_days."',
 				user_right = '".$user_right."',
 				access_file = ".$access_file.",
-				upload_file = ".$upload_file."
+				upload_file = ".$upload_file.",
+				description_breve = '".$description_breve."',
+				description_complete = '".$description_complete."'
 				WHERE id=$id_area";
 				if (grr_sql_command($sql) < 0)
 				{
@@ -227,7 +231,9 @@ if ((!empty($id_area)) || (isset($add_area)))
 				id_type_par_defaut = '-1',
 				user_right = '".$user_right."',
 				access_file = ".$access_file.",
-				upload_file = ".$upload_file."
+				upload_file = ".$upload_file.",
+				description_breve = '".$description_breve."',
+				description_complete = '".$description_complete."'
 				";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(1, "<p>" . grr_sql_error());

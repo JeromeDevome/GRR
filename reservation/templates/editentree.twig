@@ -89,14 +89,14 @@
 					<input type="hidden" name="beneficiaire" value="{{d.gNomUser}}" />
 				{% endif %}
 
-				<label for="name">{{ trad.namebooker }}{% if settings.remplissage_description_breve != 0 %} *{% endif %}{{ trad.deux_points }}</label>
+				<label for="name">{{ trad.namebooker }}{% if d.description_breve != 0 %} *{% endif %}{{ trad.deux_points }}</label>
 				<input id="name" class="pleine form-control" name="name" maxlength="80" size="60" autocomplete="on" value="{{d.resaBreveDescription}}" />
 
 				<!-- Description complète -->
-				{% if settings.remplissage_description_complete != 2 %}
-					<label for="description">{{ trad.fulldescription }}{% if settings.remplissage_description_complete == 1 %} *{% endif %}{{ trad.deux_points }}</label>
+				<div id="div_description_container" style="{% if d.description_complete == 2 %}display:none;{% endif %}">
+					<label for="description">{{ trad.fulldescription }}{% if d.description_complete == 1 %} *{% endif %}{{ trad.deux_points }}</label>
 					<textarea id="description" name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea>
-				{% endif %}
+				</div>
 
 				<!-- Section date & heure-->
 					<!-- Date & Heure de début -->
@@ -473,7 +473,7 @@
 			}
 		}
 
-		{% if settings.remplissage_description_breve == 1 or settings.remplissage_description_breve == 2 %}
+		{% if d.description_breve == 1 or d.description_breve == 2 %}
 			if (document.forms["main"].name.value == "")
 			{
 				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{trad.you_have_not_entered}}{{trad.deux_points}}{{trad.brief_description}}</div>');
@@ -481,7 +481,7 @@
 			}
 		{% endif %}
 
-		{% if settings.remplissage_description_complete == 1 %}
+		{% if d.description_complete == 1 %}
 		if (document.forms["main"].description.value == "")
 			{
 				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{trad.you_have_not_entered}}{{trad.deux_points}}{{trad.fulldescription}}</div>');
@@ -584,6 +584,7 @@
 		insertBeneficiaires(area,room,"{{d.beneficiaire}}",{{d.iderasa}});
         insertChampsAdd(area,{{d.idresa}},room);
         insertTypes(area,room);
+        insertDescriptionParams(area);
 	}
 
 	function changeRoom( formObj)
@@ -593,6 +594,60 @@
         roomsObj = eval("formObj.elements['rooms[]']");
         room = roomsObj[roomsObj.selectedIndex].value;       
     }
+
+	function insertDescriptionParams(areas_){
+		jQuery.ajax({
+			type: 'GET',
+			url: 'reservation/ajax/edit_entry_description_params.php',
+			data: {
+				area: areas_
+			},
+			dataType: 'json',
+			success: function(params){
+				updateDescriptionHTML(
+					params.description_breve,
+					params.description_complete
+				);
+			},
+			error: function(xhr, status, error){
+				console.error(error);
+			}
+		});
+	}
+
+	function updateDescriptionHTML(description_breve, description_complete){
+		var nameField = document.getElementById('name');
+		var nameLabel = document.querySelector('label[for="name"]');
+		var descriptionContainer = document.getElementById('div_description_container');
+
+		// Mettre à jour le label du champ "name" (namebooker)
+		if (nameLabel) {
+			if (description_breve != 0) {
+				nameLabel.innerHTML = '{{ trad.namebooker }} *{{ trad.deux_points }}';
+			} else {
+				nameLabel.innerHTML = '{{ trad.namebooker }}{{ trad.deux_points }}';
+			}
+		}
+
+		// Gérer l'affichage du champ description complète
+		if (descriptionContainer) {
+			if (description_complete != 2) {
+				// Afficher le champ description
+				descriptionContainer.style.display = '';
+				var descriptionLabel = descriptionContainer.querySelector('label[for="description"]');
+				if (descriptionLabel) {
+					if (description_complete == 1) {
+						descriptionLabel.innerHTML = '{{ trad.fulldescription }} *{{ trad.deux_points }}';
+					} else {
+						descriptionLabel.innerHTML = '{{ trad.fulldescription }}{{ trad.deux_points }}';
+					}
+				}
+			} else {
+				// Masquer le champ description
+				descriptionContainer.style.display = 'none';
+			}
+		}
+	}
 
 	function insertTypes(areas_,room_){
 		jQuery.ajax({
@@ -665,7 +720,7 @@
 			//if (document.forms["main"].beneficiaire.value != '')
 			{
 				menu.style.display = "none";
-				{% if settings.remplissage_description_breve == 2 %}
+				{% if d.description_breve == 2 %}
 				document.forms["main"].name.value=document.forms["main"].beneficiaire.options[document.forms["main"].beneficiaire.options.selectedIndex].text;
 				// document.forms["main"].name.value=document.forms["main"].beneficiaire.value;
 				{% endif %}
@@ -673,7 +728,7 @@
 			else
 			{
 				menu.style.display = "block";
-				{% if settings.remplissage_description_breve == 2 %}
+				{% if d.description_complete == 2 %}
 					document.forms["main"].name.value=document.forms["main"].benef_ext_nom.value;
 				{% endif %}
 			}
