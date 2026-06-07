@@ -66,6 +66,14 @@ function traiteRequete($requete = "")
 	return $retour;
 }
 
+function Setting0or1($settingName)
+{
+	if ( Settings::get($settingName) == '1' || strtoupper(Settings::get($settingName)) == 'Y' || strtoupper(Settings::get($settingName)) == 'YES' || strtoupper(Settings::get($settingName)) == 'ON' || strtoupper(Settings::get($settingName)) == 'OUI')
+		return traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='1' WHERE NAME='".$settingName."';");
+	else
+		return traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='0' WHERE NAME='".$settingName."';");
+}
+
 function execute_maj3($version_old, $version_grr)
 {
 	
@@ -1438,7 +1446,37 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 
 	if (intval($version_old_bdd) < 400012) // Version GRR 4.7.0
 	{
-		// ! A faire convertion des valaeurs table settings y/n, yes/no, oui/non en 1/0
+
+		$result_inter .= Setting0or1('ActiveModeDiagnostic');
+		$result_inter .= Setting0or1('automatic_mail');
+		$result_inter .= Setting0or1('cacher_lien_deconnecter');
+		$result_inter .= Setting0or1('calcul_plus_mois');
+		$result_inter .= Setting0or1('calcul_plus_mois2_all');
+		$result_inter .= Setting0or1('calcul_plus_semaine_all');
+		$result_inter .= Setting0or1('ConvertLdapUtf8toIso');
+		$result_inter .= Setting0or1('disable_login');
+		$result_inter .= Setting0or1('envoyer_email_avec_formulaire');
+		$result_inter .= Setting0or1('fct_crea_cpt');
+		$result_inter .= Setting0or1('fct_drag_drop');
+		$result_inter .= Setting0or1('fct_echange_resa');
+		$result_inter .= Setting0or1('grr_mail_Bcc');
+		$result_inter .= Setting0or1('jours_cycles_actif');
+		$result_inter .= Setting0or1('mail_contact_resa_captcha');
+		$result_inter .= Setting0or1('mail_user_destinataire');
+		$result_inter .= Setting0or1('mail_user_obligatoire');
+		$result_inter .= Setting0or1('module_multisite');
+		$result_inter .= Setting0or1('periodicite');
+		$result_inter .= Setting0or1('select_date_directe');
+		$result_inter .= Setting0or1('show_courrier');
+		$result_inter .= Setting0or1('show_holidays');
+		$result_inter .= Setting0or1('sso_ac_corr_profil_statut');
+		$result_inter .= Setting0or1('sso_IsNotAllowedModify');
+		$result_inter .= Setting0or1('sso_redirection_accueil_grr');
+		$result_inter .= Setting0or1('use_grr_url');
+
+		if(Settings::get('show_holidays') == 1) // Si affichage vac activé, alors on active les fériés sinon définit par misc
+			$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting VALUES ('show_feries', '1');");
+
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");
