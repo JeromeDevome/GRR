@@ -114,6 +114,8 @@
 							{% elseif cellule.statut == 3 %} <!-- Hors résa -->
 								<td rowspan="{{cellule.rowspan}}" class="{{cellule.class}}">
 								<i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
+							{% else %} <!-- Pas les droits de résa -->
+								<td rowspan="{{cellule.rowspan}}" class="{{cellule.class}}">
 							{% endif %}
 						</td>
                     {% endfor %}
