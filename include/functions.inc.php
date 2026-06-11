@@ -4619,7 +4619,7 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 		$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
 		foreach ($overload_data as $fieldname=>$field)
 		{
-			if (( ($UserLevel >= 4 && $field["confidentiel"] == 'n') || $field["affichage"] == 'y') && $field["valeur"] != "") {
+			if ( ($UserLevel >= 4 && $field["confidentiel"] == 'n') && $field["affichage"] == 'y' && $field["valeur"] != "") {
 				// ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
 				$valeur = str_replace("|", ",", $field["valeur"]);
 				$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
