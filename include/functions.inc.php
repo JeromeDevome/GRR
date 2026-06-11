@@ -3061,7 +3061,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			if ($repondre3 == '')
 				$repondre3 = $expediteur3;
 
-			$templateMail3 = Pages::get('mails_resa'.$action.'_3_'.$locale);
+			$templateMail3 = Pages::get('mails_resa_'.$action.'_3_'.$locale);
 			$sujetEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[0]);
 			$msgEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[1]);
 			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale, $id_entry, 3);
