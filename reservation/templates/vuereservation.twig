@@ -344,7 +344,9 @@
             <input type="hidden" name="month" value="{{d.month}}" />
             <input type="hidden" name="year" value="{{d.year}}" />
             <input type="hidden" name="back" value="{{d.back}}" />
-            <br /><div style="text-align:center;"><input class="btn btn-primary" type="submit" name="commit" value="{{trad.save}}" /></div>
+            {% if d.choixEmprunter and d.clefCourrier == 1 %}
+                <br /><div style="text-align:center;"><input class="btn btn-primary" type="submit" name="commit" value="{{trad.save}}" /></div>
+            {% endif %}
         </form>
     {% endif %}
 
