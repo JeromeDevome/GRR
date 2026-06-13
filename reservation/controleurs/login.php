@@ -152,6 +152,10 @@ if (isset($_POST['login']) && isset($_POST['password']))
 		$d['messageLogin'] = get_vocab("echec_connexion_GRR");
 		$d['messageLogin'] .= "<br />". get_vocab("echec_authentification_horaire")." ".Settings::get("horaireconnexionde")." - ".Settings::get("horaireconnexiona");
 	}
+	elseif($result == "14")
+	{
+		// On ne fait rien, le site est en maintenance et cela est déjà affiché
+	}
 	else // la session est ouverte
 	{
         // si c'est un administrateur qui se connecte, on efface les données anciennes du journal

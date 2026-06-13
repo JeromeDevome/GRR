@@ -593,7 +593,7 @@ function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_
     }
     // On teste si la connexion est active ou non
     if ((Settings::get("disable_login")==1) and ($row['statut'] != "administrateur"))
-        return "2";
+        return "14";
 
     // On teste si l'ip est autorisé
     if ((Settings::get("ip_autorise") != '') and ($row['statut'] != "administrateur")){
