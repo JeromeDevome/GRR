@@ -149,6 +149,10 @@ if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statu
 		$message .= "<br />- ".get_vocab("wrong_pwd");
 		$message .= "<br />- ". get_vocab("echec_authentification_ldap");
 	}
+	elseif($result == "14")
+	{
+		$message .= "<br />". get_vocab("msg_login3");
+	}
 	else if ($result != "1")
 	{
 		$message = get_vocab("echec_connexion_GRR");
@@ -200,6 +204,10 @@ else if ((Settings::get('sso_statut') == 'lemon_visiteur') || (Settings::get('ss
 	{
 		$message = get_vocab("echec_connexion_GRR");
 		$message .= "<br />". get_vocab("importation_impossible");
+	}
+	elseif($result == "14")
+	{
+		$message .= "<br />". get_vocab("msg_login3");
 	}
 	else if ($result != "1")
 	{
@@ -302,6 +310,10 @@ if ((Settings::get('sso_statut') == 'lasso_visiteur') || (Settings::get('sso_sta
 		$message .= " ".get_vocab("causes_possibles");
 		$message .= "<br />- ".get_vocab("wrong_pwd");
 		$message .= "<br />- ". get_vocab("echec_authentification_ldap");
+	}
+	elseif($result == "14")
+	{
+		$message .= "<br />". get_vocab("msg_login3");
 	}
 	else if ($result != "1")
 	{
@@ -406,6 +418,10 @@ else if ((Settings::get('sso_statut') == 'http_visiteur') || (Settings::get('sso
 	{
 		$message = get_vocab("echec_connexion_GRR");
 		$message .= "<br />". get_vocab("importation_impossible");
+	}
+	elseif($result == "14")
+	{
+		$message .= "<br />". get_vocab("msg_login3");
 	}
 	else if ($result != "1")
 	{
