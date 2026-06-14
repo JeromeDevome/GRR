@@ -50,7 +50,7 @@ if(isset($_POST['import'])) {
 	$erreur=""; $nb_reservations=0;
 	$fp = fopen($_FILES['csv']['tmp_name'], 'r');
 	// crée la table csv si elle n'existe pas, la nettoie si elle existe
-	$sql  = "CREATE TABLE IF NOT EXISTS `".TABLE_PREFIX."_csv` (";
+	$sql  = "CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_csv (";
 	$sql .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
 	$sql .= "`jour` tinyint(4) NOT NULL,";
 	$sql .= "`heure_deb` tinyint(4) NOT NULL,";
@@ -74,7 +74,7 @@ if(isset($_POST['import'])) {
 		echo "Erreur dans la création de la table CSV";
 		die();
 	}
-	if(!grr_sql_query("TRUNCATE TABLE `".TABLE_PREFIX."_csv` ")){
+	if(!grr_sql_query("TRUNCATE TABLE ".TABLE_PREFIX."_csv ")){
 		echo "Erreur dans le nettoyage de la table CSV";
 		die();
 	}

@@ -186,14 +186,14 @@ if ($action=='del_user')
 $multisite = Settings::get("module_multisite") == 1;
 if($multisite)
   $sql = "SELECT r.id,room_name,area_name,sitename
-          FROM ((`".TABLE_PREFIX."_room` r JOIN `".TABLE_PREFIX."_area` a ON r.area_id = a.id)
+          FROM ((".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id)
           JOIN ".TABLE_PREFIX."_j_site_area ON a.id = id_area)
           JOIN ".TABLE_PREFIX."_site s ON s.id = id_site
           WHERE r.who_can_book = 0
           ORDER BY room_name";
 else
   $sql = "SELECT r.id,room_name,area_name
-          FROM `".TABLE_PREFIX."_room` r JOIN `".TABLE_PREFIX."_area` a ON r.area_id = a.id
+          FROM ".TABLE_PREFIX."_room r JOIN ".TABLE_PREFIX."_area a ON r.area_id = a.id
           WHERE r.who_can_book = 0
           ORDER BY room_name";
 $res = grr_sql_query($sql);
