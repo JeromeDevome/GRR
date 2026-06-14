@@ -465,15 +465,15 @@ function execute_maj3($version_old, $version_grr)
 		$req = grr_sql_count(grr_sql_query("SHOW COLUMNS FROM ".TABLE_PREFIX."_entry LIKE 'beneficiaire'"));
 		if ($req == 0)
 		{
-			$result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_entry` ADD beneficiaire VARCHAR( 100 ) NOT NULL AFTER `create_by`");
-			$result_inter .= traiteRequete("UPDATE `".TABLE_PREFIX."_entry` SET `beneficiaire` = `create_by`");
-			$result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_entry_moderate` ADD beneficiaire VARCHAR( 100 ) NOT NULL AFTER `create_by`");
-			$result_inter .= traiteRequete("UPDATE `".TABLE_PREFIX."_entry_moderate` SET `beneficiaire` = `create_by`");
-			$result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_repeat` ADD beneficiaire VARCHAR( 100 ) NOT NULL AFTER `create_by`");
-			$result_inter .= traiteRequete("UPDATE `".TABLE_PREFIX."_repeat` SET `beneficiaire` = `create_by`");
-			$result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_entry` ADD beneficiaire_ext VARCHAR( 200 ) NOT NULL AFTER `create_by`");
-			$result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_entry_moderate` ADD beneficiaire_ext VARCHAR( 200 ) NOT NULL AFTER `create_by`");
-			$result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_repeat` ADD beneficiaire_ext VARCHAR( 200 ) NOT NULL AFTER `create_by`");
+			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD beneficiaire VARCHAR( 100 ) NOT NULL AFTER `create_by`");
+			$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_entry SET `beneficiaire` = `create_by`");
+			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate ADD beneficiaire VARCHAR( 100 ) NOT NULL AFTER `create_by`");
+			$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_entry_moderate SET `beneficiaire` = `create_by`");
+			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat ADD beneficiaire VARCHAR( 100 ) NOT NULL AFTER `create_by`");
+			$result_inter .= traiteRequete("UPDATE ".TABLE_PREFIX."_repeat SET `beneficiaire` = `create_by`");
+			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD beneficiaire_ext VARCHAR( 200 ) NOT NULL AFTER `create_by`");
+			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate ADD beneficiaire_ext VARCHAR( 200 ) NOT NULL AFTER `create_by`");
+			$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat ADD beneficiaire_ext VARCHAR( 200 ) NOT NULL AFTER `create_by`");
 		};
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_room ADD qui_peut_reserver_pour VARCHAR( 1 ) DEFAULT '5' NOT NULL");
 		if ($result_inter == '')
@@ -751,14 +751,14 @@ function execute_maj3($version_old, $version_grr)
     {
         // conversion de la valeur par défaut des champs START et END de la table grr_log (ne devrait être utile que pour des bases converties depuis d'anciennes versions)
         $result .= formatResult("Mise à jour de la table grr_log:","<b>","</b>");
-        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_log` CHANGE `START` `START` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00', CHANGE `END` `END` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00';");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log CHANGE `START` `START` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00', CHANGE `END` `END` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:00';");
         if ($result_inter == '')
             $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
         else
             $result .= $result_inter;
         // valeur par défaut du TIMESTAMP dans grr_entry_moderate (ne devrait être utile que pour des bases converties depuis d'anciennes versions)
         $result .= formatResult("Mise à jour de la table grr_entry_moderate:","<b>","</b>");
-        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_entry_moderate` CHANGE `TIMESTAMP` `TIMESTAMP` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate CHANGE `TIMESTAMP` `TIMESTAMP` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;");
         if ($result_inter == '')
             $result .= formatresult("Ok !","<span style='color:green;'>","</span>");
         else
@@ -787,7 +787,7 @@ function execute_maj3($version_old, $version_grr)
     {   
         $result .= formatResult("Mise à jour jusqu'à la version 3.5.1:","<b>","</b>");
 
-        $result_inter .= traiteRequete("ALTER TABLE `".TABLE_PREFIX."_utilisateurs` CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' ;");
+        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' ;");
         // modification des champs login, create_by et beneficiaire en varchar(190) pour compatibilité avec certains SSO
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_mailuser_room CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_j_user_area CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
