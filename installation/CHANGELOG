@@ -1,4 +1,16 @@
-Version 4.6.0 - Version béta - 18/05/26
+Version 4.6.1 - 14/06/2026 Généré par @JeromeDevome
+[Correction] Affichage vue jour en tant que visiteur - 90a27e7df - @JeromeDevome
+[Correction] Envois de mail au modérateur - aa79549b5 - @JeromeDevome
+[Correction] Affichage du bouton enregistrer sans droits de modifification - 95d19ed9c - @JeromeDevome
+[Correction] Affichage connexion désactivé pour ldap, sso - ea2500a84 - @JeromeDevome
+[Correction] Affichage de la légende - 17ac5e6fc - @JeromeDevome
+[Correction] Accès aux résa mois_all dont certaines masquées - b1aac26bd - @JeromeDevome
+[Modification] Champs additionnel ne pas afficher dans vue planning même si droits (selon param du champ) - e6766a210 - @JeromeDevome 
+[Modification] Amélioration lisibilité des réservations supprimées dans le compte utilisateur - e5eb7bddf - @JeromeDevome
+[Modification] Mise à jour des librairies PHP (Symfony) - 58acb372b - @JeromeDevome
+[Modification] Mise à jour des librairies JS (pdfmake) - 58acb372b - @JeromeDevome
+
+Version 4.6.0 - 04/06/2026 Généré par @JeromeDevome
 [Ajout] Drag & Drop des réservations - @JeromeDevome
 [Ajout]Gestion des accès aux ressources restreintes par groupe - @JeromeDevome
 [Ajout] Ajout du style des cellules associées à des réservations dont la liste des participants est complète - af1c971dc - @ynaessens
