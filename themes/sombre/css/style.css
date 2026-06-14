@@ -11,13 +11,13 @@
     --cal-jourscolor: #e0e0e0;
     --cal-sembgcolor: #2d2d2d;
     --cal-semcolor: #e0e0e0;
-    --cal-semhovercolor: #888;
+    --cal-semhovercolor: #FFF;
     --cal-weekbgcolor: #3a3a3a;
     --cal-weekcolor: #e0e0e0;
     --cal-cellbgcolor: #2D2D2D;
     --cal-cellcolor: #f0f0f0;
     --cal-cellhoverbgcolor: #0078D7;
-    --cal-cellhovercolor: #0078D7;
+    --cal-cellhovercolor: #FFF;
     --cal-current-day-bg: #0078D7;
     --cal-current-day-col: #22242A;
     --pl2-titrebgcolor: #22242A;
@@ -29,7 +29,7 @@
     --icons-color: #e0e0e0;
     --btn-primary-color: #22242A;
     --btn-primary-bgcolor: #0078D7;
-    --btn-primary-bordcolor: #d9480f; 
+    --btn-primary-bordcolor: #0078D7; 
     --active-btn-primary-color: #f0f0f0;
     --active-btn-primary-bgcolor: #2d5aa0;
     --active-btn-primary-bordcolor: #1a3a6b; 
@@ -40,7 +40,8 @@
     --ssmenuadm-actif-bg: #1a3a6b; 
     --ssmenuadm-actif-color: #0078D7;
 }
-body{background-color: var(--header-bgcolor);}
+body{background-color: var(--header-bgcolor);color:var(--header-text);}
+.form-control{background-color: var(--header-bgcolor); color:var(--header-text);}
 header, header a,#Date{background-color: var(--header-bgcolor);color: var(--header-text);}
 header a:hover{color: var(--header-hover);}
 #menuGauche2, #menuGauche2 caption{background-color: var(--menuG-bgcolor); color: var(--menuG-color);}
@@ -65,3 +66,5 @@ td.calendarcol1>a:hover{color: var(--cal-semhovercolor);}
 .dropdown .actif{background-color: var(--ssmenuadm-actif-bg); color: var(--ssmenuadm-actif-color);}
 .panel-default{background-color: var(--cal-cellbgcolor);}
 .panel-body .btn-default{background-color: var(--cal-cellbgcolor);border-color: var(--cal-cellbgcolor); color:var(--header-hover);;}
+.table-striped > tbody > tr:nth-of-type(odd) {background-color: #000;}
+
