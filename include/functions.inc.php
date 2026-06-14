@@ -1865,10 +1865,10 @@ function tdcellT($colclass, $width = '')
 //Display the entry-type color key. This has up to 2 rows, up to 10 columns.
 function show_colour_keyTwig($area_id)
 {
-    $sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM `".TABLE_PREFIX."_type_area` t
-    LEFT JOIN `".TABLE_PREFIX."_j_type_area` j on j.id_type=t.id
+    $sql = "SELECT DISTINCT t.id, t.type_name, t.type_letter, t.order_display FROM ".TABLE_PREFIX."_type_area t
+    LEFT JOIN ".TABLE_PREFIX."_j_type_area j on j.id_type=t.id
     WHERE (j.id_area IS NULL or j.id_area != '".$area_id."')
-    AND NOT EXISTS (SELECT y.id_type FROM `".TABLE_PREFIX."_j_type_area` y WHERE y.id_type = j.id_type and id_area='".$area_id."')
+    AND NOT EXISTS (SELECT y.id_type FROM ".TABLE_PREFIX."_j_type_area y WHERE y.id_type = j.id_type and id_area='".$area_id."')
     ORDER BY t.order_display";
     $res = grr_sql_query($sql);
 
