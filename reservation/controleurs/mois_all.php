@@ -109,8 +109,8 @@ else  //Build an array of information about each day in the month.
 	{
 		if ($row['15'] <> (Settings::get('exclude_type_in_views_all')))
         {
-            $AccesUserResource[$row[5]] = SecuAccess::UserResource($user_name, $row[5]);
-            $acces_fiche_reservation[$row[5]] = SecuAccess::UserSheetReservation($user_name, $row[5]);
+            $AccesUserResource[$row[5]] = SecuAccess::UserResource($user_name, $row[17]);
+            $acces_fiche_reservation[$row[5]] = SecuAccess::UserSheetReservation($user_name, $row[17]);
             $t = max((int)$row[0], $month_start);
             $end_t = min((int)$row[1], $month_end);
             $day_num = date("j", $t);
