@@ -106,6 +106,7 @@ $liste_themes = array(
 	"rouge",
 	"rose",
 	"fluo",
+	"sombre",
 	"perso"
 	);
 
@@ -120,6 +121,7 @@ $liste_name_themes = array(
 	"Rouge Feu",
 	"Roseline",
 	"Jaune Fluo",
+	"Dark Mode",
 	"Personnalisé via l'admin"
 	);
 

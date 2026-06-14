@@ -1,0 +1,137 @@
+/* personnalisations */
+:root{
+    --header-bgcolor: #FFF;
+    --header-text: #000;
+    --header-hover: #CCC;
+    --menuG-bgcolor: #17346C;
+    --menuG-color: #FFF;
+    --cal-titrecolor: #FFF;
+    --cal-titrebgcolor: #17346C;
+    --cal-joursbgcolor: #FFF;
+    --cal-jourscolor: #17346C;
+    --cal-sembgcolor: #FFF;
+    --cal-semcolor: #000;
+    --cal-semhovercolor: #CCC;
+    --cal-weekbgcolor: gray;
+    --cal-weekcolor: #FFF;
+    --cal-cellbgcolor: #17346C;
+    --cal-cellcolor: #FFF;
+    --cal-cellhoverbgcolor: #FFF;
+    --cal-cellhovercolor: #000;
+    --cal-current-day-bg: transparent;
+    --cal-current-day-col: #000;
+    --pl2-titrebgcolor: #17346C;
+    --pl2-titrecolor: #FFF;
+    --pl2-entetebgcolor: #17346C;
+    --pl2-entetecolor: #FFF;
+    --pl2-cellbgcolor: transparent;
+    --pl2-cellcolor: #000;
+    --icons-color: #222;
+    --btn-primary-color: #FFF;
+    --btn-primary-bgcolor: #17346C;
+    --btn-primary-bordcolor: #333; 
+    --active-btn-primary-color: #FFF;
+    --active-btn-primary-bgcolor: #25338B;
+    --active-btn-primary-bordcolor: #333; 
+    --focus-btn-primary-bgcolor: #33A;
+    --focus-btn-primary-bordcolor: #333;
+    --focus-btn-primary-color: #FFF;
+    --menuadm-item-actif: #F00;
+    --ssmenuadm-actif-bg: #00A; 
+    --ssmenuadm-actif-color: #FFA;
+}
+
+header, header a,#Date{background-color: var(--header-bgcolor);color: var(--header-text);}
+header a:hover{color: var(--header-hover);}
+#menuGauche2, #menuGauche2 caption{background-color: var(--menuG-bgcolor); color: var(--menuG-color);}
+#calendriers .calendar caption{background-color: var(--cal-titrebgcolor);color: var(--cal-titrecolor);} 
+.calendar th{background-color: var(--cal-joursbgcolor);color: var(--cal-jourscolor);}
+.calendar td, .calendar td>a{background-color: var(--cal-cellbgcolor);color: var(--cal-cellcolor);}
+.calendar td>a:hover{background-color: var(--cal-cellhoverbgcolor);color: var(--cal-cellhovercolor);}
+td.calendarcol1, td.calendarcol1>a {background-color: var(--cal-sembgcolor);color: var(--cal-semcolor);}
+td.calendarcol1>a:hover{color: var(--cal-semhovercolor);}
+.week td, .week td a, tr.week>td.calendarcol1, tr.week>td.calendarcol1>a{background-color: var(--cal-weekbgcolor);color: var(--cal-weekcolor);}
+.cal_current_day{background-color: var(--cal-current-day-bg); color: var(--cal-current-day-col);} 
+#planning2 caption, #planning2 caption a .glyphicon{background-color: var(--pl2-titrebgcolor); color: var(--pl2-titrecolor);}
+#planning2 thead, .jour th, a.lienPlanning, #planning2 thead .glyphicon {background-color: var(--pl2-entetebgcolor); color: var(--pl2-entetecolor);}
+#planning2 tbody{background-color: var(--pl2-cellbgcolor); color: var(--pl2-cellcolor);}
+.monthday a {background-color: transparent; color: var(--pl2-cellcolor);}
+.btn-primary{color: var(--btn-primary-color);background-color: var(--btn-primary-bgcolor);border-color: var(--btn-primary-bordcolor)}
+.btn-primary:hover,.btn-primary:focus{background-color: var(--focus-btn-primary-bgcolor);border-color: var(--focus-btn-primary-bordcolor);color: var(--focus-btn-primary-color);}
+.btn-primary:active{background-color: var(--active-btn-primary-bgcolor);border-color: var(--active-btn-primary-bordcolor);color: var(--active-btn-primary-color);}
+.dropdown-menu > li > a.active{color:var(--menuadm-item-actif);}
+.dropdown .actif{background-color: var(--ssmenuadm-actif-bg); color: var(--ssmenuadm-actif-color);}
+
+/* anciennes définitions
+
+personnalisations 
+
+ modifications bootstrap 
+a{color:#AAA;text-decoration:none}
+.text-primary{color:#17346C}
+.bg-primary{color:#fff;background-color:#17346C}
+.btn-primary{color:#fff;background-color:#17346C;border-color:#17346C}
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled.focus,
+.btn-primary[disabled].focus,
+fieldset[disabled] .btn-primary.focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active{background-color:#17346C;border-color:#17346C}
+.btn-primary .badge{color:#17346C;background-color:#fff}
+.btn-link{color:#17346C;font-weight:normal;border-radius:0}
+.panel-primary>.panel-heading .badge{color:#17346C;background-color:#fff}
+.panel-primary>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#17346C}
+caption{text-align: center}
+
+ personnalisation sur le modèle standard 
+.table-bordered caption{background:#17346C;padding: 0 0 0 0;}
+.glyphicon-plus{color:#17346C}
+#menuGauche{background-color:#17346C;float:left;height:100%;min-width:200px;width:100%;padding-bottom:10px}
+#menuGauche2{background-color:#17346C;color:black;}
+#menuGaucheMonthAll2{display:none;background-color:#17346C;float:left;height:100%;min-width:200px;width:300px;padding-bottom:10px}
+.calendar caption{background-color:#17346C}
+.calendar a{color:#FFF}
+.cellcalendar{background:#17346C;vertical-align:middle;text-align:center;height:30px;width:40px;line-height:30px}
+td.calendarHeader2{text-align:center;border:0;font-size:10pt;width:200px;background-color:#17346C;color:#FFF;font-weight:bold;font-size:18px;}
+#toppanel{position:relative;top:0;width:100%;z-index:999;text-align:center;border-bottom:1px solid #17346C}
+#planning{position:relative;background-color:#17346C;height:100%;width:auto}
+#print_planning{position:relative;background-color:#17346C;height:100%;width:auto}
+.titre_planning{position:relative;background-color:#17346C;height:100%;color:#000;text-align:center;font-size:1.2em}
+.contenu_planning{position:relative;background-color:#17346C;height:100%;max-width:100%}
+th{color:#eee;font-size:10pt;font-family:verdana,sans-serif;background-color:#17346C;vertical-align:top;text-align:center;}
+table.legende caption{color:white;}
+#menuGauche2 b{color:white;}
+
+@media only screen and (max-width:800px) { 
+	.accueil {
+		display:none;
+		}
+	#element{
+		left:0px;
+		display:none;
+	}
+	.popup_block{
+		width:100%!important;
+		margin-left:0px!important;
+		left:0px!important;
+		margin-top:0px!important;
+		top:0px!important;
+		}
+	#popup_name{
+	left:0px;
+	FLOAT:LEFT;
+	}
+}
+*/
