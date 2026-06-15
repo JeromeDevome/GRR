@@ -67,8 +67,9 @@
 			<tr>
                 <th class="cell_hours">{{trad.rooms}}</th>
 				{% for jour in joursMois %}
-					<td class="{{jour.class}}">{{jour.nom}}</td>
+					<td class="{{jour.class}}">{{jour.nom}}
                     {% if jour.nomCycle != "" %}<br><i>{{jour.nomCycle}}</i>{% endif %}
+          </td>
 				{% endfor %}
 			</tr>
 		</thead>
@@ -138,8 +139,9 @@
 			<tr>
                 <th class="cell_hours"></th>
 				{% for jour in joursMois %}
-					<td class="{{jour.class}}">{{jour.nom}}</td>
+					<td class="{{jour.class}}">{{jour.nom}}
                     {% if jour.nomCycle != "" %}<br><i>{{jour.nomCycle}}</i>{% endif %}
+                    </td>
 				{% endfor %}
 			</tr>
 		</thead>
