@@ -52,6 +52,13 @@ include "./include/language.inc.php";
 // pour le traitement des modules
 include "./include/hook.class.php";
 
+// Vérification du numéro de version et renvoi automatique vers la page de mise à jour
+if (verif_version())
+{
+	header("Location: ./installation/maj.php");
+	exit();
+}
+
 include "./verif_auto_grr.php";
 
 $trad = array();
