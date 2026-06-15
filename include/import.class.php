@@ -2,7 +2,7 @@
 /* import.class.php
  * Permet d'importer des éléments dans GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-06-04 15:30$
+ * Dernière modification : $Date: 2026-06-15 11:35$
  * @author    JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -239,7 +239,7 @@ class Import {
                 } else {
                     if ($copie) {
                         $msg .= "<br> <span style='color:green'>Fichier enregistré</span></p>";
-                        header('Location: app.php?p=semaine&day='.$day.'&month='.$month.'&yera='.$year.'&room='.$room_id);
+                        header('Location: app.php?p=semaine&day='.$day.'&month='.$month.'&year='.$year.'&room='.$room_id);
                     } else {
                         $msg .= "<br><span style='color:red'>Erreur d'enregistrement</span></p>";
                     }
