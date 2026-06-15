@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-05-15 10:24$
+ * Dernière modification : $Date: 2026-06-15 17:58$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2802,7 +2802,15 @@ function contenu_cellule($options, $ofl, $vue, $resa, $heures)
     else
       $affichage .= " <img src=\"img_grr/hourglass.png\" width=\"20\" height=\"20\" class=\"image\" alt=\"Buzy\"> ";
   }
-
+  // symbole pour fichier joint
+  $sql = "SELECT count(id) FROM ".TABLE_PREFIX."_files WHERE id_entry=? ";
+	$res = grr_sql_query($sql,"i",[$resa['id']]);
+	$tmpsql = grr_sql_row($res,0);
+	$present = $tmpsql[0];
+	grr_sql_free($res);
+	if($present > 0)
+    $affichage .= "<span class='fas fa-paperclip'></span> ";
+  
   return $affichage;
 }
 /*
@@ -4766,7 +4774,9 @@ function cal($month, $year, $type)
       if ($d > 0 && $d <= $daysInMonth)
       {
         $s .= $d;
-        if($type == 1)
+        if($type == 0)
+          $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day=?","i",[$temp]);
+        elseif($type == 1)
           $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE day=?","i",[$temp]);
         elseif($type == 2)
           $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_feries WHERE day=?","i",[$temp]);
