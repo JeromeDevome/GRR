@@ -53,9 +53,15 @@ if ($dbsys == "mysql")
 						$flag = 'yes';
 					$j++;
 				}
+				$version = mysqli_query($db, "SELECT VALUE FROM ".$table_prefix."_setting WHERE NAME='version'");
+
 				if ($flag == 'yes')
 				{
 					$msg = "<p>La connexion au serveur $dbsys est établie mais certaines tables sont absentes de la base $dbDb.</p>";
+					$correct_install = 'no';
+				} elseif($version < $version_bdd)
+				{
+					$msg = "<p>Une mise à jour de la base de donnée est disponible ".$version ." => ". $version_bdd."</p>";
 					$correct_install = 'no';
 				}
 			}
@@ -81,10 +87,10 @@ if ($dbsys == "mysql")
 		echo begin_page("GRR (Gestion et Réservation de Ressources) ");
 		echo "<h1 class=\"center\">Gestion et Réservation de Ressources</h1>\n";
 		echo "<div style=\"text-align:center;\"><span style=\"color:red;font-weight:bold\">".$msg."</span>\n";
-		echo "<ul><li>Soit vous procédez à une mise à jour vers une nouvelle version de GRR. Dans ce cas, vous devez procéder à une mise à jour de la base de données MySql.<br />";
-		echo "<b><a href='./installation/maj.php'>Mettre à jour la base Mysql</a></b><br /></li>";
-		echo "<li>Soit l'installation de GRR n'est peut-être pas terminée. Vous pouvez procéder à une installation/réinstallation de la base.<br />";
-		echo "<a href='./installation/install_mysql.php'>Installer la base $dbsys</a></li></ul></div>";
+		echo "".$vocab["index_msg5"]."<br />";
+		echo "<b><a href='./installation/maj.php'>".$vocab["index_msg6"]."</a></b><br />";
+		echo "".$vocab["index_msg7"]."<br />";
+		echo "<a href='./installation/install_mysql.php'>".$vocab["index_msg8"]."</a></div>";
 		?>
 	</body>
 	</html>
