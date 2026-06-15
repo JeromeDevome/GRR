@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-05-1216 18:30$
+ * Dernière modification : $Date: 2026-06-15 18:10$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -121,7 +121,7 @@ function isHoliday($now){
 	return $val;
 }
 
-// $type = 1: Fonction Calendrier hors réservation ; 2; Fonction Calendrier feries ; 3 : calendrier vacances (scolaires par défaut)
+// $type : 0 => jours cycle; 1 => Fonction Calendrier hors réservation; 2 => Fonction Calendrier feries; 3 => calendrier vacances (scolaires par défaut)
 function cal($month, $year, $type)
 {
 	global $weekstarts;
@@ -154,20 +154,24 @@ function cal($month, $year, $type)
 			$s .= '<td class="calendar2" align="center" valign="top">'.PHP_EOL;
 			if ($is_ligne1 == 'y')
 				$s .=  '<b>'.ucfirst(substr($nameday,0,1)).'</b><br />';
-			if ($d > 0 && $d <= $daysInMonth)
-			{
-				$s .= $d;
-				if($type == 1)
-					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE day='$temp'");
-				elseif ($type == 2)
-                    $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_feries WHERE day='$temp'");
-                else
-					$day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances WHERE day='$temp'");
-				$s .= '<br><input type="checkbox" name="'.$temp.'" value="'.$nameday.'" ';
-				if (!($day < 0))
-					$s .= 'checked="checked" ';
-				$s .= '/>';
-			}
+      if ($d > 0 && $d <= $daysInMonth)
+      {
+        $s .= $d;
+        if($type == 0)
+          $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day=?","i",[$temp]);
+        elseif($type == 1)
+          $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE day=?","i",[$temp]);
+        elseif($type == 2)
+          $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_feries WHERE day=?","i",[$temp]);
+        elseif($type == 3)
+          $day = grr_sql_query1("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances WHERE day=?","i",[$temp]);
+        else
+          $day = -1;
+        $s .= '<br><input type="checkbox" name="'.$temp.'" value="'.$nameday.'" ';
+        if (!($day < 0))
+          $s .= 'checked="checked" ';
+        $s .= '/>';
+      }
 			else
 				$s .= " ";
 			$s .= '</td>'.PHP_EOL;

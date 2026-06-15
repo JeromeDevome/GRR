@@ -3,7 +3,7 @@
  * admin_config_calend2.php
  * interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:43$
+ * Dernière modification : $Date: 2026-06-15 18:10$
  * @author    Laurent Delineau & JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -123,7 +123,7 @@ while ($n <= $end_bookings)
 	}
 	$inc++;
 	$trad['dCalendrier'] .= "<td>\n";
-	$trad['dCalendrier'] .= cal($month, $year, 1);
+	$trad['dCalendrier'] .= cal($month, $year, 0);
 	$trad['dCalendrier'] .= "</td>";
 	if ($inc == 3)
 	{
