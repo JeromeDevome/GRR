@@ -1,3 +1,9 @@
+Version 4.6.2 - 15/06/2026 Généré par @JeromeDevome
+[Correction] Position du numéro de jour cycle - fcf846c76 - @ynaessens
+[Correction] Nom de variable - e2e3aaf18 - @ynaessens
+[Correction] Affichage des jours cycle dans la page de création - 2465a0ea4 - @ynaessens
+[Correction] Vue mois_all: Affichage et droits - 4a05b5ed6 - @JeromeDevome
+
 Version 4.6.1 - 14/06/2026 Généré par @JeromeDevome
 [Correction] Affichage vue jour en tant que visiteur - 90a27e7df - @JeromeDevome
 [Correction] Envois de mail au modérateur - aa79549b5 - @JeromeDevome
