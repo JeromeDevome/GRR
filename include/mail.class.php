@@ -16,9 +16,10 @@
  * (at your option) any later version.
  */
 
+use Kigkonsult\Icalcreator\Vcalendar;
 class Email{
 
-	public static function Envois ($A, $sujet, $message, $DE, $cc1='', $cc2='', $repondre='', $template='', $id_entry = null, $type_destinataire = null) {
+	public static function Envois ($A, $sujet, $message, $DE, $cc1='', $cc2='', $repondre='', $template='', $id_entry = null, $type_destinataire = null, $mail_invite = false, $resa_info = array()){
 		global $gNbMail, $gMaxMail, $gMailExpediteur;
 
 		if($gNbMail < $gMaxMail || $gMaxMail == -1){
@@ -69,7 +70,42 @@ class Email{
 				$mail->Subject = $sujet;
 				$mail->Body = nl2br($message);
 				$mail->AltBody = 'Ce message ne peut-être affiché.';
+				$ical = null;
+				ini_set('display_errors', 1);
+				error_reporting(E_ALL);
 
+				if($mail_invite && !empty($resa_info)){ // Si l'envoi d'invitation via ICS est activé et que les infos de résas sont ok on prep un ics
+					// Préparation d'un GUID
+					$hash = strtoupper(hash('ripemd128', uniqid('', true) . md5(time() . rand(0, time()))));
+    				$guid = substr($hash,  0,  8).'-'.substr($hash,  8,  4).'-'.substr($hash, 12,  4).'-'.substr($hash, 16,  4).'-'.substr($hash, 20, 12);
+					// Préparation du vcalendar
+					$ical = new Vcalendar([
+						Vcalendar::UNIQUE_ID => $guid,
+					]);
+
+					$ical->setXprop('X-WR-CALNAME', 'Réservation GRR');
+					$ical->setXprop('X-WR-CALDESC', $resa_info['nom_resa']);
+					$ical->setXprop('X-WR-TIMEZONE', date_default_timezone_get());
+					$ical->setMethod('REQUEST');
+
+					// Préparation du vevent
+					$event = $ical->newVevent();
+					$event->setDtstart(new \DateTime('@'.$resa_info['start_time'], new \DateTimeZone(date_default_timezone_get())));
+					$event->setDtend(new \DateTime('@'.$resa_info['end_time'], new \DateTimeZone(date_default_timezone_get())));
+					$event->setSummary($resa_info['nom_resa']);
+					$event->setDescription($resa_info['nom_resa']);
+					$event->setAttendee($A);
+
+					// Préparation de la valarm
+					$alarm = $event->newValarm();
+					$alarm->setAction(Vcalendar::DISPLAY);
+					$alarm->setDescription($event->getDescription());
+					$alarm->setTrigger('-PT15M'); // 15 minutes avant l'événement
+
+					$icalstr = $ical->vtimezonePopulate()->createCalendar();
+					$mail->Ical = $icalstr;
+				}
+				
 				if ($username != '') {
 					$mail->SMTPAuth = true;
 				} else {

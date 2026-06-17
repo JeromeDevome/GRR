@@ -2696,7 +2696,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
  * $action = 6 -> Résultat d'une décision de modération
  * $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 */
-function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array())
+function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array(), $mail_invite = true)
 {
 	global $vocab, $niveauDossier, $locale, $weekstarts, $enable_periods, $periods_name;
 
@@ -2761,6 +2761,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$beneficiaire_ext			= htmlspecialchars($row[16]);
 	$jours_cycle 				= htmlspecialchars($row[17]);
 	$duration     				= $row[9];
+	$raw_start_date 			= $row[10];
+	$raw_end_date 				= $row[11];
 
 	// Date début et fin de la réservation
 	if ($enable_periods == 'y')
@@ -3029,7 +3031,12 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$templateMail2 = Pages::get('mails_resa_'.$action.'_2_'.$locale);
 		$sujetEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[0]);
 		$msgEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[1]);
-		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur2, '', '', $repondre2,'mails_resa_'.$action.'_2_'.$locale, $id_entry, 2);
+		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur2, '', '', $repondre2,'mails_resa_'.$action.'_2_'.$locale, $id_entry, 2, $mail_invite, array(
+			'id_entry' => $id_entry,
+			'start_time' => $raw_start_date,
+			'end_time' => $raw_end_date,
+			'nom_resa' => $room_name,
+		));
 	}
 
 	/*

@@ -21,4 +21,5 @@ return array(
     'c7baa00073ee9c61edf148c51917cfb4' => $vendorDir . '/twig/twig/src/Resources/escaper.php',
     'f844ccf1d25df8663951193c3fc307c8' => $vendorDir . '/twig/twig/src/Resources/string_loader.php',
     '344f11dc3484aaed5cbde58e23513be4' => $vendorDir . '/apereo/phpcas/source/CAS.php',
+    '47b18101462cdeb25f661813113e3182' => $vendorDir . '/kigkonsult/icalcreator/autoload.php',
 );
