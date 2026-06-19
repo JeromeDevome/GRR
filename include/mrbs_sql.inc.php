@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2026-05-21 11:15$
+ * Dernière modification : $Date: 2026-06-19 11:13$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Since 2003 Team DEVOME - JeromeB
@@ -59,7 +59,7 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $lin
 		$param_ymd = $param_ym . "&amp;day=$starts[mday]";
 		$err .= "<li><a href=\"".$link."app.php?p=vuereservation&id=$row[0]\">".htmlspecialchars($row[1])."</a>"
 		. " ( " . utf8_strftime('%A %d %B %Y %T', $row[2]) . ") "
-		. "(<a href=\"".$link."day.php?$param_ymd\">".get_vocab("viewday")."</a>"
+		. "(<a href=\"".$link."app.php?p=jour&amp;$param_ymd\">".get_vocab("viewday")."</a>"
 			. " | <a href=\"".$link."app.php?p=semaine&amp;room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
 			. " | <a href=\"".$link."app.php?p=mois&amp;room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
 	}
