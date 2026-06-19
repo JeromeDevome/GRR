@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2026-05-19 18:03$
+ * Dernière modification : $Date: 2026-06-18 10:40$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -158,26 +158,28 @@ function mrbsDelEntry($user, $id, $series, $all)
 		return 0;
 	$sql = "SELECT beneficiaire, id, entry_type FROM ".TABLE_PREFIX."_entry WHERE ";
 	if (($series > 0) and ($repeat_id > 0))
-		$sql .= "repeat_id='".$repeat_id."'";
+		$sql .= "repeat_id='".$repeat_id."' AND ";
   if(($series == 2) and ($repeat_id > 0))
-    $sql .= " AND start_time >= (SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id='".$id."')";
+    $sql .= "start_time >= (SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id='".$id."') ";
 	else
 		$sql .= "id='".$id."'";
 	$res = grr_sql_query($sql);
 	$removed = 0;
-	foreach($res as $row)
-	{
-		if (!getWritable($user, $row['id']))
-			continue;
-		if (!verif_booking_date($user, $row['id'], $id_room, "", $date_now, $enable_periods, ""))
-			continue;
-		if ($series && $row['entry_type'] == 2 && !$all)
-			continue;
-		if (grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry WHERE id=" . $row['id']) > 0)
-			$removed++;
-		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE id=" . $row['id']);
-		grr_sql_command("DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=" . $row['id']);
-	}
+  if($res){
+    foreach($res as $row)
+    {
+      if (!getWritable($user, $row['id']))
+        continue;
+      if (!verif_booking_date($user, $row['id'], $id_room, "", $date_now, $enable_periods, ""))
+        continue;
+      if ($series && $row['entry_type'] == 2 && !$all)
+        continue;
+      if (grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry WHERE id=" . $row['id']) > 0)
+        $removed++;
+      grr_sql_command("DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE id=" . $row['id']);
+      grr_sql_command("DELETE FROM ".TABLE_PREFIX."_participants WHERE idresa=" . $row['id']);
+    }
+  }
 	grr_sql_free($res);
 	if ($repeat_id > 0 &&
 		grr_sql_query1("SELECT count(*) FROM ".TABLE_PREFIX."_entry WHERE repeat_id='".$repeat_id."'") == 0)
@@ -632,7 +634,8 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
 			case 6:
 			$tableFinale = array();
 			$sql = "SELECT * FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY >= '".$time2."' AND DAY <= '".$enddate."'";
-      if (isset($rep_jours_c) && ($rep_jours_c != -1)) $sql.= " AND Jours = '".$rep_jour_c."'";
+      if (isset($rep_jour_c) && ($rep_jour_c != -1)) $sql.= " AND Jours = '".$rep_jour_c."'";
+      echo $sql."<br/>";
 			$result = grr_sql_query($sql);
       if ($result){
         $kk = 0;
