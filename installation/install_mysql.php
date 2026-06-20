@@ -108,6 +108,7 @@ if (@file_exists($nom_fic))
 			$test2 = mysqli_num_rows($call_test);
 
 			$d['etape'] = 5;
+			$etape = 5;
 
 			if ($test1 == 'no'){
 				$d['erreurE5'] = 1;
