@@ -154,16 +154,16 @@ if ($etape == 4)
 			{
 				$query = fgets($fd, 5000);
 				$query = trim($query);
-				$query = preg_replace("/DROP TABLE IF EXISTS grr/","DROP TABLE IF EXISTS ".$table_prefix,$query);
-				$query = preg_replace("/CREATE TABLE grr/","CREATE TABLE ".$table_prefix,$query);
-				$query = preg_replace("/INSERT INTO grr/","INSERT INTO ".$table_prefix,$query);
-				$query = preg_replace("/VariableInstal01/",$company,$query);
-				$query = preg_replace("/VariableInstal02/",$grr_url,$query);
-				$query = preg_replace("/VariableInstal03/",$webmaster_email,$query);
-				$query = preg_replace("/VariableInstal04/",$support_email,$query);
-				$query = str_replace("VariableInstal05",$mdp,$query); //* preg_replace ne fonctionne pas le hash à cause des $
-				$query = preg_replace("/VariableInstal06/",$email,$query);
-				$query = preg_replace("/VariableInstal07/",$version_grr,$query);
+				$query = str_replace("DROP TABLE IF EXISTS grr","DROP TABLE IF EXISTS ".$table_prefix,$query);
+				$query = str_replace("CREATE TABLE grr","CREATE TABLE ".$table_prefix,$query);
+				$query = str_replace("INSERT INTO grr","INSERT INTO ".$table_prefix,$query);
+				$query = str_replace("VariableInstal01",mysqli_real_escape_string($db, $company),$query);
+				$query = str_replace("VariableInstal02",$grr_url,$query);
+				$query = str_replace("VariableInstal03",$webmaster_email,$query);
+				$query = str_replace("VariableInstal04",$support_email,$query);
+				$query = str_replace("VariableInstal05",$mdp,$query);
+				$query = str_replace("VariableInstal06",$email,$query);
+				$query = str_replace("VariableInstal07",$version_grr,$query);
 
 				if ($query != '')
 				{
@@ -196,17 +196,17 @@ if ($etape == 4)
 					$conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
 					$conn .= "# ligne suivante : le nom du serveur qui herberge votre base sql.\n";
 					$conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
-					$conn .= "\$dbHost=\"$adresse_db\";\n";
+					$conn .= '$dbHost=' . var_export($adresse_db, true) . ";\n";
 					$conn .= "# ligne suivante : le nom de votre base sql\n";
-					$conn .= "\$dbDb=\"$choix_db\";\n";
+					$conn .= '$dbDb=' . var_export($choix_db, true) . ";\n";
 					$conn .= "# ligne suivante : le nom de l'utilisateur sql qui a les droits sur la base\n";
-					$conn .= "\$dbUser=\"$login_db\";\n";
+					$conn .= '$dbUser=' . var_export($login_db, true) . ";\n";
 					$conn .= "# ligne suivante : le mot de passe de l'utilisateur sql ci-dessus\n";
-					$conn .= "\$dbPass=\"$pass_db\";\n";
+					$conn .= '$dbPass=' . var_export($pass_db, true) . ";\n";
 					$conn .= "# ligne suivante : préfixe du nom des tables de données\n";
-					$conn .= "\$table_prefix=\"$table_prefix\";\n";
+					$conn .= '$table_prefix=' . var_export($table_prefix, true) . ";\n";
 					$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
-					$conn .= "\$dbPort=\"$port_db\";\n";
+					$conn .= '$dbPort=' . var_export($port_db, true) . ";\n";
 					$conn .= "# ligne suivante : adaptation EnvOLE\n";
 					$conn .= "\$apikey=\"mypassphrase\";\n";
 					$conn .= "?".">";

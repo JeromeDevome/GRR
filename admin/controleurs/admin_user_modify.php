@@ -25,10 +25,12 @@ if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(get
 	showAccessDenied($back);
 	exit();
 }
+unset($user_login);
+$user_login = isset($_GET["user_login"]) ? SecuChaine::CleanLogin($_GET["user_login"]) : NULL;
 // un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
-if (isset($_GET["user_login"]) && (SecuAccess::UserLevel(getUserName(),-1,'user') ==  1))
+if (isset($user_login) && (SecuAccess::UserLevel(getUserName(),-1,'user') ==  1))
 {
-	$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$_GET["user_login"]."'");
+	$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$user_login."'");
 	if (($test_statut == "administrateur") or ($test_statut == "gestionnaire_utilisateur"))
 	{
 		showAccessDenied($back);
@@ -36,8 +38,6 @@ if (isset($_GET["user_login"]) && (SecuAccess::UserLevel(getUserName(),-1,'user'
 	}
 }
 #If we dont know the right date then make it up
-unset($user_login);
-$user_login = isset($_GET["user_login"]) ? $_GET["user_login"] : NULL;
 $valid = isset($_GET["valid"]) ? $_GET["valid"] : NULL;
 $msg = '';
 $user_nom = '';

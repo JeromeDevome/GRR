@@ -96,7 +96,7 @@ if (isset($_GET['valider']))
 	}
 	// Type par défaut :
 	// On enregistre le nouveau type par défaut :
-	$reg_type_par_defaut = grr_sql_query("UPDATE ".TABLE_PREFIX."_area SET id_type_par_defaut='".$_GET['id_type_par_defaut']."' WHERE id='".$id_area."'");
+	$reg_type_par_defaut = grr_sql_query("UPDATE ".TABLE_PREFIX."_area SET id_type_par_defaut='".SecuChaine::ProtectDataSql($_GET['id_type_par_defaut'])."' WHERE id='".$id_area."'");
 }
 
 //
