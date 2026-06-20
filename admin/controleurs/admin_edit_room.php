@@ -74,6 +74,8 @@ $type_affichage_reser = isset($_POST["type_affichage_reser"]) ? $_POST["type_aff
 $moderate = isset($_POST['moderate']) ? $_POST["moderate"] : NULL;
 $confidentiel_resa  = isset($_POST["confidentiel_resa"]) ? 1 : 0;
 
+$room = SecuChaine::ProtectDataSql($room);
+
 if(!isset($_POST["area_order"]) || empty($_POST["area_order"]))
 	$area_order = 0;
 else
