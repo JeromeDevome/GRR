@@ -23,9 +23,9 @@ SecuAccess::CheckAccess(6, $back);
 
 include('../include/import.class.php');
 
-$trad   = $vocab;
-$msg    = '';
+$msg        = '';
 $dossier    = '../personnalisation/'.$gcDossierImg.'/logos/';
+
 
 $d['dossierLogo'] = $dossier;
 
@@ -55,36 +55,27 @@ foreach($form_vars as $var => $var_type)
 
 /** Accès & Droits **/
     if ($submit == 1) {
-
-        if (!Settings::set("authentification_obli", $authentification_obli))
-            $msg .= "Erreur lors de l'enregistrement de authentification_obli !<br />";
+         $settings_results[] = Settings::set2("authentification_obli", $authentification_obli);
     }
 
 /** Configuration **/
     if ($submit == 1) {
 
         // Nom de l'établissement
-        if (!Settings::set("company", $company))
-            $msg .= "Erreur lors de l'enregistrement de company !<br />";
+        $settings_results[] = Settings::set2("company", $company);
 
         // URL de GRR
-        if (!Settings::set("grr_url", $grr_url))
-            $msg .= "Erreur lors de l'enregistrement de grr_url !<br />";
-
-        if (!Settings::set("use_grr_url", $use_grr_url))
-            $msg .= "Erreur lors de l'enregistrement de use_grr_url !<br />";
+        $settings_results[] = Settings::set2("grr_url", $grr_url);
+        $settings_results[] = Settings::set2("use_grr_url", $use_grr_url);
 
         // Nom du gestionnaire
-        if (!Settings::set("webmaster_name", $webmaster_name))
-            $msg .= "Erreur lors de l'enregistrement de webmaster_name !<br />";
+        $settings_results[] = Settings::set2("webmaster_name", $webmaster_name);
 
         // Email du gestionnaire
-        if (!Settings::set("webmaster_email", $webmaster_email))
-            $msg .= "Erreur lors de l'enregistrement de webmaster_email !<br />";
+        $settings_results[] = Settings::set2("webmaster_email", $webmaster_email);
 
         // Email du support technique
-        if (!Settings::set("technical_support_email", $technical_support_email))
-            $msg .= "Erreur lors de l'enregistrement de technical_support_email !<br />";
+        $settings_results[] = Settings::set2("technical_support_email", $technical_support_email);
     }
 
 /** Apparence **/
@@ -96,30 +87,23 @@ foreach($form_vars as $var => $var_type)
             list($nomImage, $resultImport) = Import::Image($dossier, 'logo');
 
             if($resultImport == ""){
-                if (!Settings::set('logo', $nomImage)) {
-                    $msg .= "Erreur lors de l'enregistrement du logo (1) !\\n";
-                    $ok = 'no';
-                }
+                $settings_results[] = Settings::set2("logo", $nomImage);
             } else {
-                $msg .= $resultImport;
-                $ok = 'no';
+                $settings_results[] = array(3, "Le logo n'a pas pu être importé : $resultImport");
             }
         }
 
         // Message personnalisé dans le bandeau
-        if (!Settings::set('message_accueil', $message_accueil))
-            $msg .= "Erreur lors de l'enregistrement de message_accueil !<br />";
+        $settings_results[] = Settings::set2("message_accueil", $message_accueil);
 
         // Langues disponibles
         if (!empty($langues_dispo_array)) { // Obligé d'avoir une langue de disponible
             $langues_str = implode(';', $langues_dispo_array);
-            if (!Settings::set('langues_dispo', $langues_str))
-                $msg .= "Erreur lors de l'enregistrement de langues_dispo !<br />";
+            $settings_results[] = Settings::set2("langues_dispo", $langues_str);
         }
 
         // Style/thème
-        if (!Settings::set('default_css', $default_css))
-            $msg .= "Erreur lors de l'enregistrement de default_css !<br />";
+        $settings_results[] = Settings::set2("default_css", $default_css);
 
         // Langue par défaut
         if (!Settings::set('default_language', $default_language))
@@ -129,25 +113,25 @@ foreach($form_vars as $var => $var_type)
             // et que seules les langues valides (définies dans $liste_language) sont conservées
             $langues_dispo_value = Settings::get('langues_dispo');
             $langues_dispo_list = array_filter(explode(';', $langues_dispo_value));
-            
+
             // Filtrer pour ne garder que les langues valides
             $langues_valides = array_intersect($langues_dispo_list, $liste_language);
-            
+
             // Ajouter la langue par défaut si elle est valide et pas déjà présente
             if (in_array($default_language, $liste_language) && !in_array($default_language, $langues_valides)) {
                 $langues_valides[] = $default_language;
             }
-            
+
             // Réenregistrer les langues filtrées
             if (!empty($langues_valides)) {
-                Settings::set('langues_dispo', implode(';', $langues_valides));
+                $settings_results[] = Settings::set2("langues_dispo", implode(';', $langues_valides));
             }
         }
         unset($_SESSION['default_language']);
 
         // Lien mail ou fomulaire de contact
-        if (!Settings::set('envoyer_email_avec_formulaire', $envoyer_email_avec_formulaire))
-            $msg .= "Erreur lors de l'enregistrement de envoyer_email_avec_formulaire !<br />";
+        $settings_results[] = Settings::set2("envoyer_email_avec_formulaire", $envoyer_email_avec_formulaire);
+
     }
 
     // Suppression du logo
@@ -166,10 +150,7 @@ foreach($form_vars as $var => $var_type)
             if (@file_exists($nom_picture)) {
                 unlink($nom_picture);
             }
-            if (!Settings::set('logo', '')) {
-                $msg .= "Erreur lors de l'enregistrement du logo (2) !\\n";
-                $ok = 'no';
-            }
+            $settings_results[] = Settings::set2("logo", '');
         }
     }
 
@@ -190,11 +171,7 @@ foreach($form_vars as $var => $var_type)
 
 /** Résultat de l'enregistrement **/
 if ($submit == 1){
-    $_SESSION['displ_msg'] = 'yes';
-    if ($msg == '')
-        $d['enregistrement'] = 1;
-    else
-        $d['enregistrement'] = $msg;
+    $d['settings_results'] = $settings_results;
 }
 
 /** Affichage de la page **/
@@ -204,33 +181,15 @@ if (!Settings::load()) {
 $AllSettings = Settings::getAll();
 
 // Choix de la feuille de style
-$i = 0;
-$d['optionTheme'] = "";
-while ($i < count($liste_themes)) {
-	$d['optionTheme'] .= "<option value='".$liste_themes[$i]."'";
-	if (Settings::get('default_css') == $liste_themes[$i]) {
-		$d['optionTheme'] .= ' selected="selected"';
-	}
-	$d['optionTheme'] .= ' >'.encode_message_utf8($liste_name_themes[$i]).'</option>';
-	++$i;
-}
-
-// Choix de la langue
-$i = 0;
-$d['optionLangue'] = "";
-while ($i < count($liste_language)) {
-    $d['optionLangue'] .= "<option value='".$liste_language[$i]."'";
-    if (Settings::get('default_language') == $liste_language[$i]) {
-        $d['optionLangue'] .= ' selected="selected"';
-    }
-    $d['optionLangue'] .= ' >'.encode_message_utf8($trad['langue_' . $liste_language[$i]]).'</option>'.PHP_EOL;
-    ++$i;
+$themesDispo = [];
+foreach ($liste_themes as $i => $theme) {
+    $themesDispo[] = ["id"  => $theme, "nom" => $liste_name_themes[$i]];
 }
 
 // Langues disponibles (pour la sélection multiple)
 $langues_dispo_value = Settings::get('langues_dispo');
 $d['langues_dispo_saved'] = array_filter(explode(';', $langues_dispo_value));
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'liste_language' => $liste_language));
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'liste_language' => $liste_language, 'themesDispo' => $themesDispo));
 
 ?>
