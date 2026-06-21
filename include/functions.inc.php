@@ -3660,7 +3660,7 @@ function showAccessDenied($back, $infodebug = '')
 	echo '<p>'.get_vocab("norights").'</p>';
 	if($debug_flag)
 		echo '<p>'.$infodebug.'</p>';
-	echo '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
+	echo '<p><a href="'.SecuChaine::UrlInt($back).'">'.get_vocab("returnprev").'</a></p>';
 	echo '</section></body></html>';
 }
 function showAccessDenied_twig($back, $infodebug = '')
@@ -3670,7 +3670,7 @@ function showAccessDenied_twig($back, $infodebug = '')
 	$html .= '<p>'.get_vocab("norights").'</p>';
 	if($debug_flag)
 		$html .= '<p>'.$infodebug.'</p>';
-	$html .= '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
+	$html .= '<p><a href="'.SecuChaine::UrlInt($back).'">'.get_vocab("returnprev").'</a></p>';
 
 	return $html;
 }
