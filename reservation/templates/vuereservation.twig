@@ -328,7 +328,7 @@
                     {% endif %}
                 </fieldset>
             {% endif %}
-            {% if d.clefCourrier == 1 %}
+            {% if d.choixEmprunter and d.clefCourrier == 1 %}
                 <fieldset>
                     {% if resa.ressourceClef == "y" %}
                         <br><span class="larger">{{trad.status_clef}}{{trad.deux_points}}</span>
