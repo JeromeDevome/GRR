@@ -3677,7 +3677,7 @@ function showAccessDenied_twig($back, $infodebug = '')
 	$html .= '<p>'.get_vocab("norights").'</p>';
 	if($debug_flag)
 		$html .= '<p>'.$infodebug.'</p>';
-	$html .= '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
+	$html .= '<p><a href="'.SecuChaine::UrlInt($back).'">'.get_vocab("returnprev").'</a></p>';
 
 	return $html;
 }
