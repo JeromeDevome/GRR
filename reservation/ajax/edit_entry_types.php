@@ -56,7 +56,7 @@ if (SecuAccess::UserArea(getUserName(), $areas) == 0)
 header("Content-Type: text/html;charset=utf-8");
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 // Type de réservation
-$qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM grr_room WHERE id='".$room."'");
+$qui_peut_reserver_pour = grr_sql_query1("SELECT qui_peut_reserver_pour FROM ".TABLE_PREFIX."_room WHERE id='".$room."'");
 $aff_default = ((SecuAccess::UserLevel(getUserName(),-1,"room") >= $qui_peut_reserver_pour) || (SecuAccess::UserLevel(getUserName(),$areas,"area") >= $qui_peut_reserver_pour));
 $aff_type = max(SecuAccess::UserLevel(getUserName(),-1,"room"),SecuAccess::UserLevel(getUserName(),$areas,"area"));
 // Avant d'afficher la liste déroulante des types, on stocke dans $display_type et on teste le nombre de types à afficher
