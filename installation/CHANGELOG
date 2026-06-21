@@ -1,3 +1,12 @@
+Version 4.6.3 - 21/06/2026 Généré par @JeromeDevome
+[Correction] Ajout bouton submit pour les moderateurs - 4daf78efb - @Spitfireap
+[Correction] Lien de retour en cas de conflit - fd516e11c - @ynaessens
+[Correction] SQL se la table _log_mail - 0e602becb - @JeromeDevome
+[Correction] Enregistrement personnalisation mail - b1271e276 - @JeromeDevome
+[Correction] Sécurités - @JeromeDevome & @MCzhao2006
+[Correction] Requête dans edit_entry_types - e8da22ca0 - @JeromeDevome
+[Correction] Affichage formulaire clé selon droits - 895753d72 - @JeromeDevome
+
 Version 4.6.2 - 15/06/2026 Généré par @JeromeDevome
 [Correction] Position du numéro de jour cycle - fcf846c76 - @ynaessens
 [Correction] Nom de variable - e2e3aaf18 - @ynaessens
@@ -18,7 +27,7 @@ Version 4.6.1 - 14/06/2026 Généré par @JeromeDevome
 
 Version 4.6.0 - 04/06/2026 Généré par @JeromeDevome
 [Ajout] Drag & Drop des réservations - @JeromeDevome
-[Ajout]Gestion des accès aux ressources restreintes par groupe - @JeromeDevome
+[Ajout] Gestion des accès aux ressources restreintes par groupe - @JeromeDevome
 [Ajout] Ajout du style des cellules associées à des réservations dont la liste des participants est complète - af1c971dc - @ynaessens
 [Ajout] Définition du nombre maximal de réservations affichées dans la vue mensuelle via un paramètre configurable - 1a7e8cf41 & 36763442b - @JeromeDevome
 [Ajout] Affichage des e-mails dans l’historique des réservations - 9e3ca3931 - @JeromeDevome
