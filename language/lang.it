@@ -1,7 +1,7 @@
 <?php
 # GRR : fichier de langue italienne
 # GRR: Translations provided by JeromeB & Marc HENNETIER & Antony AUDOUARD
-# Last modification : 2026-06-02
+# Last modification : 2026-06-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -181,7 +181,7 @@ $vocab["admin_menu_various"] = "Varie";
 $vocab["admin_nettoyage_bdd"] = "Pulizia database";
 $vocab["admin_overload"] = "Campi aggiuntivi";
 $vocab["admin_page"] = "Pagine varie";
-$vocab["admin_purge_accounts"] = "Epurazione dei account e delle prenotazioni associate";
+$vocab["admin_purge_accounts"] = "Epurazione dei account esterni ad eccezione degli amministratori.";
 $vocab["admin_purge_accounts_confirm"] = "ATTENZIONE: Questa azione cancellerà tutti gli utenti (tranne gli amministratori generali) esterni a GRR e i loro privilegi. Le prenotazioni associate a questi account non verranno rimosse. Sei sicuro di voler eseguire questa azione?";
 $vocab["admin_purge_accounts_confirm2"] = "ATTENZIONE: Questa azione cancellerà tutti gli utenti (tranne gli amministratori generali) esterni a GRR e i loro privilegi, nonché tutte le prenotazioni associate (passate e future). Sei sicuro di voler eseguire questa azione?";
 $vocab["admin_purge_accounts_confirm4"] = "ATTENZIONE: Questa azione cancellerà tutti gli utenti esterni a GRR, tranne gli amministratori generali e gli utenti con privilegi. Le prenotazioni associate a questi account non verranno rimosse. Sei sicuro di voler eseguire questa azione?";

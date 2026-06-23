@@ -1,7 +1,7 @@
 <?php
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2026-06-02
+# Last modification : 2026-06-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -180,7 +180,7 @@ $vocab["admin_menu_various"] = "Varios";
 $vocab["admin_nettoyage_bdd"] = "Limpieza BDD";
 $vocab["admin_overload"] = "Campos adicionales";
 $vocab["admin_page"] = "Paginas varias";
-$vocab["admin_purge_accounts"] = "Purga de las cuentas y las reservas asociadas";
+$vocab["admin_purge_accounts"] = "Purga de las cuentas externas, excepto las de administrador.";
 $vocab["admin_purge_accounts_confirm"] = "¡ATENCIÓN: esta acción va a borrar todos los usuarios (excepto los administradores generales), externos a GRR y sus privilegios. Las reservas asociadas a estas cuentas no serán suprimidas. ¿Está seguro de querer efectuar esta acción?";
 $vocab["admin_purge_accounts_confirm2"] = "¡ATENCIÓN: esta acción va a borrar todos los usuarios (excepto los administradores generales), externos a GRR y sus privilegios, así como todas las reservas asociadas (pasadas y futuras). ¿Está seguro de querer efectuar esta acción?";
 $vocab["admin_purge_accounts_confirm4"] = "¡ATENCIÓN: esta acción va a borrar todos los usuarios externos a GRR, salvo los administradores generales y los usuarios teniendo privilegios. Las reservas asociadas a estas cuentas no serán suprimidas. ¿Está seguro de querer efectuar esta acción?";

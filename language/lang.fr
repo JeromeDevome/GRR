@@ -1,6 +1,6 @@
 <?php
 # GRR: fichier de langue française
-# Last modification : 2026-06-02
+# Last modification : 2026-06-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -148,14 +148,14 @@ $vocab["admin_menu_various"] = "Divers";
 $vocab["admin_nettoyage_bdd"] = "Nettoyage BDD";
 $vocab["admin_overload"] = "Champs additionnels";
 $vocab["admin_page"] = "Pages divers";
-$vocab["admin_purge_accounts"] = "Purge des comptes et des réservations associées";
+$vocab["admin_purge_accounts"] = "Purge des comptes externes sauf administrateurs";
 $vocab["admin_purge_accounts_confirm"] = "ATTENTION : Cette action va effacer tous les utilisateurs (sauf les administrateurs généraux), externes à GRR et leurs privilèges. Les réservations associées à ces comptes ne seront pas supprimées. Etes-vous certain de vouloir effectuer cette action ?";
 $vocab["admin_purge_accounts_confirm2"] = "ATTENTION : Cette action va effacer tous les utilisateurs (sauf les administrateurs généraux), externes à GRR et leurs privilèges, ainsi que toutes les réservations associées (passées et à venir). Etes-vous certain de vouloir effectuer cette action ?";
 $vocab["admin_purge_accounts_confirm4"] = "ATTENTION : Cette action va effacer tous les utilisateurs externes à GRR, sauf les administrateurs généraux et les utilisateurs ayant des privilèges. Les réservations associées à ces comptes ne seront pas supprimées. Etes-vous certain de vouloir effectuer cette action ?";
-$vocab["admin_purge_accounts_desc"] = "Les actions ci-dessous permettent de supprimer tous les comptes utilisateurs qui ont été ajoutés via une source externe à GRR et qui ne sont pas administrateurs généraux, ainsi que, selon l'option choisie, toutes les réservations associées.
+$vocab["admin_purge_accounts_desc"] = "Les actions ci-dessous permettent de supprimer tous les comptes utilisateurs qui ont été ajoutés via une source externe à GRR et qui ne sont pas administrateurs généraux, ainsi que, selon l'option choisie, toutes les réservations associées.<br/>
 Attention, ces actions sont irréversibles, soyez bien certain de vouloir effectuer cette suppression. Faites une sauvegarde de la base de données au préalable
-
-Remarque : veillez à effectuer cette opération sans utilisateur connecté à GRR (hormis l'administrateur).
+<br/>
+Remarque : veillez à effectuer cette opération sans utilisateur connecté à GRR (hormis l'administrateur).<br/>
 Rappel : vous pouvez désactiver temporairement les connexions à GRR (menu \"configuration générale\").";
 $vocab["admin_purge_accounts_sauf_privileges"] = "Purge des comptes externes uniquement n'ayant pas de privilèges";
 $vocab["admin_purge_accounts_with_bookings"] = "Purge des comptes externes et des réservations associées";

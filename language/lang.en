@@ -1,7 +1,7 @@
 <?php
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2026-06-02
+# Last modification : 2026-06-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -142,11 +142,11 @@ $vocab["admin_menu_various"] = "Miscellaneous";
 $vocab["admin_nettoyage_bdd"] = "Database Cleanup";
 $vocab["admin_overload"] = "Additional Fields";
 $vocab["admin_page"] = "Miscellaneous Pages";
-$vocab["admin_purge_accounts"] = "Purge external accounts and associated reservations";
+$vocab["admin_purge_accounts"] = "Purge external accounts, excluding administrators";
 $vocab["admin_purge_accounts_confirm"] = "WARNING: This action will erase all users (except general administrators), external to GRR and their privileges. Reservations associated with these accounts will not be deleted. Are you sure you want to perform this action?";
 $vocab["admin_purge_accounts_confirm2"] = "WARNING: This action will erase all users (except general administrators), external to GRR and their privileges, as well as all associated reservations (past and future). Are you sure you want to perform this action?";
 $vocab["admin_purge_accounts_confirm4"] = "WARNING : This action will erase all external users in GRR, except general administrators and users with privileges. Reservations associated with these accounts will not be deleted. Are you sure you want to perform this action ?";
-$vocab["admin_purge_accounts_desc"] = "The actions below will delete all user accounts that have been added through a source external to GRR and that are not global administrators, as well as, according to the option chosen, all associated reservations . Warning, these actions are irreversible , make sure you want to perform this deletion. Make a backup of the database beforehand Note : be sure to perform this operation without a user logged in to GRR (except the administrator) . Reminder : you can temporarily disable connections to GRR (menu \"Security / Connections\").";
+$vocab["admin_purge_accounts_desc"] = "The actions below will delete all user accounts that have been added through a source external to GRR and that are not global administrators, as well as, according to the option chosen, all associated reservations.<br/>Warning, these actions are irreversible , make sure you want to perform this deletion. Make a backup of the database beforehand <br/>Note : be sure to perform this operation without a user logged in to GRR (except the administrator).<br/>Reminder : you can temporarily disable connections to GRR (menu \"Security / Connections\").";
 $vocab["admin_purge_accounts_sauf_privileges"] = "Purge external accounts without privileges";
 $vocab["admin_purge_accounts_with_bookings"] = "Purge external accounts and associated reservations";
 $vocab["admin_purge_tables_confirm"] = "This action will clean user liaison tables, do you confirm this action?";
@@ -460,7 +460,7 @@ $vocab["default_room_month_all_bis"] = "All resources (display 'month' bis)";
 $vocab["default_room_week_all"] = "All resources (display 'week')";
 $vocab["default_site"] = "Site by default";
 $vocab["Definir"] = "Define";
-$vocab["definir_par_defaut"] = "Définir par défaut";
+$vocab["definir_par_defaut"] = "Set as default";
 $vocab["del"] = "Delete";
 $vocab["del_entry_in_conflict"] = "Delete the reservation(s) above in order to confirm the new reservation.";
 $vocab["del_group_succeed"] = "The group has been successfully removed.";

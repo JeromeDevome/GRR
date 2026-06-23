@@ -1,7 +1,7 @@
 <?php
 # GRR : fichier de langue allemande
 # GRR: Traduction : JeromeB & Karsten Schinkel & Jean-Yves Migeon & Paul Friedli
-# Last modification : 2026-06-02
+# Last modification : 2026-06-23
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -145,13 +145,13 @@ $vocab["admin_menu_various"] = "Verschiedenes";
 $vocab["admin_nettoyage_bdd"] = "Datenbankbereinigung";
 $vocab["admin_overload"] = "Eigene Felder";
 $vocab["admin_page"] = "diverse Seiten ";
-$vocab["admin_purge_accounts"] = "Löschen von Konten und zugehörigen Reservierungen";
+$vocab["admin_purge_accounts"] = "Löschung externer Konten mit Ausnahme von Administratoren";
 $vocab["admin_purge_accounts_confirm"] = "ACHTUNG: Durch diese Aktion werden alle Benutzer (außer den allgemeinen Administratoren) außerhalb von GRR und deren Berechtigungen gelöscht. Die mit diesen Konten verbundenen Reservierungen werden nicht gelöscht. Möchten Sie diese Aktion wirklich ausführen?";
 $vocab["admin_purge_accounts_confirm2"] = "ACHTUNG: Diese Aktion löscht alle Benutzer (außer Generaladministratoren) außerhalb von GRR und deren Berechtigungen sowie alle damit verbundenen Reservierungen (vergangene und zukünftige). Möchten Sie diese Aktion wirklich ausführen?";
 $vocab["admin_purge_accounts_confirm4"] = "ACHTUNG: Diese Aktion löscht alle externen Benutzer von GRR, mit Ausnahme der allgemeinen Administratoren und Benutzer mit Sonderrechten. Die mit diesen Konten verbundenen Reservierungen werden nicht gelöscht. Möchten Sie diese Aktion wirklich ausführen?";
-$vocab["admin_purge_accounts_desc"] = "Mit den folgenden Aktionen können Sie alle Benutzerkonten, die über eine externe Quelle zu GRR hinzugefügt wurden und keine allgemeinen Administratoren sind, sowie, je nach gewählter Option, alle zugehörigen Reservierungen löschen. Achtung, diese Aktionen sind irreversibel. Seien Sie sich daher sicher, dass Sie diese Löschung durchführen möchten. Erstellen Sie zuvor eine Sicherungskopie der Datenbank Hinweis: Führen Sie diesen Vorgang nur durch, wenn kein Benutzer (außer dem Administrator) bei GRR angemeldet ist. Zur Erinnerung: Sie können die Verbindungen zu GRR vorübergehend deaktivieren (Menü \"Allgemeine Konfiguration\").";
-$vocab["admin_purge_accounts_sauf_privileges"] = "Nur externe Konten ohne Sonderrechte bereinigens";
-$vocab["admin_purge_accounts_with_bookings"] = "Bereinigung externer Konten und zugehöriger Reservierungen";
+$vocab["admin_purge_accounts_desc"] = "Mit den folgenden Aktionen können Sie alle Benutzerkonten, die über eine externe Quelle zu GRR hinzugefügt wurden und keine allgemeinen Administratoren sind, sowie, je nach gewählter Option, alle zugehörigen Reservierungen löschen.<br/>Achtung, diese Aktionen sind irreversibel. Seien Sie sich daher sicher, dass Sie diese Löschung durchführen möchten.<br/>Erstellen Sie zuvor eine Sicherungskopie der Datenbank.<br/>Hinweis: Führen Sie diesen Vorgang nur durch, wenn kein Benutzer (außer dem Administrator) bei GRR angemeldet ist.<br/>Zur Erinnerung: Sie können die Verbindungen zu GRR vorübergehend deaktivieren (Menü \"Allgemeine Konfiguration\").";
+$vocab["admin_purge_accounts_sauf_privileges"] = "Löschung externer Konten mit Ausnahme derjenigen mit Berechtigungen.";
+$vocab["admin_purge_accounts_with_bookings"] = "Löschung externer Konten und zugehöriger Reservierungen";
 $vocab["admin_purge_tables_confirm"] = "Diese Aktion löscht die Verbindungstabellen der Benutzer. Möchten Sie diese Aktion bestätigen?";
 $vocab["admin_purge_tables_liaison"] = "Reinigung der Verbindungstabellen";
 $vocab["admin_right"] = "Verwaltung der Ressourcen durch die Benutzer";

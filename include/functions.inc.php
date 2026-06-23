@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-06-15 17:58$
+ * Dernière modification : $Date: 2026-06-23 18:05$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1171,8 +1171,6 @@ function NettoyerTablesJointure()
       grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login=?","s",[$row['login']]);
     }
   }
-  // Suppression effective
-  echo "<hr />\n";
   echo "<p class='avertissement'>".get_vocab("tables_liaison").get_vocab("deux_points").$nb.get_vocab("entres_supprimees")."</p>\n";
 }
 /*
@@ -5258,11 +5256,15 @@ function verif_participation_date($user, $id, $id_room, $date_booking, $date_now
     }
   }
 }
-/** supprimerReservationsUtilisateursEXT()
+/** supprimerReservationsUtilisateursEXT($avec_resa,$avec_privileges)
  * Supprime les réservations des membres qui proviennent d'une source "EXT"
+ * paramètres :
+ *  $avec_resa : déclenche la suppression des réservations des utilisateurs externes sauf administrateurs
+ *  $avec_privileges : purge les comptes externes y compris ceux avec des privilèges sauf administrateurs
  * Returns:
  *   0        - An error occured
  *   non-zero - The entries were deleted
+ * peut-être à revoir pour séparer action et affichage
  */
 function supprimerReservationsUtilisateursEXT($avec_resa,$avec_privileges)
 {
@@ -5270,7 +5272,6 @@ function supprimerReservationsUtilisateursEXT($avec_resa,$avec_privileges)
   $requete_users_ext = "SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE source='ext' and statut<>'administrateur'";
   $res = grr_sql_query($requete_users_ext);
   $logins = array();
-  $logins_liaison  = array();
   if ($res)
   {
     foreach($res as $row)
@@ -5278,203 +5279,103 @@ function supprimerReservationsUtilisateursEXT($avec_resa,$avec_privileges)
       $logins[]=$row['login'];
     }
   }
-  // Construction des requêtes de suppression à partir des différents utilisateurs à supprimer
-  if ($avec_resa == 'y')
-  {
-    // Pour chaque utilisateur, on supprime les réservations qu'il a créées et celles dont il est bénéficiaire
-    // Table grr_entry
-    $req_suppr_table_entry = "DELETE FROM ".TABLE_PREFIX."_entry WHERE create_by = ";
-    $first = 1;
-    foreach($logins as $log)
+  if(empty($logins)){
+    return(0);
+  }
+  else{
+    $logins_liste = "('".implode("','",$logins)."')";
+    // Construction des requêtes de suppression à partir des différents utilisateurs à supprimer
+    if ($avec_resa == 'y')
     {
-      if ($first == 1)
-      {
-        $req_suppr_table_entry .= "'$log' OR beneficiaire='$log'";
-        $first = 0;
-      }
-      else
-        $req_suppr_table_entry .= " OR create_by = '$log' OR beneficiaire = '$log' ";
+      // Pour chaque utilisateur, on supprimera les réservations qu'il a créées et celles dont il est bénéficiaire
+      // Table grr_entry
+      $req_suppr_table_entry1 = "DELETE FROM ".TABLE_PREFIX."_entry WHERE create_by IN ".$logins_liste ;
+      $req_suppr_table_entry2 = "DELETE FROM ".TABLE_PREFIX."_entry WHERE beneficiaire IN ".$logins_liste ;
+      // Pour chaque utilisateur, on supprimera les réservations périodiques qu'il a créées et celles dont il est bénéficiaire
+      // Table grr_repeat
+      $req_suppr_table_repeat1 = "DELETE FROM ".TABLE_PREFIX."_repeat WHERE create_by IN ".$logins_liste ;
+      $req_suppr_table_repeat2 = "DELETE FROM ".TABLE_PREFIX."_repeat WHERE beneficiaire IN ".$logins_liste ;
+      // Pour chaque utilisateur, on supprimera les réservations modérées qu'il a créées et celles dont il est bénéficiaire
+      // Table grr_entry_moderate
+      $req_suppr_table_entry_moderate1 = "DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE create_by IN ".$logins_liste;
+      $req_suppr_table_entry_moderate2 = "DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE beneficiaire IN ".$logins_liste;
     }
-    // Pour chaque utilisateur, on supprime les réservations périodiques qu'il a créées et celles dont il est bénéficiaire
-    // Table grr_repeat
-    $req_suppr_table_repeat = "DELETE FROM ".TABLE_PREFIX."_repeat WHERE create_by = ";
-    $first = 1;
-    foreach ($logins as $log)
-    {
-      if ($first == 1)
-      {
-        $req_suppr_table_repeat .= "'$log' OR beneficiaire='$log'";
-        $first = 0;
-      }
-      else
-        $req_suppr_table_repeat .= " OR create_by = '$log' OR beneficiaire = '$log' ";
+    if($avec_privileges == "y"){
+      // Table grr_j_mailuser_room
+      $req_j_mailuser_room = "DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login IN ".$logins_liste;
+      // Table grr_j_user_area
+      $req_j_user_area = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login IN ".$logins_liste;
+      // Table grr_j_user_room
+      $req_j_user_room = "DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login IN ".$logins_liste;
+      // Table grr_j_useradmin_area
+      $req_j_useradmin_area = "DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login IN ".$logins_liste;
+      // Table grr_j_useradmin_site
+      $req_j_useradmin_site = "DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login IN ".$logins_liste;
     }
-    // Pour chaque utilisateur, on supprime les réservations périodiques qu'il a créées et celles dont il est bénéficiaire
-    // Table grr_entry_moderate
-    $req_suppr_table_entry_moderate = "DELETE FROM ".TABLE_PREFIX."_entry_moderate WHERE create_by = ";
-    $first = 1;
-    foreach ($logins as $log)
-    {
-      if ($first == 1)
-      {
-        $req_suppr_table_entry_moderate .= "'$log' OR beneficiaire='$log'";
-        $first = 0;
+    else{
+      // recherche des utilisateurs avec privilège
+      $req_avec_privilege = "SELECT login FROM ".TABLE_PREFIX."_j_mailuser_room UNION 
+                            (SELECT login FROM ".TABLE_PREFIX."_j_user_area) UNION
+                            (SELECT login FROM ".TABLE_PREFIX."_j_user_room) UNION
+                            (SELECT login FROM ".TABLE_PREFIX."_j_useradmin_area) UNION
+                            (SELECT login FROM ".TABLE_PREFIX."_j_useradmin_site)";
+      $avec_privilege = grr_sql_query($req_avec_privilege);
+      $privilegies = array();
+      if($avec_privilege){
+        foreach($avec_privilege as $row){
+          $privilegies[] = $row["login"];
+        }
+        $sans_privilege = array_diff($logins,$privilegies);
+        if(empty($sans_privilege)){
+          return 0;
+        }
+        else{
+          $sans_privilege_liste = "('".implode("','",$sans_privilege)."')";
+          // Table grr_j_mailuser_room
+          $req_j_mailuser_room = "DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login IN ".$sans_privilege_liste;
+          // Table grr_j_user_area
+          $req_j_user_area = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login IN ".$sans_privilege_liste;
+          // Table grr_j_user_room
+          $req_j_user_room = "DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login IN ".$sans_privilege_liste;
+          // Table grr_j_useradmin_area
+          $req_j_useradmin_area = "DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login IN ".$sans_privilege_liste;
+          // Table grr_j_useradmin_site
+          $req_j_useradmin_site = "DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login IN ".$sans_privilege_liste;
+        }
       }
       else
-        $req_suppr_table_entry_moderate .= " OR create_by = '$log' OR beneficiaire = '$log' ";
+        return 0;
     }
   }
-  $req_j_mailuser_room = "";
-  $req_j_user_area = "";
-  $req_j_user_room = "";
-  $req_j_useradmin_area = "";
-  $req_j_useradmin_site = "";
-  foreach ($logins as $log)
+  // Suppression effective
+  $nb = 0;
+  if ($avec_resa == 'y') // supprime toutes les réservations associées à des utilisateurs externes non administrateurs
   {
-    // Table grr_j_mailuser_room
-    $test = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='".$log."'");
-    if ($test >=1)
-    {
-      if ($avec_privileges == "y")
-      {
-        if ($req_j_mailuser_room == "")
-          $req_j_mailuser_room = "DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='".$log."'";
-        else
-          $req_j_mailuser_room .= " OR login = '".$log."'";
-      }
-      else
-        $logins_liaison[] = strtolower($log);
+    $req = [$req_suppr_table_entry1, $req_suppr_table_entry2, $req_suppr_table_repeat1, $req_suppr_table_repeat2, $req_suppr_table_entry_moderate1, $req_suppr_table_entry_moderate2];
+    foreach($req as $r){
+      $s = grr_sql_command($r);
+      if($s != -1)
+        $nb += $s;
     }
-    // Table grr_j_user_area
-    $test = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_user_area WHERE login='".$log."'");
-    if ($test >=1)
-    {
-      if ($avec_privileges == "y")
-      {
-        if ($req_j_user_area == "")
-          $req_j_user_area = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='".$log."'";
-        else
-          $req_j_user_area .= " OR login = '".$log."'";
-      }
-      else
-        $logins_liaison[] = strtolower($log);
-    }
-    // Table grr_j_user_room
-    $test = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_user_room WHERE login='".$log."'");
-    if ($test >= 1)
-    {
-      if ($avec_privileges == "y")
-      {
-        if ($req_j_user_room == "")
-          $req_j_user_room = "DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='".$log."'";
-        else
-          $req_j_user_room .= " OR login = '".$log."'";
-      }
-      else
-        $logins_liaison[] = strtolower($log);
-    }
-    // Table grr_j_useradmin_area
-    $test = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='".$log."'");
-    if ($test >= 1)
-    {
-      if ($avec_privileges == "y")
-      {
-        if ($req_j_useradmin_area == "")
-          $req_j_useradmin_area = "DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='".$log."'";
-        else
-          $req_j_useradmin_area .= " OR login = '".$log."'";
-      }
-      else
-        $logins_liaison[] = strtolower($log);
-    }
-    // Table grr_j_useradmin_site
-    $test = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='".$log."'");
-    if ($test >= 1)
-    {
-      if ($avec_privileges == "y")
-      {
-        if ($req_j_useradmin_site == "")
-          $req_j_useradmin_site = "DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='".$log."'";
-        else
-          $req_j_useradmin_site .= " OR login = '".$log."'";
-      }
-      else
-        $logins_liaison[] = strtolower($log);
-    }
-  }
-    // Suppression effective
-  echo "<hr />\n";
-  if ($avec_resa == 'y')
-  {
-    $nb = 0;
-    $s = grr_sql_command($req_suppr_table_entry);
-    if ($s != -1)
-      $nb += $s;
-    $s = grr_sql_command($req_suppr_table_repeat);
-    if ($s != -1)
-      $nb += $s;
-    $s = grr_sql_command($req_suppr_table_entry_moderate);
-    if ($s != -1)
-      $nb += $s;
     echo "<p class='avertissement'>".get_vocab("tables_reservations").get_vocab("deux_points").$nb.get_vocab("entres_supprimees")."</p>\n";
   }
   $nb = 0;
-  if ($avec_privileges == "y")
-  {
-    if ($req_j_mailuser_room != "")
-    {
-      $s = grr_sql_command($req_j_mailuser_room);
-      if ($s != -1)
-        $nb += $s;
-    }
-    if ($req_j_user_area != "")
-    {
-      $s = grr_sql_command($req_j_user_area);
-      if ($s != -1)
-        $nb += $s;
-    }
-    if ($req_j_user_room != "")
-    {
-      $s = grr_sql_command($req_j_user_room);
-      if ($s != -1)
-        $nb += $s;
-    }
-    if ($req_j_useradmin_area != "")
-    {
-      $s = grr_sql_command($req_j_useradmin_area);
-      if ($s != -1)
-        $nb += $s;
-    }
-    if ($req_j_useradmin_site != "")
-    {
-      $s = grr_sql_command($req_j_useradmin_site);
-      if ($s != -1)
-        $nb += $s;
-    }
+  // suppression des comptes dans les tables de liaison
+  $req = [$req_j_mailuser_room, $req_j_user_area, $req_j_user_room, $req_j_useradmin_area, $req_j_useradmin_site];
+  foreach($req as $r){
+    $s = grr_sql_command($r);
+    if($s != -1)
+      $nb += $s;
   }
   echo "<p class='avertissement'>".get_vocab("tables_liaison").get_vocab("deux_points").$nb.get_vocab("entres_supprimees")."</p>\n";
-  if ($avec_privileges == "y")
-  {
-    // Enfin, suppression des utilisateurs de la source EXT qui ne sont pas administrateur
+  if ($avec_privileges == "y") // suppression des utilisateurs de la source EXT qui ne sont pas administrateur
     $requete_suppr_users_ext = "DELETE FROM ".TABLE_PREFIX."_utilisateurs WHERE source='ext' and statut<>'administrateur'";
-    $s = grr_sql_command($requete_suppr_users_ext);
-    if ($s == -1)
-      $s = 0;
-    echo "<p class='avertissement'>".get_vocab("table_utilisateurs").get_vocab("deux_points").$s.get_vocab("entres_supprimees")."</p>\n";
-  }
-  else
-  {
-    $n = 0;
-    foreach ($logins as $log)
-    {
-      if (!in_array(strtolower($log), $logins_liaison))
-      {
-        grr_sql_command("DELETE FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$log."'");
-        $n++;
-      }
-    }
-    echo "<p class='avertissement'>".get_vocab("table_utilisateurs").get_vocab("deux_points").$n.get_vocab("entres_supprimees")."</p>\n";
-  }
+  else // suppression des comptes externes sans privilèges
+    $requete_suppr_users_ext = "DELETE FROM ".TABLE_PREFIX."_utilisateurs WHERE login IN ".$sans_privilege_liste;
+  $s = grr_sql_command($requete_suppr_users_ext);
+  if ($s == -1)
+    $s = 0;
+  echo "<p class='avertissement'>".get_vocab("table_utilisateurs").get_vocab("deux_points").$s.get_vocab("entres_supprimees")."</p>\n";
 }
 /** grrDelOverloadFromEntries()
  * Supprime les données du champ $id_field de toutes les réservations

@@ -3,9 +3,9 @@
  * admin_purge_accounts.php
  * interface de purge des comptes et réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-27 15:08$
+ * Dernière modification : $Date: 2026-06-23 18:05$
  * @author    JeromeB & Laurent Delineau & Christian Daviau & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -15,7 +15,7 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
-$grr_script_name = "admin_user.php";
+$grr_script_name = "admin_purge_accounts.php";
 
 include "../include/admin.inc.php";
 
@@ -23,39 +23,11 @@ $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTT
 $display = isset($_GET["display"]) ? $_GET["display"] : NULL;
 $order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
 $msg = '';
-if (((Settings::get("ldap_statut") == "") && (Settings::get("sso_statut") == "") && (Settings::get("imap_statut") == "")) || (authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') !=  1))
+if (((Settings::get("ldap_statut") == "") && (Settings::get("sso_statut") == "") && (Settings::get("imap_statut") == "")) || (authGetUserLevel(getUserName(), -1) < 6) && (authGetUserLevel(getUserName(), -1,'user') != 1))
 {
 	showAccessDenied($back);
 	exit();
 }
-if (isset($_POST['do_purge_table_liaison']))
-    {
-        if ($_POST['do_purge_table_liaison'] == 1)
-        {
-            NettoyerTablesJointure();
-        }
-    }
-    if (isset($_POST['do_purge_sauf_privileges']))
-    {
-        if ($_POST['do_purge_sauf_privileges'] == 1)
-        {
-            supprimerReservationsUtilisateursEXT("n","n");
-        }
-    }
-    if (isset($_POST['do_purge']))
-    {
-        if ($_POST['do_purge'] == 1)
-        {
-            supprimerReservationsUtilisateursEXT("n","y");
-        }
-    }
-    if (isset($_POST['do_purge_avec_resa']))
-    {
-        if ($_POST['do_purge_avec_resa'] == 1)
-        {
-            supprimerReservationsUtilisateursEXT("y","y");
-        }
-    }
 
 $themessage = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_accounts_confirm"));
 $themessage2 = str_replace ( "'"  , "\\'"  , get_vocab("admin_purge_accounts_confirm2"));
@@ -70,8 +42,18 @@ include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
 echo "<h2>".get_vocab('admin_purge_accounts')."</h2>";
 echo get_vocab('admin_clean_accounts_desc');
-echo "<div class='center'>\n
-<form id=\"purge_liaison\" action=\"admin_purge_accounts.php\" method=\"post\">\n
+echo "<div class='center'>\n";
+
+if (isset($_POST['do_purge_table_liaison']) && ($_POST['do_purge_table_liaison'] == 1))
+  NettoyerTablesJointure();
+if (isset($_POST['do_purge_sauf_privileges']) && ($_POST['do_purge_sauf_privileges'] == 1))
+  supprimerReservationsUtilisateursEXT("n","n");
+if (isset($_POST['do_purge']) && ($_POST['do_purge'] == 1))
+  supprimerReservationsUtilisateursEXT("n","y");
+if (isset($_POST['do_purge_avec_resa']) && ($_POST['do_purge_avec_resa'] == 1))
+  supprimerReservationsUtilisateursEXT("y","y");
+
+echo "<form id=\"purge_liaison\" action=\"admin_purge_accounts.php\" method=\"post\">\n
 	<div>
 		<input type=\"hidden\" name=\"do_purge_table_liaison\" value=\"1\" />\n
 		<input
