@@ -21,23 +21,49 @@ include "./include/import.class.php";
 
 
 $action = isset($_GET["action"]) ? intval($_GET["action"]) : NULL;
-$id = SecuChaine::GetFormVar("id","int",-1); // l'id du fichier à supprimer
-$resa = SecuChaine::GetFormVar("resa","int",-1); // l'id de la réservation
-
+$id = SecuChaine::GetFormVar("id","int",-1);
+$area = SecuChaine::GetFormVar("area","int",-1);
+$room_id = SecuChaine::GetFormVar("room_id","int",-1);
+$userName = getUserName();
 $uploadDir = realpath(".")."/personnalisation/".$gcDossierDoc."/";
+
+// données liées aux fichiers attachés
+$droit_acces = SecuAccess::UserLevel($userName, $room_id);
+$res = grr_sql_query("SELECT access_file, user_right, upload_file FROM ".TABLE_PREFIX."_area WHERE id =$area");
+$attached_files = array();
+if(!$res)
+  fatal_error(0,grr_sql_error());
+else{
+  $level = grr_sql_row($res,0);
+
+  $access_file = $level[0];
+  $user_right = $level[1];
+  $upload_file = $level[2];
+}
+
+  if ($id != 0 && $droit_acces >= $user_right && $access_file==1){
+  }
+  else
+  {
+    echo "Erreur, vous n'avez pas les droits nécessaires pour gérer les fichiers attachés à cette ressource.";
+    die();
+  }
+
 
 
 if($action == 1) // import d'un fichier
 {
-  $result = Import::DocumentResa($resa);
-  if($result != "")
-  {
-    $msg = $result[0];
-    echo $msg;
-    echo "<script>setTimeout(function() { window.location.href = '".$back."'; }, 5000);</script>";
-  }
-} 
-elseif($action == 2) // suppression d'un fichier
+
+    $result = Import::DocumentResa($id);
+
+    if($result != "")
+    {
+      $msg = $result[0];
+      echo $msg;
+      echo "<script>setTimeout(function() { window.location.href = '".$back."'; }, 5000);</script>";
+    }
+
+} elseif($action == 2) // suppression d'un fichier
 {
   $msg = "";
 
