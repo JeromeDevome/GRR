@@ -115,19 +115,22 @@
 							<label class="col col-sm-6 col-xl-4" for="default_css">{{ trad.explain_css }}</label>
 							<div class="col col-sm-5 col-xl-3">
 								<select class="form-control" name="default_css">
-									<option value="test">test</option>
-									{{ d.optionTheme | raw }}
+									{% for theme in themesDispo %}
+										<option value="{{ theme.id }}" {% if settings.default_css == theme.id %}selected{% endif %}>{{ theme.nom }}</option>
+									{% endfor %}
 								</select>
 							</div>
 							<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation du thème avec tout les utilisateurs ?" data-idsynchro="1"><i class="icon fa fa-sync"></i></button></div>
 						</div>
 
-						<!--Langue  -->
+						<!-- Langue -->
 						<div class="form-group row">
 							<label class="col col-sm-6 col-xl-4" for="default_language">{{ trad.choose_language }}</label>
 							<div class="col col-sm-5 col-xl-3">
 								<select class="form-control" name="default_language">
-									{{ d.optionLangue | raw }}
+									{% for langue in liste_language %}
+										<option value="{{ langue }}" {% if langue == settings.default_language %} selected {% endif %}> {{ trad['langue_' ~ langue] }}</option>
+									{% endfor %}
 								</select>
 							</div>
 							<div class="col col-sm-1"><button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="Confirmer la synchronisation de la langue avec tout les utilisateurs ?" data-idsynchro="2"><i class="icon fa fa-sync"></i></button></div>
@@ -235,14 +238,6 @@
 					});
 				}
 			});
-
-			{%if d.enregistrement%}
-				{%if d.enregistrement == 1 %}
-					toastr.success("{{trad.message_records}}")
-				{% else %}
-					toastr.warning("{{d.enregistrement|raw}}")
-				{%endif%}
-			{%endif%}
 		})
 	</script>
 
