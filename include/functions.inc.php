@@ -3035,7 +3035,9 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			'id_entry' => $id_entry,
 			'start_time' => $raw_start_date,
 			'end_time' => $raw_end_date,
-			'nom_resa' => $room_name,
+			'nom_resa' => $breve_description,
+			'location' => $room_name,
+			'action' => $action,
 		));
 	}
 

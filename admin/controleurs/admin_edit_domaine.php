@@ -15,6 +15,11 @@
  * (at your option) any later version.
  */
 
+// DEBUG: A RETIRER APRES /!\ **************************************************************
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// *****************************************************************************************
+
 $grr_script_name = "admin_edit_domaine.php";
 
 $trad = $vocab;
@@ -36,6 +41,10 @@ $user_right = (int)SecuChaine::GetFormVar("user_right","int");
 $upload_file = (int)SecuChaine::GetFormVar("upload_file","int");
 $id_area = intval(SecuChaine::GetFormVar("id_area","int",0));
 $id_site = intval(SecuChaine::GetFormVar("id_site","int",-1));
+$description_breve = (int)SecuChaine::GetFormVar("description_breve","int");
+$description_complete = (int)SecuChaine::GetFormVar("description_complete","int");
+$mails_active = isset($_POST["mails_active"]) ? $_POST["mails_active"] : 0;
+$mails_ics_active = isset($_POST["mails_ics_active"]) ? $_POST["mails_ics_active"] : 0;
 
 settype($max_booking, "integer");
 if ($max_booking<-1)
@@ -199,7 +208,9 @@ if ((!empty($id_area)) || (isset($add_area)))
 				access_file = ".$access_file.",
 				upload_file = ".$upload_file.",
 				description_breve = '".$description_breve."',
-				description_complete = '".$description_complete."'
+				description_complete = '".$description_complete."',
+				mails_active = ".$mails_active.",
+				mails_ics_active = ".$mails_ics_active."
 				WHERE id=$id_area";
 				if (grr_sql_command($sql) < 0)
 				{
@@ -231,7 +242,9 @@ if ((!empty($id_area)) || (isset($add_area)))
 				access_file = ".$access_file.",
 				upload_file = ".$upload_file.",
 				description_breve = '".$description_breve."',
-				description_complete = '".$description_complete."'
+				description_complete = '".$description_complete."',
+				mails_active = ".$mails_active.",
+				mails_ics_active = ".$mails_ics_active."
 				";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(1, "<p>" . grr_sql_error());

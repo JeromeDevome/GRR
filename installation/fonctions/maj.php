@@ -1436,6 +1436,10 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_7_3_it-it', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_7_1_fr-it';");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_page (nom, titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement) SELECT 'mails_resa_7_3_es-es', titre, valeur, systeme, statutmini, lien, nouveauonglet, ordre, emplacement FROM ".TABLE_PREFIX."_page WHERE nom = 'mails_resa_7_1_fr-es';");
 
+		// AJOUT POUR CONFIG ICS
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_area ADD mails_active BOOL DEFAULT 0 NOT NULL;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_area ADD mails_ics_active BOOL DEFAULT 0 NOT NULL;");
+		//
 
 		if ($result_inter == '')
 			$result .= formatresult("Ok !","<span style='color:green;'>","</span>");

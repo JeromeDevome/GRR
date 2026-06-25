@@ -71,40 +71,49 @@ class Email{
 				$mail->Body = nl2br($message);
 				$mail->AltBody = 'Ce message ne peut-être affiché.';
 				$ical = null;
-				ini_set('display_errors', 1);
-				error_reporting(E_ALL);
 
+				// DEBUG: A RETIRER APRES /!\ **************************************************************
+				// ini_set('display_errors', 1);
+				// error_reporting(E_ALL);
+				// *****************************************************************************************
+
+				// ICS: Ajout résa OK, Modif OK, Suppr OK, reste a ajouter la configuration pour activer ou non l'envoi d'invitation ICS en fonction du domaine / user
 				if($mail_invite && !empty($resa_info)){ // Si l'envoi d'invitation via ICS est activé et que les infos de résas sont ok on prep un ics
 					// Préparation d'un GUID
-					$hash = strtoupper(hash('ripemd128', uniqid('', true) . md5(time() . rand(0, time()))));
+					$hash = strtolower(hash('ripemd128', $resa_info['id_entry'])); # GUID retrouvable avec l'id de la résa (Pour modifier la résa notamment)
     				$guid = substr($hash,  0,  8).'-'.substr($hash,  8,  4).'-'.substr($hash, 12,  4).'-'.substr($hash, 16,  4).'-'.substr($hash, 20, 12);
 					// Préparation du vcalendar
-					$ical = new Vcalendar([
-						Vcalendar::UNIQUE_ID => $guid,
-					]);
-
+					$ical = new Vcalendar();
+					$ical->setUid($guid);
 					$ical->setXprop('X-WR-CALNAME', 'Réservation GRR');
 					$ical->setXprop('X-WR-CALDESC', $resa_info['nom_resa']);
 					$ical->setXprop('X-WR-TIMEZONE', date_default_timezone_get());
-					$ical->setMethod('REQUEST');
+					if ($resa_info['action'] != 3 && $resa_info['action'] != 4) {
+						$ical->setMethod('REQUEST');
+					} else { 
+						$ical->setMethod('CANCEL');
+					}
 
 					// Préparation du vevent
 					$event = $ical->newVevent();
 					$event->setDtstart(new \DateTime('@'.$resa_info['start_time'], new \DateTimeZone(date_default_timezone_get())));
 					$event->setDtend(new \DateTime('@'.$resa_info['end_time'], new \DateTimeZone(date_default_timezone_get())));
 					$event->setSummary($resa_info['nom_resa']);
+					$event->setLocation($resa_info['location']);
 					$event->setDescription($resa_info['nom_resa']);
 					$event->setAttendee($A);
+					$event->setUid($guid.'-event');
 
 					// Préparation de la valarm
 					$alarm = $event->newValarm();
 					$alarm->setAction(Vcalendar::DISPLAY);
 					$alarm->setDescription($event->getDescription());
 					$alarm->setTrigger('-PT15M'); // 15 minutes avant l'événement
+					$alarm->setUid($guid.'-alarm');
 
 					$icalstr = $ical->vtimezonePopulate()->createCalendar();
 					$mail->Ical = $icalstr;
-				}
+				} // Fin de prep de l'ICS
 				
 				if ($username != '') {
 					$mail->SMTPAuth = true;
