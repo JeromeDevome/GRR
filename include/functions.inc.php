@@ -2696,7 +2696,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
  * $action = 6 -> Résultat d'une décision de modération
  * $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 */
-function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array(), $mail_invite = true)
+function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array(), $mail_invite = false)
 {
 	global $vocab, $niveauDossier, $locale, $weekstarts, $enable_periods, $periods_name;
 

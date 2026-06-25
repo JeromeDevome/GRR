@@ -758,12 +758,12 @@ try {
                             'rep_end_date' => $rep_enddate,
                             'rep_opt' => $rep_opt,
                             'rep_num_weeks' => $rep_num_weeks
-                        ));
+                        ), mail_invite: $domaine["mails_ics_active"]);
                     else // création
                         if ($send_mail_moderate)
-                            $message_error = send_mail($id_first_resa, 5, $dformat); // à modérer
+                            $message_error = send_mail($id_first_resa, 5, $dformat, mail_invite: $domaine["mails_ics_active"]); // à modérer
                         else
-                            $message_error = send_mail($id_first_resa, 1, $dformat, array(), $oldRessource);
+                            $message_error = send_mail($id_first_resa, 1, $dformat, array(), $oldRessource, mail_invite: $domaine["mails_ics_active"]);
                 }
 				/*else // ici $id_first_resa n'est pas défini ou nul, i.e. la série de réservations n'est pas posée => message à modifier ?
 				{
@@ -791,9 +791,9 @@ try {
 				if (($domaine['mails_active'] == 1 || Settings::get("automatic_mail"  == 1)) && $envoy_notif == 1)
 				{
 					if ($send_mail_moderate)
-						$message_error = send_mail($id,5,$dformat);
+						$message_error = send_mail($id,5,$dformat, mail_invite: $domaine["mails_ics_active"]);
 					else
-						$message_error = send_mail($id,1,$dformat);
+						$message_error = send_mail($id,1,$dformat, mail_invite: $domaine["mails_ics_active"]);
 				}
 			}
 			else // Modification réservation unique
@@ -802,9 +802,9 @@ try {
 				if (($domaine['mails_active'] == 1 || Settings::get("automatic_mail"  == 1)) && $envoy_notif == 1)
 				{
 					if ($send_mail_moderate)
-						$message_error = send_mail($id,5,$dformat);
+						$message_error = send_mail($id,5,$dformat, mail_invite: $domaine["mails_ics_active"]);
 					else
-						$message_error = send_mail($id,2,$dformat, array(), $oldRessource, array());
+						$message_error = send_mail($id,2,$dformat, array(), $oldRessource, array(), mail_invite: $domaine["mails_ics_active"]);
 				}
             }
             }
