@@ -1,3 +1,18 @@
+Version 4.6.3 - 21/06/2026 Généré par @JeromeDevome
+[Correction] Ajout bouton submit pour les moderateurs - 4daf78efb - @Spitfireap
+[Correction] Lien de retour en cas de conflit - fd516e11c - @ynaessens
+[Correction] SQL se la table _log_mail - 0e602becb - @JeromeDevome
+[Correction] Enregistrement personnalisation mail - b1271e276 - @JeromeDevome
+[Correction] Sécurités - @JeromeDevome & @MCzhao2006
+[Correction] Requête dans edit_entry_types - e8da22ca0 - @JeromeDevome
+[Correction] Affichage formulaire clé selon droits - 895753d72 - @JeromeDevome
+
+Version 4.6.2 - 15/06/2026 Généré par @JeromeDevome
+[Correction] Position du numéro de jour cycle - fcf846c76 - @ynaessens
+[Correction] Nom de variable - e2e3aaf18 - @ynaessens
+[Correction] Affichage des jours cycle dans la page de création - 2465a0ea4 - @ynaessens
+[Correction] Vue mois_all: Affichage et droits - 4a05b5ed6 - @JeromeDevome
+
 Version 4.6.1 - 14/06/2026 Généré par @JeromeDevome
 [Correction] Affichage vue jour en tant que visiteur - 90a27e7df - @JeromeDevome
 [Correction] Envois de mail au modérateur - aa79549b5 - @JeromeDevome
@@ -12,7 +27,7 @@ Version 4.6.1 - 14/06/2026 Généré par @JeromeDevome
 
 Version 4.6.0 - 04/06/2026 Généré par @JeromeDevome
 [Ajout] Drag & Drop des réservations - @JeromeDevome
-[Ajout]Gestion des accès aux ressources restreintes par groupe - @JeromeDevome
+[Ajout] Gestion des accès aux ressources restreintes par groupe - @JeromeDevome
 [Ajout] Ajout du style des cellules associées à des réservations dont la liste des participants est complète - af1c971dc - @ynaessens
 [Ajout] Définition du nombre maximal de réservations affichées dans la vue mensuelle via un paramètre configurable - 1a7e8cf41 & 36763442b - @JeromeDevome
 [Ajout] Affichage des e-mails dans l’historique des réservations - 9e3ca3931 - @JeromeDevome
@@ -21,6 +36,7 @@ Version 4.6.0 - 04/06/2026 Généré par @JeromeDevome
 [Ajout] Affichage de l’heure du serveur SQL dans l’administration pour le debug - f7c7865b3 - @JeromeDevome
 [Ajout] Interdiction des mots de passe trop simples (selon une liste définie) - 89cc3b4c8 - @JeromeDevome
 [Ajout] Option obligeant l’utilisateur à changer son mot de passe s’il ne répond pas aux critères définis - 89cc3b4c8 - @JeromeDevome
+[Ajout] Autoriser format d'image WebP - 163bafcd2 -@JeromeDevome
 [Correction] Prise en compte des balises HTML dans le message d’accueil - 739c15363 - @JeromeDevome
 [Correction] Retour à la vue précédente après une réservation - acc2636f3 - @JeromeDevome
 [Correction] Gestion des caractères spéciaux lors de l’édition d’une réservation - e32aacee3 - @JeromeDevome
@@ -39,6 +55,13 @@ Version 4.6.0 - 04/06/2026 Généré par @JeromeDevome
 [Correction] Heure de début de session basée sur l’heure du serveur - 55063df0f - @JeromeDevome
 [Correction] Requêtes SQL - 9b9289843 & 26e167f2f - @JeromeDevome
 [Correction] Affichage du champ heure dans le formulaire de réservation sous Edge - d48bb0476 - @JeromeDevome
+[Correction] Filtre LDAP - dfcc3e9ff - @JeromeDevome
+[Correction] Calcul  des droits d'accès pour un administrateur de domaine - 6515a4eb8 & a4c0a94f6 - @ynaessens
+[Correction] Gestion des performance (calcul +) sur Mois2_all - 09686e493 - @JeromeDevome
+[Correction] Demande de compte - Identifiant par défaut email - 72dd3db55 - @JeromeDevome
+[Correction] Ajout contrôle des droits de gestion pour les fichiers résa - d59e2ce1c - @JeromeDevome
+[Correction] Sécurité SQL - 6489a81bc - @JeromeDevome
+[Correction] Retour sur la bonne vue après supression d'un document dans la réservation - 429733f31 @JeromeDevome
 [Modification] Mise à jour des fichiers de langue - @ynaessens & @JeromeDevome
 [Modification] Refonte de l’envoi des e-mails - b47bedfbd - @JeromeDevome
 [Modification] Réorganisation des fonctions d’envoi des e-mails dans l’administration - d5ea2771e - @JeromeDevome
@@ -49,7 +72,7 @@ Version 4.6.0 - 04/06/2026 Généré par @JeromeDevome
 [Modification] Gestion des jours fériés et des vacances par année - 3065c739e - @JeromeDevome
 [Modification] Mise à jour des vacances scolaires 2026-2027 - 0be37c8c1 & 7fef7e0 - @JeromeDevome & @ynaessens
 [Modification] Mise à jour des librairies PHP (Symfony, Twig, phpCAS, TCPDF, PHPMailer) - @JeromeDevome
-[Modification] Mise à jour des librairies JS (pdfmake, DataTables, Ace Editor) - @JeromeDevome
+[Modification] Mise à jour des librairies JS (pdfmake, DataTables, Ace Editor, select2) - @JeromeDevome
 
 
 Version 4.5.4 - 22/03/2026 Généré par @JeromeDevome

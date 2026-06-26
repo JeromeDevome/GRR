@@ -45,34 +45,9 @@ if(isset($_POST['ok']))
                 $msg .= "Erreur lors de l'enregistrement de mails_resa_1_1_".$langue." !<br />";
         }
 
-        if (isset($_POST['mails_resa_2_1_'.$langue])) {
-            if (!Pages::set("mails_resa_2_1_".$langue, $_POST['mails_resa_2_1_titre_'.$langue], $_POST['mails_resa_2_1_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_2_1_".$langue." !<br />";
-        }
-
-        if (isset($_POST['mails_resa_3_1_'.$langue])) {
-            if (!Pages::set("mails_resa_3_1_".$langue, $_POST['mails_resa_3_1_titre_'.$langue], $_POST['mails_resa_3_1_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_3_1_".$langue." !<br />";
-        }
-
-        if (isset($_POST['mails_resa_4_1_'.$langue])) {
-            if (!Pages::set("mails_resa_4_1_".$langue, $_POST['mails_resa_4_1_titre_'.$langue], $_POST['mails_resa_4_1_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_4_1_".$langue." !<br />";
-        }
-
-        if (isset($_POST['mails_resa_5_1_'.$langue])) {
-            if (!Pages::set("mails_resa_5_1_".$langue, $_POST['mails_resa_5_1_titre_'.$langue], $_POST['mails_resa_5_1_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_5_1_".$langue." !<br />";
-        }
-
-        if (isset($_POST['mails_resa_6_1_'.$langue])) {
-            if (!Pages::set("mails_resa_6_1_".$langue, $_POST['mails_resa_6_1_titre_'.$langue], $_POST['mails_resa_6_1_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_6_1_".$langue." !<br />";
-        }
-
-        if (isset($_POST['mails_resa_7_1_'.$langue])) {
-            if (!Pages::set("mails_resa_7_1_".$langue, $_POST['mails_resa_7_1_titre_'.$langue], $_POST['mails_resa_7_1_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_7_1_".$langue." !<br />";
+        if (isset($_POST['mails_resa_1_2_'.$langue])) {
+            if (!Pages::set("mails_resa_1_2_".$langue, $_POST['mails_resa_1_2_titre_'.$langue], $_POST['mails_resa_1_2_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_1_2_".$langue." !<br />";
         }
 
         if (isset($_POST['mails_resa_2_1_'.$langue])) {
@@ -90,24 +65,9 @@ if(isset($_POST['ok']))
                 $msg .= "Erreur lors de l'enregistrement de mails_resa_2_3_".$langue." !<br />";
         }
 
-        if (isset($_POST['mails_resa_2_4_'.$langue])) {
-            if (!Pages::set("mails_resa_2_4_".$langue, $_POST['mails_resa_2_4_titre_'.$langue], $_POST['mails_resa_2_4_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_2_4_".$langue." !<br />";
-        }
-
-        if (isset($_POST['mails_resa_2_5_'.$langue])) {
-            if (!Pages::set("mails_resa_2_5_".$langue, $_POST['mails_resa_2_5_titre_'.$langue], $_POST['mails_resa_2_5_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_2_5_".$langue." !<br />";
-        }
-
-        if (isset($_POST['mails_resa_2_6_'.$langue])) {
-            if (!Pages::set("mails_resa_2_6_".$langue, $_POST['mails_resa_2_6_titre_'.$langue], $_POST['mails_resa_2_6_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_2_6_".$langue." !<br />";
-        }
-
-        if (isset($_POST['mails_resa_2_7_'.$langue])) {
-            if (!Pages::set("mails_resa_2_7_".$langue, $_POST['mails_resa_2_7_titre_'.$langue], $_POST['mails_resa_2_7_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_2_7_".$langue." !<br />";
+        if (isset($_POST['mails_resa_3_1_'.$langue])) {
+            if (!Pages::set("mails_resa_3_1_".$langue, $_POST['mails_resa_3_1_titre_'.$langue], $_POST['mails_resa_3_1_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_3_1_".$langue." !<br />";
         }
 
         if (isset($_POST['mails_resa_3_2_'.$langue])) {
@@ -120,14 +80,49 @@ if(isset($_POST['ok']))
                 $msg .= "Erreur lors de l'enregistrement de mails_resa_3_3_".$langue." !<br />";
         }
 
-        if (isset($_POST['mails_resa_3_5_'.$langue])) {
-            if (!Pages::set("mails_resa_3_5_".$langue, $_POST['mails_resa_3_5_titre_'.$langue], $_POST['mails_resa_3_5_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_3_5_".$langue." !<br />";
+        if (isset($_POST['mails_resa_4_1_'.$langue])) {
+            if (!Pages::set("mails_resa_4_1_".$langue, $_POST['mails_resa_4_1_titre_'.$langue], $_POST['mails_resa_4_1_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_4_1_".$langue." !<br />";
         }
 
-        if (isset($_POST['mails_resa_3_7_'.$langue])) {
-            if (!Pages::set("mails_resa_3_7_".$langue, $_POST['mails_resa_3_7_titre_'.$langue], $_POST['mails_resa_3_7_'.$langue]))
-                $msg .= "Erreur lors de l'enregistrement de mails_resa_3_7_".$langue." !<br />";
+        if (isset($_POST['mails_resa_4_2_'.$langue])) {
+            if (!Pages::set("mails_resa_4_2_".$langue, $_POST['mails_resa_4_2_titre_'.$langue], $_POST['mails_resa_4_2_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_4_2_".$langue." !<br />";
+        }
+
+        if (isset($_POST['mails_resa_5_1_'.$langue])) {
+            if (!Pages::set("mails_resa_5_1_".$langue, $_POST['mails_resa_5_1_titre_'.$langue], $_POST['mails_resa_5_1_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_5_1_".$langue." !<br />";
+        }
+
+        if (isset($_POST['mails_resa_5_2_'.$langue])) {
+            if (!Pages::set("mails_resa_5_2_".$langue, $_POST['mails_resa_5_2_titre_'.$langue], $_POST['mails_resa_5_2_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_5_2_".$langue." !<br />";
+        }
+
+        if (isset($_POST['mails_resa_5_3_'.$langue])) {
+            if (!Pages::set("mails_resa_5_3_".$langue, $_POST['mails_resa_5_3_titre_'.$langue], $_POST['mails_resa_5_3_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_5_3_".$langue." !<br />";
+        }
+
+        if (isset($_POST['mails_resa_6_1_'.$langue])) {
+            if (!Pages::set("mails_resa_6_1_".$langue, $_POST['mails_resa_6_1_titre_'.$langue], $_POST['mails_resa_6_1_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_6_1_".$langue." !<br />";
+        }
+
+        if (isset($_POST['mails_resa_6_2_'.$langue])) {
+            if (!Pages::set("mails_resa_6_2_".$langue, $_POST['mails_resa_6_2_titre_'.$langue], $_POST['mails_resa_6_2_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_6_2_".$langue." !<br />";
+        }
+
+        if (isset($_POST['mails_resa_7_1_'.$langue])) {
+            if (!Pages::set("mails_resa_7_1_".$langue, $_POST['mails_resa_7_1_titre_'.$langue], $_POST['mails_resa_7_1_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_7_1_".$langue." !<br />";
+        }
+
+        if (isset($_POST['mails_resa_7_2_'.$langue])) {
+            if (!Pages::set("mails_resa_7_2_".$langue, $_POST['mails_resa_7_2_titre_'.$langue], $_POST['mails_resa_7_2_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_resa_7_2_".$langue." !<br />";
         }
 
         if (isset($_POST['mails_demandecompte_'.$langue])) {

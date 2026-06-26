@@ -34,9 +34,10 @@ if(isset($_POST['delete'])) {
 	$nb_areas=grr_sql_count($res);
 	for($i=0;$i < $nb_areas;$i++)
 		if(isset($_POST["area".$i])){
-			$rooms=grr_sql_query("SELECT id, room_name FROM `".TABLE_PREFIX."_room` WHERE `area_id`=".$_POST["area".$i]);
+			$areai = SecuChaine::Alphanumeric($_POST["area".$i]);
+			$rooms=grr_sql_query("SELECT id, room_name FROM ".TABLE_PREFIX."_room WHERE `area_id`='".SecuChaine::ProtectDataSql($areai)."'");
 			for ($j = 0; ($row = grr_sql_row($rooms, $j)); $j++) 
-				if(grr_sql_query("DELETE FROM `".TABLE_PREFIX."_entry` WHERE `start_time`>=".$starttime." AND `room_id`=".$row[0]))
+				if(grr_sql_query("DELETE FROM ".TABLE_PREFIX."_entry WHERE `start_time`>=".SecuChaine::ProtectDataSql($starttime)." AND `room_id`=".SecuChaine::ProtectDataSql($row[0])))
 					$trad['dMessageSup'] .= "Les réservations postérieures au ".$_POST['beg_day']."/".$_POST['beg_month']."/".$_POST['beg_year']." à 00 heures 00 dans la ressource ".$row[1]." ont été supprimées<br/>";
 				else 
 					$trad['dMessageSup'] .= "Erreur dans la suppression des réservations dans la ressource ".$row[1]."<br/>"; 

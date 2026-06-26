@@ -1,0 +1,90 @@
+{
+    "name": "kigkonsult/icalcreator",
+    "type": "library",
+    "description": "iCalcreator is the PHP implementation of rfc2445/rfc5545 and rfc updates, management of calendar information",
+    "keywords": [
+        "rfc2445",
+        "rfc5545",
+        "rfc5870",
+        "rfc6321",
+        "rfc6868",
+        "rfc7529",
+        "rfc7808",
+        "rfc7953",
+        "rfc7986",
+        "rfc9073",
+        "rfc9074",
+        "management",
+        "calendar",
+        "vCalendar",
+        "event",
+        "todo",
+        "alarm",
+        "vevent",
+        "vtodo",
+        "vjournal",
+        "vfreebusy",
+        "valarm",
+        "participant",
+        "location",
+        "resource",
+        "availability",
+        "vtimezone",
+        "standard",
+        "daylight",
+        "ical",
+        "xml",
+        "json"
+    ],
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Kjell-Inge Gustafsson",
+            "email": "ical@kigkonsult.se"
+        }
+    ],
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://www.buymeacoffee.com/kigkonsult"
+        },
+        {
+            "type": "other",
+            "url": "https://paypal.me/kigkonsult"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/iCalcreator/iCalcreator/issues"
+    },
+    "autoload": {
+        "classmap": ["src/"],
+        "files": ["autoload.php"],
+        "psr-4": { "Kigkonsult\\Icalcreator\\": ["src/"] }
+    },
+    "require": {
+        "php": ">=8.0",
+        "ext-intl": "*",
+        "ext-openssl": "*",
+        "ext-simplexml": "*",
+        "ext-zlib": "*",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "ext-xdebug": "*",
+        "degraciamathieu/php-arguments-detector": ">=0.5.0",
+        "phpcompatibility/php-compatibility": ">=9.3.5",
+        "phpmd/phpmd": ">=2.13.0",
+        "phpstan/phpstan": ">=0.9.3",
+        "phpunit/phpunit": ">=6.5.13",
+        "squizlabs/php_codesniffer": ">=3.5.5",
+        "vimeo/psalm": "*"
+    },
+    "config": {
+        "classmap-authoritative": true,
+        "sort-packages": true
+    },
+    "scripts": {
+        "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",
+        "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility"
+    }
+}

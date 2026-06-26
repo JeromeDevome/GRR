@@ -15,18 +15,20 @@
  * (at your option) any later version.
  */
 
+// DEBUG: A RETIRER APRES /!\ **************************************************************
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// *****************************************************************************************
+
 $grr_script_name = "admin_edit_domaine.php";
 
 $trad = $vocab;
 $ok = NULL;
-$id_site = -1;
-if (Settings::get("module_multisite") == 1)
-	$id_site = isset($_POST["id_site"]) ? $_POST["id_site"] : (isset($_GET["id_site"]) ? $_GET["id_site"] : -1);
+
 $action = isset($_POST["action"]) ? $_POST["action"] : (isset($_GET["action"]) ? $_GET["action"] : NULL);
 $add_area = isset($_POST["add_area"]) ? $_POST["add_area"] : (isset($_GET["add_area"]) ? $_GET["add_area"] : NULL);
 $area_id = isset($_POST["area_id"]) ? $_POST["area_id"] : (isset($_GET["area_id"]) ? $_GET["area_id"] : NULL);
 $retour_page = isset($_POST["retour_page"]) ? $_POST["retour_page"] : (isset($_GET["retour_page"]) ? $_GET["retour_page"] : NULL);
-$id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
 $change_area = isset($_POST["change_area"]) ? $_POST["change_area"] : NULL;
 $area_name = isset($_POST["area_name"]) ? $_POST["area_name"] : NULL;
 $access = isset($_POST["access"]) ? $_POST["access"] : NULL;
@@ -37,8 +39,13 @@ $max_booking = isset($_POST["max_booking"]) ? $_POST["max_booking"] : NULL;
 $access_file = isset($_POST['access_file'])? 1:0;
 $user_right = (int)SecuChaine::GetFormVar("user_right","int");
 $upload_file = (int)SecuChaine::GetFormVar("upload_file","int");
+$id_area = intval(SecuChaine::GetFormVar("id_area","int",0));
+$id_site = intval(SecuChaine::GetFormVar("id_site","int",-1));
 $description_breve = (int)SecuChaine::GetFormVar("description_breve","int");
 $description_complete = (int)SecuChaine::GetFormVar("description_complete","int");
+$mails_active = isset($_POST["mails_active"]) ? $_POST["mails_active"] : 0;
+$mails_ics_active = isset($_POST["mails_ics_active"]) ? $_POST["mails_ics_active"] : 0;
+
 settype($max_booking, "integer");
 if ($max_booking<-1)
 	$max_booking = -1;
@@ -201,7 +208,9 @@ if ((!empty($id_area)) || (isset($add_area)))
 				access_file = ".$access_file.",
 				upload_file = ".$upload_file.",
 				description_breve = '".$description_breve."',
-				description_complete = '".$description_complete."'
+				description_complete = '".$description_complete."',
+				mails_active = ".$mails_active.",
+				mails_ics_active = ".$mails_ics_active."
 				WHERE id=$id_area";
 				if (grr_sql_command($sql) < 0)
 				{
@@ -233,7 +242,9 @@ if ((!empty($id_area)) || (isset($add_area)))
 				access_file = ".$access_file.",
 				upload_file = ".$upload_file.",
 				description_breve = '".$description_breve."',
-				description_complete = '".$description_complete."'
+				description_complete = '".$description_complete."',
+				mails_active = ".$mails_active.",
+				mails_ics_active = ".$mails_ics_active."
 				";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(1, "<p>" . grr_sql_error());

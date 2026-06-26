@@ -707,6 +707,12 @@ try {
             $envoy_notif = 1;
         else
             $envoy_notif = 0;
+        
+        // Récupérer le domaine
+        $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id=$area");
+		if (! $res)
+			fatal_error(0, get_vocab('error_area') . $area . get_vocab('not_found'));
+		$domaine = grr_sql_row_keyed($res, 0);
 
         // modération
 		$moderate = grr_sql_query1("SELECT moderate FROM ".TABLE_PREFIX."_room WHERE id = '".$room_id."'");
@@ -742,7 +748,7 @@ try {
 		if ($rep_type != 0) // Réservation périodique
 		{
 			$id_first_resa = mrbsCreateRepeatingEntrys($start_time, $end_time, $rep_type, $rep_enddate, $rep_opt, $room_id, $create_by, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation, $overload_data, $entry_moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $ignore);
-			if (Settings::get("automatic_mail") == 1 && $envoy_notif == 1)
+			if (($domaine['mails_active'] == 1 || Settings::get("automatic_mail") == 1) && $envoy_notif == 1)
 			{
                 if (isset($id_first_resa) && ($id_first_resa != 0))
                 {
@@ -752,12 +758,12 @@ try {
                             'rep_end_date' => $rep_enddate,
                             'rep_opt' => $rep_opt,
                             'rep_num_weeks' => $rep_num_weeks
-                        ));
+                        ), mail_invite: $domaine["mails_ics_active"]);
                     else // création
                         if ($send_mail_moderate)
-                            $message_error = send_mail($id_first_resa, 5, $dformat); // à modérer
+                            $message_error = send_mail($id_first_resa, 5, $dformat, mail_invite: $domaine["mails_ics_active"]); // à modérer
                         else
-                            $message_error = send_mail($id_first_resa, 1, $dformat, array(), $oldRessource);
+                            $message_error = send_mail($id_first_resa, 1, $dformat, array(), $oldRessource, mail_invite: $domaine["mails_ics_active"]);
                 }
 				/*else // ici $id_first_resa n'est pas défini ou nul, i.e. la série de réservations n'est pas posée => message à modifier ?
 				{
@@ -782,23 +788,23 @@ try {
 			{
 				$id = grr_sql_insert_id();
 				insertLogResa($id, 1, 'Création via calendrier');
-				if (Settings::get("automatic_mail") == 1 && $envoy_notif == 1)
+				if (($domaine['mails_active'] == 1 || Settings::get("automatic_mail")  == 1) && $envoy_notif == 1)
 				{
 					if ($send_mail_moderate)
-						$message_error = send_mail($id,5,$dformat);
+						$message_error = send_mail($id,5,$dformat, array(), '', array(), $domaine["mails_ics_active"]);
 					else
-						$message_error = send_mail($id,1,$dformat);
+						$message_error = send_mail($id,1,$dformat, array(), '', array(), $domaine["mails_ics_active"]);
 				}
 			}
 			else // Modification réservation unique
 			{
 				insertLogResa($id, 2, $differenceAvAp);
-				if (Settings::get("automatic_mail") == 1 && $envoy_notif == 1)
+				if (($domaine['mails_active'] == 1 || Settings::get("automatic_mail")  == 1) && $envoy_notif == 1)
 				{
 					if ($send_mail_moderate)
-						$message_error = send_mail($id,5,$dformat);
+						$message_error = send_mail($id,5,$dformat, mail_invite: $domaine["mails_ics_active"]);
 					else
-						$message_error = send_mail($id,2,$dformat, array(), $oldRessource, array());
+						$message_error = send_mail($id,2,$dformat, array(), $oldRessource, array(), mail_invite: $domaine["mails_ics_active"]);
 				}
             }
             }

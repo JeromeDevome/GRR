@@ -31,6 +31,7 @@ class SecuChaine {
     Numeric: Conserve uniquement les caractères numériques d’une chaîne.
     ProtectDataSql: Protège une donnée contre les injections SQL via mysqli_real_escape_string.
     Unslashes: Supprime les antislashs ajoutés par magic_quotes_gpc.
+    UrlInt: Sert à valider et sécuriser une URL interne
     ValideCouleur: Valide et reformate une couleur hexadécimale.
     ValideDate: Vérifie qu’une date respecte un format donné.
     ValideMail: Vérifie la validité syntaxique d’une adresse e-mail.
@@ -179,6 +180,21 @@ class SecuChaine {
             return stripslashes($s);
         else
             return $s;
+    }
+
+    /* Sert à valider et sécuriser une URL interne
+    * @param string $url - L'url à annalyser
+    * @param string $url - L'url nettoyé
+    */
+    public static function UrlInt($url)
+    {
+        $parsed = parse_url($url);
+        if (!$parsed || (isset($parsed['scheme']) && !in_array($parsed['scheme'], ['http', 'https']))) {
+            $url = page_accueil(); // fall back to safe default
+        }
+        $url = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+
+        return $url;
     }
 
     /* Transforms a string into a valid hexadecimal color format.

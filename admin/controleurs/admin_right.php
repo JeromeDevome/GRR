@@ -17,8 +17,8 @@
 
 $grr_script_name = "admin_right.php";
 
-$id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
-$room = isset($_POST["room"]) ? $_POST["room"] : (isset($_GET["room"]) ? $_GET["room"] : NULL);
+$id_area = isset($_POST["id_area"]) ? intval($_POST["id_area"]) : (isset($_GET["id_area"]) ? intval($_GET["id_area"]) : NULL);
+$room = isset($_POST["room"]) ? intval($_POST["room"]) : (isset($_GET["room"]) ? intval($_GET["room"]) : NULL);
 if (isset($room))
 	settype($room,"integer");
 if (!isset($id_area))
@@ -28,7 +28,7 @@ SecuAccess::CheckAccess(4, $back);
 
 // tableau des ressources auxquelles l'utilisateur n'a pas accès
 $tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
-$reg_admin_login = isset($_POST["reg_admin_login"]) ? $_POST["reg_admin_login"] : NULL;
+$reg_admin_login = isset($_POST["reg_admin_login"]) ? SecuChaine::CleanLogin($_POST["reg_admin_login"]) : NULL;
 $reg_multi_admin_login = isset($_POST["reg_multi_admin_login"]) ? $_POST["reg_multi_admin_login"] : NULL;
 $test_user =  isset($_POST["reg_multi_admin_login"]) ? "multi" : (isset($_POST["reg_admin_login"]) ? "simple" : NULL);
 $action = isset($_GET["action"]) ? $_GET["action"] : NULL;
@@ -61,7 +61,7 @@ if ($test_user == "multi")
 				showAccessDenied($back);
 				exit();
 			}
-			$sql = "SELECT * FROM ".TABLE_PREFIX."_j_user_room WHERE (login = '$valeur' and id_room = '$room')";
+			$sql = "SELECT * FROM ".TABLE_PREFIX."_j_user_room WHERE (login = '".SecuChaine::ProtectDataSql($valeur)."' and id_room = '$room')";
 			$res = grr_sql_query($sql);
 			$test = grr_sql_count($res);
 			if ($test != "0")
@@ -73,7 +73,7 @@ if ($test_user == "multi")
 			{
 				if ($valeur != '')
 				{
-					$sql = "INSERT INTO ".TABLE_PREFIX."_j_user_room SET login= '$valeur', id_room = '$room'";
+					$sql = "INSERT INTO ".TABLE_PREFIX."_j_user_room SET login= '".SecuChaine::ProtectDataSql($valeur)."', id_room = '$room'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, "<p>" . grr_sql_error());
 					else
@@ -110,12 +110,12 @@ if ($test_user == "multi")
 			{
 				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 				{
-					$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_room WHERE (login = '$valeur' and id_room = '$row[0]')";
+					$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_room WHERE (login = '".SecuChaine::ProtectDataSql($valeur)."' and id_room = '$row[0]')";
 					$res2 = grr_sql_query($sql2);
 					$nb = grr_sql_count($res2);
 					if ($nb == 0)
 					{
-						$sql3 = "INSERT INTO ".TABLE_PREFIX."_j_user_room (login, id_room) VALUES ('$valeur','$row[0]')";
+						$sql3 = "INSERT INTO ".TABLE_PREFIX."_j_user_room (login, id_room) VALUES ('".SecuChaine::ProtectDataSql($valeur)."','$row[0]')";
 						if (grr_sql_command($sql3) < 0)
 							fatal_error(0, "<p>" . grr_sql_error());
 						else
@@ -156,7 +156,7 @@ if ($test_user == "simple")
 				showAccessDenied($back);
 				exit();
 			}
-			$sql = "SELECT * FROM ".TABLE_PREFIX."_j_user_room WHERE (login = '$reg_admin_login' and id_room = '$room')";
+			$sql = "SELECT * FROM ".TABLE_PREFIX."_j_user_room WHERE (login = '".SecuChaine::ProtectDataSql($reg_admin_login)."' and id_room = '$room')";
 			$res = grr_sql_query($sql);
 			$test = grr_sql_count($res);
 			if ($test != "0")
@@ -168,7 +168,7 @@ if ($test_user == "simple")
 			{
 				if ($reg_admin_login != '')
 				{
-					$sql = "INSERT INTO ".TABLE_PREFIX."_j_user_room SET login= '$reg_admin_login', id_room = '$room'";
+					$sql = "INSERT INTO ".TABLE_PREFIX."_j_user_room SET login= '".SecuChaine::ProtectDataSql($reg_admin_login)."', id_room = '$room'";
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, "<p>" . grr_sql_error());
 					else
@@ -205,12 +205,12 @@ if ($test_user == "simple")
 			{
 				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 				{
-					$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_room WHERE (login = '$reg_admin_login' and id_room = '$row[0]')";
+					$sql2 = "SELECT login FROM ".TABLE_PREFIX."_j_user_room WHERE (login = '".SecuChaine::ProtectDataSql($reg_admin_login)."' and id_room = '$row[0]')";
 					$res2 = grr_sql_query($sql2);
 					$nb = grr_sql_count($res2);
 					if ($nb==0)
 					{
-						$sql3 = "INSERT INTO ".TABLE_PREFIX."_j_user_room (login, id_room) values ('$reg_admin_login','$row[0]')";
+						$sql3 = "INSERT INTO ".TABLE_PREFIX."_j_user_room (login, id_room) values ('".SecuChaine::ProtectDataSql($reg_admin_login)."','$row[0]')";
 						if (grr_sql_command($sql3) < 0)
 							fatal_error(0, "<p>" . grr_sql_error());
 						else
@@ -226,6 +226,9 @@ if ($test_user == "simple")
 }
 if ($action)
 {
+	unset($login_admin);
+	$login_admin = SecuChaine::CleanLogin($_GET["login_admin"]);
+
 	if ($action == "del_admin")
 	{
 		if (SecuAccess::UserLevel(getUserName(),$room) < 4)
@@ -233,7 +236,6 @@ if ($action)
 			showAccessDenied($back);
 			exit();
 		}
-		unset($login_admin); $login_admin = $_GET["login_admin"];
 		$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE (login='$login_admin' and id_room = '$room')";
 		if (grr_sql_command($sql) < 0)
 			fatal_error(0, "<p>" . grr_sql_error());
@@ -260,7 +262,7 @@ if ($action)
 		{
 			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 			{
-				$sql2 = "DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE (login='".$_GET['login_admin']."' and id_room = '$row[0]')";
+				$sql2 = "DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE (login='".$login_admin."' and id_room = '$row[0]')";
 				if (grr_sql_command($sql2) < 0)
 					fatal_error(0, "<p>" . grr_sql_error());
 				else

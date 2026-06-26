@@ -109,8 +109,8 @@ else  //Build an array of information about each day in the month.
 	{
 		if ($row['15'] <> (Settings::get('exclude_type_in_views_all')))
         {
-            $AccesUserResource[$row[5]] = SecuAccess::UserResource($user_name, $row[17]);
-            $acces_fiche_reservation[$row[5]] = SecuAccess::UserSheetReservation($user_name, $row[17]);
+            $AccesUserResource[$row[17]] = SecuAccess::UserResource($user_name, $row[17]);
+            $acces_fiche_reservation[$row[17]] = SecuAccess::UserSheetReservation($user_name, $row[17]);
             $t = max((int)$row[0], $month_start);
             $end_t = min((int)$row[1], $month_end);
             $day_num = date("j", $t);
@@ -121,7 +121,7 @@ else  //Build an array of information about each day in the month.
             while ($t < $end_t)
             {
                 $da[$day_num]["id"][] = $row[2];
-                $da[$day_num]["id_room"][] = $row[5];
+                $da[$day_num]["id_room"][] = $row[17];
                 $da[$day_num]["room"][] = $row[5] ;
                 $da[$day_num]["color"][] = $row[6];
                 $da[$day_num]["nbparticipantmax"][] = (int)$row[18];
@@ -288,7 +288,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                 //If there are 12 or fewer, show them, else show 11 and "...".
                 for ($i = 0; $i < $n; $i++)
                 {
-                    $ficheResa = $acces_fiche_reservation;
+                    $ficheResa = $acces_fiche_reservation[$da[$cday]["id_room"][$i]];
 
                     if ($AccesUserResource[$da[$cday]["id_room"][$i]]) // On n'affiche pas les réservations des ressources non visibles pour l'utilisateur.
                     {	
@@ -299,9 +299,9 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
                         }
 
                         // On n'affiche la fiche résa que si elle n'est pas confidentielle ou si on est l'auteur de la résa ou un gestionnaire
-                        if($acces_fiche_reservation)
+                        if($acces_fiche_reservation[$da[$cday]["id_room"][$i]])
                         {
-                            if($da[$cday]["resa_confidentielle"][$i] == 1 && getUserName() != $da[$cday]["beneficiaire"][$i] && $UserLevel < 3)
+                            if($da[$cday]["resa_confidentielle"][$i] == 1 && getUserName() != $da[$cday]["beneficiaire"][$i] && SecuAccess::UserLevel(getUserName(),$da[$cday]["room"]) < 3)
                                 $ficheResa = false;
                         }
 

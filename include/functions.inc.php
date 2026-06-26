@@ -2696,7 +2696,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
  * $action = 6 -> Résultat d'une décision de modération
  * $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 */
-function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array())
+function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array(), $mail_invite = 0)
 {
 	global $vocab, $niveauDossier, $locale, $weekstarts, $enable_periods, $periods_name;
 
@@ -2761,6 +2761,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$beneficiaire_ext			= htmlspecialchars($row[16]);
 	$jours_cycle 				= htmlspecialchars($row[17]);
 	$duration     				= $row[9];
+	$raw_start_date 			= $row[10];
+	$raw_end_date 				= $row[11];
 
 	// Date début et fin de la réservation
 	if ($enable_periods == 'y')
@@ -2985,6 +2987,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		foreach ($tab_destinataire as $value){
 			$destinataire1 .= $value.";";
 		}
+	} else {
+		$destinataire1 = $user_email . ';';
 	}
 	$destinataire_spec = envois_spec_champ_add_mails($id_entry);
 	$destinataire1 = $destinataire1 . $destinataire_spec;
@@ -2998,7 +3002,14 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$templateMail1 = Pages::get('mails_resa_'.$action.'_1_'.$locale);
 		$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
 		$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
-		Email::Envois($destinataire1, $sujetEncode1, $msgEncode1, $expediteur1, '', '', $repondre1,'mails_resa_'.$action.'_1_'.$locale, $id_entry, 1);
+		Email::Envois($destinataire1, $sujetEncode1, $msgEncode1, $expediteur1, '', '', $repondre1,'mails_resa_'.$action.'_1_'.$locale, $id_entry, 1, $mail_invite, array(
+			'id_entry' => $id_entry,
+			'start_time' => $raw_start_date,
+			'end_time' => $raw_end_date,
+			'nom_resa' => $breve_description,
+			'location' => $room_name,
+			'action' => $action,
+		));
 	}
 
 	/*
@@ -3029,7 +3040,14 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$templateMail2 = Pages::get('mails_resa_'.$action.'_2_'.$locale);
 		$sujetEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[0]);
 		$msgEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[1]);
-		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur2, '', '', $repondre2,'mails_resa_'.$action.'_2_'.$locale, $id_entry, 2);
+		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur2, '', '', $repondre2,'mails_resa_'.$action.'_2_'.$locale, $id_entry, 2, $mail_invite, array(
+			'id_entry' => $id_entry,
+			'start_time' => $raw_start_date,
+			'end_time' => $raw_end_date,
+			'nom_resa' => $breve_description,
+			'location' => $room_name,
+			'action' => $action,
+		));
 	}
 
 	/*
@@ -3068,7 +3086,14 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			$templateMail3 = Pages::get('mails_resa_'.$action.'_3_'.$locale);
 			$sujetEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[0]);
 			$msgEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[1]);
-			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale, $id_entry, 3);
+			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale, $id_entry, 3, $mail_invite, array(
+			'id_entry' => $id_entry,
+			'start_time' => $raw_start_date,
+			'end_time' => $raw_end_date,
+			'nom_resa' => $breve_description,
+			'location' => $room_name,
+			'action' => $action,
+			));
 		}
 	}
 
@@ -3663,12 +3688,13 @@ function MajMysqlModeDemo() {
  */
 function showAccessDenied($back, $infodebug = '')
 {
-	global $niveauDossier, $grr_script_name;
-
-	$ch = cheminDetermination($niveauDossier);
-
-	header('Location: ' . $ch . 'erreur.php?code=403&grr_script_name='.$grr_script_name.'&infosdebug='.$infodebug);
-	exit;
+	global $vocab, $debug_flag;
+	echo '<h1>'.get_vocab("accessdenied").'</h1>';
+	echo '<p>'.get_vocab("norights").'</p>';
+	if($debug_flag)
+		echo '<p>'.$infodebug.'</p>';
+	echo '<p><a href="'.SecuChaine::UrlInt($back).'">'.get_vocab("returnprev").'</a></p>';
+	echo '</section></body></html>';
 }
 function showAccessDenied_twig($back, $infodebug = '')
 {
@@ -3677,7 +3703,7 @@ function showAccessDenied_twig($back, $infodebug = '')
 	$html .= '<p>'.get_vocab("norights").'</p>';
 	if($debug_flag)
 		$html .= '<p>'.$infodebug.'</p>';
-	$html .= '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
+	$html .= '<p><a href="'.SecuChaine::UrlInt($back).'">'.get_vocab("returnprev").'</a></p>';
 
 	return $html;
 }
