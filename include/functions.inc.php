@@ -2696,7 +2696,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
  * $action = 6 -> Résultat d'une décision de modération
  * $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 */
-function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array(), $mail_invite = false)
+function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array(), $mail_invite = 0)
 {
 	global $vocab, $niveauDossier, $locale, $weekstarts, $enable_periods, $periods_name;
 
@@ -2987,6 +2987,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		foreach ($tab_destinataire as $value){
 			$destinataire1 .= $value.";";
 		}
+	} elseif ($domaine['']) {
+		$destinataire1 = $user_email . ';';
 	}
 	$destinataire_spec = envois_spec_champ_add_mails($id_entry);
 	$destinataire1 = $destinataire1 . $destinataire_spec;
@@ -3000,7 +3002,14 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$templateMail1 = Pages::get('mails_resa_'.$action.'_1_'.$locale);
 		$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
 		$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
-		Email::Envois($destinataire1, $sujetEncode1, $msgEncode1, $expediteur1, '', '', $repondre1,'mails_resa_'.$action.'_1_'.$locale, $id_entry, 1);
+		Email::Envois($destinataire1, $sujetEncode1, $msgEncode1, $expediteur1, '', '', $repondre1,'mails_resa_'.$action.'_1_'.$locale, $id_entry, 1, $mail_invite, array(
+			'id_entry' => $id_entry,
+			'start_time' => $raw_start_date,
+			'end_time' => $raw_end_date,
+			'nom_resa' => $breve_description,
+			'location' => $room_name,
+			'action' => $action,
+		));
 	}
 
 	/*
@@ -3077,7 +3086,14 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			$templateMail3 = Pages::get('mails_resa_'.$action.'_3_'.$locale);
 			$sujetEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[0]);
 			$msgEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[1]);
-			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale, $id_entry, 3);
+			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale, $id_entry, 3, $mail_invite, array(
+			'id_entry' => $id_entry,
+			'start_time' => $raw_start_date,
+			'end_time' => $raw_end_date,
+			'nom_resa' => $breve_description,
+			'location' => $room_name,
+			'action' => $action,
+			));
 		}
 	}
 
