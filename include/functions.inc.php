@@ -2987,7 +2987,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		foreach ($tab_destinataire as $value){
 			$destinataire1 .= $value.";";
 		}
-	} elseif ($domaine['']) {
+	} else {
 		$destinataire1 = $user_email . ';';
 	}
 	$destinataire_spec = envois_spec_champ_add_mails($id_entry);
