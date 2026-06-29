@@ -327,7 +327,7 @@ if ((!empty($id_area)) || (isset($add_area)))
 		$msg = '';
 	}
 
-	if (isset($id_area))
+	if (isset($id_area) && $id_area <> 0)
 	{
 		$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id=$id_area");
 		if (! $res)
