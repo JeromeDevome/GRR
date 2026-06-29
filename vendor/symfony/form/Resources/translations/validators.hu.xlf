@@ -16,7 +16,7 @@
             </trans-unit>
             <trans-unit id="99">
                 <source>This value is not a valid HTML5 color.</source>
-                <target>Ez az érték nem egy érvényes HTML5 szín.</target>
+                <target>Ez az érték nem érvényes HTML5 szín.</target>
             </trans-unit>
             <trans-unit id="100">
                 <source>Please enter a valid birthdate.</source>
@@ -133,6 +133,10 @@
             <trans-unit id="128">
                 <source>Please enter a valid week.</source>
                 <target>Kérjük, adjon meg egy érvényes hetet.</target>
+            </trans-unit>
+            <trans-unit id="129">
+                <source>Please enter a valid UUID.</source>
+                <target>Kérjük, adjon meg egy érvényes UUID-t.</target>
             </trans-unit>
         </body>
     </file>
