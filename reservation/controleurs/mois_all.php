@@ -259,6 +259,7 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
     $name_day = ucfirst(utf8_strftime("%d", $t));
     $jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$t'");
     $autreResa = false;
+    $reservations = array();
 
     if ($display_day[$num_week_day] == 1) // début condition "on n'affiche pas tous les jours de la semaine"
     {
@@ -278,7 +279,6 @@ for ($cday = 1; $cday <= $days_in_month; $cday++)
         else
         {
             $horsResa = false;
-            $reservations = array();
 
             // Des réservation à afficher pour ce jour ?
             if (isset($da[$cday]["id"][0]))
