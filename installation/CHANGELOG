@@ -1,3 +1,9 @@
+Version 4.6.4 - 07/07/2026
+[Correction] Création d'un domaine - 4206dcfa5 - @JeromeDevome
+[Correction] Affichage jour hors réservation vue mois_all - 5daf45d14 - @JeromeDevome
+[Correction] Fonction CC pour la methode mail() - 5daf45d14 - @JeromeDevome
+[Modification] Mise à jour des librairies PHP (Symfony) 
+
 Version 4.6.3 - 21/06/2026 Généré par @JeromeDevome
 [Correction] Ajout bouton submit pour les moderateurs - 4daf78efb - @Spitfireap
 [Correction] Lien de retour en cas de conflit - fd516e11c - @ynaessens
