@@ -115,8 +115,6 @@ class Email{
 				if($repondre == '')
 					$repondre = $DE;
 
-				// A
-				$to = str_replace(";", ",", $A);
 
 				// En-têtes
        			$headers  = 'MIME-Version: 1.0' . "\r\n";
@@ -124,6 +122,14 @@ class Email{
 				$headers .= "From: {$DE}" . "\r\n" .
 					"Reply-To: {$repondre}" . "\r\n" .
 					'X-Mailer: PHP/' . phpversion();
+
+				// A
+				if ( (Settings::get("grr_mail_Bcc") == "y") && (substr_count($A, "@") > 1) ){
+					$headers .= "Bcc: ".str_replace(";", ",", $A)."\r\n";
+					$to =  $DE;
+				} else {
+					$to = str_replace(";", ",", $A);
+				}
 
 				if (!mail($to, $sujet, $message, $headers)) {
 					$success = false;
