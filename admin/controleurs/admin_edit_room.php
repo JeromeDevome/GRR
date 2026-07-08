@@ -107,7 +107,12 @@ if (!isset($retour_page))
 // modification d'une ressource : admin ou gestionnaire
 $user_id = getUserName();
 $acces_config_ress_level = (Settings::get('acces_config'))? Settings::get('acces_config') : 3;
-if (SecuAccess::UserLevel($user_id, $room) < $acces_config_ress_level)
+if($room > 0)
+	$levelUser = SecuAccess::UserLevel($user_id, $room);
+else
+	$levelUser = SecuAccess::UserLevel($user_id, $area_id, 'area');
+
+if ($levelUser < $acces_config_ress_level)
 {
 	showAccessDenied($back);
 	exit();
