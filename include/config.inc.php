@@ -299,6 +299,9 @@ $menuAdminComplNiv2Divers = [];
 $menuAdminComplNiv2Connexions = [];
 
 
+if (!defined('TABLE_PREFIX'))
+	define('TABLE_PREFIX', isset($table_prefix) ? $table_prefix : 'grr');
+
 if(file_exists('../personnalisation/configperso.inc.php'))
 	include('../personnalisation/configperso.inc.php');
 elseif(file_exists('personnalisation/configperso.inc.php'))
