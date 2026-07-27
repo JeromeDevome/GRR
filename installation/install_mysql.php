@@ -39,6 +39,24 @@ $choix_db	= isset($_POST["choix_db"]) ? $_POST["choix_db"] : NULL;
 $table_new	= isset($_POST["table_new"]) ? $_POST["table_new"] : NULL;
 $table_prefix = isset($_POST["table_prefix"]) ? $_POST["table_prefix"] : NULL;
 
+// Surcharge pour Docker : chargement des variables d'environnement si connect.inc.php existe déjà
+if (@file_exists($nom_fic))
+{
+	require_once($nom_fic);
+	if (empty($adresse_db))
+	{
+		$adresse_db = $dbHost;
+		$port_db    = $dbPort;
+		$login_db   = $dbUser;
+		$pass_db    = $dbPass;
+		$choix_db   = $dbDb;
+	}
+	if (empty($table_prefix))
+	{
+		$table_prefix = isset($table_prefix) ? $table_prefix : 'grr';
+	}
+}
+
 $d['dbsys']			= $dbsys;
 $d['nom_fic']		= $nom_fic;
 $d['adresse_db']	= $adresse_db;
@@ -71,7 +89,10 @@ function mysqli_result($res, $row, $field = 0)
 	$datarow = $res->fetch_array();
 	return $datarow[$field];
 }
-if (@file_exists($nom_fic))
+// Vérification si la base de données est déjà installée et contient toutes ses tables
+$has_config = @file_exists($nom_fic);
+$tables_exist = false;
+if ($has_config)
 {
 	/* fix prefix missing */
 	if ( $table_prefix != NULL ) {
@@ -88,42 +109,58 @@ if (@file_exists($nom_fic))
 	{
 		if (mysqli_select_db($db, "$dbDb"))
 		{
-			// Premier test
 			$j = '0';
-			$test1 = 'yes';
+			$tables_exist = true;
 			$total = count($liste_tables);
-			$tableManquantes = "";
 			while ($j < $total)
 			{
-				$test = mysqli_query($db, "SELECT count(*) FROM ".$table_prefix.$liste_tables[$j]);
+				$test = @mysqli_query($db, "SELECT count(*) FROM ".$table_prefix.$liste_tables[$j]);
 				if (!$test)
 				{
-					$tableManquantes .= " ". $table_prefix.$liste_tables[$j];
-					$correct_install='no';
-					$test1 = 'no';
+					$tables_exist = false;
+					break;
 				}
 				$j++;
 			}
+			@mysqli_close($db);
+		}
+	}
+}
+
+// Si le fichier existe et que la base est complète, on affiche l'étape 5 de fin d'installation
+if ($has_config && $tables_exist)
+{
+	require_once($nom_fic);
+	$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
+	if ($db)
+	{
+		if (mysqli_select_db($db, "$dbDb"))
+		{
 			$call_test = mysqli_query($db, "SELECT * FROM ".$table_prefix."_setting WHERE NAME='sessionMaxLength'");
 			$test2 = mysqli_num_rows($call_test);
 
 			$d['etape'] = 5;
-
-			if ($test1 == 'no'){
-				$d['erreurE5'] = 1;
-				$d['tableManquantes'] = $tableManquantes;
-			} elseif($test2 == 0){
+			if ($test2 == 0)
+			{
 				$d['erreurE5'] = 2;
-			} else{
+			}
+			else
+			{
 				if ($etape != 5)
 				{
 					$d['erreurE5'] = 3;
 				}
 			}
-
 			echo $twig->render('installation_e5.twig', array('d' => $d));
+			@mysqli_close($db);
+			exit();
 		}
 	}
+}
+// Si le fichier existe mais que les tables manquent, on force la redirection vers l'étape 3
+else if ($has_config && !$tables_exist && empty($etape))
+{
+	$etape = 3;
 }
 if ($etape == 4)
 {
@@ -199,37 +236,55 @@ if ($etape == 4)
 			if ($result_ok == 'yes')
 			{
 				$ok = 'yes';
+				// Ne pas écraser connect.inc.php si c'est le template Docker dynamique
+				$preserve_config = false;
 				if (@file_exists($nom_fic))
-					unlink($nom_fic);
-				$f = @fopen($nom_fic, "wb");
-				if (!$f)
 				{
-					$ok = 'no';
+					$content = @file_get_contents($nom_fic);
+					if ($content && strpos($content, 'getenv') !== false)
+					{
+						$preserve_config = true;
+					}
+				}
+
+				if ($preserve_config)
+				{
+					$ok = 'yes';
 				}
 				else
 				{
-					$hash_pwd1 = bin2hex(random_bytes(12));
-					$conn = "<"."?php\n";
-					$conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
-					$conn .= "# ligne suivante : le nom du serveur qui herberge votre base sql.\n";
-					$conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
-					$conn .= "\$dbHost=\"$adresse_db\";\n";
-					$conn .= "# ligne suivante : le nom de votre base sql\n";
-					$conn .= "\$dbDb=\"$choix_db\";\n";
-					$conn .= "# ligne suivante : le nom de l'utilisateur sql qui a les droits sur la base\n";
-					$conn .= "\$dbUser=\"$login_db\";\n";
-					$conn .= "# ligne suivante : le mot de passe de l'utilisateur sql ci-dessus\n";
-					$conn .= "\$dbPass=\"$pass_db\";\n";
-					$conn .= "# ligne suivante : préfixe du nom des tables de données\n";
-					$conn .= "\$table_prefix=\"$table_prefix\";\n";
-					$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
-					$conn .= "\$dbPort=\"$port_db\";\n";
-					$conn .= "# ligne suivante : adaptation EnvOLE\n";
-					$conn .= "\$apikey=\"mypassphrase\";\n";
-					$conn .= "?".">";
-					@fputs($f, $conn);
-					if (!@fclose($f))
+					if (@file_exists($nom_fic))
+						unlink($nom_fic);
+					$f = @fopen($nom_fic, "wb");
+					if (!$f)
+					{
 						$ok = 'no';
+					}
+					else
+					{
+						$hash_pwd1 = bin2hex(random_bytes(12));
+						$conn = "<"."?php\n";
+						$conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
+						$conn .= "# ligne suivante : le nom du serveur qui herberge votre base sql.\n";
+						$conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
+						$conn .= "\$dbHost=\"$adresse_db\";\n";
+						$conn .= "# ligne suivante : le nom de votre base sql\n";
+						$conn .= "\$dbDb=\"$choix_db\";\n";
+						$conn .= "# ligne suivante : le nom de l'utilisateur sql qui a les droits sur la base\n";
+						$conn .= "\$dbUser=\"$login_db\";\n";
+						$conn .= "# ligne suivante : le mot de passe de l'utilisateur sql ci-dessus\n";
+						$conn .= "\$dbPass=\"$pass_db\";\n";
+						$conn .= "# ligne suivante : préfixe du nom des tables de données\n";
+						$conn .= "\$table_prefix=\"$table_prefix\";\n";
+						$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
+						$conn .= "\$dbPort=\"$port_db\";\n";
+						$conn .= "# ligne suivante : adaptation EnvOLE\n";
+						$conn .= "\$apikey=\"mypassphrase\";\n";
+						$conn .= "?".">";
+						@fputs($f, $conn);
+						if (!@fclose($f))
+							$ok = 'no';
+					}
 				}
 				if ($ok == 'yes')
 				{

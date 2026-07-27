@@ -1,17 +1,17 @@
-# Étape 1 : Construction des ressources frontend
+# --- Étape 1 : Construction des ressources frontend ---
 FROM node:krypton-alpine AS asset-builder
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY build ./build
 RUN npm ci --include=dev
 
-# Étape 2 : Construction des dépendances PHP
+# --- Étape 2 : Construction des dépendances PHP ---
 FROM composer:2 AS composer-builder
 WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
-# Étape 3 : Environnement d'exécution final
+# --- Étape 3 : Environnement d'exécution final ---
 FROM php:8.3-apache
 
 # Installation des dépendances système nécessaires
@@ -33,32 +33,27 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     mysqli \
     zip
 
-# Activation des modules Apache requis
-RUN a2enmod rewrite headers deflate mime autoindex
+# Activation des modules Apache (headers, deflate, rewrite ne sont pas activés par défaut)
+RUN a2enmod rewrite headers deflate
 
 # Configuration d'Apache pour autoriser les surcharges .htaccess
-RUN echo '<Directory /var/www/html>\n\
-    Options Indexes FollowSymLinks\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' >> /etc/apache2/conf-available/allow-override.conf \
-    && a2enconf allow-override
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 WORKDIR /var/www/html
 
-# Copie du code source de l'application
-COPY . .
+# Copie du code source avec droits www-data (évite des couches d'images trop lourdes)
+COPY --chown=www-data:www-data . .
 
-# Copie des dossiers vendor et jslib construits lors des étapes précédentes
-COPY --from=composer-builder /app/vendor ./vendor
-COPY --from=asset-builder /app/jslib ./jslib
+# Copie des dépendances générées depuis les étapes de build
+COPY --chown=www-data:www-data --from=composer-builder /app/vendor ./vendor
+COPY --chown=www-data:www-data --from=asset-builder /app/jslib ./jslib
 
-# Génération du fichier connect.inc.php lisant dynamiquement les variables d'environnement
-RUN printf '<?php\n# Fichier de connexion à la base de données dynamique pour Docker\n# Lit les informations depuis les variables d\'environnement\n$dbHost = getenv("DB_HOST") ?: "db";\n$dbDb   = getenv("DB_NAME") ?: "grr";\n$dbUser = getenv("DB_USER") ?: "grr";\n$dbPass = getenv("DB_PASSWORD") ?: "grr_password";\n$dbPort = getenv("DB_PORT") ?: "3306";\n?>\n' > personnalisation/connect.inc.php
+# Copie du modèle de configuration DB
+RUN cp personnalisation/connect.inc.php.docker personnalisation/connect.inc.php
 
-# Création du dossier temporaire et configuration des droits d'accès pour www-data
+# Création du dossier temp et ajustement des droits pour www-data
 RUN mkdir -p temp \
-    && chown -R www-data:www-data /var/www/html \
+    && chown -R www-data:www-data /var/www/html/personnalisation /var/www/html/temp \
     && chmod -R 775 /var/www/html/personnalisation /var/www/html/temp
 
 CMD ["apache2-foreground"]
