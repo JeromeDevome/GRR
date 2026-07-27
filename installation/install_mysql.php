@@ -49,17 +49,17 @@ if ($nom_fic)
 {
 	require_once($nom_fic);
 	if (empty($adresse_db))
-	{
 		$adresse_db = $dbHost;
-		$port_db    = $dbPort;
-		$login_db   = $dbUser;
-		$pass_db    = $dbPass;
-		$choix_db   = $dbDb;
-	}
+	if (empty($port_db))
+		$port_db = $dbPort;
+	if (empty($login_db))
+		$login_db = $dbUser;
+	if (empty($pass_db))
+		$pass_db = $dbPass;
+	if (empty($choix_db))
+		$choix_db = !empty($dbDb) ? $dbDb : 'grr';
 	if (empty($table_prefix))
-	{
 		$table_prefix = isset($table_prefix) ? $table_prefix : 'grr';
-	}
 }
 
 $d['dbsys']			= $dbsys;
@@ -328,16 +328,20 @@ else if ($etape == 3)
 
 	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
 	$GLOBALS['db_c'] = $db;
+	if (empty($choix_db) && !empty($dbDb))
+		$choix_db = $dbDb;
+
 	if ($choix_db == "new_grr")
 	{
 		$sel_db = $table_new;
-		$result = mysqli_query($db, "CREATE DATABASE $sel_db;");
+		@mysqli_query($db, "CREATE DATABASE IF NOT EXISTS `$sel_db`;");
 	}
 	else
 	{
-		$sel_db = $choix_db;
+		$sel_db = !empty($choix_db) ? $choix_db : "grr";
+		@mysqli_query($db, "CREATE DATABASE IF NOT EXISTS `$sel_db`;");
 	}
-	if (mysqli_select_db($db, "$sel_db"))
+	if (@mysqli_select_db($db, "$sel_db"))
 	{
 		$d['etape'] = 3;
 		$d['SelectBase'] = 1;
