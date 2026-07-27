@@ -1,0 +1,31 @@
+name: grr
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "80:80"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=grr
+      - DB_USER=grr
+      - DB_PASSWORD=grr_password
+    volumes:
+      - grr_personnalisation:/var/www/html/personnalisation
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.4
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=grr
+      - MYSQL_USER=grr
+      - MYSQL_PASSWORD=grr_password
+    volumes:
+      - grr_db:/var/lib/mysql
+
+volumes:
+  grr_personnalisation:
+  grr_db:
