@@ -115,7 +115,7 @@ get_vocab_admin("reserver");
 
 // Template Twig
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/reservation/templates');
-$twig = new \Twig\Environment($loader,['charset']);
+$twig = new \Twig\Environment($loader, ['charset' => 'utf-8']);
 $twig->addExtension(new TwigGRR());
 $twig->addGlobal('router', [
     'admin' => new AdminRouter(),
