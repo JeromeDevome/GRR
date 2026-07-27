@@ -191,56 +191,51 @@ if ($etape == 4)
 		{
 			$d['etape'] = 4;
 
-			$fd = fopen("tables.my.sql", "r");
-			mysqli_set_charset( $db, 'utf8mb4');
-			$result_ok = 'yes';
-			while (!feof($fd))
-			{
-				$query = fgets($fd, 5000);
-				$query = trim($query);
-				$query = preg_replace("/DROP TABLE IF EXISTS grr/","DROP TABLE IF EXISTS ".$table_prefix,$query);
-				$query = preg_replace("/CREATE TABLE grr/","CREATE TABLE ".$table_prefix,$query);
-				$query = preg_replace("/INSERT INTO grr/","INSERT INTO ".$table_prefix,$query);
-				$query = preg_replace("/VariableInstal01/",$company,$query);
-				$query = preg_replace("/VariableInstal02/",$grr_url,$query);
-				$query = preg_replace("/VariableInstal03/",$webmaster_email,$query);
-				$query = preg_replace("/VariableInstal04/",$support_email,$query);
-				$query = str_replace("VariableInstal05",$mdp,$query); //* preg_replace ne fonctionne pas le hash à cause des $
-				$query = preg_replace("/VariableInstal06/",$email,$query);
-				$query = preg_replace("/VariableInstal07/",$version_grr,$query);
+			mysqli_set_charset($db, 'utf8mb4');
+			mysqli_report(MYSQLI_REPORT_OFF);
+			$sql_content = file_get_contents("tables.my.sql");
+			$sql_content = preg_replace("/DROP TABLE IF EXISTS grr/", "DROP TABLE IF EXISTS ".$table_prefix, $sql_content);
+			$sql_content = preg_replace("/CREATE TABLE grr/", "CREATE TABLE ".$table_prefix, $sql_content);
+			$sql_content = preg_replace("/INSERT INTO grr/", "INSERT INTO ".$table_prefix, $sql_content);
+			$sql_content = preg_replace("/VariableInstal01/", $company, $sql_content);
+			$sql_content = preg_replace("/VariableInstal02/", $grr_url, $sql_content);
+			$sql_content = preg_replace("/VariableInstal03/", $webmaster_email, $sql_content);
+			$sql_content = preg_replace("/VariableInstal04/", $support_email, $sql_content);
+			$sql_content = str_replace("VariableInstal05", $mdp, $sql_content);
+			$sql_content = preg_replace("/VariableInstal06/", $email, $sql_content);
+			$sql_content = preg_replace("/VariableInstal07/", $version_grr, $sql_content);
 
+			$result_ok = 'yes';
+			$queries = explode(";\n", $sql_content);
+			foreach ($queries as $query)
+			{
+				$query = trim($query);
 				if ($query != '')
 				{
-					$reg = mysqli_query($db, $query);
-					
+					$reg = @mysqli_query($db, $query);
 					if (!$reg)
 					{
-						echo "<br /><font color=\"red\">ERROR</font> : '$query'";
 						$result_ok = 'no';
-					}
-					else
-					{
-						foreach ($liste_settings as $param_name => $param_value) {
-							// Vérifier si le paramètre existe dans la table settings
-							$sql_check = "SELECT COUNT(*) FROM ".$table_prefix."_setting WHERE name = '".mysqli_real_escape_string($db, $param_name)."'";
-							$res = mysqli_query($db, $sql_check);
-							$count = ($res && $row = mysqli_fetch_row($res)) ? $row[0] : 0;
-							
-							if ($count == 0) {
-								// Le paramètre n'existe pas, on l'ajoute
-								$sql_insert = "INSERT INTO ".$table_prefix."_setting (name, value) VALUES (
-									'".mysqli_real_escape_string($db, $param_name)."',
-									'".mysqli_real_escape_string($db, $param_value)."'
-								)";
-								$res_insert = mysqli_query($db, $sql_insert);
-								if ($res_insert)
-									$params_ajoutes++;
-							}
-						}
 					}
 				}
 			}
-			fclose($fd);
+
+			if ($result_ok == 'yes')
+			{
+				foreach ($liste_settings as $param_name => $param_value) {
+					$sql_check = "SELECT COUNT(*) FROM ".$table_prefix."_setting WHERE name = '".mysqli_real_escape_string($db, $param_name)."'";
+					$res = mysqli_query($db, $sql_check);
+					$count = ($res && $row = mysqli_fetch_row($res)) ? $row[0] : 0;
+					
+					if ($count == 0) {
+						$sql_insert = "INSERT INTO ".$table_prefix."_setting (name, value) VALUES (
+							'".mysqli_real_escape_string($db, $param_name)."',
+							'".mysqli_real_escape_string($db, $param_value)."'
+						)";
+						mysqli_query($db, $sql_insert);
+					}
+				}
+			}
 			if ($result_ok == 'yes')
 			{
 				$ok = 'yes';
