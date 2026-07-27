@@ -29,7 +29,12 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
-$nom_fic	= "../personnalisation/connect.inc.php";
+$nom_fic = false;
+if (file_exists("../personnalisation/connect.inc.php"))
+	$nom_fic = "../personnalisation/connect.inc.php";
+elseif (file_exists("../personnalisation/connect.inc.php.docker"))
+	$nom_fic = "../personnalisation/connect.inc.php.docker";
+
 $etape		= isset($_GET["etape"]) ? $_GET["etape"] : NULL;
 $adresse_db = isset($_POST["adresse_db"]) ? $_POST["adresse_db"] : NULL;
 $port_db	= isset($_POST["port_db"]) ? SecuChaine::ValideNetworkPort($_POST["port_db"]) : NULL;
@@ -39,8 +44,8 @@ $choix_db	= isset($_POST["choix_db"]) ? $_POST["choix_db"] : NULL;
 $table_new	= isset($_POST["table_new"]) ? $_POST["table_new"] : NULL;
 $table_prefix = isset($_POST["table_prefix"]) ? $_POST["table_prefix"] : NULL;
 
-// Surcharge pour Docker : chargement des variables d'environnement si connect.inc.php existe déjà
-if (@file_exists($nom_fic))
+// Surcharge pour Docker : chargement des variables d'environnement si un fichier de configuration existe déjà
+if ($nom_fic)
 {
 	require_once($nom_fic);
 	if (empty($adresse_db))

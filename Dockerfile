@@ -48,9 +48,6 @@ COPY --chown=www-data:www-data . .
 COPY --chown=www-data:www-data --from=composer-builder /app/vendor ./vendor
 COPY --chown=www-data:www-data --from=asset-builder /app/jslib ./jslib
 
-# Copie du modèle de configuration DB
-RUN cp personnalisation/connect.inc.php.docker personnalisation/connect.inc.php
-
 # Création du dossier temp et ajustement des droits pour www-data
 RUN mkdir -p temp \
     && chown -R www-data:www-data /var/www/html/personnalisation /var/www/html/temp \

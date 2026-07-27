@@ -33,7 +33,14 @@ if(isset($_GET['p'])){
 	$page = SecuChaine::Alphanumeric($_GET['p']);
 }
 
-include "./personnalisation/connect.inc.php";
+$connect_fic = false;
+if (file_exists("./personnalisation/connect.inc.php"))
+	$connect_fic = "./personnalisation/connect.inc.php";
+elseif (file_exists("./personnalisation/connect.inc.php.docker"))
+	$connect_fic = "./personnalisation/connect.inc.php.docker";
+
+if ($connect_fic)
+	include $connect_fic;
 include "./include/config.inc.php";
 include "./include/misc.inc.php";
 include "./include/$dbsys.inc.php";
