@@ -114,6 +114,7 @@ if ($has_config)
 	{
 		if (mysqli_select_db($db, "$dbDb"))
 		{
+			mysqli_report(MYSQLI_REPORT_OFF);
 			$j = '0';
 			$tables_exist = true;
 			$total = count($liste_tables);
