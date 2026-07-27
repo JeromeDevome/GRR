@@ -222,17 +222,18 @@ if ($etape == 4)
 					{
 						foreach ($liste_settings as $param_name => $param_value) {
 							// Vérifier si le paramètre existe dans la table settings
-							$sql_check = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_setting WHERE name = '".SecuChaine::ProtectDataSql($param_name)."'";
-							$count = grr_sql_query1($sql_check);
+							$sql_check = "SELECT COUNT(*) FROM ".$table_prefix."_setting WHERE name = '".mysqli_real_escape_string($db, $param_name)."'";
+							$res = mysqli_query($db, $sql_check);
+							$count = ($res && $row = mysqli_fetch_row($res)) ? $row[0] : 0;
 							
 							if ($count == 0) {
 								// Le paramètre n'existe pas, on l'ajoute
-								$sql_insert = "INSERT INTO ".TABLE_PREFIX."_setting (name, value) VALUES (
-									'".SecuChaine::ProtectDataSql($param_name)."',
-									'".SecuChaine::ProtectDataSql($param_value)."'
+								$sql_insert = "INSERT INTO ".$table_prefix."_setting (name, value) VALUES (
+									'".mysqli_real_escape_string($db, $param_name)."',
+									'".mysqli_real_escape_string($db, $param_value)."'
 								)";
-								$res_insert = grr_sql_command($sql_insert);
-								if ($res_insert >= 0)
+								$res_insert = mysqli_query($db, $sql_insert);
+								if ($res_insert)
 									$params_ajoutes++;
 							}
 						}
