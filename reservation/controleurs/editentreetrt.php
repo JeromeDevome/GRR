@@ -129,42 +129,21 @@ if (isset($_REQUEST['dragdrop']) && isset($id) && $id) {
                 $$colonne = $valeur;
             }
         }
-/*        // copie des valeurs manquantes
-        $name        = isset($name)        ? $name        : $row2['name'];
-        $description = isset($description) ? $description : $row2['description'];
-        $type        = isset($type)        ? $type        : $row2['type'];
-        $beneficiaire = isset($beneficiaire)? $beneficiaire : $row2['beneficiaire'];
-        if (empty($beneficiaire) && !empty($row2['beneficiaire_ext'])) {
-            // cas bénéficiaire externe : on conserve la chaîne brute
-            $beneficiaire_ext = $row2['beneficiaire_ext'];
-        }
-        if (!isset($rooms) || empty($rooms) || intval($rooms[0]) == 0) {
-            $rooms = array(intval($row2['room_id']));
-        }
-        // horaires d'origine si l'appel ne fournit pas de nouvelles heures
-        if (!isset($start_day))   $start_day   = date('d',$row2['start_time']);
-        if (!isset($start_month)) $start_month = date('m',$row2['start_time']);
-        if (!isset($start_year))  $start_year  = date('Y',$row2['start_time']);
-        if (!isset($start_hour))  $start_hour  = date('G',$row2['start_time']);
-        if (!isset($start_minute))$start_minute= date('i',$row2['start_time']);
-        if (!isset($end_day))     $end_day     = date('d',$row2['end_time']);
-        if (!isset($end_month))   $end_month   = date('m',$row2['end_time']);
-        if (!isset($end_year))    $end_year    = date('Y',$row2['end_time']);
-        if (!isset($end_hour))    $end_hour    = date('G',$row2['end_time']);
-        if (!isset($end_minute))  $end_minute  = date('i',$row2['end_time']);
-        // période si nécessaire
-        if (!isset($period))
-            $period = $start_minute;
-        // et charger les champs additionnels existants
-        $areaDrag = mrbsGetRoomArea($rooms[0]);
+        // restauration des champs additionnels pour drag&drop : ces champs ne sont pas transmis
+        $areaDrag = mrbsGetRoomArea(isset($rooms[0]) ? $rooms[0] : intval($row2['room_id']));
         if ($areaDrag) {
             $overload_fields_drag = mrbsOverloadGetFieldslist($areaDrag);
             foreach ($overload_fields_drag as $fld) {
                 $fid = $fld['id'];
-                $val = grrExtractValueFromOverloadDesc($row2['overload_desc'], $fid);
-                ${"addon_".$fid} = $val;
+                $fieldname = "addon_".$fid;
+                if (!isset($$fieldname) || $$fieldname === '') {
+                    $val = grrExtractValueFromOverloadDesc($row2['overload_desc'], $fid);
+                    if ($val !== null) {
+                        $$fieldname = $val;
+                    }
+                }
             }
-        }*/
+        }
     }
 }
 // vérification
@@ -224,7 +203,10 @@ try {
     {
         $id_field = $overload_fields_list[$overfield]["id"];
         $fieldname = "addon_".$id_field;
-        $$fieldname = SecuChaine::GetFormVar($fieldname); 
+        $form_value = SecuChaine::GetFormVar($fieldname);
+        if ($form_value !== NULL) {
+            $$fieldname = $form_value;
+        }
         if (($overload_fields_list[$overfield]["type"] == "numeric") && 
             (isset($$fieldname) && ($$fieldname != '') && (!preg_match("`^[0-9]*\.{0,1}[0-9]*$`",$$fieldname))))
         {
