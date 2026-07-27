@@ -185,6 +185,7 @@ if ($etape == 4)
 
 
 		$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
+		$GLOBALS['db_c'] = $db;
 
 		if (mysqli_select_db($db, "$choix_db"))
 		{
@@ -325,6 +326,7 @@ else if ($etape == 3)
 {
 
 	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
+	$GLOBALS['db_c'] = $db;
 	if ($choix_db == "new_grr")
 	{
 		$sel_db = $table_new;
