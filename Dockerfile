@@ -48,8 +48,4 @@ COPY . .
 COPY --from=composer-builder /app/vendor ./vendor
 COPY --from=asset-builder /app/jslib ./jslib
 
-# Ensure connect.inc.php fallback file is copied if missing and temp directory exists
-RUN mkdir -p temp personnalisation \
-    && cp -n ./personnalisation/connect.inc.php.docker ./personnalisation/connect.inc.php || true
-
 CMD ["apache2-foreground"]
