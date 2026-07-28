@@ -14,7 +14,8 @@ services:
     volumes:
       - ./personnalisation:/var/www/html/personnalisation
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: mysql:9.6
@@ -25,6 +26,11 @@ services:
       - MYSQL_PASSWORD=grr_password
     volumes:
       - grr_db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "grr", "-pgrr_password"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
   grr_db:
