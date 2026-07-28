@@ -41,14 +41,17 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
 
 WORKDIR /var/www/html
 
-# Copie du code source
-COPY . .
+# Copie du code source avec droits www-data (évite des couches d'images trop lourdes)
+COPY --chown=www-data:www-data . .
 
 # Copie des dépendances générées depuis les étapes de build
-COPY --from=composer-builder /app/vendor ./vendor
-COPY --from=asset-builder /app/jslib ./jslib
+COPY --chown=www-data:www-data --from=composer-builder /app/vendor ./vendor
+COPY --chown=www-data:www-data --from=asset-builder /app/jslib ./jslib
 
 # Config de connexion par défaut via variables d'environnement, tant que personnalisation/connect.inc.php n'existe pas
 RUN cp include/connect.inc.docker.php include/connect.inc.php
+
+# temp/ n'est pas versionné (.dockerignore) : le créer avec les droits www-data
+RUN mkdir -p temp && chown www-data:www-data temp
 
 CMD ["apache2-foreground"]
