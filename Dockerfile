@@ -12,7 +12,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
 # --- Étape 3 : Environnement d'exécution final ---
-FROM php:8.3-apache
+FROM php:8.5-apache
 
 # Installation des dépendances système nécessaires
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -41,16 +41,15 @@ RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/Allo
 
 WORKDIR /var/www/html
 
-# Copie du code source avec droits www-data (évite des couches d'images trop lourdes)
-COPY --chown=www-data:www-data . .
+# Copie du code source
+COPY . .
 
 # Copie des dépendances générées depuis les étapes de build
-COPY --chown=www-data:www-data --from=composer-builder /app/vendor ./vendor
-COPY --chown=www-data:www-data --from=asset-builder /app/jslib ./jslib
+COPY --from=composer-builder /app/vendor ./vendor
+COPY --from=asset-builder /app/jslib ./jslib
 
-# Création du dossier temp et ajustement des droits pour www-data
-RUN mkdir -p temp \
-    && chown -R www-data:www-data /var/www/html/personnalisation /var/www/html/temp \
-    && chmod -R 775 /var/www/html/personnalisation /var/www/html/temp
+# Ensure connect.inc.php fallback file is copied if missing and temp directory exists
+RUN mkdir -p temp personnalisation \
+    && cp -n ./personnalisation/connect.inc.php.docker ./personnalisation/connect.inc.php || true
 
 CMD ["apache2-foreground"]
