@@ -23,7 +23,10 @@ header('X-Content-Type-Options: nosniff');
 $grr_script_name = "maj.php";
 $niveauDossier = 2;
 
-require_once("../personnalisation/connect.inc.php");
+if (file_exists("../personnalisation/connect.inc.php"))
+	require_once("../personnalisation/connect.inc.php");
+else
+	require_once("../include/connect.inc.php");
 require_once("../include/config.inc.php");
 require_once("../include/misc.inc.php");
 require_once("../include/securite.class.php");

@@ -20,8 +20,8 @@ $niveauDossier = 1;
 $connect_fic = false;
 if (file_exists("personnalisation/connect.inc.php"))
 	$connect_fic = "personnalisation/connect.inc.php";
-elseif (file_exists("personnalisation/connect.inc.php.docker"))
-	$connect_fic = "personnalisation/connect.inc.php.docker";
+elseif (file_exists("include/connect.inc.php"))
+	$connect_fic = "include/connect.inc.php";
 
 require_once("include/config.inc.php");
 if ($connect_fic)

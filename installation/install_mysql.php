@@ -32,8 +32,8 @@ $twig->addExtension(new TwigGRR());
 $nom_fic = false;
 if (file_exists("../personnalisation/connect.inc.php"))
 	$nom_fic = "../personnalisation/connect.inc.php";
-elseif (file_exists("../personnalisation/connect.inc.php.docker"))
-	$nom_fic = "../personnalisation/connect.inc.php.docker";
+elseif (file_exists("../include/connect.inc.php"))
+	$nom_fic = "../include/connect.inc.php";
 
 $etape		= isset($_GET["etape"]) ? $_GET["etape"] : NULL;
 $adresse_db = isset($_POST["adresse_db"]) ? $_POST["adresse_db"] : NULL;

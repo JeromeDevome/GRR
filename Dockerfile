@@ -48,4 +48,7 @@ COPY . .
 COPY --from=composer-builder /app/vendor ./vendor
 COPY --from=asset-builder /app/jslib ./jslib
 
+# Config de connexion par défaut via variables d'environnement, tant que personnalisation/connect.inc.php n'existe pas
+RUN cp include/connect.inc.docker.php include/connect.inc.php
+
 CMD ["apache2-foreground"]

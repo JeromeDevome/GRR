@@ -20,7 +20,10 @@
 
 chdir("..");
 require_once("./include/config.inc.php");
-include "./include/connect.inc.php";
+if (file_exists("./personnalisation/connect.inc.php"))
+	include "./personnalisation/connect.inc.php";
+else
+	include "./include/connect.inc.php";
 require_once("./include/$dbsys.inc.php");
 require_once("./include/session.inc.php");
 require_once("./include/settings.class.php");

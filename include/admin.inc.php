@@ -24,8 +24,8 @@ require_once("securite.class.php");
 $prefixeChemin = cheminDetermination($niveauDossier);
 if (file_exists($prefixeChemin."personnalisation/connect.inc.php"))
 	include $prefixeChemin."personnalisation/connect.inc.php";
-elseif (file_exists($prefixeChemin."personnalisation/connect.inc.php.docker"))
-	include $prefixeChemin."personnalisation/connect.inc.php.docker";
+elseif (file_exists($prefixeChemin."include/connect.inc.php"))
+	include $prefixeChemin."include/connect.inc.php";
 
 include "config.inc.php";
 include "$dbsys.inc.php";
