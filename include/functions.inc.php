@@ -1630,7 +1630,7 @@ function get_default_area($id_site = -1)
 		$use_multisite = true;
 	else
 		$use_multisite = false;
-	if ($gOptionIp==1) {
+	if ($gOptionIp==1 && isset($_SERVER['REMOTE_ADDR'])) {
 		$sql = "SELECT id FROM ".TABLE_PREFIX."_area WHERE ip_adr='".$_SERVER['REMOTE_ADDR']."' ORDER BY access, order_display, area_name LIMIT 1";
           	$res = grr_sql_query($sql);
           	if ($row = mysqli_fetch_assoc($res)) {

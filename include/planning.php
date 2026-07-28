@@ -43,7 +43,7 @@ if ((!isset($d['pview'])) || ($d['pview'] != 1))
 // Vérification de l'authentification obligatoire
 if ((Settings::get("authentification_obli") == 1) && (getUserName() == ''))
 {
-	$url = rawurlencode($_GET['url']);
+	$url = isset($_GET['url']) ? rawurlencode($_GET['url']) : '';
 	header("Location: app.php?p=login&url=".$url);
 	exit;
 }

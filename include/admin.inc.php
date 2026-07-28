@@ -38,7 +38,8 @@ if (!Settings::load())
 require_once("session.inc.php");
 // Resume session
 if (!grr_resumeSession()) {
-	header("Location: ../app.php?p=deconnexion&auto=1&url=$url");
+	$redirect_url = isset($url) ? $url : '';
+	header("Location: ../app.php?p=deconnexion&auto=1&url=".$redirect_url);
 	die();
 };
 // Paramètres langage
