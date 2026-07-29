@@ -12,7 +12,7 @@ services:
       - DB_USER=grr
       - DB_PASSWORD=grr_password
     volumes:
-      - ./personnalisation:/var/www/html/personnalisation
+      - grr_personnalisation:/var/www/html/personnalisation
     depends_on:
       db:
         condition: service_healthy
@@ -34,3 +34,4 @@ services:
 
 volumes:
   grr_db:
+  grr_personnalisation:
