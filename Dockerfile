@@ -11,27 +11,41 @@ WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
-# --- Étape 3 : Environnement d'exécution final ---
-FROM php:8.5-apache
+# --- Étape 3 : Compilation des extensions PHP (headers -dev isolés du runtime final) ---
+FROM php:8.5-apache AS php-extensions-builder
 
-# Installation des dépendances système nécessaires
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     libicu-dev \
     libzip-dev \
-    zip \
-    unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Installation des extensions PHP requises par GRR
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
     gd \
     intl \
     mysqli \
     zip
+
+# --- Étape 4 : Environnement d'exécution final ---
+FROM php:8.5-apache
+
+# Bibliothèques runtime
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpng16-16t64 \
+    libjpeg62-turbo \
+    libfreetype6 \
+    libicu76 \
+    libzip5 \
+    zip \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Récupération des extensions PHP compilées dans l'étape dédiée
+COPY --from=php-extensions-builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
+COPY --from=php-extensions-builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
 # Activation des modules Apache (headers, deflate, rewrite ne sont pas activés par défaut)
 RUN a2enmod rewrite headers deflate
