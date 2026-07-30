@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-06-01 18:05$
+ * Dernière modification : $Date: 2026-07-30 10:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.htmlselectType
@@ -338,8 +338,13 @@ if (isset($_GET["is_posted"]))
 			if ($champ[$k] == "descr")
 				$sql .=  grr_sql_syntax_caseless_contains("e.description", $texte[$k], $type_recherche[$k]);
 			if ($champ[$k] == "login"){
-				$sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire", $texte[$k], $type_recherche[$k]);  
-				$sql .= ' OR ';  
+        $sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire", $texte[$k], $type_recherche[$k]);
+        if($type_recherche[$k] == 1){
+          $sql .= " OR ";
+        }
+        else{
+          $sql .= " AND ";
+        }
 				$sql .=  grr_sql_syntax_caseless_contains("e.beneficiaire_ext", $texte[$k], $type_recherche[$k]);  
 			} 
 			$overload_fields = mrbsOverloadGetFieldslist("");
@@ -381,7 +386,7 @@ if (isset($_GET["is_posted"]))
 			//Trié par: brève description, Area, room, debut, date/heure.
 		$sql .= " ORDER BY e.name,9,r.order_display,10,2";*/
 		// echo $sql." <br /><br />"; // en test
-// echo $sql;
+ //echo $sql;
 	$res = grr_sql_query($sql);
 	if (!$res)
 		fatal_error(0, grr_sql_error());
