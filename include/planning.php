@@ -43,7 +43,7 @@ if ((!isset($d['pview'])) || ($d['pview'] != 1))
 // Vérification de l'authentification obligatoire
 if ((Settings::get("authentification_obli") == 1) && (getUserName() == ''))
 {
-	$url = rawurlencode($_GET['url']);
+	$url = isset($_GET['url']) ? rawurlencode($_GET['url']) : '';
 	header("Location: app.php?p=login&url=".$url);
 	exit;
 }
@@ -104,7 +104,7 @@ if ($d['pview'] != 1) {
     else 
         $pageTout = $pageSimple."_all";
     // les sélecteurs de ressource
-    if (isset($_SESSION['default_list_type']) || (Settings::get("authentification_obli") == 1))
+    if (isset($_SESSION['default_list_type']))
         $area_list_format = $_SESSION['default_list_type'];
     else
         $area_list_format = Settings::get("area_list_format");

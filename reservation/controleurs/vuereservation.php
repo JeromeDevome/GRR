@@ -30,7 +30,8 @@ if (!grr_resumeSession())
 
 if (($fin_session == 'y') && (Settings::get("authentification_obli") == 1))
 {
-	header("Location: ./app.php?p=deconnexion&auto=1&url=$url");
+	$redirect_url = isset($url) ? $url : '';
+	header("Location: ./app.php?p=deconnexion&auto=1&url=".$redirect_url);
 	die();
 }
 

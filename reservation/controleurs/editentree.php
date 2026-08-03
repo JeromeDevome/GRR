@@ -169,7 +169,8 @@ if (!isset($page_ret) || ($page_ret == ''))
 // Resume session
 if (!grr_resumeSession())
 {
-  header("Location: ./app.php?p=deconnexion&auto=1&url=$url"); // $url sort de session.inc.php, appelé par app.php
+  $redirect_url = isset($url) ? $url : '';
+  header("Location: ./app.php?p=deconnexion&auto=1&url=".$redirect_url); // $url sort de session.inc.php, appelé par app.php
   die();
 }
 

@@ -17,9 +17,15 @@
 
 $niveauDossier = 1;
 
-require_once("include/config.inc.php");
+$connect_fic = false;
 if (file_exists("personnalisation/connect.inc.php"))
-	include "personnalisation/connect.inc.php";
+	$connect_fic = "personnalisation/connect.inc.php";
+elseif (file_exists("include/connect.inc.php"))
+	$connect_fic = "include/connect.inc.php";
+
+require_once("include/config.inc.php");
+if ($connect_fic)
+	include $connect_fic;
 require_once("include/misc.inc.php");
 require_once("include/securite.class.php");
 require_once("include/functions.inc.php");
@@ -32,9 +38,9 @@ if ($dbsys == "mysql")
 	$flag = '';
 	$correct_install = '';
 	$msg = '';
-	if (file_exists("personnalisation/connect.inc.php"))
+	if ($connect_fic)
 	{
-		require_once("personnalisation/connect.inc.php");
+		require_once($connect_fic);
 		$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
 		if ($db)
 		{

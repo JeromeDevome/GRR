@@ -808,6 +808,10 @@ function execute_maj3($version_old, $version_grr)
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat CHANGE create_by create_by varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_repeat CHANGE beneficiaire beneficiaire varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE login login varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
+        $sql_mode_actuel = grr_sql_query1("SELECT @@sql_mode");
+        grr_sql_query("SET SESSION sql_mode=''");
+        grr_sql_query("UPDATE ".TABLE_PREFIX."_entry_moderate SET TIMESTAMP='1970-01-01 00:00:01' WHERE TIMESTAMP='0000-00-00 00:00:00'");
+        grr_sql_query("SET SESSION sql_mode='".addslashes($sql_mode_actuel)."'");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate CHANGE login_moderateur login_moderateur varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate CHANGE create_by create_by varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry_moderate CHANGE beneficiaire beneficiaire varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL default '' ;");
@@ -909,9 +913,13 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("INSERT IGNORE INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('cas_version', 'CAS_VERSION_2_0')");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_utilisateurs CHANGE `password` `password` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `id_participation` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD UNIQUE `UNIQUE` (`id_participation`)"); 
-        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants CHANGE IF EXISTS `participant` `beneficiaire` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL"); 
+        $req = grr_sql_count(grr_sql_query("SHOW COLUMNS FROM ".TABLE_PREFIX."_participants LIKE 'participant'"));
+        if ($req > 0)
+            $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants CHANGE `participant` `beneficiaire` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL");
         $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `timestamp` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `idresa`, ADD `cree_par` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `timestamp`");
-        $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `beneficiaire_ext` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `beneficiaire`, ADD `moderation` TINYINT(1) NOT NULL DEFAULT '0' AFTER `beneficiaire_ext`");
+        $req = grr_sql_count(grr_sql_query("SHOW COLUMNS FROM ".TABLE_PREFIX."_participants LIKE 'beneficiaire_ext'"));
+        if ($req == 0)
+            $result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_participants ADD `beneficiaire_ext` VARCHAR(184) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `beneficiaire`, ADD `moderation` TINYINT(1) NOT NULL DEFAULT '0' AFTER `beneficiaire_ext`");
 		$result_inter .= traiteRequete("CREATE TABLE IF NOT EXISTS ".TABLE_PREFIX."_log_resa (idlogresa bigint(20) NOT NULL AUTO_INCREMENT, date int(11) NOT NULL, idresa int(11) NOT NULL, identifiant varchar(100) NOT NULL, action tinyint(3) UNSIGNED NOT NULL, infoscomp text NOT NULL, PRIMARY KEY (`idlogresa`));");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_entry ADD `supprimer` TINYINT(1) NOT NULL DEFAULT '0' AFTER `nbparticipantmax`;");
 		$result_inter .= traiteRequete("INSERT INTO ".TABLE_PREFIX."_setting (`NAME`, `VALUE`) VALUES ('horaireconnexionde', '')");
@@ -1322,7 +1330,7 @@ function execute_maj4($version_old_bdd, $version_grr_bdd)
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD template VARCHAR(50) NULL DEFAULT NULL AFTER message;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD idresa INT NULL DEFAULT NULL AFTER template;");
 		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD type TINYINT NULL DEFAULT NULL AFTER idresa;");
-		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD erreur TEXT NOT NULL DEFAULT '' AFTER type;");
+		$result_inter .= traiteRequete("ALTER TABLE ".TABLE_PREFIX."_log_mail ADD erreur TEXT NULL AFTER type;");
 
 		$req = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='webmaster_email'");
 		if ($req == -1)

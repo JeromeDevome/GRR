@@ -1,0 +1,6 @@
+.git
+.github
+node_modules
+vendor
+personnalisation/connect.inc.php
+temp/*

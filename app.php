@@ -33,7 +33,14 @@ if(isset($_GET['p'])){
 	$page = SecuChaine::Alphanumeric($_GET['p']);
 }
 
-include "./personnalisation/connect.inc.php";
+$connect_fic = false;
+if (file_exists("./personnalisation/connect.inc.php"))
+	$connect_fic = "./personnalisation/connect.inc.php";
+elseif (file_exists("./include/connect.inc.php"))
+	$connect_fic = "./include/connect.inc.php";
+
+if ($connect_fic)
+	include $connect_fic;
 include "./include/config.inc.php";
 include "./include/misc.inc.php";
 include "./include/$dbsys.inc.php";
@@ -108,7 +115,7 @@ get_vocab_admin("reserver");
 
 // Template Twig
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/reservation/templates');
-$twig = new \Twig\Environment($loader,['charset']);
+$twig = new \Twig\Environment($loader, ['charset' => 'utf-8']);
 $twig->addExtension(new TwigGRR());
 $twig->addGlobal('router', [
     'admin' => new AdminRouter(),

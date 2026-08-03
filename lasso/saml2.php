@@ -92,7 +92,10 @@ class EndpointExemple extends LassoSPKitSaml2Endpoint {
 	      chdir("..");
 	      global $dbsys;
 	      require_once("./include/config.inc.php");
-	      include "./include/connect.inc.php";
+	      if (file_exists("./personnalisation/connect.inc.php"))
+	          include "./personnalisation/connect.inc.php";
+	      else
+	          include "./include/connect.inc.php";
 	      require_once("./include/$dbsys.inc.php");
 	      require_once("./include/securite.class.php");
 	      require_once("./include/functions.inc.php");

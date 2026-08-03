@@ -29,7 +29,12 @@ $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
 $twig = new \Twig\Environment($loader,['charset']);
 $twig->addExtension(new TwigGRR());
 
-$nom_fic	= "../personnalisation/connect.inc.php";
+$nom_fic = false;
+if (file_exists("../personnalisation/connect.inc.php"))
+	$nom_fic = "../personnalisation/connect.inc.php";
+elseif (file_exists("../include/connect.inc.php"))
+	$nom_fic = "../include/connect.inc.php";
+
 $etape		= isset($_GET["etape"]) ? $_GET["etape"] : NULL;
 $adresse_db = isset($_POST["adresse_db"]) ? $_POST["adresse_db"] : NULL;
 $port_db	= isset($_POST["port_db"]) ? SecuChaine::ValideNetworkPort($_POST["port_db"]) : NULL;
@@ -38,6 +43,24 @@ $pass_db	= isset($_POST["pass_db"]) ? $_POST["pass_db"] : NULL;
 $choix_db	= isset($_POST["choix_db"]) ? $_POST["choix_db"] : NULL;
 $table_new	= isset($_POST["table_new"]) ? $_POST["table_new"] : NULL;
 $table_prefix = isset($_POST["table_prefix"]) ? $_POST["table_prefix"] : NULL;
+
+// Surcharge pour Docker : chargement des variables d'environnement si un fichier de configuration existe déjà
+if ($nom_fic)
+{
+	require_once($nom_fic);
+	if (empty($adresse_db))
+		$adresse_db = $dbHost;
+	if (empty($port_db))
+		$port_db = $dbPort;
+	if (empty($login_db))
+		$login_db = $dbUser;
+	if (empty($pass_db))
+		$pass_db = $dbPass;
+	if (empty($choix_db))
+		$choix_db = !empty($dbDb) ? $dbDb : 'grr';
+	if (empty($table_prefix))
+		$table_prefix = isset($table_prefix) ? $table_prefix : 'grr';
+}
 
 $d['dbsys']			= $dbsys;
 $d['nom_fic']		= $nom_fic;
@@ -71,7 +94,10 @@ function mysqli_result($res, $row, $field = 0)
 	$datarow = $res->fetch_array();
 	return $datarow[$field];
 }
-if (@file_exists($nom_fic))
+// Vérification si la base de données est déjà installée et contient toutes ses tables
+$has_config = @file_exists($nom_fic);
+$tables_exist = false;
+if ($has_config)
 {
 	/* fix prefix missing */
 	if ( $table_prefix != NULL ) {
@@ -88,42 +114,59 @@ if (@file_exists($nom_fic))
 	{
 		if (mysqli_select_db($db, "$dbDb"))
 		{
-			// Premier test
+			mysqli_report(MYSQLI_REPORT_OFF);
 			$j = '0';
-			$test1 = 'yes';
+			$tables_exist = true;
 			$total = count($liste_tables);
-			$tableManquantes = "";
 			while ($j < $total)
 			{
-				$test = mysqli_query($db, "SELECT count(*) FROM ".$table_prefix.$liste_tables[$j]);
+				$test = @mysqli_query($db, "SELECT count(*) FROM ".$table_prefix.$liste_tables[$j]);
 				if (!$test)
 				{
-					$tableManquantes .= " ". $table_prefix.$liste_tables[$j];
-					$correct_install='no';
-					$test1 = 'no';
+					$tables_exist = false;
+					break;
 				}
 				$j++;
 			}
+			@mysqli_close($db);
+		}
+	}
+}
+
+// Si le fichier existe et que la base est complète, on affiche l'étape 5 de fin d'installation
+if ($has_config && $tables_exist)
+{
+	require_once($nom_fic);
+	$db = @mysqli_connect("$dbHost", "$dbUser", "$dbPass", "$dbDb", "$dbPort");
+	if ($db)
+	{
+		if (mysqli_select_db($db, "$dbDb"))
+		{
 			$call_test = mysqli_query($db, "SELECT * FROM ".$table_prefix."_setting WHERE NAME='sessionMaxLength'");
 			$test2 = mysqli_num_rows($call_test);
 
 			$d['etape'] = 5;
-
-			if ($test1 == 'no'){
-				$d['erreurE5'] = 1;
-				$d['tableManquantes'] = $tableManquantes;
-			} elseif($test2 == 0){
+			if ($test2 == 0)
+			{
 				$d['erreurE5'] = 2;
-			} else{
+			}
+			else
+			{
 				if ($etape != 5)
 				{
 					$d['erreurE5'] = 3;
 				}
 			}
-
 			echo $twig->render('installation_e5.twig', array('d' => $d));
+			@mysqli_close($db);
+			exit();
 		}
 	}
+}
+// Si le fichier existe mais que les tables manquent, on force la redirection vers l'étape 3
+else if ($has_config && !$tables_exist && empty($etape))
+{
+	$etape = 3;
 }
 if ($etape == 4)
 {
@@ -142,94 +185,109 @@ if ($etape == 4)
 
 
 		$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
+		$GLOBALS['db_c'] = $db;
 
 		if (mysqli_select_db($db, "$choix_db"))
 		{
 			$d['etape'] = 4;
 
-			$fd = fopen("tables.my.sql", "r");
-			mysqli_set_charset( $db, 'utf8mb4');
-			$result_ok = 'yes';
-			while (!feof($fd))
-			{
-				$query = fgets($fd, 5000);
-				$query = trim($query);
-				$query = preg_replace("/DROP TABLE IF EXISTS grr/","DROP TABLE IF EXISTS ".$table_prefix,$query);
-				$query = preg_replace("/CREATE TABLE grr/","CREATE TABLE ".$table_prefix,$query);
-				$query = preg_replace("/INSERT INTO grr/","INSERT INTO ".$table_prefix,$query);
-				$query = preg_replace("/VariableInstal01/",$company,$query);
-				$query = preg_replace("/VariableInstal02/",$grr_url,$query);
-				$query = preg_replace("/VariableInstal03/",$webmaster_email,$query);
-				$query = preg_replace("/VariableInstal04/",$support_email,$query);
-				$query = str_replace("VariableInstal05",$mdp,$query); //* preg_replace ne fonctionne pas le hash à cause des $
-				$query = preg_replace("/VariableInstal06/",$email,$query);
-				$query = preg_replace("/VariableInstal07/",$version_grr,$query);
+			mysqli_set_charset($db, 'utf8mb4');
+			mysqli_report(MYSQLI_REPORT_OFF);
+			$sql_content = file_get_contents("tables.my.sql");
+			$sql_content = preg_replace("/DROP TABLE IF EXISTS grr/", "DROP TABLE IF EXISTS ".$table_prefix, $sql_content);
+			$sql_content = preg_replace("/CREATE TABLE grr/", "CREATE TABLE ".$table_prefix, $sql_content);
+			$sql_content = preg_replace("/INSERT INTO grr/", "INSERT INTO ".$table_prefix, $sql_content);
+			$sql_content = preg_replace("/VariableInstal01/", $company, $sql_content);
+			$sql_content = preg_replace("/VariableInstal02/", $grr_url, $sql_content);
+			$sql_content = preg_replace("/VariableInstal03/", $webmaster_email, $sql_content);
+			$sql_content = preg_replace("/VariableInstal04/", $support_email, $sql_content);
+			$sql_content = str_replace("VariableInstal05", $mdp, $sql_content);
+			$sql_content = preg_replace("/VariableInstal06/", $email, $sql_content);
+			$sql_content = preg_replace("/VariableInstal07/", $version_grr, $sql_content);
 
+			$result_ok = 'yes';
+			$queries = explode(";\n", $sql_content);
+			foreach ($queries as $query)
+			{
+				$query = trim($query);
 				if ($query != '')
 				{
-					$reg = mysqli_query($db, $query);
-					
+					$reg = @mysqli_query($db, $query);
 					if (!$reg)
 					{
-						echo "<br /><font color=\"red\">ERROR</font> : '$query'";
 						$result_ok = 'no';
-					}
-					else
-					{
-						foreach ($liste_settings as $param_name => $param_value) {
-							// Vérifier si le paramètre existe dans la table settings
-							$sql_check = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_setting WHERE name = '".SecuChaine::ProtectDataSql($param_name)."'";
-							$count = grr_sql_query1($sql_check);
-							
-							if ($count == 0) {
-								// Le paramètre n'existe pas, on l'ajoute
-								$sql_insert = "INSERT INTO ".TABLE_PREFIX."_setting (name, value) VALUES (
-									'".SecuChaine::ProtectDataSql($param_name)."',
-									'".SecuChaine::ProtectDataSql($param_value)."'
-								)";
-								$res_insert = grr_sql_command($sql_insert);
-								if ($res_insert >= 0)
-									$params_ajoutes++;
-							}
-						}
 					}
 				}
 			}
-			fclose($fd);
+
+			if ($result_ok == 'yes')
+			{
+				foreach ($liste_settings as $param_name => $param_value) {
+					$sql_check = "SELECT COUNT(*) FROM ".$table_prefix."_setting WHERE name = '".mysqli_real_escape_string($db, $param_name)."'";
+					$res = mysqli_query($db, $sql_check);
+					$count = ($res && $row = mysqli_fetch_row($res)) ? $row[0] : 0;
+					
+					if ($count == 0) {
+						$sql_insert = "INSERT INTO ".$table_prefix."_setting (name, value) VALUES (
+							'".mysqli_real_escape_string($db, $param_name)."',
+							'".mysqli_real_escape_string($db, $param_value)."'
+						)";
+						mysqli_query($db, $sql_insert);
+					}
+				}
+			}
 			if ($result_ok == 'yes')
 			{
 				$ok = 'yes';
+				// Ne pas écraser connect.inc.php si c'est le template Docker dynamique
+				$preserve_config = false;
 				if (@file_exists($nom_fic))
-					unlink($nom_fic);
-				$f = @fopen($nom_fic, "wb");
-				if (!$f)
 				{
-					$ok = 'no';
+					$content = @file_get_contents($nom_fic);
+					if ($content && strpos($content, 'getenv') !== false)
+					{
+						$preserve_config = true;
+					}
+				}
+
+				if ($preserve_config)
+				{
+					$ok = 'yes';
 				}
 				else
 				{
-					$hash_pwd1 = bin2hex(random_bytes(12));
-					$conn = "<"."?php\n";
-					$conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
-					$conn .= "# ligne suivante : le nom du serveur qui herberge votre base sql.\n";
-					$conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
-					$conn .= "\$dbHost=\"$adresse_db\";\n";
-					$conn .= "# ligne suivante : le nom de votre base sql\n";
-					$conn .= "\$dbDb=\"$choix_db\";\n";
-					$conn .= "# ligne suivante : le nom de l'utilisateur sql qui a les droits sur la base\n";
-					$conn .= "\$dbUser=\"$login_db\";\n";
-					$conn .= "# ligne suivante : le mot de passe de l'utilisateur sql ci-dessus\n";
-					$conn .= "\$dbPass=\"$pass_db\";\n";
-					$conn .= "# ligne suivante : préfixe du nom des tables de données\n";
-					$conn .= "\$table_prefix=\"$table_prefix\";\n";
-					$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
-					$conn .= "\$dbPort=\"$port_db\";\n";
-					$conn .= "# ligne suivante : adaptation EnvOLE\n";
-					$conn .= "\$apikey=\"mypassphrase\";\n";
-					$conn .= "?".">";
-					@fputs($f, $conn);
-					if (!@fclose($f))
+					if (@file_exists($nom_fic))
+						unlink($nom_fic);
+					$f = @fopen($nom_fic, "wb");
+					if (!$f)
+					{
 						$ok = 'no';
+					}
+					else
+					{
+						$hash_pwd1 = bin2hex(random_bytes(12));
+						$conn = "<"."?php\n";
+						$conn .= "# Les quatre lignes suivantes sont à modifier selon votre configuration\n";
+						$conn .= "# ligne suivante : le nom du serveur qui herberge votre base sql.\n";
+						$conn .= "# Si c'est le même que celui qui heberge les scripts, mettre \"localhost\"\n";
+						$conn .= "\$dbHost=\"$adresse_db\";\n";
+						$conn .= "# ligne suivante : le nom de votre base sql\n";
+						$conn .= "\$dbDb=\"$choix_db\";\n";
+						$conn .= "# ligne suivante : le nom de l'utilisateur sql qui a les droits sur la base\n";
+						$conn .= "\$dbUser=\"$login_db\";\n";
+						$conn .= "# ligne suivante : le mot de passe de l'utilisateur sql ci-dessus\n";
+						$conn .= "\$dbPass=\"$pass_db\";\n";
+						$conn .= "# ligne suivante : préfixe du nom des tables de données\n";
+						$conn .= "\$table_prefix=\"$table_prefix\";\n";
+						$conn .= "# ligne suivante : Port MySQL laissé par défaut\n";
+						$conn .= "\$dbPort=\"$port_db\";\n";
+						$conn .= "# ligne suivante : adaptation EnvOLE\n";
+						$conn .= "\$apikey=\"mypassphrase\";\n";
+						$conn .= "?".">";
+						@fputs($f, $conn);
+						if (!@fclose($f))
+							$ok = 'no';
+					}
 				}
 				if ($ok == 'yes')
 				{
@@ -264,16 +322,21 @@ else if ($etape == 3)
 {
 
 	$db = mysqli_connect("$adresse_db", "$login_db", "$pass_db", "", "$port_db");
+	$GLOBALS['db_c'] = $db;
+	if (empty($choix_db) && !empty($dbDb))
+		$choix_db = $dbDb;
+
 	if ($choix_db == "new_grr")
 	{
 		$sel_db = $table_new;
-		$result = mysqli_query($db, "CREATE DATABASE $sel_db;");
+		@mysqli_query($db, "CREATE DATABASE IF NOT EXISTS `$sel_db`;");
 	}
 	else
 	{
-		$sel_db = $choix_db;
+		$sel_db = !empty($choix_db) ? $choix_db : "grr";
+		@mysqli_query($db, "CREATE DATABASE IF NOT EXISTS `$sel_db`;");
 	}
-	if (mysqli_select_db($db, "$sel_db"))
+	if (@mysqli_select_db($db, "$sel_db"))
 	{
 		$d['etape'] = 3;
 		$d['SelectBase'] = 1;

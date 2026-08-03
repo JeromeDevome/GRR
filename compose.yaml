@@ -1,0 +1,37 @@
+name: grr
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "80:80"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=grr
+      - DB_USER=grr
+      - DB_PASSWORD=grr_password
+    volumes:
+      - grr_personnalisation:/var/www/html/personnalisation
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:9.6
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=grr
+      - MYSQL_USER=grr
+      - MYSQL_PASSWORD=grr_password
+    volumes:
+      - grr_db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "grr", "-pgrr_password"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  grr_db:
+  grr_personnalisation:

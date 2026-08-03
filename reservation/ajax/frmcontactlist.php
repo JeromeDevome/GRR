@@ -16,7 +16,10 @@
  * (at your option) any later version.
  */
 
-include "../../personnalisation/connect.inc.php";
+if (file_exists("../../personnalisation/connect.inc.php"))
+	include "../../personnalisation/connect.inc.php";
+else
+	include "../../include/connect.inc.php";
 include "../../include/mysql.inc.php";
 include "../../include/misc.inc.php";
 include "../../include/securite.class.php";

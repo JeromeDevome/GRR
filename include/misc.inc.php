@@ -316,8 +316,8 @@ $liste_settings = array(
 # Compatibilité avec les version inférieures à 1.9.6
 if ((!isset($table_prefix)) or ($table_prefix==''))
 	$table_prefix="grr";
-# Définition de TABLE_PREFIX
-define("TABLE_PREFIX",$table_prefix);
+if (!defined("TABLE_PREFIX"))
+	define("TABLE_PREFIX",$table_prefix);
 
 
 ################################################

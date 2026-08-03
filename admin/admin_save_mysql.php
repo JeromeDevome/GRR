@@ -27,7 +27,10 @@ if ((!isset($_GET['mdp'])) && isset($argv[1]))
 	$_GET['mdp'] = $argv[1];
 if (isset($_GET['mdp']))
 {
-	include "../personnalisation/connect.inc.php";
+	if (file_exists("../personnalisation/connect.inc.php"))
+		include "../personnalisation/connect.inc.php";
+	else
+		include "../include/connect.inc.php";
 	include "../include/config.inc.php";
 	include "../include/misc.inc.php";
 	include "../include/securite.class.php";
