@@ -1,3 +1,12 @@
+Version 4.6.5 - 03/08/2026
+[Correction] Création ressource pour un administrateur de domaine - 2f482d1b5 - @JeromeDevome
+[Correction] Drag&drop avec champs additionnel obligatoire - 3d4055547 - @JeromeDevome
+[Correction] Faux positif mysqlnd dans "admin_infos" - dd9bbf606 - @JeromeDevome
+[Correction] Recherche stat avec login - 5f7a1dfde - @ynaessens
+[Modification] Mise à jour symfony - 994662d63 - @JeromeDevome
+[Modification] Mise à jour JS inputmask - 989ccf2fb - @JeromeDevome
+
+
 Version 4.6.4 - 07/07/2026
 [Correction] Création d'un domaine - 4206dcfa5 - @JeromeDevome
 [Correction] Affichage jour hors réservation vue mois_all - 5daf45d14 - @JeromeDevome
