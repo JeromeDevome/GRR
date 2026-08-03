@@ -29,6 +29,7 @@ use Symfony\Component\Cache\Traits\Relay\Relay20Trait;
 use Symfony\Component\Cache\Traits\Relay\Relay21Trait;
 use Symfony\Component\Cache\Traits\Relay\Relay22Trait;
 use Symfony\Component\Cache\Traits\Relay\Relay30Trait;
+use Symfony\Component\Cache\Traits\Relay\Relay40Trait;
 use Symfony\Component\Cache\Traits\Relay\SwapdbTrait;
 use Symfony\Component\VarExporter\LazyObjectInterface;
 use Symfony\Component\VarExporter\LazyProxyTrait;
@@ -66,13 +67,14 @@ class RelayProxy extends \Relay\Relay implements ResetInterface, LazyObjectInter
     use Relay21Trait;
     use Relay22Trait;
     use Relay30Trait;
+    use Relay40Trait;
     use SwapdbTrait;
 
     private const LAZY_OBJECT_PROPERTY_SCOPES = [];
 
     public function __construct($host = null, $port = 6379, $connect_timeout = 0.0, $command_timeout = 0.0, #[\SensitiveParameter] $context = [], $database = 0)
     {
-        return ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->__construct(...\func_get_args());
+        ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->__construct(...\func_get_args());
     }
 
     public function connect($host, $port = 6379, $timeout = 0.0, $persistent_id = null, $retry_interval = 0, $read_timeout = 0.0, #[\SensitiveParameter] $context = [], $database = 0): bool

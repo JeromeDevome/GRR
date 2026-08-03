@@ -219,7 +219,7 @@ class PhpDocExtractor implements PropertyDescriptionExtractorInterface, Property
 
     private function filterDocBlockParams(DocBlock $docBlock, string $allowedParam): DocBlock
     {
-        $tags = array_values(array_filter($docBlock->getTagsByName('param'), fn ($tag) => $tag instanceof DocBlock\Tags\Param && $allowedParam === $tag->getVariableName()));
+        $tags = array_values(array_filter($docBlock->getTagsByName('param'), static fn ($tag) => $tag instanceof DocBlock\Tags\Param && $allowedParam === $tag->getVariableName()));
 
         return new DocBlock($docBlock->getSummary(), $docBlock->getDescription(), $tags, $docBlock->getContext(),
             $docBlock->getLocation(), $docBlock->isTemplateStart(), $docBlock->isTemplateEnd());
@@ -315,19 +315,25 @@ class PhpDocExtractor implements PropertyDescriptionExtractorInterface, Property
             try {
                 $method = new \ReflectionMethod($class, $methodName);
                 if ($method->isStatic()) {
+                    $method = null;
+
                     continue;
                 }
 
                 if (self::ACCESSOR === $type && \in_array((string) $method->getReturnType(), ['void', 'never'], true)) {
+                    $method = null;
+
                     continue;
                 }
 
                 if (
                     (self::ACCESSOR === $type && !$method->getNumberOfRequiredParameters())
-                    || (self::MUTATOR === $type && $method->getNumberOfParameters() >= 1)
+                    || (self::MUTATOR === $type && $method->getNumberOfParameters() >= 1 && $method->getNumberOfRequiredParameters() <= 1)
                 ) {
                     break;
                 }
+
+                $method = null;
             } catch (\ReflectionException) {
                 // Try the next prefix if the method doesn't exist
             }

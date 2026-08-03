@@ -192,7 +192,7 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
 
     private function filterDocBlockParams(PhpDocNode $docNode, string $allowedParam): ?ParamTagValueNode
     {
-        $tags = array_values(array_filter($docNode->getTagsByName('@param'), fn ($tagNode) => $tagNode instanceof PhpDocTagNode && ('$'.$allowedParam) === $tagNode->value->parameterName));
+        $tags = array_values(array_filter($docNode->getTagsByName('@param'), static fn ($tagNode) => $tagNode instanceof PhpDocTagNode && ('$'.$allowedParam) === $tagNode->value->parameterName));
 
         if (!$tags) {
             return null;
@@ -286,19 +286,25 @@ final class PhpStanExtractor implements PropertyTypeExtractorInterface, Construc
             try {
                 $method = new \ReflectionMethod($class, $methodName);
                 if ($method->isStatic()) {
+                    $method = null;
+
                     continue;
                 }
 
                 if (self::ACCESSOR === $type && \in_array((string) $method->getReturnType(), ['void', 'never'], true)) {
+                    $method = null;
+
                     continue;
                 }
 
                 if (
                     (self::ACCESSOR === $type && !$method->getNumberOfRequiredParameters())
-                    || (self::MUTATOR === $type && $method->getNumberOfParameters() >= 1)
+                    || (self::MUTATOR === $type && $method->getNumberOfParameters() >= 1 && $method->getNumberOfRequiredParameters() <= 1)
                 ) {
                     break;
                 }
+
+                $method = null;
             } catch (\ReflectionException) {
                 // Try the next prefix if the method doesn't exist
             }

@@ -156,10 +156,9 @@ final class PhpDocTypeHelper
         }
 
         if (str_ends_with($docType, '[]') && $type instanceof Array_) {
-            $collectionKeyTypes = new Type(Type::BUILTIN_TYPE_INT);
             $collectionValueTypes = $this->getTypes($type->getValueType());
 
-            return new Type(Type::BUILTIN_TYPE_ARRAY, $nullable, null, true, $collectionKeyTypes, $collectionValueTypes);
+            return new Type(Type::BUILTIN_TYPE_ARRAY, $nullable, null, true, null, $collectionValueTypes);
         }
 
         if ((str_starts_with($docType, 'list<') || str_starts_with($docType, 'array<')) && $type instanceof Array_) {
@@ -187,10 +186,10 @@ final class PhpDocTypeHelper
                 return new Type(Type::BUILTIN_TYPE_INT, $nullable, null);
             } elseif ($type->underlyingType() instanceof String_) {
                 return new Type(Type::BUILTIN_TYPE_STRING, $nullable, null);
-            } else {
-                // It's safer to fall back to other extractors here, as resolving pseudo types correctly is not easy at the moment
-                return null;
             }
+
+            // It's safer to fall back to other extractors here, as resolving pseudo types correctly is not easy at the moment
+            return null;
         }
 
         return new Type($phpType, $nullable, $class);
