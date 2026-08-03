@@ -20,12 +20,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfreetype6-dev \
     libicu-dev \
     libzip-dev \
+    libldap-dev \
+    libsasl2-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-configure ldap --with-libdir=lib/$(dpkg-architecture -qDEB_HOST_MULTIARCH) \
     && docker-php-ext-install -j$(nproc) \
     gd \
     intl \
+    ldap \
     mysqli \
     zip
 
@@ -39,6 +43,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfreetype6 \
     libicu76 \
     libzip5 \
+    libldap2 \
+    libsasl2-2 \
     zip \
     unzip \
     && rm -rf /var/lib/apt/lists/*
