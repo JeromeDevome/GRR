@@ -485,7 +485,7 @@ function mrbsCreateSingleEntry($id, $starttime, $endtime, $entry_type, $repeat_i
  *   0        - An error occured while inserting the entry
  *   non-zero - The entry's ID
  */
-function mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks,$overload_data, $rep_jour_c, $courrier, $nbparticipantmax)
+function mrbsCreateRepeatEntry($id, $starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks,$overload_data, $rep_jour_c, $courrier, $nbparticipantmax)
 {
 	$overload_data_string = "";
 	$area_id = mrbsGetAreaIdFromRoomId($room_id);
@@ -508,10 +508,16 @@ function mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $r
 			$overload_data_string .= $begin_string.urlencode($overload_data[$id_field]).$end_string;
 		}
 	}
-	$sql = "INSERT INTO ".TABLE_PREFIX."_repeat (start_time, end_time, rep_type, end_date, rep_opt, room_id, create_by, beneficiaire, beneficiaire_ext, type, name, description, rep_num_weeks, overload_desc, jours, courrier, nbparticipantmax) VALUES ($starttime, $endtime,  $rep_type, $rep_enddate, '$rep_opt', $room_id,   '".SecuChaine::ProtectDataSql($creator)."','".SecuChaine::ProtectDataSql($beneficiaire)."','".SecuChaine::ProtectDataSql($beneficiaire_ext)."', '".SecuChaine::ProtectDataSql($type)."', '".SecuChaine::ProtectDataSql($name)."', '".SecuChaine::ProtectDataSql($description)."', '$rep_num_weeks','".SecuChaine::ProtectDataSql($overload_data_string)."',".$rep_jour_c." , ".$courrier.", '".SecuChaine::ProtectDataSql($nbparticipantmax)."')";
+
+	if($id == 0 || $id == NULL) {
+    	$sql = "INSERT INTO ".TABLE_PREFIX."_repeat (start_time, end_time, rep_type, end_date, rep_opt, room_id, create_by, beneficiaire, beneficiaire_ext, type, name, description, rep_num_weeks, overload_desc, jours, courrier, nbparticipantmax) VALUES ($starttime, $endtime,  $rep_type, $rep_enddate, '$rep_opt', $room_id,   '".SecuChaine::ProtectDataSql($creator)."','".SecuChaine::ProtectDataSql($beneficiaire)."','".SecuChaine::ProtectDataSql($beneficiaire_ext)."', '".SecuChaine::ProtectDataSql($type)."', '".SecuChaine::ProtectDataSql($name)."', '".SecuChaine::ProtectDataSql($description)."', '$rep_num_weeks','".SecuChaine::ProtectDataSql($overload_data_string)."',".$rep_jour_c." , ".$courrier.", '".SecuChaine::ProtectDataSql($nbparticipantmax)."')";
+	} else {
+	    $sql = "UPDATE ".TABLE_PREFIX."_repeat SET start_time = ".$starttime.", end_time = ".$endtime.", rep_type = ".$rep_type.", end_date = ".$rep_enddate.", rep_opt = '".$rep_opt."', room_id = ".$room_id.", create_by = '".SecuChaine::ProtectDataSql($creator)."', beneficiaire = '".SecuChaine::ProtectDataSql($beneficiaire)."', beneficiaire_ext = '".SecuChaine::ProtectDataSql($beneficiaire_ext)."', type = '".SecuChaine::ProtectDataSql($type)."', name = '".SecuChaine::ProtectDataSql($name)."', description = '".SecuChaine::ProtectDataSql($description)."', rep_num_weeks = '".$rep_num_weeks."', overload_desc = '".SecuChaine::ProtectDataSql($overload_data_string)."', jours = ".$rep_jour_c.", courrier = ".$courrier.", nbparticipantmax = '".SecuChaine::ProtectDataSql($nbparticipantmax)."' WHERE id = ".$id;
+	}
+
 	if (grr_sql_command($sql) < 0)
 		return 0;
-	return grr_sql_insert_id();
+	return ($id == 0 || $id == NULL) ? grr_sql_insert_id() : $id; // Retourne l'ID de la nouvelle entrée ou la repeat_id déjà existante si modification
 }
 
 function compareEntrys($id, $starttime, $endtime, $entry_type, $repeat_id, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation,$overload_data, $moderate, $rep_jour_c, $statut_entry, $keys, $courrier, $nbparticipantmax)
@@ -706,7 +712,7 @@ function mrbsGetRepeatEntryList($time, $enddate, $rep_type, $rep_opt, $max_ittr,
  *   0        - An error occured while inserting the entry
  *   non-zero - The entry's ID
  */
-function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation,$overload_data, $moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $ignore=array())
+function mrbsCreateRepeatingEntrys($id, $starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks, $option_reservation,$overload_data, $moderate, $rep_jour_c, $courrier, $nbparticipantmax, $rep_month_abs1, $rep_month_abs2, $ignore=array())
 {
 	global $max_rep_entrys, $id_first_resa;
 	$area = mrbsGetRoomArea($room_id);
@@ -722,7 +728,8 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 		$id_first_resa = grr_sql_insert_id();
 		return;
 	}
-	$ent = mrbsCreateRepeatEntry($starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks,$overload_data, $rep_jour_c, $courrier, $nbparticipantmax);
+	$ent = mrbsCreateRepeatEntry($id, $starttime, $endtime, $rep_type, $rep_enddate, $rep_opt, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $rep_num_weeks,$overload_data, $rep_jour_c, $courrier, $nbparticipantmax);
+	$resas_ids = array();
 	if ($ent)
 	{
 		$diff = $endtime - $starttime;
@@ -731,6 +738,7 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 		{
 			mrbsCreateSingleEntry(0, $reps[$i], $reps[$i] + $diff, 1, $ent, $room_id, $creator, $beneficiaire, $beneficiaire_ext, $name, $type, $description, $option_reservation,$overload_data, $moderate, $rep_jour_c,"-", 0, $courrier, $nbparticipantmax);
 			$id_new_resa = grr_sql_insert_id();
+			$resas_ids[] = $id_new_resa;
 				// s'il s'agit d'une modification d'une ressource déjà modérée et acceptée : on met à jour les infos dans la table ".TABLE_PREFIX."_entry_moderate
 			if ($moderate == 2)
 				moderate_entry_do($id_new_resa,1,"","no");
@@ -739,7 +747,7 @@ function mrbsCreateRepeatingEntrys($starttime, $endtime, $rep_type, $rep_enddate
 				$id_first_resa = $id_new_resa;
 		}
 	}
-	return $id_first_resa;
+	return [$id_first_resa, $resas_ids, $ent ?? 0];
 }
 /* mrbsGetEntryInfo()
  *

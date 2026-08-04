@@ -36,7 +36,7 @@
 
 [![Site GRR](https://img.shields.io/badge/Site-GRR-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://grr.devome.com/)
 [![Forum GRR](https://img.shields.io/badge/Forum-GRR-orange?style=for-the-badge&logo=discourse&logoColor=white)](https://site.devome.com/fr/grr/forum-grr)
-[![Chat Status](https://img.shields.io/discord/484639573243068417.svg?style=for-the-badge)](https://discord.com/channels/484639573243068417/)
+[![Chat Status](https://img.shields.io/discord/484639573243068417.svg?style=for-the-badge)](https://discord.gg/XGfuZyU)
 [![Documentation](https://img.shields.io/badge/Documentation-GRR-success?style=for-the-badge&logo=readthedocs&logoColor=white)](https://devome.com/GRR/DOC/)
 
 

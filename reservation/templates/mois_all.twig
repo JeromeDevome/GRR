@@ -115,6 +115,12 @@
 								<p>...</p>
 							{% endif %}
 
+							{% if cellule.horsResa %}
+								<div class="empty_cell">
+									<i class="fa-solid fa-xmark" title="{{trad.reservation_impossible}}" style="color:red"></i>
+								</div>
+							{% endif %}
+
 							<!-- Il reste une plage libre : On affiche le + -->
 							{% if cellule.plageLibre %}
 								<div class="empty_cell">

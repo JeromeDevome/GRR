@@ -34,6 +34,10 @@ if ($info = mrbsGetEntryInfo($id))
 	$month = date("m", $info["start_time"]);
 	$year  = date("Y", $info["start_time"]);
 	$area  = mrbsGetRoomArea($info["room_id"]);
+	$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id=$area");
+	if (! $res)
+		fatal_error(0, get_vocab('error_area') . $area . get_vocab('not_found'));
+	$domaine = grr_sql_row_keyed($res, 0);
 	$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
 	if (SecuAccess::UserLevel(getUserName(), -1) < 1)
 	{
@@ -50,8 +54,8 @@ if ($info = mrbsGetEntryInfo($id))
 		showAccessDenied($back);
 		exit();
 	}
-	if (Settings::get("automatic_mail") == 1)
-		$_SESSION['session_message_error'] = send_mail($id,3,$dformat);
+	if (Settings::get("automatic_mail") == 1 || $domaine["mails_active"] == 1)
+		$_SESSION['session_message_error'] = send_mail($id,3,$dformat, mail_invite: $domaine["mails_ics_active"]);
     // traitement des réservations modérées : envoie un mail au modérateur
 	// ! Sup en version 4.5.2 car doublons dans l'envois au modérateur
 /* if ($info['moderate'] != 0){ // cette réservation est à modérer ou a été modérée

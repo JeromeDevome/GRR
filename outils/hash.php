@@ -15,7 +15,7 @@
 		<table width="400">
 			<tr>
 				<th width="200">Mot de passe en clair :</th>
-				<th width="200"><input type="text" name="pwd" value="<?php echo $mdpC; ?>"></th>
+				<th width="200"><input type="text" name="pwd" value="<?php echo htmlspecialchars($mdpC, ENT_QUOTES, 'UTF-8'); ?>"></th>
 			</tr><tr>
 				<th width="200">Mot de passe crypte :</th>
 				<th width="200"><input type="text" name="hash" value="<?php echo $hash; ?>"></th>

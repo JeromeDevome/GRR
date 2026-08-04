@@ -2696,7 +2696,7 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
  * $action = 6 -> Résultat d'une décision de modération
  * $action = 7 -> Notification d'un retard dans la restitution d'une ressource.
 */
-function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array())
+function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $oldRessource = '', $rep_info = array(), $mail_invite = 0)
 {
 	global $vocab, $niveauDossier, $locale, $weekstarts, $enable_periods, $periods_name;
 
@@ -2761,6 +2761,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	$beneficiaire_ext			= htmlspecialchars($row[16]);
 	$jours_cycle 				= htmlspecialchars($row[17]);
 	$duration     				= $row[9];
+	$raw_start_date 			= $row[10];
+	$raw_end_date 				= $row[11];
 
 	// Date début et fin de la réservation
 	if ($enable_periods == 'y')
@@ -2789,13 +2791,15 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		{
 			$rep_type = $rep_info['rep_type'];
 			$rep_end_date = isset($rep_info['rep_end_date']) ? time_date_string($rep_info['rep_end_date'], $dformat) : '';
+			$rep_end_date_raw = $rep_info['rep_end_date'];
+			$rep_id = $rep_info['rep_id'];
 			$rep_opt = isset($rep_info['rep_opt']) ? $rep_info['rep_opt'] : '';
 			$rep_num_weeks = isset($rep_info['rep_num_weeks']) ? $rep_info['rep_num_weeks'] : 1;
 		}
 		else
 		{
 			// Récupération depuis la base (comportement par défaut)
-			$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks FROM ".TABLE_PREFIX."_repeat WHERE id='".SecuChaine::ProtectDataSql($repeat_id)."'");
+			$res = grr_sql_query("SELECT rep_type, end_date, rep_opt, rep_num_weeks, id FROM ".TABLE_PREFIX."_repeat WHERE id='".SecuChaine::ProtectDataSql($repeat_id)."'");
 			if (!$res)
 				fatal_error(0, grr_sql_error());
 			$test = grr_sql_count($res);
@@ -2806,8 +2810,10 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 				$row2 = grr_sql_row($res, 0);
 				$rep_type     = $row2[0];
 				$rep_end_date = time_date_string($row2[1],$dformat);
+				$rep_end_date_raw = $row2[1];
 				$rep_opt      = $row2[2];
 				$rep_num_weeks = $row2[3];
+				$rep_id = $row2[4];
 			}
 			grr_sql_free($res);
 		}
@@ -2985,6 +2991,8 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		foreach ($tab_destinataire as $value){
 			$destinataire1 .= $value.";";
 		}
+	} else {
+		$destinataire1 = $user_email . ';';
 	}
 	$destinataire_spec = envois_spec_champ_add_mails($id_entry);
 	$destinataire1 = $destinataire1 . $destinataire_spec;
@@ -2998,7 +3006,21 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$templateMail1 = Pages::get('mails_resa_'.$action.'_1_'.$locale);
 		$sujetEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[0]);
 		$msgEncode1 = str_replace(array_keys($codes), $codes, $templateMail1[1]);
-		Email::Envois($destinataire1, $sujetEncode1, $msgEncode1, $expediteur1, '', '', $repondre1,'mails_resa_'.$action.'_1_'.$locale, $id_entry, 1);
+		Email::Envois($destinataire1, $sujetEncode1, $msgEncode1, $expediteur1, '', '', $repondre1,'mails_resa_'.$action.'_1_'.$locale, $id_entry, 1, $mail_invite, array(
+			'id_entry' => $id_entry,
+			'start_time' => $raw_start_date,
+			'end_time' => $raw_end_date,
+			'nom_resa' => $breve_description,
+			'location' => $room_name,
+			'action' => $action,
+			'rep_id' => isset($rep_id) ? $rep_id : -1,
+			'rep_opt' => isset($rep_opt) ? $rep_opt : -1,
+			'rep_type' => isset($rep_type) ? $rep_type : -1,
+			'rep_num_weeks' => isset($rep_num_weeks) ? $rep_num_weeks : -1,
+			'rep_end_date' => isset($rep_end_date_raw) ? $rep_end_date_raw : -1,
+			'rep_month_abs1' => isset($rep_info['rep_month_abs1']) ? $rep_info['rep_month_abs1'] : -1,
+			'rep_month_abs2' => isset($rep_info['rep_month_abs2']) ? $rep_info['rep_month_abs2'] : -1,
+		));
 	}
 
 	/*
@@ -3029,7 +3051,21 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$templateMail2 = Pages::get('mails_resa_'.$action.'_2_'.$locale);
 		$sujetEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[0]);
 		$msgEncode2 = str_replace(array_keys($codes), $codes, $templateMail2[1]);
-		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur2, '', '', $repondre2,'mails_resa_'.$action.'_2_'.$locale, $id_entry, 2);
+		Email::Envois($destinataire2, $sujetEncode2, $msgEncode2, $expediteur2, '', '', $repondre2,'mails_resa_'.$action.'_2_'.$locale, $id_entry, 2, $mail_invite, array(
+			'id_entry' => $id_entry,
+			'start_time' => $raw_start_date,
+			'end_time' => $raw_end_date,
+			'nom_resa' => $breve_description,
+			'location' => $room_name,
+			'action' => $action,
+			'rep_id' => isset($rep_id) ? $rep_id : -1,
+			'rep_opt' => isset($rep_opt) ? $rep_opt : -1,
+			'rep_type' => isset($rep_type) ? $rep_type : -1,
+			'rep_num_weeks' => isset($rep_num_weeks) ? $rep_num_weeks : -1,
+			'rep_end_date' => isset($rep_end_date_raw) ? $rep_end_date_raw : -1,
+			'rep_month_abs1' => isset($rep_info['rep_month_abs1']) ? $rep_info['rep_month_abs1'] : -1,
+			'rep_month_abs2' => isset($rep_info['rep_month_abs2']) ? $rep_info['rep_month_abs2'] : -1,
+		));
 	}
 
 	/*
@@ -3068,7 +3104,21 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 			$templateMail3 = Pages::get('mails_resa_'.$action.'_3_'.$locale);
 			$sujetEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[0]);
 			$msgEncode3 = str_replace(array_keys($codes), $codes, $templateMail3[1]);
-			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale, $id_entry, 3);
+			Email::Envois($destinataire3, $sujetEncode3, $msgEncode3, $expediteur3, '', '', $repondre3,'mails_resa_'.$action.'_3_'.$locale, $id_entry, 3, $mail_invite, array(
+			'id_entry' => $id_entry,
+			'start_time' => $raw_start_date,
+			'end_time' => $raw_end_date,
+			'nom_resa' => $breve_description,
+			'location' => $room_name,
+			'action' => $action,
+			'rep_id' => isset($rep_id) ? $rep_id : -1,
+			'rep_opt' => isset($rep_opt) ? $rep_opt : -1,
+			'rep_type' => isset($rep_type) ? $rep_type : -1,
+			'rep_num_weeks' => isset($rep_num_weeks) ? $rep_num_weeks : -1,
+			'rep_end_date' => isset($rep_end_date_raw) ? $rep_end_date_raw : -1,
+			'rep_month_abs1' => isset($rep_info['rep_month_abs1']) ? $rep_info['rep_month_abs1'] : -1,
+			'rep_month_abs2' => isset($rep_info['rep_month_abs2']) ? $rep_info['rep_month_abs2'] : -1,
+			));
 		}
 	}
 
@@ -3663,12 +3713,13 @@ function MajMysqlModeDemo() {
  */
 function showAccessDenied($back, $infodebug = '')
 {
-	global $niveauDossier, $grr_script_name;
-
-	$ch = cheminDetermination($niveauDossier);
-
-	header('Location: ' . $ch . 'erreur.php?code=403&grr_script_name='.$grr_script_name.'&infosdebug='.$infodebug);
-	exit;
+	global $vocab, $debug_flag;
+	echo '<h1>'.get_vocab("accessdenied").'</h1>';
+	echo '<p>'.get_vocab("norights").'</p>';
+	if($debug_flag)
+		echo '<p>'.$infodebug.'</p>';
+	echo '<p><a href="'.SecuChaine::UrlInt($back).'">'.get_vocab("returnprev").'</a></p>';
+	echo '</section></body></html>';
 }
 function showAccessDenied_twig($back, $infodebug = '')
 {
@@ -3677,7 +3728,7 @@ function showAccessDenied_twig($back, $infodebug = '')
 	$html .= '<p>'.get_vocab("norights").'</p>';
 	if($debug_flag)
 		$html .= '<p>'.$infodebug.'</p>';
-	$html .= '<p><a href="'.$back.'">'.get_vocab("returnprev").'</a></p>';
+	$html .= '<p><a href="'.SecuChaine::UrlInt($back).'">'.get_vocab("returnprev").'</a></p>';
 
 	return $html;
 }
@@ -5700,4 +5751,53 @@ if (isset($_GET["year"]))
 	if ($year > 2100)
 		$year = 2100;
 }
+
+function rep_opt_to_iCal_args(string $rep_opt) { // Convertis 'rep_opt' en jours pour la répétition dans les iCal
+	// ex: 0100100 -> BYDAY=MO,THU
+	$days = array('SU','MO','TU','WE','TH','FR','SA');
+	$rep_opt_array = str_split($rep_opt);
+	$output = array();
+	$i = 0;
+	foreach ($rep_opt_array as $value) {
+		if ($value == "0") {
+			$i++;
+			continue;
+		}
+		$output[] = $days[$i];
+		$i++;
+	}
+	return $output;
+}
+
+function restoreEntries(array $entries) {
+	$query = "UPDATE ".TABLE_PREFIX."_entry SET supprimer = 0 WHERE id IN (".implode(',', $entries).")";
+	$res = grr_sql_query($query);
+	if (!$res) {
+		fatal_error(0, grr_sql_error());
+	}
+	return;
+}
+
+function get_xth_day_of_month($timestamp) {
+    $joursiCal = [
+        'Monday'    => 'MO',
+        'Tuesday'   => 'TU',
+        'Wednesday' => 'WE',
+        'Thursday'  => 'TH',
+        'Friday'    => 'FR',
+        'Saturday'  => 'SA',
+        'Sunday'    => 'SU'
+    ];
+
+    $jour = date('l', $timestamp); // "Monday", "Tuesday", etc.
+    $numjour = (int)date('j', $timestamp);     // 1 à 31
+
+    $iCalJour = $joursiCal[$jour];
+
+    // Xème jour - ex: 1 pour 1er Lundi du mois
+    $position = ceil($numjour / 7);
+
+	return [$iCalJour, (int)$position];
+}
+
 ?>

@@ -65,3 +65,6 @@ node_modules/
 /year-dev_all.php
 /year2.php
 phpCAS.log
+
+# Paramètres VSCode
+.vscode/

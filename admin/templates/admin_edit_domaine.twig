@@ -32,6 +32,19 @@
 									<input type="checkbox" name="access" value="y" {% if domaine.access == 'r' %} checked {% endif %}>
 								</div>
 							</div>
+							<div class="form-group row col-sm-12">
+								<label class="col col-sm-4" for="mails_active">{{ trad.mails_active }}</label>
+								<div class="col col-sm-8">
+									<input type="checkbox" name="mails_active" value=1 {% if domaine.mails_active == 1 %} checked {% endif %}>
+								</div>
+							</div>
+							<div class="form-group row col-sm-12">
+								<label class="col col-sm-4" for="mails_ics_active">{{ trad.mails_ics_active }}</label>
+								<div class="col col-sm-8">
+									<input type="checkbox" name="mails_ics_active" value=1 {% if domaine.mails_ics_active == 1 %} checked {% endif %}>
+								</div>
+							</div>
+							
 							{% if settings.module_multisite == 1 %}
 								<div class="form-group row col-sm-12">
 									<label class="col col-sm-4" for="id_site">{{ trad.site }}</label>

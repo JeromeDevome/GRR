@@ -1,0 +1,312 @@
+
+iCalcreator 2.29.18 releaseNotes
+
+v2.29.1   Removal of all set-methods date(time)/interval ARRAY arguments
+          as well as get-methods return date(time)/interval ARRAY formats
+          DTSTART, DTEND, DUE, RECURRENCE_ID
+          CREATED, COMPLETED, DTSTAMP, LAST_MODIFIED
+
+v2.29.2   Removal of all set-methods DateInterval ARRAY arguments
+          as well as get-methods return DateInterval ARRAY formats
+          REFRESH_INTERVAL, DURATION, TRIGGER
+          RDATE, EXDATE
+          FREEBUSY, RRULE, EXRULE
+
+v2.29.3   Rewrite of Vcalendar::parse()
+          only string|array input allowed, file/url parse removed
+
+v2.29.4 Removal of deprecated methods
+          Vcalendar::saveCalendar()
+          Vcalendar::useCachedCalendar()
+
+          Vcalendar::deleteProperty()
+          Vcalendar::setProperty()
+          Vcalendar::addComponent()
+
+          CalendarComponent::deleteProperty()
+          CalendarComponent::getProperty()
+          CalendarComponent::setProperty()
+
+          VetComponent::newComponent()
+          VTimezone::newComponent()
+
+          IcalXMLFactory::XMLfile2iCal()
+          IcalXMLFactory::XMLstr2iCal()
+
+          Removal of deprecated config/keys
+          DELIMITER, DIRECTORY, FILENAME, DIRFILE, FILESIZE, FILEINFO
+
+          All keys and (fixed) property values as constants available in IcalInterface
+
+v2.29.5   Implement rfc7986
+          new properties; COLOR, NAME, CONFERENCE, IMAGE, REFRESH-INTERVAL, SOURCE
+          allow calendar-properties; UID, LAST-MODIFIED, URL, REFRESH-INTERVAL, SOURCE,
+                                     COLOR, NAME, DESCRIPTION, CATEGORIES, IMAGE
+          replace rfc5545 (date+unique_id) UID by rfc7986 guid UID
+
+v2.29.6   alter RRULE/EXRULE to single occurence
+
+v2.29.7   Allow iana-token (Other IANA-registered type) property PARAMETER names
+          For ACTION and CLASS, iana-token / x-name VALUES are allowed
+          However, IANA Properties still not supported
+
+v2.29.8   Vcalendar::sort() order adjustment
+
+v2.29.9   Conformed method names for Last-Modified, Request-Status, Related-to
+
+v2.29.10  fix other (Ms) timezones conversion to PHP timezones (ie map on offset)
+          in RegulateTimezoneFactory, to be used before Vcalendar::parse
+
+v2.29.11  code reworks: StringFactory, SortFactory, CalAddressFactory, *Traits etc
+
+v2.29.12  Vtimezone::populate() moved to Util/VtimezonePopulateFactory::process()
+
+v2.29.13  CATEGORIES, RESOURCES no longer accepts array input
+
+v2.29.14  String asserts in set-methods for TEXT Valuetype properties
+
+v2.29.15  Vcalendar::returnCalendar() new fileName arg
+
+v2.29.16  Methods with DateTime arg now accepts DateTimeInterface
+
+v2.29.17  assert for method exists
+
+v2.29.18  xml header update
+
+v2.29.20  PHP 7.4 compability (Util/DateIntervalFactory, Util/StringFactory)
+
+v2.29.21  more 2.29.16 (DateTimeFactory, RecurFactory)
+v2.29.22  Issue #88, code style, PHP 7+ compability
+v2.29.23  StringFactory needle/haystack functions
+
+v2.29.24  Issue #87, RecurFactory split in 2, reworked
+          more recur improved select base methods
+
+v2.29.25 bug RecurFactory::setRexRule() + RecurFactory2::assertRecur() rules
+
+
+v2.29.26 bug RecurFactory, BYDAY
+
+v2.20.27 docs: setCategories/setResources don't accepts array parameter
+         setRrule(/setExrule) allows only one in component
+
+v2.29.28 bug RecurFactory2::recurWeekly2()
+
+v2.29.29 bug StringFactory::size75(), max rowlength
+
+
+v2.29.30 Issue #89 URL adapt, strip of value opt (urlencoded) prefix/suffix '<>'
+         (IcalXMLFactory) SOURCE value-type conform
+
+v2.29.30b More issue #89 URL adapt, parse parameter
+
+
+
+v3.30.2 #89, URL (TZURL/SOURCE) for rfc (prescribed) property value,
+        parameter VALUE type URI removed, parse adapt
+        ParameterFactory::ifExistRemove()
+        StringFactory::splitContent()
+        StringFactory::colonIsPrefixedByProtocol()
+        HttpFcatory::urlSet()
+        URLTrait::setUrl() (also TZURL/SOURCE traits)
+
+
+v3.30.3 #89, URL (TZURL/SOURCE) value prefix (protocol)
+        StringFactory::splitContent() / checkFixUriValue()
+        HttpFcatory::urlSet()
+        IcalXMLFactory::addXMLchildUri() / XMLgetProps()
+
+
+v3.39   3.4 release candidate
+        PHP 7 (PHPStan/strict types)
+        iCalBase static methodName methods moved to StringFactory
+        iCalBase Component multi-prop methods moved to CalendarComponent
+        CalAddressFactory::getCalAddresses() arg inclParams removed
+        TRIGGERtrait : setTrigger() bug fix
+        ATTENDEE/ORGANIZER (CalAddressFactory)
+          value MAILTO prefix
+          parameter EMAIL etc logic upd
+        IcalvCard::iCal2vCards() arg bug
+
+
+2.40    PHP8
+
+2.40.1    removal of ext-debug in cmposer.json
+
+2.40.2    test RecurMonthTest/RecurYearTest upd
+2.40.3    PHP8 upd
+2.40.4    Selectfactory::selectComponents bug
+          flat:false, any:true, split:false
+          DAILY, over night github#95
+          phpunit tests
+
+2.40.5    removal of ext-debug in cmposer.json....
+
+2.40.6    more DAILY, over night github#95
+
+2.40.7    more DAILY, over night github#95
+
+2.40.8    github#98 setConfig arg
+
+2.40.9    more DAILY, over night github#95
+2.40.10   recur bug, RecurFactory2
+
+
+2.40.11   more PHP8 updates, StringFactory::getRandChars() upd
+
+2.41.1    rfc7808 new Vtimezone properties TZID-ALIAS-OF/TZUNTIL
+2.41.2    rfc9074 new Valarm properties: UID, RELATED-TO, ACKNOWLEDGED, PROXIMITY
+2.41.3    rfc9073 new properties,
+              for Vevent, Vtodo, Vjournal : STRUCTURED-DATA
+              for Vevent, Vtodo, Vjournal, Valarm : STYLED_DESCRIPTION
+2.41.4    rfc9073 new component PARTICIPANT
+              with new properties CALENDAR-ADDRESS/PARTICIPANT-TYPE
+              new Vcalendar/component method participants2Attendees()
+2.41.5    rfc9073 new subComponent VLOCATION
+              with new property LOCATION-TYPE
+2.41.6    method(s) Vcalendar/caledarComponent::getComponent() moved to IcalBase
+2.41.7    rfc9073 new subComponent VRESOURCE
+              with new property RESOURCE-TYPE
+          restructure of abstract classes
+2.41.8   (new) signatures of newValarm, newParticipant, newVlocation, newVresource methods
+2.41.9    rfc7953 new component VAVAILABILITY
+              with new property BUSYTYPE
+          rfc7953 new component AVAILABLE
+          NO support for AVAILABLE in Vcalendar::selectComponents()
+2.41.10   upd VtimezonePopulateFactory::process(), accept multiple timeszones
+          arg timezone as string|string[]
+2.41.11   rfc9074 new Valarm sub-component VLOCATION
+2.41.14   rfc 6868 Parameter Value Encoding in iCalendar and vCard TEST
+2.41.12   rfc5870 Uniform Resource Identifier for Geographic Locations ('geo' URI)
+          rfc9073 (7.2. Location) defines VLOCATION with a GEO property
+          rfc9074 (8.  Alarm Proximity Trigger) add VLOCATION(s) to VALARM
+              with a URL 'geo' URI [RFC5870] property
+          As for now, accept
+            VLOCATION with properties URL (with 'geo' URI) and GEO (without)
+            any Vcalendar component with URL and with 'geo' URI
+            any ?? or only VLOCATION URL
+2.41.13   Icalbase::$OTHERPROPS renamed to $SELSORTPROPS
+2.41.14   DateTimeFactory::setDate() will also use ParameterFactory::setParams()
+2.41.15   rfc6868 Parameter Value Encoding in iCalendar and vCard
+2.41.16   rfc7529 Non-Gregorian Recurrence Rules in the Internet Calendaring and
+                  Scheduling Core Object Specification (iCalendar)
+          new RRULE elements RSCALE, SKIP accepted
+          For Vcalendar::selectComponents(), if RRULE RSCALE set only GREGORIAN accepted
+
+
+2.41.17   Vcalendar/component method participants2Attendees() upd (Participant uid+type as x-params)
+2.41.18   using.html doc upd
+2.41.19   Vcalendar/Vevent/Vtodo method vlocationNames2Locations()() upd (Vlocation uid+type as x-params)
+          upd args component::newVLocation( [ type [, name ]] )
+2.41.20   upd multi Decription
+2.41.21   Vcalendar/Vevent/Vtodo method vresourceNames2Resources() upd (Vresource uid+type as x-params)
+          upd args component::newVresource( [ type [, name ]] )
+2.41.22   upd args Vcalendar::newVavailability( [ busytype [, start [, end [, duration ]]]] )
+2.41.23   upd args Vcalendar::newVtimezone( [ tzid ] )
+2.41.24   upd args Vcalendar::newVevent( [ dtstart [, dtend [, duration [, summary ]]]] )
+2.41.25   upd signatures of newValarm, accepts DateTimeInterface
+2.41.26   upd args Vcalendar::newVtodo( [ dtstart [, due [, duration [, summary ]]]] )
+2.41.27   upd args Vcalendar::newVJournal( [ dtstart [, summary ]] )
+2.41.28   upd args Vcalendar::newVfreebusy( [ dtstart [, dtend [, duration ]]] )
+          bug component::setDtend()
+2.41.29   upd createCalendar/createComponent methods
+2.41.30   Vcalendar/Component::getXprop() consecutive invokes bug
+
+
+2.41.31   Parsetest upd
+2.41.32   doc upd GEO/NAME component occurence
+          CONTACT/DESCRIPTION/LOCATION/NAME property get-methods and
+          IcalXMLFactory::compProps2Xml() logic
+2.41.33   Vcalendar::setComponents() bug, insert Vtimezone(s) first (not last)
+2.41.34   upd participants2Attendees() : Participant-type to (ATTENDEE) parameter ROLE
+
+2.41.35   new Component::is<property>set() methods
+
+2.41.36   All property contents are now (class) Pc, an ArrayObject extend class
+          get<property> methods return property->value or Pc (dep. arg inclParam)
+          For get<property> return: $return::{'value'} (params) <=> $return->value (params)
+          Pc has also getter/setter methods etc
+          rewrite Vcalendar/Component::set<property> methods
+          Vcalendar/Component::set<property> methods accepts Pc as first arg
+
+2.41.37   Component::createAttendee() param format bug
+2.41.38   Altered Freebusy::getFreebusy() output, fbBusyType now in params
+2.41.39   Multi-properties help methods moved to trait
+
+2.41.40   Component::getRequeststatus() bug, return array
+2.41.41   Component::getExrule() bug, return bool|array|Pc
+2.41.42   Pc::getParams() new arg (bool) asXparamkey
+2.41.43   int property value Component::is/set-mehods bug
+
+2.41.44   github::#101, Tzuntil trait bug and upd logic
+
+2.41.45   github::#99,  SelectFactoy::selectComponents() bug
+2.41.46   github::#100, Component::getExdate() bug, return bool|array|Pc
+
+2.41.47   Extended tests
+2.41.48   Refresh_interval trait bug
+2.41.49   Calendar parse upd
+
+2.41.50   vCalendar/CalenadarComponent::getComponents()
+2.41.51   ALL multi-props have <getAllProperty> method, return array, values only / full
+2.41.52   opt URI (email) mailto-prefix in lowercase
+2.41.53   new class factory methods, upd class constructs
+          removed deleteDtstamp/deleteUid methods (use set-method to recreate)
+2.41.54   moved Vcalendar/Component parser logic to parser classes
+2.41.55   moved Vcalendar/Component format logic to formatter classes
+2.41.56   Vtimezone, Util and misc code tidy up...
+
+2.41.57   GitHub#103 (non-PHP timezones)
+          Note Vtimezone::TZID property still accepts any timezone,
+          RegulateTimezoneFactory deprecated (RegulateTimezoneFactoryTest removed)
+
+2.41.58   upd (Traits/) getAll-methods return type
+2.41.59   code clean up, phpdoc args etc
+2.41.60   setTzOffset conform logic
+
+2.41.61   GitHub#104 (TZUNTIL bug)
+
+2.41.62   Geo/Version property (empty-)bug
+
+2.41.63   new Pc::getValueParam() method
+          upd Property parameters format logic
+
+2.41.64   SelectFactory method argument typing
+
+2.41.65   upd Pc::getParams() return types
+2.41.66   upd tests and format property output logic
+2.41.67   DateTimeInterface adapt
+
+2.41.68   more code clean up, methods args etc
+2.41.69   Util/IcalXMLFactory split up in Xml/Formatter+Parser
+2.41.70   more 2.41.57 (timezones)
+
+2.41.71   recur bug, Github #105, Leading semicolon in RRULE
+          recur BYDAY input logic rework
+2.41.73   timezone bug, Github #106,
+          The isUTCtimeZone method does not work properly all the time
+2.41.74   demo bug, Github #107
+
+2.41.75   DateInterval bug, github #109
+2.41.76   github #110, code clean up, phpdoc, args etc
+
+2.41.78   DateInterval bug, github #109
+2.41.79   github #112, Sequence (int) trim, Util
+2.41.80   github #112, non-mailto Organizer, ORGANIZERtrait
+
+2.41.81   github #113, trait URL/TZURL/SOURCE rtrim
+
+2.41.82   DateInterval bug, github #109
+2.41.83   DateTime timezone bug, github #114
+
+2.41.84   composer.json upd
+2.41.85   major upd class Pc (+Traits/*)
+2.41.86   upd DateIntervalFactory
+2.41.87   upd tests
+2.41.88   code rewrites, Xml\Formatter+Parser, Formatter/* etc
+2.41.89   ParameterFactory deprecated
+2.41.90   upd StringFactory
+
+2.41.91   PHP 8.4, github #117
+
+2.41.92   github #118

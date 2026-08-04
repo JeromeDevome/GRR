@@ -18,7 +18,8 @@
         "tecnickcom/tcpdf": "^6.10",
         "apereo/phpcas": "^1.6",
         "gregwar/captcha-bundle": "^2.4",
-        "psr/container": "^2.0"
+        "psr/container": "^2.0",
+        "kigkonsult/icalcreator": "^2.41"
     },
     "config": {
       "platform": {

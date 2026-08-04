@@ -37,12 +37,12 @@ if ((isset($_REQUEST['action_del'])) && isset($_REQUEST['js_confirmed']) && ($_R
 //
 if ((isset($_REQUEST['action_del'])) and (isset($_REQUEST['js_confirmed'])) and ($_REQUEST['js_confirmed'] == 1))
 {
-	$temp = $_REQUEST['user_del'];
+	$temp = SecuChaine::CleanLogin($_REQUEST['user_del']);
 	// un gestionnaire d'utilisateurs ne peut pas supprimer un administrateur général ou un gestionnaire d'utilisateurs
 	$can_delete = "yes";
 	if (SecuAccess::UserLevel(getUserName(), -1,'user') ==  1)
 	{
-		$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".$_GET['user_del']."'");
+		$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::CleanLogin($_GET['user_del'])."'");
 		if (($test_statut == "gestionnaire_utilisateur") || ($test_statut == "administrateur"))
 			$can_delete = "no";
 	}

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ iCalcreator, the PHP class package managing iCal (rfc2445/rfc5445) calendar information.
+
+ This file is a part of iCalcreator.
+
+ author    Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ copyright 2007-2024 Kjell-Inge Gustafsson, kigkonsult AB, All rights reserved
+ link      https://kigkonsult.se
+ license   Subject matter of licence is the software iCalcreator.
+           The above copyright, link, package and version notices,
+           this licence notice and the invariant [rfc5545] PRODID result use
+           as implemented and invoked in iCalcreator shall be included in
+           all copies or substantial portions of the iCalcreator.
+
+           iCalcreator is free software: you can redistribute it and/or modify
+           it under the terms of the GNU Lesser General Public License as
+           published by the Free Software Foundation, either version 3 of
+           the License, or (at your option) any later version.
+
+           iCalcreator is distributed in the hope that it will be useful,
+           but WITHOUT ANY WARRANTY; without even the implied warranty of
+           MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+           GNU Lesser General Public License for more details.
+
+           You should have received a copy of the GNU Lesser General Public License
+           along with iCalcreator. If not, see <https://www.gnu.org/licenses/>.
+-->
+<phpunit backupGlobals="false"
+         bootstrap="test/autoload.php"
+         cacheResult="false"
+         executionOrder="default"
+         processIsolation="true"
+         resolveDependencies="false">
+    <testsuites>
+        <testsuite name="Vcalendar Tests">
+            <file>test/PcTest.php</file>
+            <file>test/VcalendarTest.php</file>
+            <file>test/FactoryCompTest.php</file>
+        </testsuite>
+        <testsuite name="Date Tests">
+            <file>test/Exception1Test.php</file>
+            <file>test/DateTest.php</file>
+            <file>test/Exception7Test.php</file>
+            <file>test/DateTzTest.php</file>
+            <file>test/Exception3Test.php</file>
+            <file>test/DateTimeTest.php</file>
+            <file>test/DateTimeUTCTest.php</file>
+            <file>test/Exception2Test.php</file>
+        </testsuite>
+        <testsuite name="DateInterval Tests">
+            <file>test/Exception4Test.php</file>
+            <file>test/DateIntervalTest1.php</file>
+            <file>test/DateIntervalTest2.php</file>
+            <file>test/DateIntervalTest3.php</file>
+        </testsuite>
+        <testsuite name="Integer property Tests">
+            <file>test/Exception5Test.php</file>
+            <file>test/IntegerTest.php</file>
+        </testsuite>
+        <testsuite name="Misc. property Tests">
+            <file>test/Exception6Test.php</file>
+            <file>test/Prop1TextSingleTest.php</file>
+            <file>test/Prop2TextMultiTest.php</file>
+            <file>test/Prop3Comp2PropTest.php</file>
+            <file>test/PropXTest.php</file>
+            <file>test/PropEmptyTest.php</file>
+            <file>test/ParseTest.php</file>
+            <file>test/PropSortTest.php</file>
+            <file>test/StringfuncTest.php</file>
+        </testsuite>
+        <testsuite name="Valarm property Tests">
+            <file>test/ValarmTest.php</file>
+        </testsuite>
+        <testsuite name="Vtimezone populate Tests">
+            <file>test/VtimezonePopulateFactoryTest.php</file>
+        </testsuite>
+        <testsuite name="Recur Tests">
+            <file>test/RecurYearTest.php</file>
+            <file>test/RecurMonthTest.php</file>
+            <file>test/RecurWeekTest.php</file>
+            <file>test/RecurDayTest.php</file>
+            <file>test/Exception8Test.php</file>
+            <file>test/SelectComponentsTest.php</file>
+            <file>test/SelectComponentsTest2.php</file>
+        </testsuite>
+        <testsuite name="vCard Tests">
+            <file>test/IcalvCardFactoryTest.php</file>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <file>./src/Util/IcalXMLFactory.php</file>
+            <file>./src/Util/ParameterFactory.php</file>
+            <file>./src/Util/RegulateTimezoneFactory.php</file>
+        </exclude>
+    </source>
+    <coverage
+            includeUncoveredFiles="false"
+            disableCodeCoverageIgnore="true">
+        <!-- Require the PHP Xdebug (2.7.0 or later) and tokenizer extensions-->
+        <!-- Remove or comment after your own choice-->
+        <!-- Note, all output in report/logging will be saved in 'testDocs' folder -->
+        <report>
+            <!-- clover outputFile="testDocs/clover.xml"/ -->
+            <!-- crap4j outputFile="testDocs/crap4j.xml" threshold="50"/ -->
+            <!-- html outputDirectory="testDocs/PHPUnitCoverage" lowUpperBound="60" highLowerBound="80"/ -->
+            <!-- php outputFile="testDocs/coverage.php"/ -->
+            <!-- text outputFile="testDocs/coverage.txt" showUncoveredFiles="false" showOnlySummary="false"/ -->
+            <!-- xml outputDirectory="testDocs/xml-coverage"/ -->
+        </report>
+    </coverage>
+    <logging>
+        <!-- Remove or comment after your own choice-->
+        <!-- All logs will be saved in 'testDocs' folder -->
+
+        <!-- junit outputFile="testDocs/junit.xml"/ -->
+        <!-- teamcity outputFile="testDocs/teamcity.txt"/ -->
+        <!-- testdoxHtml outputFile="testDocs/testdox.html"/ -->
+        <!-- testdoxText outputFile="testDocs/testdox.txt"/ -->
+        <!-- testdoxXml outputFile="testDocs/testdox.xml"/ -->
+    </logging>
+    <php>
+        <!-- define the (YmdTHis) dateTime -->
+        <const name="DATEYmdTHis" value="20160229T010000"/>
+        <!-- define the (Ymd) dateTime -->
+        <const name="DATEYmd" value="20160229"/>
+        <!-- define the 'local' timeZone -->
+        <const name="LTZ" value="America/New_York"/>
+        <!-- define an offset (MUST have timezone) -->
+        <const name="OFFSET" value="+0300"/>
+        <!-- define some other timeZone -->
+        <const name="TZ2" value="Europe/Stockholm"/>
+        <!-- display recur tests result (1) or not (0)-->
+        <const name="DISPRECUR" value="0"/>
+    </php>
+</phpunit>
