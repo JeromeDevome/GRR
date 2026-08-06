@@ -804,11 +804,23 @@ function mrbsGetAreaSite($id)
 function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 {
 	global $dformat;
+
+	$sanitizedId = filter_var($_id, FILTER_VALIDATE_INT, array('options' => array('min_range' => 1)));
+	if ($sanitizedId === false) {
+		fatal_error(0,"Opération interdite 1");
+		exit();
+	}
+	$_id = (int)$sanitizedId;
+	if (!in_array($_moderate, array(1, 0, "S1", "S0", "1", "0"), true)) {
+		fatal_error(0,"Opération interdite 2");
+		exit();
+	}
+
 	// On vérifie que l'utilisateur a bien le droit d'être ici
 	$room_id = grr_sql_query1("SELECT room_id FROM ".TABLE_PREFIX."_entry WHERE id='".$_id."'");
 	if (SecuAccess::UserLevel(getUserName(),$room_id) < 3)
 	{
-		fatal_error(0,"Opération interdite");
+		fatal_error(0,"Opération interdite 3");
 		exit();
 	}
 	// j'ai besoin de $repeat_id '
