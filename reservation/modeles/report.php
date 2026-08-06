@@ -22,9 +22,9 @@ function reporton(&$row, $dformat)
 {
 	global $vocab, $enable_periods, $tablOverload, $gListeReservations;
 
-	$domaine = htmlspecialchars($row[8]);
-	$domainedesc = htmlspecialchars($row[10]);
-	$ressource = htmlspecialchars($row[9]);
+	$domaine = $row[8];
+	$domainedesc = $row[10];
+	$ressource = $row[9];
 
 
 
