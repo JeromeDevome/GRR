@@ -292,6 +292,7 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
             $reservationsJour = array();
 			$estHorsReservation = false;
 			$statutCellule = 0; //0 vide, 1 réservable, 2 déjà une reservation, 3 hors résa
+			$nbResaAfficher = 0;
 
 			if ($display_day[$cweek] == 1)
 			{
@@ -302,8 +303,9 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
 
 					for ($i = 0; $i < $n; $i++)
                     {
+						$autreResa = false;
 
-                        if ($i == Settings::get("max_resa_affiche") && $n >= Settings::get("max_resa_affiche"))
+                        if ($nbResaAfficher >= Settings::get("max_resa_affiche") )
                         {
                             $autreResa = true;
                             break;
@@ -329,6 +331,7 @@ for ($ir = 0; ($row = grr_sql_row_keyed($ressources, $ir)); $ir++) // traitement
 							if ($nbParticipantsMax > 0 && $nbParticipants >= $nbParticipantsMax)
 								$classeReservation = " quota-atteint";
 						
+							$nbResaAfficher++;
 							$reservationsJour[] = array('idresa' => $dr[$cday]["id"][$i], 'class' => $classeReservation, 'texte' => $dr[$cday]["lien"][$i], 'bulle' => $dr[$cday]["infobulle"][$i], 'lienFiche' => $ficheResa);
 						}
                     }
