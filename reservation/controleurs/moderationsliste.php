@@ -26,23 +26,38 @@ $listeModeration = array();
 // Traitement des actions de modération en masse
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_moderation'])) {
     $selectedIds = isset($_POST['moderation_ids']) ? $_POST['moderation_ids'] : array();
-    $action = $_POST['action_moderation'];
-    
-    if (!empty($selectedIds) && in_array($action, array('accepter', 'refuser'))) {
-        $countProcessed = 0;
-        foreach($selectedIds as $resaId) {
-            // Utiliser la fonction existante moderate_entry_do
-            if ($action === 'accepter') {
-                // Accepter la réservation (1 = acceptée)
-                moderate_entry_do($resaId, 1, "", "yes");
-                $countProcessed++;
-            } elseif ($action === 'refuser') {
-                // Refuser la réservation (0 = refusée)
-                moderate_entry_do($resaId, 0, "", "yes");
-                $countProcessed++;
+    $action = isset($_POST['action_moderation']) ? $_POST['action_moderation'] : '';
+
+    if (in_array($action, array('accepter', 'refuser'), true)) {
+        $validatedIds = array();
+
+        if (is_array($selectedIds)) {
+            foreach ($selectedIds as $resaId) {
+                $validatedId = filter_var($resaId, FILTER_VALIDATE_INT, array('options' => array('min_range' => 1)));
+                if ($validatedId !== false) {
+                    $validatedIds[] = (int)$validatedId;
+                }
+            }
+        } elseif (is_scalar($selectedIds)) {
+            $validatedId = filter_var($selectedIds, FILTER_VALIDATE_INT, array('options' => array('min_range' => 1)));
+            if ($validatedId !== false) {
+                $validatedIds[] = (int)$validatedId;
             }
         }
-        $d['message'] = $countProcessed . " modération(s) " . ($action === 'accepter' ? 'acceptée(s)' : 'refusée(s)');
+
+        if (!empty($validatedIds)) {
+            $countProcessed = 0;
+            foreach ($validatedIds as $resaId) {
+                if ($action === 'accepter') {
+                    moderate_entry_do($resaId, 1, "", "yes");
+                    $countProcessed++;
+                } elseif ($action === 'refuser') {
+                    moderate_entry_do($resaId, 0, "", "yes");
+                    $countProcessed++;
+                }
+            }
+            $d['message'] = $countProcessed . " modération(s) " . ($action === 'accepter' ? 'acceptée(s)' : 'refusée(s)');
+        }
     }
 }
 
