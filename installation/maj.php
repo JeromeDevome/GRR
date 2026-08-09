@@ -106,7 +106,7 @@ if(!$majscript)
 
 
 // On effectue la MaJ
-if (isset($_POST['maj']) || $majscript)
+if (isset($_POST['maj']) || isset($_GET['maj']) || $majscript)
 {
 	//Re-Chargement des valeurs de la table settings
 	if (!Settings::load())
