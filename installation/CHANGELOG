@@ -1,4 +1,11 @@
-Version 4.6.5 - 03/08/2026
+Version 4.6.6 - 16/08/2026 Généré par @JeromeDevome
+[Ajout] Possible de faire la mise à jour de la BDD via le paramètre l'url avec le paramètre maj - 466af8b76 - @JeromeDevome
+[Correction] Caractère html dans Nom de domaine et ressource pour les stats - 4196b7b7c - @JeromeDevome & @anteldan
+[Correction] Affichage mois2_all , suite à autre résa "..." - d27b2b748 - @JeromeDevome
+[Correction] Sécurisation - 3d2846083 & 6e9ca28db - @JeromeDevome & @MCzhao2006
+[Correction] Affichage template mail : Retard, Mail pour les personnes notifiées via l'administration et/ou un champ additionnel - 466af8b76 - @JeromeDevome
+
+Version 4.6.5 - 03/08/2026 Généré par @JeromeDevome
 [Correction] Création ressource pour un administrateur de domaine - 2f482d1b5 - @JeromeDevome
 [Correction] Drag&drop avec champs additionnel obligatoire - 3d4055547 - @JeromeDevome
 [Correction] Faux positif mysqlnd dans "admin_infos" - dd9bbf606 - @JeromeDevome
@@ -6,8 +13,7 @@ Version 4.6.5 - 03/08/2026
 [Modification] Mise à jour symfony - 994662d63 - @JeromeDevome
 [Modification] Mise à jour JS inputmask - 989ccf2fb - @JeromeDevome
 
-
-Version 4.6.4 - 07/07/2026
+Version 4.6.4 - 07/07/2026 Généré par @JeromeDevome
 [Correction] Création d'un domaine - 4206dcfa5 - @JeromeDevome
 [Correction] Affichage jour hors réservation vue mois_all - 5daf45d14 - @JeromeDevome
 [Correction] Fonction CC pour la methode mail() - 5daf45d14 - @JeromeDevome
