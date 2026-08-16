@@ -32,6 +32,7 @@ $form_vars = array(
     'allow_users_modify_theme' => 'int',
     'allow_users_modify_langue' => 'int',
     'mail_user_obligatoire' => 'int',
+    'mail_user_unique' => 'int',
     'pass_leng' => 'int',
     'pass_nb_min' => 'int',
     'pass_nb_maj' => 'int',
@@ -59,6 +60,18 @@ foreach($form_vars as $var => $var_type)
             $settings_results[] = Settings::set2("allow_users_modify_theme", $allow_users_modify_theme);
             $settings_results[] = Settings::set2("allow_users_modify_langue", $allow_users_modify_langue);
             $settings_results[] = Settings::set2("mail_user_obligatoire", $mail_user_obligatoire);
+            if($mail_user_unique == 1){
+                // Avant d'activer le paramètre, on vérifie qu'il n'y a pas d'adresse mail en double dans la base
+                $sql = "SELECT email, COUNT(*) AS count FROM ".TABLE_PREFIX."_utilisateurs WHERE email <> '' GROUP BY email HAVING COUNT(*) > 1;";
+                $res = grr_sql_query($sql);
+                $test = grr_sql_count($res);
+                if ($test > 0)
+                    $settings_results[] = array(4, $trad['mail_user_unique_error_admin']);
+                else
+                    $settings_results[] = Settings::set2("mail_user_unique", $mail_user_unique);
+            } else {
+                $settings_results[] = Settings::set2("mail_user_unique", $mail_user_unique);
+            }
             $settings_results[] = Settings::set2("allow_my_connections", $allow_my_connections);
             $settings_results[] = Settings::set2("allow_my_reservations", $allow_my_reservations);
         }

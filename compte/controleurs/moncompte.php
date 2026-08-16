@@ -35,6 +35,7 @@ if (isset($_SERVER['HTTP_REFERER']))
 $user_login = isset($_POST['user_login']) ? $_POST['user_login'] : ($user_login = isset($_GET['user_login']) ? $_GET['user_login'] : NULL);
 $valid = isset($_POST['valid']) ? $_POST['valid'] : NULL;
 $msg = '';
+$mail_unique = true;
 
 $trad = $vocab;
 
@@ -116,10 +117,23 @@ if ($valid == 'yes')
 		}
 		if (SecuAccess::IsAllowedToModifyEmail())
 		{
+			if(Settings::get("mail_user_unique") == 1){
+				$nbEmail = grr_sql_query1("SELECT COUNT(*) FROM ".TABLE_PREFIX."_utilisateurs WHERE email = '".SecuChaine::ProtectDataSql($reg_email)."' AND login <> '".getUserName()."'");
+				
+				if($nbEmail > 0){
+					$mail_unique = false;
+				}
+			}
 			if(Settings::get('mail_user_obligatoire') != 1 || (Settings::get('mail_user_obligatoire') == 1 && $reg_email != "")){
-				if ($flag_virgule == 'y')
-					$sql .= ",";
-				$sql .= "email = '" . SecuChaine::ProtectDataSql($reg_email)."'";
+				if($mail_unique == false){
+					$msg = get_vocab("mail_user_unique_error");
+				}
+				else
+				{
+					if ($flag_virgule == 'y')
+						$sql .= ",";
+					$sql .= "email = '" . SecuChaine::ProtectDataSql($reg_email)."'";
+				}
 			} else{
 				$msg = get_vocab('mail_user_obligatoire');
 			}

@@ -269,6 +269,7 @@ $liste_settings = array(
 	"mail_etat_destinataire" => "0",
 	"mail_user_destinataire" => "1",
 	"mail_user_obligatoire" => "0",
+	"mail_user_unique" => "0",
 	"maj194_champs_additionnels" => "1",
 	"maj195_champ_rep_type_grr_repeat" => "1",
 	"maj196_qui_peut_reserver_pour" => "1",

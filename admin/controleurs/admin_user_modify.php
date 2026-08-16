@@ -128,6 +128,13 @@ if ($valid == "yes")
 					$msg = get_vocab("passwd_error");
 					$retry = 'yes';
 				}
+				else if(Settings::get("mail_user_unique") == 1){
+					$nbEmail = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_utilisateurs WHERE email = '".SecuChaine::ProtectDataSql($reg_email)."'";
+					if(grr_sql_query1($nbEmail) > 0){
+						$msg = get_vocab("mail_user_unique_error");
+						$retry = 'yes';
+					}
+				}
 				else
 				{
 					$sql = "SELECT * FROM ".TABLE_PREFIX."_utilisateurs WHERE login = '".$new_login."'";
@@ -223,6 +230,15 @@ if ($valid == "yes")
 					|| ((($old_statut == "utilisateur") || ($old_statut == "visiteur")) && (($reg_statut == "administrateur") || ($reg_statut == "gestionnaire_utilisateur"))))
 					$test_statut = FALSE;
 			}
+
+			if(Settings::get("mail_user_unique") == 1){
+				$nbEmail = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_utilisateurs WHERE email = '".SecuChaine::ProtectDataSql($reg_email)."' AND login <> '".SecuChaine::ProtectDataSql($user_login)."'";
+				if(grr_sql_query1($nbEmail) > 0){
+					$msg = get_vocab("mail_user_unique_error");
+					$retry = 'yes';
+				}
+			}
+
 			if (!($test_statut))
 			{
 				$msg = get_vocab("erreur_choix_statut");
