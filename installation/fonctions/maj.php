@@ -68,7 +68,7 @@ function traiteRequete($requete = "")
 
 function Setting0or1($settingName)
 {
-	if ( Settings::get($settingName) == '1' || strtoupper(Settings::get($settingName)) == 'Y' || strtoupper(Settings::get($settingName)) == 'YES' || strtoupper(Settings::get($settingName)) == 'ON' || strtoupper(Settings::get($settingName)) == 'OUI')
+	if ( Settings::get($settingName) == '1' || strtoupper(Settings::get($settingName) ?? '') == 'Y' || strtoupper(Settings::get($settingName) ?? '') == 'YES' || strtoupper(Settings::get($settingName) ?? '') == 'ON' || strtoupper(Settings::get($settingName) ?? '') == 'OUI')
 		return traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='1' WHERE NAME='".$settingName."';");
 	else
 		return traiteRequete("UPDATE ".TABLE_PREFIX."_setting SET VALUE='0' WHERE NAME='".$settingName."';");
