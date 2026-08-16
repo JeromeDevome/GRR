@@ -16,7 +16,7 @@
             </trans-unit>
             <trans-unit id="99">
                 <source>This value is not a valid HTML5 color.</source>
-                <target>這個數值不是有效的 HTML5 顏色。</target>
+                <target>這個值不是有效的 HTML5 顏色。</target>
             </trans-unit>
             <trans-unit id="100">
                 <source>Please enter a valid birthdate.</source>
@@ -133,6 +133,10 @@
             <trans-unit id="128">
                 <source>Please enter a valid week.</source>
                 <target>請輸入有效的星期。</target>
+            </trans-unit>
+            <trans-unit id="129">
+                <source>Please enter a valid UUID.</source>
+                <target>請輸入有效的 UUID。</target>
             </trans-unit>
         </body>
     </file>
