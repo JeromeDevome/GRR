@@ -117,6 +117,12 @@ $gMailExpediteur = "";
 #Mode debug || 0: non ; 1: oui - Defaut 0
 $debug_flag = 0;
 
+# Gestion de l'affichage des erreurs PHP dans l'interface d'administration || 0: non ; 1: oui - Defaut 0
+$gDebugPHPadm = 0;
+
+# Gestion de l'affichage des erreurs PHP dans l'interface utilisateur || 0: non ; 1: oui - Defaut 0
+$gDebugPHPresa = 0;
+
 # Sécurité coockies "None", "Lax" ou "Strict" - Defaut "Strict"
 # Peut être nécessaire de mettre "None" si GRR est utilisé dans un contexte de cross-site (ex: GRR intégré dans une iframe sur un autre site), ou Connexion SSO
 $gSameSite = "Strict"; 

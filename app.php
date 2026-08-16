@@ -20,11 +20,13 @@ use Devome\Grr\Routing\AdminRouter;
 use Devome\Grr\Routing\FrontRouter;
 
 $niveauDossier = 1;
+include "./include/config.inc.php";
+
+ini_set('display_errors', $gDebugPHPresa);
+error_reporting(E_ALL);
 
 require './vendor/autoload.php';
 require './include/twiggrr.class.php';
-
-//GRR
 require "./include/securite.class.php";
 require "./include/functions.inc.php";
 
@@ -34,7 +36,6 @@ if(isset($_GET['p'])){
 }
 
 include "./personnalisation/connect.inc.php";
-include "./include/config.inc.php";
 include "./include/misc.inc.php";
 include "./include/$dbsys.inc.php";
 include "./include/mincals.inc.php"; // JeromeB :Pas besoin partout le laisser ici ? 

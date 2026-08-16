@@ -52,9 +52,11 @@ ErrorDocument 504 /erreur.php
 # Interdire l'accès aux dossiers sensibles
 # Utiliser RewriteRule au lieu de DirectoryMatch (plus compatible)
 <IfModule mod_rewrite.c>
+    RewriteEngine On
     RewriteRule ^\.git(/|$) - [F,L]
     RewriteRule ^\.env(/|$) - [F,L]
     RewriteRule ^\.svn(/|$) - [F,L]
+    RewriteRule ^(?:vendor|include|outils)(/|$) - [F,L,NC]
 </IfModule>
 
 # ======================================================================

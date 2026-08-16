@@ -24,7 +24,7 @@ require_once("securite.class.php");
 $prefixeChemin = cheminDetermination($niveauDossier);
 include $prefixeChemin."personnalisation/connect.inc.php";
 
-include "config.inc.php";
+include_once "config.inc.php";
 include "$dbsys.inc.php";
 include "mrbs_sql.inc.php";
 include "misc.inc.php";
