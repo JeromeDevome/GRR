@@ -69,8 +69,6 @@ $menuAdminT = array();
 $menuAdminTN2 = array();
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 4)
 	afficheLienNiveau1('admin_accueil', 'fa fa-tachometer-alt', 1);
-if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
-	afficheLienNiveau1('admin_config3', 'fa fa-cogs', 1);
 
 // Affichage
 $liste = array();
@@ -174,11 +172,13 @@ if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_couleurs';
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
-	$liste[] = 'admin_config5';
+	$liste[] = 'admin_module';
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_infos';
 if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
 	$liste[] = 'admin_nettoyage_bdd';
+if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
+	$liste[] = 'admin_config3';
 foreach ($menuAdminComplNiv2Divers as list($droit, $lien, $icone)) {
 	if(SecuAccess::UserLevel(getUserName(), -1, 'area') >= $droit)
 		$liste[] = $lien;

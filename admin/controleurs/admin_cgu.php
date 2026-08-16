@@ -1,9 +1,9 @@
 <?php
 /**
- * admin_config1.php
+ * admin_cgu.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2017-12-16 14:00$
+ * Dernière modification : $Date: 2026-08-26 17:00$
  * @author    JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -16,21 +16,34 @@
  * (at your option) any later version.
  */
 
-require_once("../include/pages.class.php");
+
 $grr_script_name = "admin_cgu.php";
 
+require_once("../include/pages.class.php");
+
+$msg = "";
+
+// Accès à la page
 SecuAccess::CheckAccess(6, $back);
 
 if (!Pages::load()) {
     die('Erreur chargement pages');
 }
 
-$msg = "";
+// les variables attendues et leur type
+$form_vars = array(
+    'submit' => 'int',
+    'titre' => 'string',
+    'CGU' => ''
+);
+// récupération des valeurs des variables passées en paramètres
+foreach($form_vars as $var => $var_type)
+    $$var = SecuChaine::GetFormVarSecure($var, $var_type);
 
-/* Enregistrement de la page */
-if (isset($_POST['CGU'])) {
+/** Enregistrement de la page **/
+if (isset($CGU)) {
 	VerifyModeDemo();
-    if (!Pages::set("cgu", $_POST['titre'], $_POST['CGU']))
+    if (!Pages::set("cgu", $titre, $CGU))
         $msg = "Erreur lors de l'enregistrement de CGU !<br />";
 }
 /**/
@@ -38,24 +51,12 @@ if (isset($_POST['CGU'])) {
 
 // Si pas de problème, message de confirmation
 if (isset($_POST['ok'])) {
-    $_SESSION['displ_msg'] = 'yes';
     if ($msg == '') {
         $d['enregistrement'] = 1;
     } else{
         $d['enregistrement'] = $msg;
     }
 }
-if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
-    $msg = $_GET['msg'];
-} else {
-    $msg = '';
-}
-
-
-get_vocab_admin('cgu_titre');
-get_vocab_admin('cgu_grr');
-get_vocab_admin('save');
-get_vocab_admin('message_records');
 
 $pages = Pages::getAll();
 

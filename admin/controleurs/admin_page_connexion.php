@@ -57,23 +57,21 @@ foreach($form_vars as $var => $var_type)
     if ($submit == 1) {
 
         // Désactivation de la connexion
-         if (!Settings::set("disable_login", $disable_login))
-            $msg .= "Erreur lors de l'enregistrement de disable_login !<br />";
+        $settings_results[] = Settings::set2("disable_login", $disable_login);
 
         // Restriction iP
         $ctrlIp = true;
         if($ip_autorise != "")
             $ctrlIp = SecuChaine::ValideNetworkIp($ip_autorise);
 
-        if ($ctrlIp == false || !Settings::set("ip_autorise", $ip_autorise))
-            $msg .= "Erreur lors de l'enregistrement de ip_autorise !<br />";
+        if ($ctrlIp == false)
+            $settings_results[] = array(4, "Erreur lors de l'enregistrement de ip_autorise : format incorrect !");
+        else
+            $settings_results[] = Settings::set2("ip_autorise", $ip_autorise, true);
 
         // Heure de connexion
-        if (!Settings::set("horaireconnexionde", $horaireconnexionde))
-                $msg .= "Erreur lors de l'enregistrement de horaireconnexionde !<br />";
-
-        if (!Settings::set("horaireconnexiona", $horaireconnexiona))
-            $msg .= "Erreur lors de l'enregistrement de horaireconnexiona !<br />";
+        $settings_results[] = Settings::set2("horaireconnexionde", $horaireconnexionde, true);
+        $settings_results[] = Settings::set2("horaireconnexiona", $horaireconnexiona, true);
 
         // Durée de session
         if (isset($_POST['sessionMaxLength']))
@@ -81,13 +79,11 @@ foreach($form_vars as $var => $var_type)
             settype($_POST['sessionMaxLength'], "integer");
             if ($_POST['sessionMaxLength'] < 1)
                 $_POST['sessionMaxLength'] = 30;
-            if (!Settings::set("sessionMaxLength", $_POST['sessionMaxLength']))
-                $msg .= "Erreur lors de l'enregistrement de sessionMaxLength !<br />";
+            $settings_results[] = Settings::set2("sessionMaxLength", $sessionMaxLength, true);
         }
 
         // URL de déconnexion
-	    if (!Settings::set("url_disconnect", $_POST['url_disconnect']))
-	    	$msg .= "Erreur lors de l'enregistrement de url_disconnect ! <br />";
+        $settings_results[] = Settings::set2("url_disconnect", $url_disconnect, true);
 
     }
 
@@ -95,24 +91,19 @@ foreach($form_vars as $var => $var_type)
     if ($submit == 1) {
 
         // Template de connexion
-         if (!Settings::set("login_template", $_POST['login_template']))
-            $msg .= "Erreur lors de l'enregistrement de login_template !<br />";
+        $settings_results[] = Settings::set2("login_template", $login_template);
 
         // Titre de la page de connexion
-        if (!Settings::set('title_home_page', $_POST['title_home_page']))
-            echo "Erreur lors de l'enregistrement de title_home_page !<br />";
+        $settings_results[] = Settings::set2("title_home_page", $title_home_page);
 
         // Message de la page de connexion
-         if (!Settings::set('message_home_page', $_POST['message_home_page']))
-            echo "Erreur lors de l'enregistrement de message_home_page !<br />";
+        $settings_results[] = Settings::set2("message_home_page", $message_home_page);
 
         // Affichage du logo sur la page de connexion
-         if (!Settings::set('login_logo', $_POST['login_logo']))
-            echo "Erreur lors de l'enregistrement de login_logo !<br />";
+        $settings_results[] = Settings::set2("login_logo", $login_logo);
 
-         // Affichage du nom de l'établissement sur la page de connexion
-        if (!Settings::set('login_nom', $_POST['login_nom']))
-            $msg .= "Erreur lors de l'enregistrement de login_nom !<br />";
+        // Affichage du nom de l'établissement sur la page de connexion
+        $settings_results[] = Settings::set2("login_nom", $login_nom);
 
         // Enregistrement de l'image de connexion
         if (!empty($_FILES['doc_file']['tmp_name']))
@@ -120,13 +111,9 @@ foreach($form_vars as $var => $var_type)
             list($nomImage, $resultImport) = Import::Image($dossier, 'image_connexion');
 
             if($resultImport == ""){
-                if (!Settings::set('image_connexion', $nomImage)) {
-                    $msg .= "Erreur lors de l'enregistrement du l\'image de connexion (1) !\\n";
-                    $ok = 'no';
-                }
+                $settings_results[] = Settings::set2("image_connexion", $nomImage);
             } else {
-                $msg .= $resultImport;
-                $ok = 'no';
+                $settings_results[]= array(3, "L'image n'a pas pu être importée : $resultImport");
             }
         }
     }
@@ -140,17 +127,13 @@ foreach($form_vars as $var => $var_type)
             include "$dossier/.test";
         }
         if (!$ok1) {
-            $msg .= "L\'image n\'a pas pu être supprimée : problème d\'écriture sur le répertoire. Veuillez signaler ce problème à l\'administrateur du serveur.\\n";
-            $ok = 'no';
+            $settings_results[] = array(3, "L'image n'a pas pu être supprimée : problème d'écriture sur le répertoire. Veuillez signaler ce problème à l'administrateur du serveur.");
         } else {
             $nom_picture = $dossier.Settings::get('image_connexion');
             if (@file_exists($nom_picture)) {
                 unlink($nom_picture);
             }
-            if (!Settings::set('image_connexion', '')) {
-                $msg .= "Erreur lors de l'enregistrement l\'image de connexion (2) !\\n";
-                $ok = 'no';
-            }
+            $settings_results[] = Settings::set2("image_connexion", '');
         }
     }
 
@@ -158,30 +141,21 @@ foreach($form_vars as $var => $var_type)
     if ($submit == 1) {
 
         // Activer lea fonction de création de compte
-        if (!Settings::set('fct_crea_cpt', $fct_crea_cpt))
-            $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt !<br />";
+        $settings_results[] = Settings::set2("fct_crea_cpt", $fct_crea_cpt);
 
         // Identifiant par défaut
-        if (!Settings::set('fct_crea_cpt_login', $fct_crea_cpt_login))
-            $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_login !<br />";
+        $settings_results[] = Settings::set2("fct_crea_cpt_login", $fct_crea_cpt_login);
 
         // Statut par défaut
-        if (!Settings::set('fct_crea_cpt_statut', $fct_crea_cpt_statut))
-            $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_statut !<br />";
+        $settings_results[] = Settings::set2("fct_crea_cpt_statut", $fct_crea_cpt_statut);
 
         // Activer le captcha pour la création de compte
-        if (!Settings::set("fct_crea_cpt_captcha", $fct_crea_cpt_captcha))
-            $msg .= "Erreur lors de l'enregistrement de fct_crea_cpt_captcha !<br />";   
-
+        $settings_results[] = Settings::set2("fct_crea_cpt_captcha", $fct_crea_cpt_captcha);
     }
 
 /** Résultat de l'enregistrement **/
 if ($submit == 1){
-    $_SESSION['displ_msg'] = 'yes';
-    if ($msg == '')
-        $d['enregistrement'] = 1;
-    else
-        $d['enregistrement'] = $msg;
+    $d['settings_results'] = $settings_results;
 }
 
 /** Affichage de la page **/

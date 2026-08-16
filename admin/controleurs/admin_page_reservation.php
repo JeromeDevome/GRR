@@ -127,12 +127,8 @@ foreach($form_vars as $var => $var_type)
             if (($test_del1 != 0) || ($test_del2 != 0)) {
                 $demande_confirmation = 'yes';
             } else {
-                if (!Settings::set('begin_bookings', $begin_bookings)) {
-                    echo "Erreur lors de l'enregistrement de begin_bookings !<br />";
-                }
-                if (!Settings::set('end_bookings', $end_bookings)) {
-                    echo "Erreur lors de l'enregistrement de end_bookings !<br />";
-                }
+                $settings_results[] = Settings::set2("begin_bookings", $begin_bookings);
+                $settings_results[] = Settings::set2("end_bookings", $end_bookings);
             }
 
             if ($demande_confirmation == 'yes') {
@@ -142,72 +138,54 @@ foreach($form_vars as $var => $var_type)
         }
 
         // Visualisation de la fiche de description d'une ressource.
-        if (!Settings::set("visu_fiche_description", $visu_fiche_description))
-            $msg .= "Erreur lors de l'enregistrement de visu_fiche_description !<br />";
+        $settings_results[] = Settings::set2("visu_fiche_description", $visu_fiche_description);
 
         // Accès fiche de réservation d'une ressource.
-        if (!Settings::set("acces_fiche_reservation", $acces_fiche_reservation))
-            $msg .= "Erreur lors de l'enregistrement de acces_fiche_reservation !<br />";
+        $settings_results[] = Settings::set2("acces_fiche_reservation", $acces_fiche_reservation);
 
         // Accès page d'édition d'une ressource.
-        if (!Settings::set("acces_config", $acces_config))
-            $msg .= "Erreur lors de l'enregistrement de acces_config !<br />";
+        $settings_results[] = Settings::set2("acces_config", $acces_config);
 
         // Suppression & modification des réservations passées
-        if (!Settings::set("allow_user_delete_after_begin", $allow_user_delete_after_begin))
-            $msg .= "Erreur lors de l'enregistrement de allow_user_delete_after_begin !<br />";
+        $settings_results[] = Settings::set2("allow_user_delete_after_begin", $allow_user_delete_after_begin);
 
         // Droit de suppression et de modification des réservations passées pour les gestionnaires
-        if (!Settings::set("allow_gestionnaire_modify_del", $allow_gestionnaire_modify_del))
-            $msg .= "Erreur lors de l'enregistrement de allow_gestionnaire_modify_del !<br />";
+        $settings_results[] = Settings::set2("allow_gestionnaire_modify_del", $allow_gestionnaire_modify_del);
 
         // Nombre maximum de réservation (tous domaines confondus)
         if ($UserAllRoomsMaxBooking=='')
             $UserAllRoomsMaxBooking = -1;
         if ($UserAllRoomsMaxBooking<-1)
             $UserAllRoomsMaxBooking = -1;
-        if (!Settings::set("UserAllRoomsMaxBooking", $UserAllRoomsMaxBooking))
-            $msg .= "Erreur lors de l'enregistrement de UserAllRoomsMaxBooking !<br />";
+        $settings_results[] = Settings::set2("UserAllRoomsMaxBooking", $UserAllRoomsMaxBooking);
     }
 
 /** Fonctionnalités **/
     if ($submit == 1) {
 
         // Selection date directe
-        if (!Settings::set('select_date_directe', $select_date_directe))
-            $msg .= "Erreur lors de l'enregistrement de select_date_directe !<br />";
+        $settings_results[] = Settings::set2("select_date_directe", $select_date_directe);
 
         // Périodicité
-        if (!Settings::set('periodicite', $periodicite))
-            $msg .= "Erreur lors de l'enregistrement de periodicite !<br />";
+        $settings_results[] = Settings::set2("periodicite", $periodicite);
 
         // Gestion courrier
-        if (!Settings::set('show_courrier', $show_courrier))
-            $msg .= "Erreur lors de l'enregistrement de show_courrier !<br />";
+        $settings_results[] = Settings::set2("show_courrier", $show_courrier);
 
         // Echange de réservation
-        if (!Settings::set('fct_echange_resa', $fct_echange_resa))
-            $msg .= "Erreur lors de l'enregistrement de fct_echange_resa !<br />";
+        $settings_results[] = Settings::set2("fct_echange_resa", $fct_echange_resa);
 
         // Drag & Drop
-        if (!Settings::set('fct_drag_drop', $fct_drag_drop))
-            $msg .= "Erreur lors de l'enregistrement de fct_drag_drop !<br />";
+        $settings_results[] = Settings::set2("fct_drag_drop", $fct_drag_drop);
 
-        if (!Settings::set("jours_cycles_actif", $jours_cycles_actif))
-		    $msg .= "Erreur lors de l'enregistrement de jours_cycles_actif ! <br />";
+        // Jours cycle
+        $settings_results[] = Settings::set2("jours_cycles_actif", $jours_cycles_actif);
 
         // Formulaire de contact pour réservation 
-        if (!Settings::set('mail_etat_destinataire', $mail_etat_destinataire))
-            $msg .= "Erreur lors de l'enregistrement de mail_etat_destinataire !<br />";
-
-        if (!Settings::set('mail_destinataire', $mail_destinataire))
-            $msg .= "Erreur lors de l'enregistrement de mail_destinataire !<br />";
-
-        if (!Settings::set("mail_user_destinataire", $mail_user_destinataire))
-            $msg .= "Erreur lors de l'enregistrement de mail_user_destinataire !<br />";
-
-        if (!Settings::set("mail_contact_resa_captcha", $mail_contact_resa_captcha))
-            $msg .= "Erreur lors de l'enregistrement de mail_contact_resa_captcha !<br />";
+        $settings_results[] = Settings::set2("mail_etat_destinataire", $mail_etat_destinataire);
+        $settings_results[] = Settings::set2("mail_destinataire", $mail_destinataire);
+        $settings_results[] = Settings::set2("mail_user_destinataire", $mail_user_destinataire);
+        $settings_results[] = Settings::set2("mail_contact_resa_captcha", $mail_contact_resa_captcha);
 
         if (!Pages::set("contactresa", "contactresa", $textecontactresa))
             $msg .= "Erreur lors de l'enregistrement du texte contactresa !<br />".$textecontactresa;
@@ -218,177 +196,105 @@ foreach($form_vars as $var => $var_type)
     if ($submit == 1) {
 
         // Type d'affichage des listes des domaines et des ressources
-        if (!Settings::set('area_list_format', $area_list_format))
-            $msg .= "Erreur lors de l'enregistrement de area_list_format !<br />";
+        $settings_results[] = Settings::set2("area_list_format", $area_list_format);
 
         // Site par défaut
-        if (!Settings::set('default_site', $default_site))
-            $msg .= "Erreur lors de l'enregistrement de default_site !<br />";
+        $settings_results[] = Settings::set2("default_site", $default_site);
 
         // Domaine par défaut
-        if (!Settings::set('default_area', $id_area))
-            $msg .= "Erreur lors de l'enregistrement de default_area !<br />";
+        $settings_results[] = Settings::set2("default_area", $id_area);
 
         // Page par défaut
-        if (!Settings::set('default_room', $id_room))
-            $msg .= "Erreur lors de l'enregistrement de default_room !<br />";
+        $settings_results[] = Settings::set2("default_room", $id_room);
 
-        // Menu de "gauche"
-        if (!Settings::set('menu_gauche', $menu_gauche))
-            $msg .= "Erreur lors de l'enregistrement de menu_gauche !<br />";
+        // Affichage du menu domaine / ressource à gauche ou en haut de la page
+        $settings_results[] = Settings::set2("menu_gauche", $menu_gauche);
 
         // Affichage du bénéficiaire de la réservation
-        if (!Settings::set('display_beneficiaire_nc', $display_beneficiaire_nc))
-            $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_nc !<br />";
-
-        if (!Settings::set('display_beneficiaire_vi', $display_beneficiaire_vi))
-            $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_vi !<br />";
-
-        if (!Settings::set('display_beneficiaire_us', $display_beneficiaire_us))
-            $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_us !<br />";
- 
-        if (!Settings::set('display_beneficiaire_gr', $display_beneficiaire_gr))
-            $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_gr !<br />";
-
-        if (!Settings::set('display_beneficiaire_ad', $display_beneficiaire_ad))
-            $msg .= "Erreur lors de l'enregistrement de display_beneficiaire_ad !<br />";
+        $settings_results[] = Settings::set2("display_beneficiaire_nc", $display_beneficiaire_nc);
+        $settings_results[] = Settings::set2("display_beneficiaire_vi", $display_beneficiaire_vi);
+        $settings_results[] = Settings::set2("display_beneficiaire_us", $display_beneficiaire_us);
+        $settings_results[] = Settings::set2("display_beneficiaire_gr", $display_beneficiaire_gr);
+        $settings_results[] = Settings::set2("display_beneficiaire_ad", $display_beneficiaire_ad);
 
         // Affichage du créateur de la réservation
-        if (!Settings::set('display_horaires_nc', $display_horaires_nc))
-            $msg .= "Erreur lors de l'enregistrement de display_horaires_nc !<br />";
-
-        if (!Settings::set('display_horaires_vi', $display_horaires_vi))
-            $msg .= "Erreur lors de l'enregistrement de display_horaires_vi !<br />";
-
-        if (!Settings::set('display_horaires_us', $display_horaires_us))
-            $msg .= "Erreur lors de l'enregistrement de display_horaires_us !<br />";
-
-        if (!Settings::set('display_horaires_gr', $display_horaires_gr))
-            $msg .= "Erreur lors de l'enregistrement de display_horaires_gr !<br />";
-
-        if (!Settings::set('display_horaires_ad', $display_horaires_ad))
-            $msg .= "Erreur lors de l'enregistrement de display_horaires_ad !<br />";
+        $settings_results[] = Settings::set2("display_horaires_nc", $display_horaires_nc);
+        $settings_results[] = Settings::set2("display_horaires_vi", $display_horaires_vi);
+        $settings_results[] = Settings::set2("display_horaires_us", $display_horaires_us);
+        $settings_results[] = Settings::set2("display_horaires_gr", $display_horaires_gr);
+        $settings_results[] = Settings::set2("display_horaires_ad", $display_horaires_ad);
 
         // Affichage de la brève description
-        if (!Settings::set('display_short_description_nc', $display_short_description_nc))
-            $msg .= "Erreur lors de l'enregistrement de display_short_description_nc !<br />";
-  
-        if (!Settings::set('display_short_description_vi', $display_short_description_vi))
-            $msg .= "Erreur lors de l'enregistrement de display_short_description_vi !<br />";
-
-        if (!Settings::set('display_short_description_us', $display_short_description_us))
-            $msg .= "Erreur lors de l'enregistrement de display_short_description_us !<br />";
-
-        if (!Settings::set('display_short_description_gr', $display_short_description_gr))
-            $msg .= "Erreur lors de l'enregistrement de display_short_description_gr !<br />";
-
-        if (!Settings::set('display_short_description_ad', $display_short_description_ad))
-            $msg .= "Erreur lors de l'enregistrement de display_short_description_ad !<br />";
+        $settings_results[] = Settings::set2("display_short_description_nc", $display_short_description_nc);
+        $settings_results[] = Settings::set2("display_short_description_vi", $display_short_description_vi);
+        $settings_results[] = Settings::set2("display_short_description_us", $display_short_description_us);
+        $settings_results[] = Settings::set2("display_short_description_gr", $display_short_description_gr);
+        $settings_results[] = Settings::set2("display_short_description_ad", $display_short_description_ad);
 
         // Affichage de la description complète
-        if (!Settings::set('display_full_description_nc', $display_full_description_nc))
-            $msg .= "Erreur lors de l'enregistrement de display_full_description_nc !<br />";
-
-        if (!Settings::set('display_full_description_vi', $display_full_description_vi))
-            $msg .= "Erreur lors de l'enregistrement de display_full_description_vi !<br />";
-
-        if (!Settings::set('display_full_description_us', $display_full_description_us))
-            $msg .= "Erreur lors de l'enregistrement de display_full_description_us !<br />";
-
-        if (!Settings::set('display_full_description_gr', $display_full_description_gr))
-            $msg .= "Erreur lors de l'enregistrement de display_full_description_gr !<br />";
-
-        if (!Settings::set('display_full_description_ad', $display_full_description_ad))
-            $msg .= "Erreur lors de l'enregistrement de display_full_description_ad !<br />";
+        $settings_results[] = Settings::set2("display_full_description_nc", $display_full_description_nc);
+        $settings_results[] = Settings::set2("display_full_description_vi", $display_full_description_vi);
+        $settings_results[] = Settings::set2("display_full_description_us", $display_full_description_us);
+        $settings_results[] = Settings::set2("display_full_description_gr", $display_full_description_gr);
+        $settings_results[] = Settings::set2("display_full_description_ad", $display_full_description_ad);
 
         // Affichage du type de réservation
-        if (!Settings::set('display_type_nc', $display_type_nc))
-            $msg .= "Erreur lors de l'enregistrement de display_type_nc !<br />";
-
-        if (!Settings::set('display_type_vi', $display_type_vi))
-            $msg .= "Erreur lors de l'enregistrement de display_type_vi !<br />";
-
-        if (!Settings::set('display_type_us', $display_type_us))
-            $msg .= "Erreur lors de l'enregistrement de display_type_us !<br />";
-    
-        if (!Settings::set('display_type_gr', $display_type_gr))
-            $msg .= "Erreur lors de l'enregistrement de display_type_gr !<br />";
-
-        if (!Settings::set('display_type_ad', $display_type_ad))
-            $msg .= "Erreur lors de l'enregistrement de display_type_ad !<br />";
+        $settings_results[] = Settings::set2("display_type_nc", $display_type_nc);
+        $settings_results[] = Settings::set2("display_type_vi", $display_type_vi);
+        $settings_results[] = Settings::set2("display_type_us", $display_type_us);
+        $settings_results[] = Settings::set2("display_type_gr", $display_type_gr);
+        $settings_results[] = Settings::set2("display_type_ad", $display_type_ad);
 
         // Affichage du nombre de participants
-        if (!Settings::set('display_participants_nc', $display_participants_nc))
-            $msg .= "Erreur lors de l'enregistrement de display_participants_nc !<br />";
-
-        if (!Settings::set('display_participants_vi', $display_participants_vi))
-            $msg .= "Erreur lors de l'enregistrement de display_participants_vi !<br />";
-
-        if (!Settings::set('display_participants_us', $display_participants_us))
-            $msg .= "Erreur lors de l'enregistrement de display_participants_us !<br />";
-
-        if (!Settings::set('display_participants_gr', $display_participants_gr))
-            $msg .= "Erreur lors de l'enregistrement de display_participants_gr !<br />";
-
-        if (!Settings::set('display_participants_ad', $display_participants_ad))
-            $msg .= "Erreur lors de l'enregistrement de display_participants_ad !<br />";
+        $settings_results[] = Settings::set2("display_participants_nc", $display_participants_nc);
+        $settings_results[] = Settings::set2("display_participants_vi", $display_participants_vi);
+        $settings_results[] = Settings::set2("display_participants_us", $display_participants_us);
+        $settings_results[] = Settings::set2("display_participants_gr", $display_participants_gr);
+        $settings_results[] = Settings::set2("display_participants_ad", $display_participants_ad);
 
         // Affichage des liens email
-        if (!Settings::set('display_level_email', $display_level_email))
-            $msg .= "Erreur lors de l'enregistrement de display_level_email !<br />";
+        $settings_results[] = Settings::set2("display_level_email", $display_level_email);
 
         // Affichage de la fiche de réservation
-        if (!Settings::set('display_level_view_entry', $display_level_view_entry))
-            $msg .= "Erreur lors de l'enregistrement de display_level_view_entry !<br />";
+        $settings_results[] = Settings::set2("display_level_view_entry", $display_level_view_entry);
 
         // Format d'ouverture de la fenêtre d'impression
-        if (!Settings::set('pview_new_windows', $pview_new_windows))
-            $msg .= "Erreur lors de l'enregistrement de pview_new_windows !<br />";
+        $settings_results[] = Settings::set2("pview_new_windows", $pview_new_windows);
+
 
         // Popup javascript
-        if (!Settings::set('javascript_info_disabled', $javascript_info_disabled))
-            $msg .= "Erreur lors de l'enregistrement de javascript_info_disabled !<br />";
+        $settings_results[] = Settings::set2("javascript_info_disabled", $javascript_info_disabled);
 
         // Affichage ou non de la legende
-        if (!Settings::set('legend', $legend))
-            $msg .= "Erreur lors de l'enregistrement de legend !<br />";
+        $settings_results[] = Settings::set2("legend", $legend);
 
         // Affichage imprimante
-        if (!Settings::set('imprimante', $imprimante))
-            $msg .= "Erreur lors de l'enregistrement de imprimante !<br />";
+        $settings_results[] = Settings::set2("imprimante", $imprimante);
 
         // Affichage pdf
-        if (!Settings::set('pdf', $pdf))
-            $msg .= "Erreur lors de l'enregistrement de pdf !<br />";
+        $settings_results[] = Settings::set2("pdf", $pdf);
 
         // Affichage des jours fériés
-        if (!Settings::set('show_feries', $show_feries))
-            $msg .= "Erreur lors de l'enregistrement de show_feries !<br />";
+        $settings_results[] = Settings::set2("show_feries", $show_feries);
 
         // Affichage des vacances
-        if (!Settings::set('show_holidays', $show_holidays))
-            $msg .= "Erreur lors de l'enregistrement de show_holidays !<br />";
-
-        if (!Settings::set('holidays_zone', $holidays_zone)) 
-            $msg .= "Erreur lors de l'enregistrement de holidays_zone !<br />";
+        $settings_results[] = Settings::set2("show_holidays", $show_holidays);
+        $settings_results[] = Settings::set2("holidays_zone", $holidays_zone);
 
         // Nombre de mini-calendriers à afficher
-        if (!Settings::set('nb_calendar', $nb_calendar))
-            $msg .= "Erreur lors de l'enregistrement de nb_calendar !<br />";
+        $settings_results[] = Settings::set2("nb_calendar", $nb_calendar);
 
         // Nombre max de réservations à afficher
         if ($max_resa_affiche <= 1)
-             $max_resa_affiche = 1;
+            $max_resa_affiche = 1;
 
-        if (!Settings::set('max_resa_affiche', $max_resa_affiche))
-            $msg .= "Erreur lors de l'enregistrement de max_resa_affiche !<br />";
-  
+        $settings_results[] = Settings::set2("max_resa_affiche", $max_resa_affiche);
+
         // Nombre max de ressources à afficher dans les listes de ressources
         if ($longueur_liste_ressources_max <= 0)
             $longueur_liste_ressources_max = 1;
 
-        if (!Settings::set('longueur_liste_ressources_max', $longueur_liste_ressources_max))
-            $msg .= "Erreur lors de l'enregistrement de longueur_liste_ressources_max !<br />";
+        $settings_results[] = Settings::set2("longueur_liste_ressources_max", $longueur_liste_ressources_max);
 
     }
 
@@ -396,14 +302,9 @@ foreach($form_vars as $var => $var_type)
 /** Performance **/
     if ($submit == 1) {
 
-        if (!Settings::set('calcul_plus_semaine_all', $calcul_plus_semaine_all))
-            $msg .= "Erreur lors de l'enregistrement de calcul_plus_semaine_all !<br />";
-
-        if (!Settings::set('calcul_plus_mois', $calcul_plus_mois))
-            $msg .= "Erreur lors de l'enregistrement de calcul_plus_mois !<br />";
-
-        if (!Settings::set('calcul_plus_mois2_all', $calcul_plus_mois2_all))
-            $msg .= "Erreur lors de l'enregistrement de calcul_plus_mois2_all !<br />";
+        $settings_results[] = Settings::set2("calcul_plus_semaine_all", $calcul_plus_semaine_all);
+        $settings_results[] = Settings::set2("calcul_plus_mois", $calcul_plus_mois);
+        $settings_results[] = Settings::set2("calcul_plus_mois2_all", $calcul_plus_mois2_all);
 
     }
 
@@ -446,11 +347,7 @@ if (isset($sync)) {
 
 /** Résultat de l'enregistrement **/
 if ($submit == 1){
-    $_SESSION['displ_msg'] = 'yes';
-    if ($msg == '')
-        $d['enregistrement'] = 1;
-    else
-        $d['enregistrement'] = $msg;
+    $d['settings_results'] = $settings_results;
 }
 
 /** Affichage de la page **/
