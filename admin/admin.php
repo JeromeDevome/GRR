@@ -19,6 +19,11 @@
 $administration = true;
 $niveauDossier = 2;
 
+include "../include/config.inc.php";
+
+ini_set('display_errors', $gDebugPHPadm);
+error_reporting(E_ALL);
+
 require '../vendor/autoload.php';
 require '../include/twiggrr.class.php';
 // GRR

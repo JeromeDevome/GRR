@@ -24,9 +24,9 @@ $ok = NULL;
 if (Settings::get("module_multisite") == 1)
 	$id_site = isset($_POST["id_site"]) ? $_POST["id_site"] : (isset($_GET["id_site"]) ? $_GET["id_site"] : -1);
 $action = isset($_POST["action"]) ? $_POST["action"] : (isset($_GET["action"]) ? $_GET["action"] : NULL);
-$area_id = isset($_POST["area_id"]) ? $_POST["area_id"] : (isset($_GET["area_id"]) ? $_GET["area_id"] : NULL);
+$area_id = intval(isset($_POST["area_id"]) ? $_POST["area_id"] : (isset($_GET["area_id"]) ? $_GET["area_id"] : NULL));
 $retour_page = isset($_POST["retour_page"]) ? $_POST["retour_page"] : (isset($_GET["retour_page"]) ? $_GET["retour_page"] : NULL);
-$room = isset($_POST["room"]) ? $_POST["room"] : (isset($_GET["room"]) ? $_GET["room"] : NULL);
+$room = intval(isset($_POST["room"]) ? $_POST["room"] : (isset($_GET["room"]) ? $_GET["room"] : 0));
 $area_name = isset($_POST["area_name"]) ? $_POST["area_name"] : NULL;
 $room_name = isset($_POST["room_name"]) ? $_POST["room_name"] : NULL;
 $description = isset($_POST["description"]) ? $_POST["description"] : NULL;
