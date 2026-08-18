@@ -1,9 +1,10 @@
-Version 4.6.6 - 16/08/2026 Généré par @JeromeDevome
+Version 4.6.6 - 18/08/2026 Généré par @JeromeDevome
 [Ajout] Possible de faire la mise à jour de la BDD via le paramètre l'url avec le paramètre maj - 466af8b76 - @JeromeDevome
 [Correction] Caractère html dans Nom de domaine et ressource pour les stats - 4196b7b7c - @JeromeDevome & @anteldan
 [Correction] Affichage mois2_all , suite à autre résa "..." - d27b2b748 - @JeromeDevome
 [Correction] Sécurisation - 3d2846083 & 6e9ca28db - @JeromeDevome & @MCzhao2006
 [Correction] Affichage template mail : Retard, Mail pour les personnes notifiées via l'administration et/ou un champ additionnel - 466af8b76 - @JeromeDevome
+[Correction] Affichage des champs additionnel pour les usager et visiteur - 5f561b605 - @JeromeDevome
 
 Version 4.6.5 - 03/08/2026 Généré par @JeromeDevome
 [Correction] Création ressource pour un administrateur de domaine - 2f482d1b5 - @JeromeDevome
