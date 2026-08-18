@@ -4616,14 +4616,14 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
     // la ressource associée à la réservation :
 	//$res = mrbsGetEntryInfo($resa[2]);
 	//$room = (!$res) ? -1 : $res["room_id"]; 
-   
+
 	// Les champs add :
-	if($resa[19] == 0 || getUserName() == $resa[4] || $UserLevel >= 3) // Si résa confidentielle, on n'affiche les champs add qu'à l'auteur de la résa ou aux gestionnaires
+	if($resa[20] == 0 || getUserName() == $resa[4] || $UserLevel >= 3) // Si résa confidentielle, on n'affiche les champs add qu'à l'auteur de la résa ou aux gestionnaires
 	{
 		$overload_data = grrGetOverloadDescArray($ofl, $resa[16]);//mrbsEntryGetOverloadDesc($resa[2]);
 		foreach ($overload_data as $fieldname=>$field)
 		{
-			if ( ($UserLevel >= 4 && $field["confidentiel"] == 'n') && $field["affichage"] == 'y' && $field["valeur"] != "") {
+			if ( (($UserLevel >= 4 && $field["confidentiel"] == 'y') || $field["confidentiel"] == 'n') && $field["affichage"] == 'y' && $field["valeur"] != "") {
 				// ELM - Gestion des champs aditionnels multivalués (lignes 384 - 392)
 				$valeur = str_replace("|", ",", $field["valeur"]);
 				$affichage .= "<i>".htmlspecialchars($fieldname,ENT_NOQUOTES).get_vocab("deux_points").htmlspecialchars($valeur,ENT_NOQUOTES|ENT_SUBSTITUTE)."</i><br />";
