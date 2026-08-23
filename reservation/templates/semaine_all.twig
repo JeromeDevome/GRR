@@ -106,7 +106,7 @@
 
                 <!-- X colonnes suivantes avec les résa par jopurs -->
                 {% for jourR in ressource.joursRessource %}
-                    <td class="{{jourR.class}}">
+                    <td class="dragdrop {{jourR.class}}" data-day="{{jourR.jour}}" data-month="{{jourR.mois}}" data-year="{{jourR.annee}}" data-ressource="{{ressource.id}}">
                         {% for resa in jourR.reservations %}
                             <table class="resadrag pleine center" data-resa-id="{{resa.idresa}}" data-day="{{jourR.jour}}" data-month="{{jourR.mois}}" data-year="{{jourR.annee}}">
                                 <tr>
