@@ -26,7 +26,7 @@ if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(get
 	exit();
 }
 unset($user_login);
-$user_login = isset($_GET["user_login"]) ? SecuChaine::CleanLogin($_GET["user_login"]) : NULL;
+$user_login = isset($_GET["user_login"]) ? SecuChaine::ProtectDataSql($_GET["user_login"]) : NULL;
 // un gestionnaire d'utilisateurs ne peut pas modifier un administrateur général ou un gestionnaire d'utilisateurs
 if (isset($user_login) && (SecuAccess::UserLevel(getUserName(),-1,'user') ==  1))
 {
