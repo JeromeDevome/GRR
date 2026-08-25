@@ -179,7 +179,7 @@ if (isset($change_room))
     if(!is_null($room))
       grr_sql_command("update ".TABLE_PREFIX."_entry set statut_entry = '-' where room_id ='$room'");
   }
-	if ((isset($room)) && !((isset($action) && ($action == "duplique_room"))))
+	if (($room > 0) && !((isset($action) && ($action == "duplique_room"))))
 	{
 		$sql = "UPDATE ".TABLE_PREFIX."_room SET
 		room_name='".SecuChaine::ProtectDataSql($room_name)."',
@@ -310,7 +310,7 @@ if ((isset($change_done)) && (!isset($ok)))
 }
 
 // affichage du formulaire
-if (isset($room))
+if ($room > 0)
 {
 	// Il s'agit d'une modification d'une ressource
 	$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_room WHERE id=$room");
