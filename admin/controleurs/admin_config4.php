@@ -39,15 +39,7 @@ if (isset($_GET['redirection_https']))
 		$msg .= "Erreur lors de l'enregistrement de redirection_https ! <br />";
 }
 
-// Max session length
-if (isset($_GET['sessionMaxLength']))
-{
-	settype($_GET['sessionMaxLength'], "integer");
-	if ($_GET['sessionMaxLength'] < 1)
-		$_GET['sessionMaxLength'] = 30;
-	if (!Settings::set("sessionMaxLength", $_GET['sessionMaxLength']))
-		$msg .= "Erreur lors de l'enregistrement de sessionMaxLength !<br />";
-}
+
 // pass_leng
 if (isset($_GET['pass_leng'])) {
 	settype($_GET['pass_leng'], "integer");
