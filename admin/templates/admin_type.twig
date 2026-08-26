@@ -19,9 +19,9 @@
 
 	<div class="card">
 		<div class="card-header">
-			<a class="btn pull-right bg-green"href="?p=admin_type_modify&amp;id=0">{{trad.display_add_type}}</a>
-			<a class="btn pull-right bg-info"href="?p=admin_type&amp;action=1">{{trad.display_type_order_identifiant}}</a>
-			<a class="btn pull-right bg-info"href="?p=admin_type&amp;action=2">{{trad.display_type_order_nom}}</a>
+			<a class="btn pull-right bg-green"href="?p=admin_type_modify&amp;p_id=0">{{trad.display_add_type}}</a>
+			<a class="btn pull-right bg-info"href="?p=admin_type&amp;p_action=1">{{trad.display_type_order_identifiant}}</a>
+			<a class="btn pull-right bg-info"href="?p=admin_type&amp;p_action=2">{{trad.display_type_order_nom}}</a>
 		</div>
 		<!-- /.card-header -->
 		<div class="card-body p-0">
@@ -50,7 +50,7 @@
 					{% endif %}
 					</td>
 					<td>
-						<a href="?p=admin_type_modify&amp;id_type={{type.id}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
+						<a href="?p=admin_type_modify&amp;p_id_type={{type.id}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
 						<button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{type.type_letter}}" data-idsup="{{type.id}}"><i class="icon fa fa-trash"></i></button>
 					</td>
 				</tr>
@@ -67,14 +67,14 @@
 		<div class="card-body">
 			<form action="?p=admin_type" method="post" id="formfusion">
 				<input type="hidden" name="p" value="admin_type">
-				<input type="hidden" name="actionpost" value="fusionner">
+				<input type="hidden" name="p_action" value="4">
 
 				<div class="row align-items-center">
 					<div class="col-auto">
 						Fusionner l'identifiant
 					</div>
 					<div class="col-2">
-						<select id="type1" name="type1" class="form-control">
+						<select id="type1" name="p_type1" class="form-control">
 							{% for type in types %}
 								<option value="{{type.id}}">{{type.type_letter}} - {{type.type_name}}</option>
 							{% endfor %}
@@ -84,7 +84,7 @@
 						avec l'identifiant
 					</div>
 					<div class="col-2">
-						<select id="type2" name="type2" class="form-control">
+						<select id="type2" name="p_type2" class="form-control">
 							{% for type in types %}
 								<option value="{{type.id}}">{{type.type_letter}} - {{type.type_name}}</option>
 							{% endfor %}
@@ -159,7 +159,7 @@
 			  .done(function(data) {
 				$('#html').html(data);
 				$('#modal-warning').modal('hide');
-				document.location.href='?p=admin_type&type_del='+v+'&action_del=yes&jsconfirmed=1';
+				document.location.href='?p=admin_type&p_type_del='+v+'&p_action=3&p_jsconfirmed=1';
 			  })
 			  .fail(function() {
 				alert('Une erreur est survenue : GRRJS')

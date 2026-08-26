@@ -8,74 +8,77 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col col-md-12">
+		
 		<div class="callout callout-info">{{trad.admin_type_explications}}</div>
 
-         <div class="box box-success">
-            <div class="box-header">
-              <h3 class="box-title">{{ trad.admin_type_titre }}</h3>
-            </div>
-			<form class="form-horizontal" method="GET">
+		<div class="card col-12">
+			<form class="form-horizontal" method="POST">
 				<input type="hidden" name ="p" value="admin_type_modify">
-				<input type="hidden" name ="id_type" value="{{ type.id }}">
-				<div class="box-body">
-					{{ form.input('type_name', trad.type_name, type.type_name, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
+				<input type="hidden" name ="p_id_type" value="{{ type.id }}">
 
-					<!-- A mettre menu deroulant -->
-					<div class="form-group row">
-						<label class="col col-sm-4" for="type_letter">{{ trad.type_num }}</label>
-						<div class="col col-sm-8">
-							<select name="type_letter" class="form-control" size="1">
-								<option value="">{{ trad.choose }}</option>
-								{% for lettre in lettres %}
-									<option value="{{ lettre.lettre }}" {% if type.type_letter == lettre.lettre %} selected {% endif %}>{{ lettre.lettre }}</option>
-								{% endfor %}
-							</select>
+				<div class="card-body">
+
+					<div class="box-body">
+						{{ form.input('p_type_name', trad.type_name, type.type_name, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+
+						<!-- A mettre menu deroulant -->
+						<div class="form-group row">
+							<label class="col col-sm-4" for="p_type_letter">{{ trad.type_num }}*</label>
+							<div class="col col-sm-8">
+								<select name="p_type_letter" class="form-control" size="1">
+									<option value="">{{ trad.choose }}</option>
+									{% for lettre in lettres %}
+										<option value="{{ lettre.lettre }}" {% if type.type_letter == lettre.lettre %} selected {% endif %}>{{ lettre.lettre }}</option>
+									{% endfor %}
+								</select>
+							</div>
 						</div>
-					</div>
 
-					{{ form.input('order_display', trad.order_display, type.order_display, {type: 'number', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
+						{{ form.input('p_order_display', trad.order_display, type.order_display, {type: 'number', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
 
-					<div class="form-group row">
-						<label class="col col-sm-4" for="disponible">{{ trad.disponible_pour }}</label>
-						<div class="col col-sm-8">
-							<select name="disponible" class="form-control" size="1">
-								<option value="2" {% if type.disponible == 2 %} selected {% endif %}>{{ trad.all }}</option>
-								<option value="3" {% if type.disponible == 3 %} selected {% endif %}>{{ trad.gestionnaires_et_administrateurs }}</option>
-								<option value="5" {% if type.disponible == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
-							</select>
+						<div class="form-group row">
+							<label class="col col-sm-4" for="p_disponible">{{ trad.disponible_pour }}</label>
+							<div class="col col-sm-8">
+								<select name="p_disponible" class="form-control" size="1">
+									<option value="2" {% if type.disponible == 2 %} selected {% endif %}>{{ trad.all }}</option>
+									<option value="3" {% if type.disponible == 3 %} selected {% endif %}>{{ trad.gestionnaires_et_administrateurs }}</option>
+									<option value="5" {% if type.disponible == 5 %} selected {% endif %}>{{ trad.only_administrators }}</option>
+								</select>
+							</div>
 						</div>
-					</div>
 
-					<div class="form-group row">
-						<label class="col col-sm-4" for="type_color_actuel">{{ trad.type_color_actuel }}</label>
-						<div class="col col-sm-8">
-							<input type="text" class="form-control" style="background-color:{{ type.couleurhexa }};color:{{type.couleurtexte}};" id="type_color_actuel" name="type_color_actuel" value="Texte" disabled>
+						{% if type.id > 0 %}
+						<div class="form-group row">
+							<label class="col col-sm-4" for="type_color_actuel">{{ trad.type_color_actuel }}</label>
+							<div class="col col-sm-8">
+								<input type="text" class="form-control" style="background-color:{{ type.couleurhexa }};color:{{type.couleurtexte}};" id="type_color_actuel" name="type_color_actuel" value="Texte" disabled>
+							</div>
 						</div>
-					</div>
+						{% endif %}
 
-					{{ form.colorpicker2('couleurhexa', trad.type_color_fond, type.couleurhexa, {classLabel: 'col-sm-4', classDivInput: 'col-sm-3'}) }}
-					{{ form.colorpicker2('couleurtexte', trad.type_color_texte, type.couleurtexte, {classLabel: 'col-sm-4', classDivInput: 'col-sm-3'}) }}
-					{{ form.colorpicker2('couleuricone', trad.type_color_icone, type.couleuricone, {classLabel: 'col-sm-4', classDivInput: 'col-sm-3'}) }}
+						{{ form.colorpicker2('p_couleurhexa', trad.type_color_fond, type.couleurhexa ?? '#5EA69A', {classLabel: 'col-sm-4', classDivInput: 'col-sm-3'}) }}
+						{{ form.colorpicker2('p_couleurtexte', trad.type_color_texte, type.couleurtexte ?? '#000000', {classLabel: 'col-sm-4', classDivInput: 'col-sm-3'}) }}
+						{{ form.colorpicker2('p_couleuricone', trad.type_color_icone, type.couleuricone ?? '#000000', {classLabel: 'col-sm-4', classDivInput: 'col-sm-3'}) }}
 
-					<div class="form-group row">
-						<label class="col col-sm-4" for="type_color_actuel">{{trad.previsualisation}}</label>
-						<div class="col col-sm-8">
-							<input type="text" class="form-control" style="background-color:{{ type.couleurhexa }};color:{{type.couleurtexte}};" id="prevision" name="type_color_actuel" value="Texte" disabled>
+						<div class="form-group row">
+							<label class="col col-sm-4" for="prevision">{{trad.previsualisation}}</label>
+							<div class="col col-sm-8">
+								<input type="text" class="form-control" style="background-color:{{ type.couleurhexa }};color:{{type.couleurtexte}};" id="prevision" name="prevision" value="Texte" disabled>
+							</div>
 						</div>
 					</div>
 				</div>
-
 				<!-- /.box-body -->
-				<div class="box-footer">
-					<input type="submit" name="change_done" value="{{ trad.back }}" class="btn btn-default btn-md" />
-					<input type="submit" name="change_type" value="{{ trad.save }}" class="btn btn-success btn-md pull-right" />
-					<input type="submit" name="change_type_and_back" value="{{ trad.save_and_back }}" class="btn btn-success btn-md pull-right" />
+				<div class="card-footer" style="display: flex; justify-content: space-between; align-items: center;">
+					<a href="?p=admin_type" class="btn btn-default btn-md">{{ trad.back }}</a>
+					<div style="display: flex; justify-content: flex-end; gap: 8px;">
+						<input type="submit" name="p_change_type" value="{{ trad.save }}" class="btn btn-success btn-md" />
+						<input type="submit" name="p_change_type_and_back" value="{{ trad.save_and_back }}" class="btn btn-success btn-md" />
+					</div>
 				</div>
 			</form>
-          </div>
-          <!-- /.box -->
-		</div>
+        </div>
+
 	</div>
 
 
@@ -91,22 +94,25 @@
 			{% elseif d.enregistrement == 3 %}
 				toastr.error("{{d.enregistrement_msg}}")
 			{% endif %}
+
+			updatecolor('p_couleurhexa');
+			updatecolor('p_couleurtexte');
 		}); 
 
 		function updatecolor(idchamp) {
 			var input_color = document.getElementById('square'+idchamp).value;
 			document.getElementById(idchamp).value = input_color;
-			if(idchamp == "couleurhexa")
+			if(idchamp == "p_couleurhexa")
 				document.getElementById('prevision').style.backgroundColor = input_color;
-			else if(idchamp == "couleurtexte")
+			else if(idchamp == "p_couleurtexte")
 				document.getElementById('prevision').style.color = input_color;
 		}
 		function updatecolorpicker(idchamp) {
 			var input_color = document.getElementById(idchamp).value;
 			document.getElementById('square'+idchamp).value = input_color;
-			if(idchamp == "couleurhexa")
+			if(idchamp == "p_couleurhexa")
 				document.getElementById('prevision').style.backgroundColor = input_color;
-			else if(idchamp == "couleurtexte")
+			else if(idchamp == "p_couleurtexte")
 				document.getElementById('prevision').style.color = input_color;
 		}
 	</script>
