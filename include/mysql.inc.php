@@ -88,9 +88,9 @@ function grr_sql_query1($sql, $types = NULL, $params = NULL)
     try{
         if(($types == NULL)&&($params == NULL)){
             $res = mysqli_query($GLOBALS['db_c'], $sql);
-            if(($res->num_rows != 1)||($res->field_count != 1)||(($r = $res->fetch_row()[0]) == ""))
+            if(!$res || ($res->num_rows != 1) || ($res->field_count != 1) || (($r = $res->fetch_row()[0]) == ""))
               $r = -1;
-            mysqli_free_result($res);
+            if($res) mysqli_free_result($res);
             return($r);
         }
         elseif(($types != NULL)&&($params != NULL)){
