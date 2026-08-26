@@ -94,9 +94,9 @@ $_REQUEST['rooms']       = array($room);
 $_REQUEST['start_day']   = $day;
 $_REQUEST['start_month'] = $month;
 $_REQUEST['start_year']  = $year;
-$_REQUEST['end_day']     = $day;
-$_REQUEST['end_month']   = $month;
-$_REQUEST['end_year']    = $year;
+$_REQUEST['end_day']     = intval(date('j', $new_end));
+$_REQUEST['end_month']   = intval(date('n', $new_end));
+$_REQUEST['end_year']    = intval(date('Y', $new_end));
 $_REQUEST['start_hour']  = intval(date('G', $new_start));
 $_REQUEST['start_minute']= intval(date('i', $new_start));
 // lorsque des créneaux sont utilisés, l'indice de période est stocké dans le champ minute ;
@@ -105,6 +105,11 @@ $_REQUEST['period']      = intval(date('i', $new_start));
 
 $_REQUEST['end_hour']    = intval(date('G', $new_end));
 $_REQUEST['end_minute']  = intval(date('i', $new_end));
+$_REQUEST['end_']        = sprintf('%02d:%02d', $_REQUEST['end_hour'], $_REQUEST['end_minute']);
+$_REQUEST['type_affichage_reser'] = 1;
+if ($enable_periods == 'y') {
+    $_REQUEST['end_period'] = intval(date('i', $new_end)) - 1;
+}
 // indicateur pour que editentreetrt puisse renvoyer une réponse concise
 $_REQUEST['dragdrop']    = '1';
 
