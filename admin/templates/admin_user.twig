@@ -9,15 +9,14 @@
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block content %}
+	<h3>{{ trad.admin_user }}</h3>
 	<div class="row">
-		<div class="col col-md-10">
+		<div class="col col-lg-10">
 
 			<div class="box">
-				<div class="box-header">
-					<h3 class="box-title">{{trad.admin_user}}</h3>
-				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
+					<div class="table-responsive">
 					<table id="tableuser" class="table table-bordered table-striped">
 						<thead>
 							<tr>
@@ -58,22 +57,23 @@
 								</tr>
 							{% endfor %}
 						</tbody>
-				  </table>
+					  </table>
+					</div>
 				</div>
 			</div>
 		</div>
 
 
-		<div class="col col-md-2">
+		<div class="col col-lg-2">
 
 			<div class="box">
 				<!-- /.box-header -->
 				<div class="box-body no-padding">
-					<h4>{{ trad.display_add_user }} :</h4>
+					<h5>{{ trad.display_add_user }} :</h5>
 					<a href="?p=admin_user_modify&amp;display={{ trad.dDisplay }}" class="btn btn-primary btn-block">{{ trad.display_add_user }}</a>
 					<a href="?p=admin_import_users_csv" class="btn btn-primary btn-block">{{ trad.via_fichier }}</a>
 					<a href="?p=admin_import_users_elycee" class="btn btn-primary btn-block">Depuis elycée</a>
-					<h4>{{ trad.admin_menu_various }} :</h4>
+					<h5>{{ trad.admin_menu_various }} :</h5>
 					{% if (settings.ldap_statut != '' or settings.sso_statut != '' or settings.imap_statut != '') and d.estAdministrateur ==  1 %}
 						<a href="?p=admin_purge_accounts" class="btn btn-primary btn-block">{{ trad.admin_purge_accounts }}</a>
 					{% endif %}
