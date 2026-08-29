@@ -3,7 +3,7 @@
  * admin_calend_vacances.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-06-07 11:30$
+ * Dernière modification : $Date: 2026-08-28 19:48$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -22,13 +22,15 @@ SecuAccess::CheckAccess(6, $back);
 
 // les variables attendues et leur type
 $form_vars = array(
-    'submitCalend' => 'int',
+    'p_submitCalend' => 'int',
     'From_year' => 'int'
 );
 // récupération des valeurs des variables passées en paramètres
 foreach($form_vars as $var => $var_type)
     $$var = SecuChaine::GetFormVarSecure($var, $var_type);
 
+
+$trad['TitrePage']	= $trad['admin_calend_vacances'];
 
 // premier test : l'affichage des vacances est-il activé ?
 if (Settings::get("show_holidays") == 1)
@@ -54,11 +56,12 @@ if (Settings::get("show_holidays") == 1)
 	if($end_bookings > $dernier_jour_annee){
 		$end_bookings = $dernier_jour_annee;
 	}
+}
 
-	/** Traitement formulaire des jours de vacances **/
-	if ($submitCalend == 1)
+/** Actions **/
+	/* Enregistrement */
+	if ((Settings::get("show_holidays") == 1) && ($p_submitCalend == 1))
 	{
-
 		// On met de côté toutes les dates
 		$day_old = array();
 		$res_old = grr_sql_query("SELECT day FROM ".TABLE_PREFIX."_calendrier_vacances");
@@ -95,59 +98,62 @@ if (Settings::get("show_holidays") == 1)
 			}
 			$month++;
 		}
+		$d['enregistrement'] = 1;
 	}
 
-	/** Chargemennt de l'affichage de la page **/
-	$d['cocheVacances']	= "";
-	$d['calendrier'] 	= "";
-
-	$month	= date('n', $begin_bookings);
-	$n		= $begin_bookings;
-
-	// Génération du code javascript pour cocher les jours de vacances
-	$zone = Settings::get("holidays_zone"); // en principe la zone est définie, au moins par défaut à A
-	$schoolHoliday = array();
-	$vacances = simplexml_load_file('../include/vacances.xml');
-	$libelle = $vacances->libelles->children();
-	$node = $vacances->calendrier->children();
-	foreach ($node as $key => $value)
+/** Affichage de la page **/
+	if (Settings::get("show_holidays") == 1)
 	{
-	if ($value['libelle'] == $zone)
+		$d['cocheVacances']	= "";
+		$d['calendrier'] 	= "";
+
+		$month	= date('n', $begin_bookings);
+		$n		= $begin_bookings;
+
+		// Génération du code javascript pour cocher les jours de vacances
+		$zone = Settings::get("holidays_zone"); // en principe la zone est définie, au moins par défaut à A
+		$schoolHoliday = array();
+		$vacances = simplexml_load_file('../include/vacances.xml');
+		$libelle = $vacances->libelles->children();
+		$node = $vacances->calendrier->children();
+		foreach ($node as $key => $value)
 		{
-			foreach ($value->vacances as $key => $value)
+		if ($value['libelle'] == $zone)
 			{
-				$y = date('Y', strtotime($value['debut'])); // année de début des vacances
-				if (($y >= $year-1) && ($y <= $annee)){ // on n'étudie que les années pertinentes
-					$t = strtotime($value['debut'])+86400; // la date du fichier est celle de la fin des cours
-					$t_fin = strtotime($value['fin']);
-					while ($t < $t_fin){ // la date du fichier est celle de la reprise des cours
-						if (($t >= $begin_bookings) && ($t <= $end_bookings)) {
-							$schoolHoliday[] = $t ; }
-						$jour = date('d',$t);
-						$mois = date('m',$t);
-						$anneeF = date('Y',$t);
-						$t = mktime(0,0,0,$mois,$jour+1,$anneeF);
+				foreach ($value->vacances as $key => $value)
+				{
+					$y = date('Y', strtotime($value['debut'])); // année de début des vacances
+					if (($y >= $year-1) && ($y <= $annee)){ // on n'étudie que les années pertinentes
+						$t = strtotime($value['debut'])+86400; // la date du fichier est celle de la fin des cours
+						$t_fin = strtotime($value['fin']);
+						while ($t < $t_fin){ // la date du fichier est celle de la reprise des cours
+							if (($t >= $begin_bookings) && ($t <= $end_bookings)) {
+								$schoolHoliday[] = $t ; }
+							$jour = date('d',$t);
+							$mois = date('m',$t);
+							$anneeF = date('Y',$t);
+							$t = mktime(0,0,0,$mois,$jour+1,$anneeF);
+						}
 					}
 				}
 			}
 		}
-	}
 
-	foreach ($schoolHoliday as &$value) {
-		$d['cocheVacances'] .= "setCheckboxesGrrName(document.getElementById('formulaireV'), true, '{$value}'); ";
-	}
-	unset($schoolHoliday);
+		foreach ($schoolHoliday as &$value) {
+			$d['cocheVacances'] .= "setCheckboxesGrrName(document.getElementById('formulaireV'), true, '{$value}'); ";
+		}
+		unset($schoolHoliday);
 
-	// Affichage des calendriers
-	while ($n <= $end_bookings)
-	{
-		$d['calendrier'] .= "<div class=\"col-auto\">\n";
-		$d['calendrier'] .= cal($month, $annee, 3);
-		$d['calendrier'] .= "</div>";
-		$month++;
-		$n = mktime(0,0,0,$month,1,$annee);
+		// Affichage des calendriers
+		while ($n <= $end_bookings)
+		{
+			$d['calendrier'] .= "<div class=\"col-auto\">\n";
+			$d['calendrier'] .= cal($month, $annee, 3);
+			$d['calendrier'] .= "</div>";
+			$month++;
+			$n = mktime(0,0,0,$month,1,$annee);
+		}
 	}
-}
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 ?>

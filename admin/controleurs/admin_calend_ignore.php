@@ -3,7 +3,7 @@
  * admin_calend_ignore.php
  * Interface permettant la la réservation en bloc de journées entières
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2022-06-19 15:42$
+ * Dernière modification : $Date: 2026-08-28 19:48$
  * @author    Laurent Delineau & JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -25,7 +25,7 @@ SecuAccess::CheckAccess(6, $back);
 // les variables attendues et leur type
 $form_vars = array(
     'From_year' => 'int', // année de l'affichage du calendrier
-	'submit' => 'int', // 1 : enregistrement des jours cochés
+	'p_submit' => 'int', // 1 : enregistrement des jours cochés
 );
 // récupération des valeurs des variables passées en paramètres
 foreach($form_vars as $var => $var_type)
