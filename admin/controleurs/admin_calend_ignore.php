@@ -141,8 +141,10 @@ if($end_bookings > $dernier_jour_annee){
 			$feries[] = $val['DAY'];
 		}
 		$d['Cocheferies'] = "";
+		$d['Decocheferies'] = "";
 		foreach ($feries as &$value) {
 			$d['Cocheferies'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+			$d['Decocheferies'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), false, '{$value}'); ";
 		}
 		unset($feries);
 	}
@@ -156,8 +158,10 @@ if($end_bookings > $dernier_jour_annee){
 			$vacances[] = $val['DAY'];
 		}
 		$d['CocheVacances'] = "";
+		$d['DecocheVacances'] = "";
 		foreach ($vacances as &$value) {
 			$d['CocheVacances'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+			$d['DecocheVacances'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), false, '{$value}'); ";
 		}
 		unset($vacances);
 	}

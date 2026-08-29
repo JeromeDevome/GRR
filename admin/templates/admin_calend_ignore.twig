@@ -9,53 +9,74 @@
 	<div class="row">
 		<div class="col col-md-12">
 
-			{% if trad.dNettoyageLiaison  %}
-				{{ msgSyst.messageInfo('Résultat', trad.dNettoyageLiaison) }}
-			{% endif %}
+			<div class="card">
+				<div class="card-header">
+					<p class="text-muted mb-3">{{ trad.les_journees_cochees_sont_ignorees |raw }}</p>
 
+					{{ msgSyst.messageAlerte('', trad.les_journees_cochees_sont_ignorees_warning) }}
 
-			<div class="box">
-				<!-- /.box-header -->
-				<div class="box-body no-padding">
-					<p>{{ trad.les_journees_cochees_sont_ignorees |raw }}</p>
-
-					<table>
-						{% for jour in jourssemaines  %}
-							<tr>
-								<td><span class="small"><a href="?p=admin_calend_ignore" onclick="setCheckboxesGrr(document.getElementById('formulaire'), true, '{{ jour }}'); return false;">{{ trad.check_all_the }} {{ jour }}s</a></span></td>
-								<td><span class="small"><a href="?p=admin_calend_ignore" onclick="setCheckboxesGrr(document.getElementById('formulaire'), false, '{{ jour }}' ); return false;">{{ trad.uncheck_all_the }} {{ jour }}s</a></span></td>
-							</tr>
+	
+						{% for jour in jourssemaines %}
+							<div class="btn-group btn-group-xs mb-1 mr-1" role="group" aria-label="{{ jour }}">
+								<a href="?p=admin_calend_ignore" class="btn btn-info btn-sm" onclick="setCheckboxesGrr(document.getElementById('formulaire'), true, '{{ jour }}'); return false;">
+									{{ trad.check_all_the }} {{ jour }}s
+								</a>
+								<a href="?p=admin_calend_ignore" class="btn btn-default btn-sm" onclick="setCheckboxesGrr(document.getElementById('formulaire'), false, '{{ jour }}'); return false;">
+									{{ trad.uncheck_all_the }} {{ jour }}s
+								</a>
+							</div>
 						{% endfor %}
 
-						{% if settings.show_holidays == 1 %}
-							<tr>
-								<td><span class="small"><a href="?p=admin_calend_ignore" onclick="{{ d.CocheVacances }} return false;">{{ trad.admin_calend_ignore_vacances }}</a></span></td>
-								<td><span class="small"><a href="?p=admin_calend_ignore" onclick="{{ d.Cocheferies }} return false;">{{ trad.admin_calend_ignore_feries }}</a></span></td>
-							</tr>
+						{% if settings.show_feries == 1 %}
+							<div class="btn-group btn-group-xs mb-1 mr-1" role="group" aria-label="vacances">
+								<a href="?p=admin_calend_ignore" class="btn btn-info btn-sm" onclick="{{ d.Cocheferies }} return false;">
+									{{ trad.check_all_the }} {{ trad.holidays }}
+								</a>
+								<a href="?p=admin_calend_ignore" class="btn btn-default btn-sm" onclick="{{ d.Decocheferies }} return false;">
+									{{ trad.uncheck_all_the }} {{ trad.holidays }}
+								</a>
+							</div>
 						{% endif %}
-						<tr>
-							<td colspan="2"><span class="small"><a href="?p=admin_calend_ignore" onclick="setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;">{{ trad.uncheck_all_ }}</a></span></td>
-					</table>
 
-					<form action="?p=admin_calend_ignore" method="post" id="annee">
-						<input type="hidden" name="p" value="admin_calend_ignore" />
-						{{ trad.annee }} 
-						{{d.liste_annees |raw }}
-						<input class="btn-sm btn-primary" type="submit" name="{{ trad.OK }}" value="{{ trad.OK }}" />
-					</form>
+						{% if settings.show_holidays == 1 %}
+							<div class="btn-group btn-group-xs mb-1 mr-1" role="group" aria-label="vacances">
+								<a href="?p=admin_calend_ignore" class="btn btn-info btn-sm" onclick="{{ d.CocheVacances }} return false;">
+									{{ trad.check_all_the }} {{ trad.school_holidays }}
+								</a>
+								<a href="?p=admin_calend_ignore" class="btn btn-default btn-sm" onclick="{{ d.DecocheVacances }} return false;">
+									{{ trad.uncheck_all_the }} {{ trad.school_holidays }}
+								</a>
+							</div>
+						{% endif %}
 
-					<form action="?p=admin_calend_ignore" method="post" id="formulaire">
-						<input type="hidden" name="p" value="admin_calend_ignore" />
-						<input type="hidden" name="From_year" value="{{ d.From_year }}" />
-						<input type="hidden" name="submit" value="1" />
-						<div class="row">
-							{{ d.calendrier |raw }}
+						<div class="btn-group btn-group-xs mb-1" role="group" aria-label="reset">
+							<a href="?p=admin_calend_ignore" class="btn btn-warning btn-sm" onclick="setCheckboxesGrr(document.getElementById('formulaire'), false, 'all'); return false;">
+								{{ trad.uncheck_all_ }}
+							</a>
 						</div>
-						<!-- Enregistrer -->
-						<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
-							<i class="fas fa-save"></i> {{ trad.save }}
-						</button>
-					</form>
+
+
+						<form action="?p=admin_calend_ignore" method="post" id="annee">
+							<input type="hidden" name="p" value="admin_calend_ignore" />
+							{{ trad.annee }} 
+							{{d.liste_annees |raw }}
+							<input class="btn-sm btn-primary" type="submit" name="{{ trad.OK }}" value="{{ trad.OK }}" />
+						</form>
+					</div>
+					<div class="card-body p-0">
+						<form action="?p=admin_calend_ignore" method="post" id="formulaire">
+							<input type="hidden" name="p" value="admin_calend_ignore" />
+							<input type="hidden" name="From_year" value="{{ d.From_year }}" />
+							<input type="hidden" name="submit" value="1" />
+							<div class="row">
+								{{ d.calendrier |raw }}
+							</div>
+							<!-- Enregistrer -->
+							<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+								<i class="fas fa-save"></i> {{ trad.save }}
+							</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

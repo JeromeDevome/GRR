@@ -904,10 +904,8 @@ $vocab["legend_msg"] = "Affichage de la légende";
 $vocab["lemon_SSO_explain"] = "Si vous disposez d'un environnement Lemonldap, vous pouvez activer la prise en compte de ce service par GRR ci-dessous. Reportez-vous à la documentation de GRR pour en savoir plus.";
 $vocab["les_administrateurs_restreints"] = "uniquement les administrateurs restreints";
 $vocab["les_gestionnaires_de_la_ressource"] = "les gestionnaires de la ressource";
-$vocab["les_journees_cochees_sont_ignorees"] = "Les journées cochées correspondent à des journées pendant lesquelles il n'est pas possible de réserver.
-En ce qui concerne les réservations avec périodicité, ces journées sont ignorées lors de la validation de la réservation.
-
-Attention : si des réservations ont déjà été enregistrées sur les journées cochées, celles-ci seront automatiquement et irrémédiablement supprimées. De plus, les personnes concernées par les suppressions ne seront pas prévenues par email.";
+$vocab["les_journees_cochees_sont_ignorees"] = "Les journées cochées correspondent à des journées pendant lesquelles il n'est pas possible de réserver. En ce qui concerne les réservations avec périodicité, ces journées sont ignorées lors de la validation de la réservation.";
+$vocab["les_journees_cochees_sont_ignorees_warning"] = "Attention : si des réservations ont déjà été enregistrées sur les journées cochées, celles-ci seront automatiquement et irrémédiablement supprimées. De plus, les personnes concernées par les suppressions ne seront pas prévenues par email.";
 $vocab["les_journees_cochees_sont_valides"] = "Les journées cochées correspondent à des journées selon lesquelles nous voulons créer un calendrier de \"jours cycles\" selon les paramètres suivants (modifiables dans le premier onglet de cette page)";
 $vocab["les_jours_feries"] = " les jours fériés";
 $vocab["les_vacances"] = " les vacances";

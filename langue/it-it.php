@@ -905,10 +905,8 @@ $vocab["legend_msg"] = "Visualizzazione della legenda";
 $vocab["lemon_SSO_explain"] = "Se disponi di un ambiente Lemonldap, puoi attivare il supporto di questo servizio da parte di GRR qui sotto. Fai riferimento alla documentazione di GRR per saperne di più.";
 $vocab["les_administrateurs_restreints"] = "solo gli amministratori ristretti";
 $vocab["les_gestionnaires_de_la_ressource"] = "i gestori della risorsa";
-$vocab["les_journees_cochees_sont_ignorees"] = "Le giornate selezionate corrispondono a giorni in cui non è possibile prenotare.
-Per quanto riguarda le prenotazioni con periodicità, queste giornate vengono ignorate durante la convalida della prenotazione.
-
-Attenzione: se sono già state registrate prenotazioni nelle giornate selezionate, queste saranno automaticamente e irrimediabilmente eliminate. Inoltre, le persone interessate dalle eliminazioni non saranno avvisate via email.";
+$vocab["les_journees_cochees_sont_ignorees"] = "Le giornate selezionate corrispondono a giorni in cui non è possibile prenotare. Per quanto riguarda le prenotazioni con periodicità, queste giornate vengono ignorate durante la convalida della prenotazione.";
+$vocab["les_journees_cochees_sont_ignorees_warning"] = "Attenzione: se sono già state registrate prenotazioni nelle giornate selezionate, queste saranno automaticamente e irrimediabilmente eliminate. Inoltre, le persone interessate dalle eliminazioni non saranno avvisate via email.";
 $vocab["les_journees_cochees_sont_valides"] = "Le giornate selezionate corrispondono ai giorni secondo i quali vogliamo creare un calendario di \"giorni cicli\" in base ai parametri seguenti (modificabili nella prima scheda di questa pagina)";
 $vocab["les_jours_feries"] = " i giorni festivi";
 $vocab["les_vacances"] = " i giorni di vacanza";

@@ -911,10 +911,8 @@ $vocab["legend_msg"] = "Muestra la leyenda";
 $vocab["lemon_SSO_explain"] = "Si usted tiene a su disposición un contexto Lemonldap, Usted puede activar la consideración de este servicio por GRR a continuación. Diríjase a la documentación de GRR para mayor información.";
 $vocab["les_administrateurs_restreints"] = "Únicamente los administradores limitados";
 $vocab["les_gestionnaires_de_la_ressource"] = "los gestores del recurso";
-$vocab["les_journees_cochees_sont_ignorees"] = " Los días punteados corresponden a jornadas durante los cuales no es posible reservar.
-En cuanto a las reservas con periodicidad, estas jornadas son ignoradas en el momento de la validación de la reserva.
-
-Cuidado: si unas reservas ya han sido registradas sobre los días punteados, éstas estarán suprimidas automáticamente y irremediablemente.. Además, las personas concernidas por las supresiones no serán prevenidas por e-mail.";
+$vocab["les_journees_cochees_sont_ignorees"] = " Los días punteados corresponden a jornadas durante los cuales no es posible reservar. En cuanto a las reservas con periodicidad, estas jornadas son ignoradas en el momento de la validación de la reserva.";
+$vocab["les_journees_cochees_sont_ignorees_warning"] = "Cuidado: si unas reservas ya han sido registradas sobre los días punteados, éstas estarán suprimidas automáticamente y irremediablemente.. Además, las personas concernidas por las supresiones no serán prevenidas por e-mail.";
 $vocab["les_journees_cochees_sont_valides"] = "Los días punteados corresponden a días según los cuales queremos crear un calendario de \" días ciclos \" según los parámetros siguientes (modificables en la primera pestaña de esta página)";
 $vocab["les_jours_feries"] = " días festivos";
 $vocab["les_vacances"] = " vacaciones escolares";
