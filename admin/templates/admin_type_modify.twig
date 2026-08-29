@@ -70,10 +70,14 @@
 				</div>
 				<!-- /.box-body -->
 				<div class="card-footer" style="display: flex; justify-content: space-between; align-items: center;">
-					<a href="?p=admin_type" class="btn btn-default btn-md">{{ trad.back }}</a>
+					<a href="?p=admin_type" class="btn btn-default btn-md"><i class="fas fa-circle-left"></i> {{ trad.back }}</a>
 					<div style="display: flex; justify-content: flex-end; gap: 8px;">
-						<input type="submit" name="p_change_type" value="{{ trad.save }}" class="btn btn-success btn-md" />
-						<input type="submit" name="p_change_type_and_back" value="{{ trad.save_and_back }}" class="btn btn-success btn-md" />
+						<button type="submit" name="p_change_type" class="btn btn-primary btn-md">
+							<i class="fas fa-save"></i> {{ trad.save }}
+						</button>
+						<button type="submit" name="p_change_type_and_back" class="btn btn-primary btn-md">
+							<i class="fas fa-save"></i> {{ trad.save_and_back }}
+						</button>
 					</div>
 				</div>
 			</form>
