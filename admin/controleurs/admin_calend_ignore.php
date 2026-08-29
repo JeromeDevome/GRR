@@ -19,32 +19,30 @@
 
 $grr_script_name = "admin_calend_ignore.php";
 
+// Accès à la page
 SecuAccess::CheckAccess(6, $back);
 
-get_vocab_admin('calendrier_des_jours_hors_reservation');
-get_vocab_admin('les_journees_cochees_sont_ignorees');
-get_vocab_admin('check_all_the');
-get_vocab_admin('uncheck_all_the');
-get_vocab_admin('admin_calend_ignore_vacances');
-get_vocab_admin('admin_calend_ignore_feries');
-get_vocab_admin('uncheck_all_');
-get_vocab_admin('OK');
-get_vocab_admin('save');
+// les variables attendues et leur type
+$form_vars = array(
+    'From_year' => 'int', // année de l'affichage du calendrier
+	'submit' => 'int', // 1 : enregistrement des jours cochés
+);
+// récupération des valeurs des variables passées en paramètres
+foreach($form_vars as $var => $var_type)
+    $$var = SecuChaine::GetFormVarSecure($var, $var_type);
 
 
-$annee = isset($_POST['From_year']) ? $_POST['From_year'] : (isset($_GET['From_year']) ? intval($_GET['From_year']) : date('Y'));
+if(empty($From_year)){
+	$From_year = date('Y');
+}
 
-if (!isset($From_year))
-	$From_year = $annee;
-
-$d['liste_annees'] = genDateSelectorForm("From_", "", "", $From_year,"");
-$d['From_year'] = $From_year;
-
-$premier_jour_annee = mktime(0, 0, 0, 1, 1, $annee);
-$dernier_jour_annee = mktime(0, 0, 0, 12, 31, $annee);
-
-$begin_bookings = Settings::get("begin_bookings");
-$end_bookings = Settings::get("end_bookings");
+$trad['TitrePage']	= $trad['calendrier_des_jours_hors_reservation'];
+$d['liste_annees']	= genDateSelectorForm("From_", "", "", $From_year,"");
+$d['From_year']		= $From_year;
+$premier_jour_annee = mktime(0, 0, 0, 1, 1, $From_year);
+$dernier_jour_annee = mktime(0, 0, 0, 12, 31, $From_year);
+$begin_bookings		= Settings::get("begin_bookings");
+$end_bookings		= Settings::get("end_bookings");
 
 if($begin_bookings < $premier_jour_annee){
 	$begin_bookings = $premier_jour_annee;
@@ -54,155 +52,131 @@ if($end_bookings > $dernier_jour_annee){
 	$end_bookings = $dernier_jour_annee;
 }
 
-
-
-if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
-{
-	// On met de côté toutes les dates
-	$day_old = array();
-	$res_old = grr_sql_query("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE DAY >= '".$begin_bookings."' AND DAY <= '".$end_bookings."'");
-	if ($res_old)
+/** Actions **/
+	/* Enregistrement */
+	if (isset($submit) && $submit == 1)
 	{
-		for ($i = 0; ($row_old = grr_sql_row($res_old, $i)); $i++)
-			$day_old[$i] = $row_old[0];
-	}
-	// On supprime de la table ".TABLE_PREFIX."_calendar
-	$sql = "DELETE FROM ".TABLE_PREFIX."_calendar WHERE DAY >= '".$begin_bookings."' AND DAY <= '".$end_bookings."'";
-	if (grr_sql_command($sql) < 0)
-		fatal_error(0, "<p>" . grr_sql_error());
-	$result = 0;
-
-	$n = $begin_bookings;
-	$month = date('m', $begin_bookings);
-	$year = date('Y', $begin_bookings);
-	$day = 1;
-	while ($n <= $end_bookings)
-	{
-		$daysInMonth = getDaysInMonth($month, $year);
-		$day = 1;
-		while ($day <= $daysInMonth)
+		// On met de côté toutes les dates
+		$day_old = array();
+		$res_old = grr_sql_query("SELECT day FROM ".TABLE_PREFIX."_calendar WHERE DAY >= '".$begin_bookings."' AND DAY <= '".$end_bookings."'");
+		if ($res_old)
 		{
-			$n = mktime(0, 0, 0, $month, $day, $year);
-			if (isset($_POST[$n]))
-			{
-				// Le jour a été selectionné dans le calendrier
-				$starttime = mktime($morningstarts, 0, 0, $month, $day  , $year);
-				$endtime   = mktime($eveningends, 0, $resolution, $month, $day, $year);
-				// Pour toutes les dates bon précédement enregistrées, on efface toutes les résa en conflit
-				if (!in_array($n,$day_old))
-				{
-					$sql = "select id from ".TABLE_PREFIX."_room";
-					$res = grr_sql_query($sql);
-					if ($res)
-					{
-						for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-						{
-							$grrDelEntryInConflict = grrDelEntryInConflict($row[0], $starttime, $endtime, 0, 0, 1);
-							if( !is_numeric($grrDelEntryInConflict) )
-								$grrDelEntryInConflict = 0;
+			for ($i = 0; ($row_old = grr_sql_row($res_old, $i)); $i++)
+				$day_old[$i] = $row_old[0];
+		}
+		// On supprime de la table ".TABLE_PREFIX."_calendar
+		$sql = "DELETE FROM ".TABLE_PREFIX."_calendar WHERE DAY >= '".$begin_bookings."' AND DAY <= '".$end_bookings."'";
+		if (grr_sql_command($sql) < 0)
+			fatal_error(0, "<p>" . grr_sql_error());
+		$result = 0;
 
-							$result += $grrDelEntryInConflict;
+		$n = $begin_bookings;
+		$month = date('m', $begin_bookings);
+		$year = date('Y', $begin_bookings);
+		$day = 1;
+		while ($n <= $end_bookings)
+		{
+			$daysInMonth = getDaysInMonth($month, $year);
+			$day = 1;
+			while ($day <= $daysInMonth)
+			{
+				$n = mktime(0, 0, 0, $month, $day, $year);
+				if (isset($_POST[$n]))
+				{
+					// Le jour a été selectionné dans le calendrier
+					$starttime = mktime($morningstarts, 0, 0, $month, $day  , $year);
+					$endtime   = mktime($eveningends, 0, $resolution, $month, $day, $year);
+					// Pour toutes les dates bon précédement enregistrées, on efface toutes les résa en conflit
+					if (!in_array($n,$day_old))
+					{
+						$sql = "select id from ".TABLE_PREFIX."_room";
+						$res = grr_sql_query($sql);
+						if ($res)
+						{
+							for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+							{
+								$grrDelEntryInConflict = grrDelEntryInConflict($row[0], $starttime, $endtime, 0, 0, 1);
+								if( !is_numeric($grrDelEntryInConflict) )
+									$grrDelEntryInConflict = 0;
+
+								$result += $grrDelEntryInConflict;
+							}
 						}
 					}
+					// On enregistre la valeur dans ".TABLE_PREFIX."_calendar
+					$sql = "INSERT INTO ".TABLE_PREFIX."_calendar set DAY='".$n."'";
+					if (grr_sql_command($sql) < 0)
+						fatal_error(0, "<p>" . grr_sql_error());
 				}
-				 	// On enregistre la valeur dans ".TABLE_PREFIX."_calendar
-				$sql = "INSERT INTO ".TABLE_PREFIX."_calendar set DAY='".$n."'";
-				if (grr_sql_command($sql) < 0)
-					fatal_error(0, "<p>" . grr_sql_error());
+				$day++;
 			}
-			$day++;
+			$month++;
+			if ($month == 13) {
+				$year++;
+				$month = 1;
+			}
 		}
+
+		$d['enregistrement'] = 1;
+	}
+
+/** Affichage de la page **/
+	// Jours à cocher / décocher dans le calendrier
+	$basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
+	$jourssemaines = array();
+
+	for ($i = 0; $i < 7; $i++)
+	{
+		$show = $basetime + ($i * 24 * 60 * 60);
+		$jourssemaines[] = utf8_strftime('%A',$show);
+	}
+
+	// Les jours fériés si activés
+	if (Settings::get("show_feries") == 1){
+		// définir les jours fériés
+		$req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_feries";
+		$ans = grr_sql_query($req);
+		$feries = array();
+		foreach($ans as $val){
+			$feries[] = $val['DAY'];
+		}
+		$d['Cocheferies'] = "";
+		foreach ($feries as &$value) {
+			$d['Cocheferies'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+		}
+		unset($feries);
+	}
+
+	// Les vacances si activés
+	if (Settings::get("show_holidays") == 1){
+		$req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances";
+		$ans = grr_sql_query($req);
+		$vacances = array();
+		foreach($ans as $val){
+			$vacances[] = $val['DAY'];
+		}
+		$d['CocheVacances'] = "";
+		foreach ($vacances as &$value) {
+			$d['CocheVacances'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
+		}
+		unset($vacances);
+	}
+
+
+	// Affichage du calendrier
+	$d['calendrier']	= "";
+	$month				= date("m",$begin_bookings);
+	$year				= date("Y", $begin_bookings);
+	$n					= $begin_bookings;
+
+	while ($n <= $end_bookings)
+	{
+		$d['calendrier'] .= "<div class=\"col-auto\">\n";
+		$d['calendrier'] .= cal($month, $year, 1);
+		$d['calendrier'] .= "</div>";
 		$month++;
-		if ($month == 13) {
-			$year++;
-			$month = 1;
-		}
+		$n = mktime(0,0,0,$month,1,$year);
 	}
-}
-
-
-$basetime = mktime(12, 0, 0, 6, 11 + $weekstarts, 2000);
-$jourssemaines = array();
-
-for ($i = 0; $i < 7; $i++)
-{
-	$show = $basetime + ($i * 24 * 60 * 60);
-	$jourssemaines[] = utf8_strftime('%A',$show);
-}
-
-if (Settings::get("show_feries") == 1){ // on n'affiche ce choix que si les jours fériés sont définis
-    // définir les jours fériés
-    $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_feries";
-    $ans = grr_sql_query($req);
-    $feries = array();
-    foreach($ans as $val){
-		$feries[] = $val['DAY'];
-	}
-    $d['Cocheferies'] = "";
-    foreach ($feries as &$value) {
-        $d['Cocheferies'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
-    }
-    unset($feries);
-}
-if (Settings::get("show_holidays") == 1){ // on n'affiche ce choix que si les vacances sont définis
-    // définir les vacances
-    $req = "SELECT * FROM ".TABLE_PREFIX."_calendrier_vacances";
-    $ans = grr_sql_query($req);
-    $vacances = array();
-    foreach($ans as $val){
-		$vacances[] = $val['DAY'];
-	}
-    $d['CocheVacances'] = "";
-    foreach ($vacances as &$value) {
-        $d['CocheVacances'] .= "setCheckboxesGrrName(document.getElementById('formulaire'), true, '{$value}'); ";
-    }
-    unset($vacances);
-}
-
-
-$debligne = 1;
-$month = date("m",$begin_bookings);
-$year = date("Y", $begin_bookings);
-$inc = 0;
-$trad['dCalendrier'] = "";
-$n = $begin_bookings;
-
-while ($n <= $end_bookings)
-{
-	if ($debligne == 1)
-	{
-		$trad['dCalendrier'] .= "<tr>\n";
-		$inc = 0;
-		$debligne = 0;
-	}
-	$inc++;
-	$trad['dCalendrier'] .= "<td>\n";
-	$trad['dCalendrier'] .= cal($month, $year, 1);
-	$trad['dCalendrier'] .= "</td>";
-	if ($inc == 3)
-	{
-		$trad['dCalendrier'] .= "</tr>";
-		$debligne = 1;
-	}
-	$month++;
-	if ($month == 13)
-	{
-		$year++;
-		$month = 1;
-	}
-	$n = mktime(0,0,0,$month,1,$year);
-}
-if ($inc < 3)
-{
-	$k=$inc;
-	while ($k < 3)
-	{
-		$trad['dCalendrier'] .= "<td> </td>\n";
-		$k++;
-	}
-	// while
-	$trad['dCalendrier'] .= "</tr>";
-}
 
 	echo $twig->render('admin_calend_ignore.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'jourssemaines' => $jourssemaines));
 ?>
