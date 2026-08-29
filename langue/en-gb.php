@@ -234,6 +234,7 @@ $vocab["any_day"] = " any day";
 $vocab["archive_not_deleted"] = "Installation successful, however archive not deleted. This error can be ignored. ";
 $vocab["archiver"] = "Archive";
 $vocab["areas"] = "Areas: ";
+$vocab["attention"] = "Attention";
 $vocab["attention_mail_automatique_desactive"] = "ATTENTION: Automatic email sending is currently disabled. To enable it, go to the general configuration panel.";
 $vocab["attention_mail_desactive"] = "ATTENTION: The mail sending server is currently disabled. Configure";$vocab["aucun_utilisateur"] = "No user has some privileges";
 $vocab["aucun_utilisateur_reservant"] = "No unprivileged user can book.";
@@ -822,7 +823,7 @@ $vocab["lemon_SSO_explain"] = "If you have a Lemonldap environment, you can acti
 $vocab["les_administrateurs_restreints"] = "only restricted administrators";
 $vocab["les_gestionnaires_de_la_ressource"] = "resource managers";
 $vocab["les_journees_cochees_sont_ignorees"] = " The ticked days correspond to days during which it is not possible to reserve. With regard to the reservations with periodicity, these days are ignored during the validation of the reservation.";
-$vocab["les_journees_cochees_sont_ignorees_warning"] = "Caution : If reservations were already saved on the ticked days, these will be automatically and irreparably deleted. Furthermore, the persons concerned by the deletions will not be warned by email.";
+$vocab["les_journees_cochees_sont_ignorees_warning"] = "If reservations were already saved on the ticked days, these will be automatically and irreparably deleted. Furthermore, the persons concerned by the deletions will not be warned by email.";
 $vocab["les_journees_cochees_sont_valides"] = " The ticked days correspond to the days according to which we want to create a calendar of \"cycle days\" depending on the following parameters (modifiable in the first tab of this page)";
 $vocab["les_jours_feries"] = " public holidays";
 $vocab["les_vacances"] = " school holidays";

@@ -13,7 +13,7 @@
 				<div class="card-header">
 					<p class="text-muted mb-3">{{ trad.les_journees_cochees_sont_ignorees |raw }}</p>
 
-					{{ msgSyst.messageAlerte('', trad.les_journees_cochees_sont_ignorees_warning) }}
+					{{ msgSyst.messageAlerte(trad.attention, trad.les_journees_cochees_sont_ignorees_warning) }}
 
 	
 						{% for jour in jourssemaines %}
