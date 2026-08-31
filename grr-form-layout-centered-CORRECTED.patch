@@ -1,0 +1,175 @@
+diff --git a/admin/controleurs/admin_config6.php b/admin/controleurs/admin_config6.php
+index abc1234..def5678 100644
+--- a/admin/controleurs/admin_config6.php
++++ b/admin/controleurs/admin_config6.php
+@@ -325,6 +325,16 @@ if (isset($_POST['allow_pdf'])) {
+         $msg .= "Erreur lors de l'enregistrement de allow_pdf !<br />";
+     }
+ }
++
++// ============================================
++// Formulaire de réservation - Layout
++// ============================================
++
++// Option : formulaire centré et empilé
++if (isset($_POST['form_layout_centered'])) {
++    if (!Settings::set('form_layout_centered', $_POST['form_layout_centered'])) {
++        $msg .= "Erreur lors de l'enregistrement de form_layout_centered !<br />";
++    }
++}
+ 
+ /** Affichage de la page de connexion **/
+     // Template page login
+
+diff --git a/admin/templates/admin_config6.twig b/admin/templates/admin_config6.twig
+index zzz0000..zzz1111 100644
+--- a/admin/templates/admin_config6.twig
++++ b/admin/templates/admin_config6.twig
+@@ -319,11 +319,42 @@
+ 
+ 		<section id="formulaire_reservation">
+ 			<h4 class="page-header">{{ trad.formulaire_reservation }}</h4>
++			
++			<!-- Hauteur max liste ressources -->
+ 			{{ form.input('longueur_liste_ressources_max', trad.longueur_liste_ressources, settings.longueur_liste_ressources_max, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
++			
++			<hr>
++			
++			<!-- Layout du formulaire -->
++			<div class="form-group row col-sm-12">
++				<label class="col col-sm-6"><strong>Affichage du formulaire</strong></label>
++				<div class="col col-sm-6">
++					<div class="form-check">
++						<input type="radio" name="form_layout_centered" value="0" id="form_layout_standard" class="form-check-input" 
++							{% if settings.form_layout_centered == '0' %}checked{% endif %}>
++						<label class="form-check-label" for="form_layout_standard">
++							Layout Bootstrap standard (2 colonnes côte à côte)
++						</label>
++					</div>
++					<div class="form-check mt-2">
++						<input type="radio" name="form_layout_centered" value="1" id="form_layout_centered" class="form-check-input"
++							{% if settings.form_layout_centered == '1' %}checked{% endif %}>
++						<label class="form-check-label" for="form_layout_centered">
++							Formulaire centré et empilé verticalement (moderne)
++						</label>
++					</div>
++				</div>
++			</div>
++			
++			<p class="text-muted small" style="margin-left: 0; padding: 0 15px;">
++				<i class="fa fa-info-circle"></i> Le layout centré offre une meilleure expérience utilisateur sur mobile et rend l'interface plus moderne.
++			</p>
++			
+ 			<br>
+ 		</section>
+
++diff --git a/reservation/templates/editentree.twig b/reservation/templates/editentree.twig
++index aaa1111..aaa2222 100644
++--- a/reservation/templates/editentree.twig
+++++ b/reservation/templates/editentree.twig
++@@ -285,7 +285,7 @@
++ 		</div>
++ 	
++ 
++-	<div class="row2">
+++	<div class="row2{% if settings.form_layout_centered == '1' %} form-layout-centered{% endif %}">
++ 		<!-- Colonne de Gauche : Données de la réservation -->
++ 		<div class="col col-sm-6 col-xs-12">
++ 
+
+diff --git a/themes/default/css/style.css b/themes/default/css/style.css
+index zzz0000..zzz1111 100644
+--- a/themes/default/css/style.css
++++ b/themes/default/css/style.css
+@@ -6265,3 +6265,54 @@ td.quota-atteint > a.lienCellule:hover{
+   color:#000000 !important;
+ }
+ 
++/* ============================================
++   FORMULAIRE RÉSERVATION - LAYOUT OPTIONS
++   Gestion du layout centré et empilé
++   Avec centrage du h2
++   ============================================ */
++
++/* Option : Formulaire centré et empilé verticalement */
++.row2.form-layout-centered {
++    display: flex;
++    flex-direction: column-reverse;
++    max-width: 700px;
++    margin: 0 auto;
++    padding: 0 15px;
++}
++
++.row2.form-layout-centered > .col,
++.row2.form-layout-centered > .col-sm-6 {
++    width: 100%;
++    margin-bottom: 30px;
++}
++
++.row2.form-layout-centered > .col:last-child {
++    margin-bottom: 0;
++}
++
++/* ============================================
++   CENTRER LE H2 DU FORMULAIRE
++   Solutions pour différentes structures
++   ============================================ */
++
++/* Solution 1 : h2 avant row2 (cas courant) */
++h2:has(+ .row2.form-layout-centered) {
++    text-align: center;
++}
++
++/* Solution 2 : h2 juste avant row2 (fallback) */
++.row2.form-layout-centered ~ h2 {
++    text-align: center;
++}
++
++/* Solution 3 : h2 dans le même conteneur */
++.form-layout-centered-container h2 {
++    text-align: center;
++}
++
++/* Solution 4 : Tous les h2 au sein d'un élément avec classe form-layout-centered */
++.form-layout-centered h2 {
++    text-align: center;
++}
++
++/* Solution 5 : h2 + row2 dans une section */
++section:has(.row2.form-layout-centered) > h2 {
++    text-align: center;
++}
++
++/* Responsive : très petits écrans */
++@media (max-width: 576px) {
++    .row2.form-layout-centered {
++        max-width: 100%;
++        padding: 0 10px;
++    }
++}
++
++/* Responsive : tablettes */
++@media (min-width: 768px) and (max-width: 991px) {
++    .row2.form-layout-centered {
++        max-width: 800px;
++    }
++}
+ 
+\ No newline at end of file
+
+diff --git a/_sql/init_setting.sql b/_sql/init_setting.sql
+new file mode 100644
+index 0000000..1234567
+--- /dev/null
++++ b/_sql/init_setting.sql
+@@ -0,0 +1,8 @@
++-- Script SQL pour ajouter le paramètre form_layout_centered
++
++INSERT INTO `grr_setting` (`key`, `value`, `description`) 
++VALUES (
++    'form_layout_centered', 
++    '0', 
++    'Affichage du formulaire de réservation : 0=standard (2 colonnes), 1=centré et empilé (moderne)'
++)
++ON DUPLICATE KEY UPDATE `description` = 'Affichage du formulaire de réservation : 0=standard (2 colonnes), 1=centré et empilé (moderne)';
+\ No newline at end of file
