@@ -50,14 +50,14 @@ index zzz0000..zzz1111 100644
 +						<input type="radio" name="form_layout_centered" value="1" id="form_layout_centered" class="form-check-input"
 +							{% if settings.form_layout_centered == '1' %}checked{% endif %}>
 +						<label class="form-check-label" for="form_layout_centered">
-+							Formulaire centré et empilé verticalement (moderne)
++							Formulaire centré et empilé verticalement
 +						</label>
 +					</div>
 +				</div>
 +			</div>
 +			
 +			<p class="text-muted small" style="margin-left: 0; padding: 0 15px;">
-+				<i class="fa fa-info-circle"></i> Le layout centré offre une meilleure expérience utilisateur sur mobile et rend l'interface plus moderne.
++				<i class="fa fa-info-circle"></i> Le layout centré offre une meilleure expérience utilisateur sur mobile et rend l'interface plus actuelle.
 +			</p>
 +			
  			<br>
