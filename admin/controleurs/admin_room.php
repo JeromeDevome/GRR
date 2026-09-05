@@ -17,240 +17,169 @@
 
 $grr_script_name = "admin_room.php";
 
-$trad = $vocab;
-
-$id_area = isset($_POST["id_area"]) ? $_POST["id_area"] : (isset($_GET["id_area"]) ? $_GET["id_area"] : NULL);
-if ((isset($id_area))&&($id_area != -1))
-{
-	settype($id_area,"integer");
-	$id_site = mrbsGetAreaSite($id_area);
-}
-if (!isset($id_site))
-	$id_site = isset($_POST['id_site']) ? $_POST['id_site'] : (isset($_GET['id_site']) ? $_GET['id_site'] : -1);
-settype($id_site,"integer");
-
 SecuAccess::CheckAccess(4, $back);
 
+// les variables attendues et leur type
+$form_vars = array(
+    'id_site' => 'int',
+	'id_area' => 'int',
+	'ok' => 'int',
+	'msg' => 'string',
+	'p_module_multisite' => 'int'
+);
+// récupération des valeurs des variables passées en paramètres
+foreach($form_vars as $var => $var_type)
+    $$var = SecuChaine::GetFormVarSecure($var, $var_type);
+
+
+if ((isset($id_area))&&($id_area > 0))
+	$id_site = mrbsGetAreaSite($id_area);
+
+
+$trad['TitrePage']	= $trad['admin_room'];
+
+
 // Afffichage d'un éventuel message
-if (isset($_GET['msg']))
+if (isset($msg) && $msg != "")
 {
-	$d['enregistrement'] = $_GET['ok'];
-	$d['msgToast'] = $_GET['msg'];
+	$d['enregistrement'] = $ok;
+	$d['msgToast'] = $msg;
 }
 
-// Met à jour dans la BD "multisite"
-if (isset($_GET['module_multisite']))
-{
-	if (Settings::get("module_multisite") == 1)
-		$activeModuleInt = 0;
-	else
-		$activeModuleInt = 1;
-
-	if (!Settings::set("module_multisite", $activeModuleInt))
-		echo "Erreur lors de l'enregistrement de module_multisite ! <br />";
-	else
+/** Actions **/
+	/* Activation / désactivation du module multisite */
+	if ($p_module_multisite == 1)
 	{
-		if ($activeModuleInt == 1)
+		if (Settings::get("module_multisite") == 1)
+			$activeModuleInt = 0;
+		else
+			$activeModuleInt = 1;
+
+		if (!Settings::set("module_multisite", $activeModuleInt))
+			echo "Erreur lors de l'enregistrement de module_multisite ! <br />";
+		else
 		{
-			// On crée un site par défaut s'il n'en existe pas
-			$id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site");
-			if ($id_site == -1)
+			if ($activeModuleInt == 1)
 			{
-				$sql="INSERT INTO ".TABLE_PREFIX."_site SET sitecode='1', sitename='site par defaut'";
-				if (grr_sql_command($sql) < 0)
-					fatal_error(0,'<p>'.grr_sql_error().'</p>');
-				$id_site = mysqli_insert_id($GLOBALS['db_c']);
-			}
-			// On affecte tous les domaines à un site.
-			$sql = "SELECT id FROM ".TABLE_PREFIX."_area";
-			$res = grr_sql_query($sql);
-			if ($res)
-			{
-				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+				// On crée un site par défaut s'il n'en existe pas
+				$id_site = grr_sql_query1("SELECT min(id) FROM ".TABLE_PREFIX."_site");
+				if ($id_site == -1)
 				{
-					// l'area est-elle déjà affectée à un site ?
-					$test_site = grr_sql_query1("SELECT count(id_area) FROM ".TABLE_PREFIX."_j_site_area WHERE id_area='".$row[0]."'");
-					if ($test_site == 0)
+					$sql="INSERT INTO ".TABLE_PREFIX."_site SET sitecode='1', sitename='site par defaut'";
+					if (grr_sql_command($sql) < 0)
+						fatal_error(0,'<p>'.grr_sql_error().'</p>');
+					$id_site = mysqli_insert_id($GLOBALS['db_c']);
+				}
+				// On affecte tous les domaines à un site.
+				$sql = "SELECT id FROM ".TABLE_PREFIX."_area";
+				$res = grr_sql_query($sql);
+				if ($res)
+				{
+					for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 					{
-						$sql="INSERT INTO ".TABLE_PREFIX."_j_site_area SET id_site='".$id_site."', id_area='".$row[0]."'";
-						if (grr_sql_command($sql) < 0)
-							fatal_error(0,'<p>'.grr_sql_error().'</p>');
+						// l'area est-elle déjà affectée à un site ?
+						$test_site = grr_sql_query1("SELECT count(id_area) FROM ".TABLE_PREFIX."_j_site_area WHERE id_area='".$row[0]."'");
+						if ($test_site == 0)
+						{
+							$sql="INSERT INTO ".TABLE_PREFIX."_j_site_area SET id_site='".$id_site."', id_area='".$row[0]."'";
+							if (grr_sql_command($sql) < 0)
+								fatal_error(0,'<p>'.grr_sql_error().'</p>');
+						}
 					}
 				}
 			}
 		}
 	}
-}
 
-// If area is set but area name is not known, get the name.
-if ((isset($id_area)) && ($id_area != -1))
-{
-	if (empty($area_name))
+
+/** Affichage de la page **/
+
+	$sites		= array();
+	$domaines	= array();
+	$ressources = array();
+
+	// Liste des sites (si multisite activé)
+	if (Settings::get("module_multisite") == 1)
 	{
-		$res = grr_sql_query("SELECT area_name, access FROM ".TABLE_PREFIX."_area WHERE id=$id_area");
-		if (!$res)
-			fatal_error(0, grr_sql_error());
-		if (grr_sql_count($res) == 1)
+		if (SecuAccess::UserLevel(getUserName(),-1,'area') >= 6)
+			$sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site ORDER BY sitename ASC";
+		else
+		{
+			// Administrateur de sites ou de domaines
+			$sql = "SELECT DISTINCT id,sitecode,sitename FROM ".TABLE_PREFIX."_site s ";
+			// l'utilisateur est-il administrateur d'un site ?
+			$test1 = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='".getUserName()."'");
+			if ($test1 > 0)
+				$sql .=", ".TABLE_PREFIX."_j_useradmin_site u";
+			// l'utilisateur est-il administrateur d'un domaine ?
+			$test2 = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='".getUserName()."'");
+			if ($test2 > 0)
+				$sql .=", ".TABLE_PREFIX."_j_useradmin_area a, ".TABLE_PREFIX."_j_site_area j";
+			$sql .=" WHERE (";
+				if ($test1 > 0)
+					$sql .= "(s.id=u.id_site AND u.login='".getUserName()."') ";
+				if (($test1 > 0) && ($test2 > 0))
+					$sql .= " or ";
+				if ($test2 > 0)
+					$sql .= "(j.id_site=s.id AND j.id_area=a.id_area AND a.login='".getUserName()."')";
+				$sql .= ") ORDER BY s.sitename ASC";
+		}
+		$res = grr_sql_query($sql);
+		$nb_site = grr_sql_count($res);
+		$d['nbSite'] = $nb_site;
+		
+		if ($nb_site > 1)
+		{
+			for ($enr = 0; ($row = grr_sql_row($res, $enr)); $enr++) {
+				$sites[] = array('idsite' => $row[0], 'nomsite' => $row[2]);
+			}
+			grr_sql_free($res);
+		}
+		else // un seul site
 		{
 			$row = grr_sql_row($res, 0);
-			$area_name = $row[0];
+			$id_site = $row[0];
 		}
-		else
-			$area_name='';
-		grr_sql_free($res);
 	}
+
+
+	$d['idSite'] = $id_site;
+	$d['idDomaine'] = $id_area;
+
+	// Seul l'administrateur a le droit d'ajouter des domaines
+	if ((SecuAccess::UserLevel(getUserName(),-1,'area') >= 5) && $id_area != -1)
+		$d["ajoutDomaine"] = 1;
+
+	// Liste des domaines du site selectionné
+	if ((Settings::get("module_multisite") == 1) && ($id_site > 0))
+		$sql="SELECT ".TABLE_PREFIX."_area.id,".TABLE_PREFIX."_area.area_name,".TABLE_PREFIX."_area.access
+			FROM ".TABLE_PREFIX."_j_site_area,".TABLE_PREFIX."_area
+			WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$id_site."'
+			AND ".TABLE_PREFIX."_area.id=".TABLE_PREFIX."_j_site_area.id_area
+			ORDER BY order_display";
 	else
-		$area_name = SecuChaine::Unslashes($area_name);
-}
-else
-	$area_name='';
+		$sql="select id, area_name, access from ".TABLE_PREFIX."_area order by order_display";
 
-// Affichage du contenu de la page
-get_vocab_admin("admin_room");
-get_vocab_admin('sites');
-get_vocab_admin('site');
-get_vocab_admin('choose_a_site');
+	$res = grr_sql_query($sql);
 
-get_vocab_admin('areas');
-get_vocab_admin('rooms');
+	if (!$res)
+		fatal_error(0, grr_sql_error());
 
-get_vocab_admin('admin_access_area');
-get_vocab_admin('privileges');
-
-get_vocab_admin('noarea');
-get_vocab_admin("OU");
-get_vocab_admin('show_all_rooms');
-get_vocab_admin('fiche_ressource');
-
-$sites = array();
-
-if (Settings::get("module_multisite") == 1)
-{
-	if (SecuAccess::UserLevel(getUserName(),-1,'area') >= 6)
-		$sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site ORDER BY sitename ASC";
-	else
+	if (grr_sql_count($res) != 0)
 	{
-		// Administrateur de sites ou de domaines
-		$sql = "SELECT DISTINCT id,sitecode,sitename FROM ".TABLE_PREFIX."_site s ";
-		// l'utilisateur est-il administrateur d'un site ?
-		$test1 = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='".getUserName()."'");
-		if ($test1 > 0)
-			$sql .=", ".TABLE_PREFIX."_j_useradmin_site u";
-		// l'utilisateur est-il administrateur d'un domaine ?
-		$test2 = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='".getUserName()."'");
-		if ($test2 > 0)
-			$sql .=", ".TABLE_PREFIX."_j_useradmin_area a, ".TABLE_PREFIX."_j_site_area j";
-		$sql .=" WHERE (";
-			if ($test1 > 0)
-				$sql .= "(s.id=u.id_site AND u.login='".getUserName()."') ";
-			if (($test1 > 0) && ($test2 > 0))
-				$sql .= " or ";
-			if ($test2 > 0)
-				$sql .= "(j.id_site=s.id AND j.id_area=a.id_area AND a.login='".getUserName()."')";
-			$sql .= ") ORDER BY s.sitename ASC";
-    }
-    $res = grr_sql_query($sql);
-    $nb_site = grr_sql_count($res);
-	$trad['dNbSite'] = $nb_site;
-	
-    if ($nb_site > 1)
-    {
-		for ($enr = 0; ($row = grr_sql_row($res, $enr)); $enr++) {
-			$sites[] = array('idsite' => $row[0], 'nomsite' => $row[2]);
+		// on détermine les domaines accessibles à l'utilisateur -> rangés dans $tareas
+		$tareas = array();
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
+			if ((SecuAccess::UserLevel(getUserName(),$row[0],'area') >= 4))
+				$tareas[] = $row ;
 		}
-		grr_sql_free($res);
-    }
-    else // un seul site
-    {
-        $row = grr_sql_row($res, 0);
-		$trad['dNomSite'] =  $row[2];
-		$id_site = $row[0];
-    }
-}
-
-$trad['dIdSite'] = $id_site;
-$trad['dIdDomaine'] = $id_area;
-
-$domaines = array();
-$ressources = array();
-
-if ((isset($id_area)) && ($id_area != -1)) 
-	$trad['dRessourceDe'] =  get_vocab('in') . " " .htmlspecialchars($area_name);
-
-// Seul l'administrateur a le droit d'ajouter des domaines
-if ((SecuAccess::UserLevel(getUserName(),-1,'area') >= 5) && $id_area != -1)
-	$trad['dAjoutDomaine'] = "<a href=\"?p=admin_edit_domaine&id_site=".$id_site."&amp;add_area=yes\">".get_vocab('addarea')."</a>";
-
-if ((isset($id_area))&&($id_area != -1))
-	$trad['dAjoutRessource'] = "<a href=\"?p=admin_edit_room&id_site=".$id_site."&amp;area_id=$id_area\">".get_vocab('addroom')."</a>";
-
-// A partir de ce niveau, on sait qu'il existe un site
-if ((Settings::get("module_multisite") == 1) && ($id_site > 0))
-	$sql="SELECT ".TABLE_PREFIX."_area.id,".TABLE_PREFIX."_area.area_name,".TABLE_PREFIX."_area.access
-		FROM ".TABLE_PREFIX."_j_site_area,".TABLE_PREFIX."_area
-		WHERE ".TABLE_PREFIX."_j_site_area.id_site='".$id_site."'
-		AND ".TABLE_PREFIX."_area.id=".TABLE_PREFIX."_j_site_area.id_area
-		ORDER BY order_display";
-else
-	$sql="select id, area_name, access from ".TABLE_PREFIX."_area order by order_display";
-
-$res = grr_sql_query($sql);
-
-if (!$res)
-	fatal_error(0, grr_sql_error());
-
-if (grr_sql_count($res) != 0)
-{
-	// on détermine les domaines accessibles à l'utilisateur -> rangés dans $tareas
-	$tareas = array();
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-		if ((SecuAccess::UserLevel(getUserName(),$row[0],'area') >= 4))
-			$tareas[] = $row ;
-	}
-
-	// CAS 1 : cas où le domaine n'est pas choisi ou UN domaine est sélectionné
-	if (!isset($id_area) || $id_area != -1){
-		$trad['dCasAfficher'] = 1;
-
-		foreach($tareas as $row)
-		{
-			$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => SecuAccess::UserLevel(getUserName(),$row[0],'area'));
-		}
-
-		// RESSOURCES
-		if (isset($id_area)) // cas où UN domaine est choisi, on affiche toutes les ressources de ce domaine
-		{
-			$sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$id_area ";
-			// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-			$tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
-			foreach ($tab_rooms_noaccess as $key){
-				$sql .= " and id != $key ";
-			}
-			$sql .= "order by order_display, room_name";
-			$res = grr_sql_query($sql);
-			if (!$res)
-				fatal_error(0, grr_sql_error());
-			if (grr_sql_count($res) != 0){
-			   // echo "<table class=\"table\">";
-				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-					$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5], 'iddomaine' => $row[6]);
-				}
-			}  
-			else 
-				$trad['dNo_rooms_for_area'] = get_vocab("no_rooms_for_area");
-		}
-	}
-	// CAS 2 : cas où il faut afficher toutes les ressources de tous les domaines
-	elseif ($id_area == -1)
-	{
-		$trad['dCasAfficher'] = 2;
 
 		foreach($tareas as $row)
 		{
 			$domaines[] = array('id' => $row[0], 'nom' => $row[1], 'acces' => $row[2], 'droitsuser' => SecuAccess::UserLevel(getUserName(),$row[0],'area'));
 
 			// RESSOURCES
-			$sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id from ".TABLE_PREFIX."_room where area_id=$row[0] ";
+			$sql = "SELECT id, room_name, description, capacity, max_booking, statut_room, area_id, who_can_book, confidentiel_resa from ".TABLE_PREFIX."_room where area_id=$row[0] ";
 			// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
 			$tab_rooms_noaccess = SecuAccess::UserResource(getUserName(), 'all');
 			foreach ($tab_rooms_noaccess as $key){
@@ -262,17 +191,15 @@ if (grr_sql_count($res) != 0)
 				fatal_error(0, grr_sql_error());
 			if (grr_sql_count($res) != 0){
 				for ($i = 0; ($row = grr_sql_row($res, $i)); $i++){
-					$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5], 'iddomaine' => $row[6]);
+					$ressources[] = array('id' => $row[0], 'nom' => $row[1], 'description' => $row[2], 'capacite' => $row[3], 'maxbooking' => $row[4], 'statut' => $row[5], 'iddomaine' => $row[6], 'resteint' => $row[7], 'confidentiel_resa' => $row[8]);
 				}
-			}  
-			else 
-				$trad['dNo_rooms_for_area'] = get_vocab("no_rooms_for_area");
+			}
 		}
-	} // Fin CAS 2
-}
-if (!Settings::load())
-	die("Erreur chargement settings");
-$AllSettings = Settings::getAll();
+	}
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites, 'domaines' => $domaines, 'ressources' => $ressources));
+	if (!Settings::load())
+		die("Erreur chargement settings");
+	$AllSettings = Settings::getAll();
+
+	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites, 'domaines' => $domaines, 'ressources' => $ressources));
 ?>
