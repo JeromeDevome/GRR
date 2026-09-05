@@ -93,17 +93,23 @@ class SecuChaine {
     */
     public static function GetFormVarSecure($nom, $type='', $default=NULL){
         $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE[$nom])? $_COOKIE[$nom] : $default));
-        
+
         if (isset($valeur) && $valeur !== '') {
             switch($type) {
                 case 'int':
                     $valeur = SecuChaine::Numeric($valeur);
+                    if ($valeur === '')
+                        $valeur = $default;
                     break;
                 case 'alphanumeric':
                     $valeur = SecuChaine::Alphanumeric($valeur);
+                    if ($valeur === '')
+                        $valeur = $default;
                     break;
                 case 'string':
                     $valeur = SecuChaine::CleanInput($valeur);
+                    if ($valeur === '')
+                        $valeur = $default;
                     break;
                 case 'email':
                     $valeur = trim($valeur);
@@ -121,6 +127,8 @@ class SecuChaine {
                     break;
                 case 'color':
                     $valeur = SecuChaine::ValideCouleur($valeur);
+                    if ($valeur === '')
+                        $valeur = $default;
                     break;
                 default:
                     // Pour les types PHP standards (int, string, etc.)
