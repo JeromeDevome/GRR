@@ -6,46 +6,41 @@
 	<div class="row">
 		<div class="col col-md-12">
 
-			{% if trad.dMesgSysteme %}
-				{{ msgSyst.messageAlerte('', trad.dMesgSysteme) }}
+			{% if d.mesgSysteme %}
+				{{ msgSyst.messageAlerte('', d.mesgSysteme) }}
 			{% endif %}
 
-			<div class="box">
-				<div class="box-header">
-					<h3 class="box-title">{{ trad.admin_site }}</h3> <a class="btn pull-right bg-green"href="?p=admin_site&action=create&id=0">{{ trad.display_add_site }}</a>
-				</div>
-				<!-- /.box-header -->
-				<div class="box-body no-padding">
+			<div class="card">
+				<div class="card-header">
 					<p>{{ trad.admin_site_explications }}</p>
+					<a class="btn btn-md bg-success" href="?p=admin_site&amp;p_action=1&amp;p_idsite=0"><i class="fa fa-add"></i> {{ trad.display_add_site }}</a>
+				</div>
+
+				<div class="card-body no-padding">
+					
 
 					<table class="table table-striped">
 						<tr>
-						  
+						  <th style="width: 10px"></th>
 						  <th>{{ trad.site_code }}</th>
-						  {# <th>TEST</th> #}
-						  {# <th>{{ trad.site_access }}</th> #}
 						  <th>{{ trad.site_name }}</th>
 						  <th>{{ trad.site_cp }}</th>
 						  <th>{{ trad.site_ville }}</th>
-						  <th colspan="2">{{ trad.action }}</th>
+						  <th>{{ trad.action }}</th>
 						</tr>
 						{% for site in sites %}
 							<tr>
+								<td>{% if site.access == 'r' %}<a class="btn btn-primary btn-sm" href="?p=admin_access_site&amp;id_site={{ site.idsite }}" title="{{ trad.admin_access_site }}"><span class="fa fa-lock"></a>{% else %}&nbsp;{% endif %}</td>
 								<td>{{ site.code }}</td>
-								{# <td>{{ site.access }}</td> #}
 								<td>{{ site.nomsite }}</td>
 								<td>{{ site.cp }}</td>
 								<td>{{ site.ville }}</td>
 								<td>
-									<a href="?p=admin_site&action=update&id={{site.idsite}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a>
+									<div class="btn-group btn-group-sm" role="group">
+										<a href="?p=admin_site&amp;p_action=3&amp;p_idsite={{site.idsite}}" class="btn btn-primary" title="{{ trad.edit }}"><i class="icon fa fa-edit"></i></a>
+										<a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{site.nomsite}}" data-idsup="{{ site.idsite }}" title="{{ trad.delete }}" role="button"><i class="icon fa fa-trash"></i></a>
+									</div>
 								</td>
-									
-								<form method="post" id="supSite{{site.idsite}}" action="?p=admin_site">
-									<input type="hidden" name="p" value="admin_site" />
-									<input type="hidden" name="id" value="{{site.idsite}}" />
-									<input type="hidden" name="action" value="delete" />
-									<td><button type="button" class="btn btn-danger btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{site.nomsite}}" data-idsup="{{ site.idsite }}"><i class="icon fa fa-trash"></i></button></td>
-								</form>
 							</tr>
 						{% endfor %}
 					</table>
@@ -57,7 +52,10 @@
 
 	<!-- popup modal -->
 	<div class="modal fade" id="modal-warning" style="display: none;" aria-hidden="true">
-		<form action="?p=admin_site" id="formmodal">
+		<form action="?p=admin_site" method="post" id="formmodal">
+			<input type="hidden" name="p" value="admin_site" />
+			<input type="hidden" name="p_action" value="4" />
+			<input type="hidden" name="p_idsite" id="p_idsite" value="" />
 			<div class="modal-dialog">
 			<div class="modal-content bg-warning">
 				<div class="modal-header">
@@ -71,7 +69,7 @@
 				</div>
 				<div class="modal-footer justify-content-between">
 					<button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.NO}}</button>
-					<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.YES}}</button>
+					<button type="submit" id="liensup" class="btn btn-danger">{{trad.YES}}</button>
 				</div>
 			</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
@@ -92,23 +90,7 @@
 		    var modal = $(this)
 		    modal.find('.modalidsup').text(idasup)
 			modal.find('.modaltexte').text(texte)
-		})
-
-		$(function(){
-			$('#formmodal').submit(function(e) {
-			  e.preventDefault()
-			  var $form = $(this)
-			  var v=document.getElementById('modalidsup').innerHTML
-			  $.post($form.attr('action'), $form.serialize())
-			  .done(function(data) {
-				$('#html').html(data);
-				$('#modal-warning').modal('hide');
-				document.getElementById("supSite"+v).submit(); 
-			  })
-			  .fail(function() {
-				alert('Une erreur est survenue : GRRJS')
-			  })
-			})
+			modal.find('#p_idsite').val(idasup)
 		})
 	</script>
 {% endblock %}

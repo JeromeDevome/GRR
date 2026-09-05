@@ -14,347 +14,59 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  */
+$grr_script_name = 'admin_site.php';
 
-
-/**
- * Compte le nombre de sites définis
- * @return integer number of rows
- */
-function count_sites()
+// Accès à la page
+if (SecuAccess::UserLevel(getUserName(), -1, 'site') < 4)
 {
-	$sql = "SELECT COUNT(*)
-	FROM ".TABLE_PREFIX."_site";
-	$res = grr_sql_query($sql);
-	if ($res)
-	{
-		$sites = grr_sql_row($res,0);
-		if (is_array($sites))
-			return $sites[0];
-		else
-			$trad['dMesgSysteme'] = "Une erreur est survenue pendant le comptage des sites.";
-	}
-	else
-		$trad['dMesgSysteme'] = "Une erreur est survenue pendant la préparation de la requète de comptage des sites.";
+	showAccessDenied($back);
+	exit();
 }
 
+include_once('modeles/site.class.php');
 
-function create_site($id_site)
+// les variables attendues et leur type
+$form_vars = array(
+    'p_idsite' => 'int',
+	'p_action' => 'int', // 1 : create, 2 : read, 3 : update, 4 : delete, 5 : check_right
+	'p_submit' => 'int',
+);
+// récupération des valeurs des variables passées en paramètres
+foreach($form_vars as $var => $var_type)
+    $$var = SecuChaine::GetFormVarSecure($var, $var_type);
+
+$trad['TitrePage']	= $trad['admin_site'];
+$d['action']		= $p_action;
+$d['idsite']		= $p_idsite;
+
+
+switch($p_action)
 {
-	global $twig, $menuAdminT, $menuAdminTN2, $d, $trad, $AllSettings;
-
-	$trad['dAction'] = 'create';
-
-	if ((isset($_POST['back']) || isset($_GET['back'])))
-	{
-		// On affiche le tableau des sites
-		read_sites();
-		exit();
-	}
-	// Initialisation des variables du formulaire
-	if (!isset($id_site))
-		$site['id_site'] = isset($_POST['id']) ? $_POST['id'] :  NULL;
-	if (!isset($sitecode))
-		$sitecode = isset($_POST['sitecode']) ? $_POST['sitecode'] : NULL;
-	if (!isset($access))
-		$access = isset($_POST["access"]) ? $_POST["access"] : NULL;
-	if (!isset($sitename))
-		$sitename = isset($_POST['sitename']) ? $_POST['sitename'] :  NULL;
-	if (!isset($adresse_ligne1))
-		$adresse_ligne1 = isset($_POST['adresse_ligne1']) ? $_POST['adresse_ligne1'] :  NULL;
-	if (!isset($adresse_ligne2))
-		$adresse_ligne2 = isset($_POST['adresse_ligne2']) ? $_POST['adresse_ligne2'] :  NULL;
-	if (!isset($adresse_ligne3))
-		$adresse_ligne3 = isset($_POST['adresse_ligne3']) ? $_POST['adresse_ligne3'] :  NULL;
-	if (!isset($cp))
-		$cp = isset($_POST['cp']) ? $_POST['cp'] :  NULL;
-	if (!isset($ville))
-		$ville = isset($_POST['ville']) ? $_POST['ville'] :  NULL;
-	if (!isset($pays))
-		$pays = isset($_POST['pays']) ? $_POST['pays'] :  NULL;
-	if (!isset($tel))
-		$tel = isset($_POST['tel']) ? $_POST['tel'] :  NULL;
-	if (!isset($fax))
-		$fax = isset($_POST['fax']) ? $_POST['fax'] :  NULL;
-	// On affiche le formulaire de saisie quand l'appel de la fonction ne provient pas de la validation de ce même formulaire
-	if ((! (isset($_POST['save']) || isset($_GET['save']))) && ($id_site==0))
-	{
-		get_vocab_admin('addsite');
-		get_vocab_admin('required');
-		get_vocab_admin('site_code');
-		get_vocab_admin('site_access');
-		get_vocab_admin('site_name');
-		get_vocab_admin('site_adresse_ligne1');
-		get_vocab_admin('site_adresse_ligne2');
-		get_vocab_admin('site_adresse_ligne3');
-		get_vocab_admin('site_cp');
-		get_vocab_admin('site_ville');
-		get_vocab_admin('site_pays');
-		get_vocab_admin('site_tel');
-		get_vocab_admin('site_fax');
-
-		get_vocab_admin('save');
-		get_vocab_admin('back');
-
-		echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
-	}
-	else
-	{
-		// On vérifie que le code et le nom du site ont été renseignés
-		if ($sitecode == '' || $sitecode == NULL || $sitename == '' || $sitename == NULL)
-		{
-			$_POST['save'] = 'no';
-			$_GET['save'] = 'no';
-			echo '<span class="avertissement">'.get_vocab('required').'</span>';
-		}
-		if ($access)
-			$access='r';
-		else
-			$access='a';
-		// Sauvegarde du record
-		if ((isset($_POST['save']) && ($_POST['save'] != 'no')) || ((isset($_GET['save'])) && ($_GET['save'] != 'no')))
-		{
-			$sql="INSERT INTO ".TABLE_PREFIX."_site
-			SET sitecode='".strtoupper(SecuChaine::ProtectDataSql($sitecode))."',
-			sitename='".SecuChaine::ProtectDataSql($sitename)."',
-			access='".SecuChaine::ProtectDataSql($access)."',
-			adresse_ligne1='".SecuChaine::ProtectDataSql($adresse_ligne1)."',
-			adresse_ligne2='".SecuChaine::ProtectDataSql($adresse_ligne2)."',
-			adresse_ligne3='".SecuChaine::ProtectDataSql($adresse_ligne3)."',
-			cp='".SecuChaine::ProtectDataSql($cp)."',
-			ville='".strtoupper(SecuChaine::ProtectDataSql($ville))."',
-			pays='".strtoupper(SecuChaine::ProtectDataSql($pays))."',
-			tel='".SecuChaine::ProtectDataSql($tel)."',
-			fax='".SecuChaine::ProtectDataSql($fax)."'";
-			if (grr_sql_command($sql) < 0)
-				fatal_error(0,'<p>'.grr_sql_error().'</p>');
-			mysqli_insert_id($GLOBALS['db_c']);
-		}
-		// On affiche le tableau des sites
-		read_sites();
-	}
-
-}
-
-
-function read_sites()
-{
-	global $twig, $menuAdminT, $menuAdminTN2, $d, $trad, $AllSettings;
-
-	$sites = array();
-	get_vocab_admin('admin_site');
-	get_vocab_admin('admin_site_explications');
-	get_vocab_admin('display_add_site');
-
-	get_vocab_admin('action');
-	get_vocab_admin('site_code');
-	get_vocab_admin('site_name');
-	get_vocab_admin('site_cp');
-	get_vocab_admin('site_ville');
-
-	get_vocab_admin('supprimer_site');
-	get_vocab_admin('confirm_del');
-	get_vocab_admin('cancel');
-	get_vocab_admin('delete');
-
-	//<a href="admin_site.php?action=delete&amp;id='.$id.'&amp;confirm=yes">' . get_vocab('YES') . '!</a>
-
-
-	if (count_sites() > 0)
-	{
-		$sql = "SELECT id,sitecode,sitename,cp,ville FROM ".TABLE_PREFIX."_site ORDER BY sitename,ville,id";
-		$res = grr_sql_query($sql);
-		if ($res)
-		{
-			for ($i = 0; ($row=grr_sql_row($res,$i));$i++){
-				$sites[] = array('idsite' => $row[0], 'code' => $row[1], 'nomsite' => $row[2], 'cp' => $row[3], 'ville' => $row[4]);
-			}
-		}
-		else
-			$trad['dMesgSysteme'] = 'Une erreur est survenue pendant la préparation de la requète de lecture des sites.';
-	}
-
-	echo $twig->render('admin_site.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites));
-}
-
-
-function update_site($id)
-{
-	global $twig, $menuAdminT, $menuAdminTN2, $d, $trad, $AllSettings;
-
-	if ((isset($_POST['back']) || isset($_GET['back'])))
-	{
-		read_sites();
-		exit();
-	}
-
-	$trad['addsite'] = get_vocab('modifier_site');
-	$trad['dIdSite'] = $id;
-	$trad['dAction'] = 'update';
-	get_vocab_admin('required');
-	get_vocab_admin('site_code');
-	get_vocab_admin('site_access');
-	get_vocab_admin('site_name');
-	get_vocab_admin('site_adresse_ligne1');
-	get_vocab_admin('site_adresse_ligne2');
-	get_vocab_admin('site_adresse_ligne3');
-	get_vocab_admin('site_cp');
-	get_vocab_admin('site_ville');
-	get_vocab_admin('site_pays');
-	get_vocab_admin('site_tel');
-	get_vocab_admin('site_fax');
-
-	get_vocab_admin('save');
-	get_vocab_admin('back');
-	
-	// On affiche le formulaire de saisie quand l'appel de la fonction ne provient pas de la validation de ce même formulaire
-	if (!(isset($_POST['save']) || isset($_GET['save'])))
-	{
-
-		// Initialisation
-		$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_site WHERE id='".$id."'");
-		if (!$res)
-			fatal_error(0,'<p>'.grr_sql_error().'</p>');
-		$row = grr_sql_row_keyed($res, 0);
-		grr_sql_free($res);
-		$site['code'] = $row['sitecode'];
-		$site['access'] = $row['access'];
-		$site['nom'] = $row['sitename'];
-		$site['adresse_ligne1'] = $row['adresse_ligne1'];
-		$site['adresse_ligne2'] = $row['adresse_ligne2'];
-		$site['adresse_ligne3'] = $row['adresse_ligne3'];
-		$site['cp'] = $row['cp'];
-		$site['ville'] = $row['ville'];
-		$site['pays'] = $row['pays'];
-		$site['tel'] = $row['tel'];
-		$site['fax'] = $row['fax'];
-
+	case 1:
+		$trad['SousTitrePage']	= $trad['addsite'];
+		$site = array();
+		Adm_Site::create_site($p_idsite);
 		echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'site' => $site));
-
-	}
-	else // Sinon, il faut valider le formulaire
-	{
-		if (!isset($id))
-			$id = isset($_POST['id']) ? $_POST['id'] :  NULL;
-		if (!isset($sitecode))
-			$sitecode = isset($_POST['sitecode']) ? $_POST['sitecode'] : NULL;
-		if (!isset($acces))
-			$access = isset($_POST['access']) ? $_POST['access'] : NULL;
-		if (!isset($sitename))
-			$sitename = isset($_POST['sitename']) ? $_POST['sitename'] :  NULL;
-		if (!isset($adresse_ligne1))
-			$adresse_ligne1 = isset($_POST['adresse_ligne1']) ? $_POST['adresse_ligne1'] :  NULL;
-		if (!isset($adresse_ligne2))
-			$adresse_ligne2 = isset($_POST['adresse_ligne2']) ? $_POST['adresse_ligne2'] :  NULL;
-		if (!isset($adresse_ligne3))
-			$adresse_ligne3 = isset($_POST['adresse_ligne3']) ? $_POST['adresse_ligne3'] :  NULL;
-		if (!isset($cp))
-			$cp = isset($_POST['cp']) ? $_POST['cp'] :  NULL;
-		if (!isset($ville))
-			$ville = isset($_POST['ville']) ? $_POST['ville'] :  NULL;
-		if (!isset($pays))
-			$pays = isset($_POST['pays']) ? $_POST['pays'] :  NULL;
-		if (!isset($tel))
-			$tel = isset($_POST['tel']) ? $_POST['tel'] :  NULL;
-		if (!isset($fax))
-			$fax = isset($_POST['fax']) ? $_POST['fax'] :  NULL;
-		// On vérifie que le code et le nom du site ont été renseignés
-		if ($sitecode == '' || $sitecode == NULL || $sitename == '' || $sitename==NULL)
-		{
-			$_POST['save'] = 'no';
-			$_GET['save'] = 'no';
-			echo '<span class="avertissement">'.get_vocab('required').'</span>';
-		}
-		if ($access)
-			$access='r';
-		else
-			$access='a';
-
-		// Sauvegarde du record
-		if ((isset($_POST['save']) && ($_POST['save']!='no')) || ((isset($_GET['save'])) && ($_GET['save']!='no')))
-		{
-			$sql = "UPDATE ".TABLE_PREFIX."_site
-			SET sitecode='".strtoupper(SecuChaine::ProtectDataSql($sitecode))."',
-			access='".SecuChaine::ProtectDataSql($access)."',
-			sitename='".SecuChaine::ProtectDataSql($sitename)."',
-			adresse_ligne1='".SecuChaine::ProtectDataSql($adresse_ligne1)."',
-			adresse_ligne2='".SecuChaine::ProtectDataSql($adresse_ligne2)."',
-			adresse_ligne3='".SecuChaine::ProtectDataSql($adresse_ligne3)."',
-			cp='".SecuChaine::ProtectDataSql($cp)."',
-			ville='".strtoupper(SecuChaine::ProtectDataSql($ville))."',
-			pays='".strtoupper(SecuChaine::ProtectDataSql($pays))."',
-			tel='".SecuChaine::ProtectDataSql($tel)."',
-			fax='".SecuChaine::ProtectDataSql($fax)."'
-			WHERE id='".$id."'";
-			if (grr_sql_command($sql) < 0)
-				fatal_error(0,'<p>'.grr_sql_error().'</p>');
-			mysqli_insert_id($GLOBALS['db_c']);
-		}
-		// On affiche le tableau des sites
-		read_sites();
-	}
-
+		break;
+	case 2:
+		$sites = Adm_Site::read_sites();
+		echo $twig->render('admin_site.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites));
+		break;
+	case 3:
+		$trad['SousTitrePage']	= $trad['modifier_site'];
+		$site = Adm_Site::update_site($p_idsite);
+		echo $twig->render('admin_site_modif.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'site' => $site));
+		break;
+	case 4:
+		Adm_Site::delete_site($p_idsite);
+		break;
+	case 5:
+		Adm_Site::check_right($p_idsite);
+		break;
+	default:
+		$sites = Adm_Site::read_sites();
+		echo $twig->render('admin_site.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites));
+		break;
 }
-
-
-function delete_site($id)
-{
-		grr_sql_command("delete from ".TABLE_PREFIX."_site where id='".$id."'");
-		grr_sql_command("delete from ".TABLE_PREFIX."_j_site_area where id_site='".$id."'");
-		grr_sql_command("delete from ".TABLE_PREFIX."_j_group_site where id_site='".$id."'");
-		grr_sql_command("delete from ".TABLE_PREFIX."_j_useradmin_site where id_site='".$id."'");
-		grr_sql_command("update ".TABLE_PREFIX."_utilisateurs set default_site = '-1' where default_site='".$id."'");
-		$test = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME='default_site'");
-		if ($test == $id)
-			grr_sql_command("delete from ".TABLE_PREFIX."_setting where NAME='default_site'");
-		// On affiche le tableau des sites
-		read_sites();
-}
-
-
-function check_right($id)
-{
-	echo 'Vous voulez vérifier les droits pour l\'identifiant '.$id;
-}
-
-	$grr_script_name = 'admin_site.php';
-
-	get_vocab_admin('YES');
-	get_vocab_admin('NO');
-	get_vocab_admin('confirm_del');
-
-	if (SecuAccess::UserLevel(getUserName(), -1, 'site') < 4)
-	{
-		showAccessDenied($back);
-		exit();
-	}
-
-	// Lecture des paramètres passés à la page
-	$id_site = isset($_POST['id']) ? $_POST['id'] : (isset($_GET['id']) ? $_GET['id'] : NULL);
-	$action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : NULL);
-
-	if ($action == NULL)
-		$action = 'read';
-
-	switch($action)
-	{
-		case 'create':
-		create_site($id_site);
-		break;
-		case 'read':
-		read_sites();
-		break;
-		case 'update':
-		update_site($id_site);
-		break;
-		case 'delete':
-		delete_site($id_site);
-		break;
-		case 'right':
-		check_right($id_site);
-		break;
-		default:
-		read_sites();
-		break;
-	}
 
 ?>
