@@ -378,59 +378,6 @@ if ($row["id"] != '')
 	$trad['dHidden3'] = "<input type=\"hidden\" name=\"room\" value=\"".$row["id"]."\" />\n";
 }
 
-get_vocab_admin("access");
-get_vocab_admin("miscellaneous");
-get_vocab_admin("name");
-get_vocab_admin("description");
-get_vocab_admin("match_area");
-get_vocab_admin("choose_an_area");
-get_vocab_admin("order_display");
-get_vocab_admin("qui_peut_voir_ressource");
-get_vocab_admin("visu_fiche_description0");
-get_vocab_admin("visu_fiche_description1");
-get_vocab_admin("visu_fiche_description2");
-get_vocab_admin("visu_fiche_description3");
-get_vocab_admin("visu_fiche_description4");
-get_vocab_admin("visu_fiche_description5");
-get_vocab_admin("visu_fiche_description6");
-get_vocab_admin("declarer_ressource_indisponible");
-get_vocab_admin("explain_max_booking");
-get_vocab_admin("montrer_fiche_presentation_ressource");
-get_vocab_admin("choisir_image_ressource");
-get_vocab_admin("supprimer_image_ressource");
-get_vocab_admin("Pas_image_disponible");
-get_vocab_admin("Afficher_description_complete_dans_titre_plannings");
-get_vocab_admin("description_complete");
-
-get_vocab_admin("configuration_ressource");
-get_vocab_admin("type_affichage_reservation");
-get_vocab_admin("affichage_reservation_duree");
-get_vocab_admin("affichage_reservation_date_heure");
-get_vocab_admin("capacity");
-get_vocab_admin("msg_max_booking");
-get_vocab_admin("delais_max_resa_room");
-get_vocab_admin("delais_min_resa_room");
-get_vocab_admin("msg_option_de_reservation");
-get_vocab_admin("msg_moderation_reservation");
-get_vocab_admin("allow_action_in_past");
-get_vocab_admin("allow_action_in_past_explain");
-get_vocab_admin("dont_allow_modify");
-get_vocab_admin("qui_peut_reserver_pour_autre_utilisateur");
-get_vocab_admin("personne");
-get_vocab_admin("les_administrateurs_restreints");
-get_vocab_admin("les_gestionnaires_de_la_ressource");
-get_vocab_admin("tous_les_utilisateurs");
-get_vocab_admin("activer_fonctionalite_ressource_empruntee_restituee");
-get_vocab_admin("activer_fonctionalite_gestion_cle");
-get_vocab_admin("activer_fonctionalite_participant");
-get_vocab_admin("visu_fiche_description1");
-get_vocab_admin("visu_fiche_description2");
-get_vocab_admin("visu_fiche_description3");
-get_vocab_admin("who_can_book_explain");
-
-get_vocab_admin("back");
-get_vocab_admin("save");
-get_vocab_admin("save_and_back");
 
 $trad['dTitrePage'] = get_vocab("match_area").get_vocab('deux_points')." ".$area_name." <span class=\"fa fa-arrow-right\"></span> ".$typeAction;
 $trad['dDroitsDomaine'] = SecuAccess::UserLevel($user_id,$area_id,"area");
