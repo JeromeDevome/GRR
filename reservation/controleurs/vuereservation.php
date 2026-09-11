@@ -120,7 +120,8 @@ $sql = "SELECT ".TABLE_PREFIX."_entry.name,
 ".TABLE_PREFIX."_entry.nbparticipantmax,
 ".TABLE_PREFIX."_room.active_participant,
 ".TABLE_PREFIX."_room.inscription_participant,
-".TABLE_PREFIX."_room.confidentiel_resa
+".TABLE_PREFIX."_room.confidentiel_resa,
+".TABLE_PREFIX."_entry.supprimer
 FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area
 WHERE ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
 AND ".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id
@@ -195,6 +196,7 @@ $active_cle					= $row[23];
 $nbParticipantMax			= $row[24];
 $quiPeutParticiper          = $row[26];
 $resa_confidentielle        = $row[27];
+$resa_supprimer             = $row[28];
 $rep_type 					= 0;
 $displayMail 	        	= SecuAccess::DisplayMail($userName, $room_id);
 if ($displayMail)
@@ -442,6 +444,7 @@ $resa['idRepetition'] = $repeat_id;
 $resa['idStatut'] = $statut_id;
 $resa['courrier'] = $courrier;
 $resa['ressourceClef'] = $active_cle;
+$resa['resaSupprimer'] = $resa_supprimer;
 
 if ($beneficiaire != $create_by)
     $resa['beneficiaire'] = affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email);
