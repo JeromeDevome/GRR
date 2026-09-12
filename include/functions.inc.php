@@ -205,13 +205,13 @@ function checkPassword($pwd, $pwd_hash, $login, $test_rehash = TRUE){
             $do_rehash = true;
         }
     }
-    /* sinon $pwd_hash est censé être issu de MD5 ou de l'algorithme de la v4.0.0 */
+    /* sinon $pwd_hash est censé être issu de MD5 */
     elseif (md5($pwd) == $pwd_hash)
     {
         $result = true;
         // si la base est 3.5.1+, on mettra à jour le mot de passe
         $ver = grr_sql_query1("SELECT VALUE FROM ".TABLE_PREFIX."_setting WHERE NAME='version';");
-        if($ver >= "0400000")
+        if($ver >= 400000)
         	$do_rehash = $test_rehash;
     }
 	elseif(hash($algoPwd, Settings::get("hashpwd2").$pwd) == $pwd_hash) 	// Controle de l'algo V4.0.0
