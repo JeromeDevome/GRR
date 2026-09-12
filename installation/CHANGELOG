@@ -4,9 +4,11 @@ Version 4.6.7
 [Correction] Modification user avec login comportant espace - 5f142390b - @JeromeDevome
 [Correction] Drag&Drop conservation de la durée  - 70f0b53b1 - @JeromeDevome
 [Correction] Icone fiche description dans l'administration - f80ff81ca - @JeromeDevome
+[Correction] Masquer infos réservation supprimé dans la vue réservation - 591795aec - @JeromeDevome
 [Modification] Optimisation affichage - 1515bd16f - @JeromeDevome
 [Modification] Mise à jour symfony - @JeromeDevome
 [Modification] Mise à jour tcpdf - aca37937f - @JeromeDevome
+[Modification] Mise à jour jszip - a7db91f9d - @JeromeDevome
 
 Version 4.6.6 - 18/08/2026 Généré par @JeromeDevome
 [Ajout] Possible de faire la mise à jour de la BDD via le paramètre l'url avec le paramètre maj - 466af8b76 - @JeromeDevome
