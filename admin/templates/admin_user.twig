@@ -8,83 +8,81 @@
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block content %}
-	<h3>{{ trad.admin_user }}</h3>
 	<div class="row">
-		<div class="col col-lg-10">
+		<div class="col col-lg-12">
 
-			<div class="box">
-				<!-- /.box-header -->
-				<div class="box-body">
-					<div class="table-responsive">
-					<table id="tableuser" class="table table-bordered table-striped">
-						<thead>
-							<tr>
-								<th></th>
-								<th>{{trad.login_name}}</th>
-								<th>{{trad.names}}</th>
-								<th>{{trad.mail_user}}</th>
-								<th>{{trad.privileges}}</th>
-								<th>{{trad.statut}}</th>
-								<th>{{trad.activ_user}}</th>
-								<th>{{trad.authentification}}</th>
-								<th>{{trad.action}}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for utilisateur in utilisateurs %}
-								<tr>
-									<td></td>
-									{% if utilisateur.8 == 1 %}
-										<td><a href="?p=admin_user_modify&amp;user_login={{utilisateur.1}}&amp;display={{ d.display }}">{{utilisateur.1}}</a></td>
-									{% else %}
-										<td>{{utilisateur.1}}</td>
-									{% endif %}
-									<td>{{utilisateur.2}}</td>
-									<td>{{utilisateur.9}}</td>
-									<td>{{utilisateur.3 |raw}}</td>
-									<td>{{utilisateur.4 |raw}}</td>
-									<td>{{utilisateur.6}}</td>
-									<td>{{utilisateur.5}}</td>
-									<td>
-										{% if utilisateur.8 == 1 %}
-											<a href="?p=admin_user_modify&amp;user_login={{utilisateur.1}}&amp;display={{ d.display }}" class="btn btn-info btn-xs"><i class="icon fa fa-edit"></i></a> 
-										{% endif %}
-										{% if utilisateur.7 == 1 %}
-											<button type="button" class="btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#modalWarningSupUser" data-idsup="{{ utilisateur.1 }}"><i class="icon fa fa-trash"></i></button>
-										{% endif %}
-									</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					  </table>
+			<div class="card">
+				<div class="card-header">
+					<a href="?p=admin_user_modify" class="btn btn-success"><i class="icon fa fa-plus"></i> {{ trad.display_add_user }}</a>
+				</div>
+				<form action="?p=admin_user" method="post" id="bulkUserForm">
+					<div class="card-body p-0">
+						<div class="table-responsive">
+							<table id="tableuser" class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th><input type="checkbox" id="selectAllUsers" title="Sélectionner tous les utilisateurs"></th>
+										<th>{{trad.login_name}}</th>
+										<th>{{trad.names}}</th>
+										<th>{{trad.mail_user}}</th>
+										<th>{{trad.privileges}}</th>
+										<th>{{trad.statut}}</th>
+										<th>{{trad.activ_user}}</th>
+										<th>{{trad.authentification}}</th>
+										<th>{{trad.action}}</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for utilisateur in utilisateurs %}
+										<tr>
+											<td><input type="checkbox" name="p_utilisateurs[]" value="{{ utilisateur.1 }}" class="user-selection"{% if utilisateur.8 != 1 %} disabled{% endif %}></td>
+											{% if utilisateur.8 == 1 %}
+												<td><a href="?p=admin_user_modify&amp;user_login={{utilisateur.1}}&amp;display={{ d.display }}">{{utilisateur.1}}</a></td>
+											{% else %}
+												<td>{{utilisateur.1}}</td>
+											{% endif %}
+											<td>{{utilisateur.2}}</td>
+											<td>{{utilisateur.9}}</td>
+											<td>{{utilisateur.3 |raw}}</td>
+											<td>{{utilisateur.4 |raw}}</td>
+											<td>{{utilisateur.6}}</td>
+											<td>{{utilisateur.5}}</td>
+											<td>
+												<div class="btn-group btn-group-sm" role="group">
+												{% if utilisateur.8 == 1 %}
+													<a href="?p=admin_user_modify&amp;user_login={{utilisateur.1}}&amp;display={{ d.display }}" class="btn btn-primary"><i class="icon fa fa-edit"></i></a> 
+												{% endif %}
+												{% if utilisateur.7 == 1 %}
+													<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalWarningSupUser" data-idsup="{{ utilisateur.1 }}"><i class="icon fa fa-trash"></i></button>
+												{% endif %}
+												</div>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+					  	</div>
 					</div>
-				</div>
+					<div class="card-footer">
+						<div class="d-flex align-items-center gap-2">
+							<select name="p_action" class="form-control form-control-sm w-auto" required>
+								<option value="">Action groupée...</option>
+								<option value="2">Rendre actif</option>
+								<option value="3">Rendre inactif</option>
+								<option value="4">Supprimer</option>
+							</select>
+							<button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-check mr-1"></i>Appliquer</button>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
-
-
-		<div class="col col-lg-2">
-
-			<div class="box">
-				<!-- /.box-header -->
-				<div class="box-body no-padding">
-					<h5>{{ trad.display_add_user }} :</h5>
-					<a href="?p=admin_user_modify&amp;display={{ trad.dDisplay }}" class="btn btn-primary btn-block">{{ trad.display_add_user }}</a>
-					<a href="?p=admin_import_users_csv" class="btn btn-primary btn-block">{{ trad.via_fichier }}</a>
-					<a href="?p=admin_import_users_elycee" class="btn btn-primary btn-block">Depuis elycée</a>
-					<h5>{{ trad.admin_menu_various }} :</h5>
-					{% if (settings.ldap_statut != '' or settings.sso_statut != '' or settings.imap_statut != '') and d.estAdministrateur ==  1 %}
-						<a href="?p=admin_purge_accounts" class="btn btn-primary btn-block">{{ trad.admin_purge_accounts }}</a>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-	</div>	
+	</div>
 
 	<div class="modal fade" id="modalWarningSupUser" style="display: none;" aria-hidden="true">
 		<form action="?p=admin_user" method="post">
 			<input type="hidden" name="user_del" id="modal_user_del" value="">
-			<input type="hidden" name="action_del" value="yes">
+			<input type="hidden" name="p_action" value="1">
 			<input type="hidden" name="js_confirmed" value="1">
           <div class="modal-dialog">
 			<div class="modal-content bg-warning">
@@ -99,7 +97,7 @@
               </div>
               <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.cancel}}</button>
-				<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.delete}}</button>
+				<button type="submit" id="liensup" class="btn btn-danger">{{trad.delete}}</button>
               </div>
             </div>
           </div>
@@ -125,6 +123,12 @@
 	<script src="../jslib/pdfmake/vfs_fonts.js"></script>
 
 	<script>
+		$(function () {
+			{%if d.enregistrement == 1 %}
+				toastr.success("{{d.msgToast}}")
+			{%endif%}
+		}); 
+
 		// Modal
 		$('#modalWarningSupUser').on('show.bs.modal', function (event) {
 			var button = $(event.relatedTarget) // Button that triggered the modal
@@ -137,6 +141,16 @@
 		})
 
 		$(function() {
+			$('#selectAllUsers').on('change', function () {
+				$('.user-selection:not(:disabled)').prop('checked', this.checked);
+			});
+
+			$('#bulkUserForm').on('submit', function (event) {
+				if ($('.user-selection:checked').length === 0) {
+					event.preventDefault();
+					alert('Sélectionnez au moins un utilisateur.');
+				}
+			});
 
 			var table = $('#tableuser').DataTable({
 				lengthChange: true,
