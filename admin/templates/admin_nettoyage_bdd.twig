@@ -89,6 +89,9 @@
                                 </div>
                                 <div class="card-body">
                                     <a class="btn btn-outline-warning btn-block btn-flat" href="?p=admin_nettoyage_bdd&amp;numaction=1"><i class="fa fa-check"></i> {{ trad.valide_toutes_moderation }}</a>
+                                	{% if settings.ldap_statut != '' or settings.sso_statut != '' or settings.imap_statut != '' %}
+                                        <a href="?p=admin_purge_accounts" class="btn btn-primary btn-block">{{ trad.admin_purge_accounts }}</a>
+                                    {% endif %}
                                 </div>
                                 <!-- /.card-body -->
                             </div>

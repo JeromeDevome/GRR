@@ -19,124 +19,111 @@
 
 $grr_script_name = "admin_user.php";
 
-$display = isset($_GET["display"]) ? $_GET["display"] : NULL;
-//$order_by = isset($_GET["order_by"]) ? $_GET["order_by"] : NULL;
-
+// Accès à la page
 if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1,'user') != 1))
 {
 	showAccessDenied($back);
 	exit();
 }
-if ((isset($_REQUEST['action_del'])) && isset($_REQUEST['js_confirmed']) && ($_REQUEST['js_confirmed'] == 1))
-{
-	VerifyModeDemo();
-}
 
-//
-// Supression d'un utilisateur
-//
-if ((isset($_REQUEST['action_del'])) and (isset($_REQUEST['js_confirmed'])) and ($_REQUEST['js_confirmed'] == 1))
-{
-	$temp = SecuChaine::CleanLogin($_REQUEST['user_del']);
-	// un gestionnaire d'utilisateurs ne peut pas supprimer un administrateur général ou un gestionnaire d'utilisateurs
-	$can_delete = "yes";
-	if (SecuAccess::UserLevel(getUserName(), -1,'user') ==  1)
+include_once("modeles/suppression.class.php");
+
+// les variables attendues et leur type
+$form_vars = array(
+    'p_action' => array('int', 0), // 1 : supression, 2 : rendre actif en masse, 3 : rendre inactif en masse, 4 : suppression en masse
+	'p_utilisateurs' => array('array', array()), // tableau des utilisateurs sélectionnés pour l'action groupée
+);
+// récupération des valeurs des variables passées en paramètres
+foreach($form_vars as $var => $params)
+    $$var = SecuChaine::GetFormVarSecure($var, $params[0], $params[1]);
+
+
+/** Actions **/
+	if ($p_action > 0)
 	{
-		$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::CleanLogin($_GET['user_del'])."'");
-		if (($test_statut == "gestionnaire_utilisateur") || ($test_statut == "administrateur"))
-			$can_delete = "no";
-	}
-	if (($temp != getUserName()) && ($can_delete == "yes"))
-	{
-		$temp = str_replace('\\', '\\\\', $temp);
-		$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$temp'";
-		if (grr_sql_command($sql) < 0)
+		VerifyModeDemo();
+		$processedUsers = 0;
+		
+		if($p_action == 1) // Suppression d'un unique utilisateur
 		{
-			fatal_error(1, "<p>" . grr_sql_error());
+
+			$temp = SecuChaine::CleanLogin($_REQUEST['user_del']);
+			// un gestionnaire d'utilisateurs ne peut pas supprimer un administrateur général ou un gestionnaire d'utilisateurs
+			$can_delete = "yes";
+			if (SecuAccess::UserLevel(getUserName(), -1,'user') ==  1)
+			{
+				$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::CleanLogin($_GET['user_del'])."'");
+				if (($test_statut == "gestionnaire_utilisateur") || ($test_statut == "administrateur"))
+					$can_delete = "no";
+			}
+			if (($temp != getUserName()) && ($can_delete == "yes"))
+			{
+				$temp = str_replace('\\', '\\\\', $temp);
+				Adm_Suppression::Utilisateur($temp);
+
+				$d['enregistrement'] = 1;
+				$d['msgToast'] = get_vocab("del_user_succeed");
+			}
 		}
-		else
+
+		if($p_action == 2 || $p_action == 3 || $p_action == 4) // Actions groupées
 		{
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE login='$temp'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$temp'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_user_room WHERE login='$temp'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_userbook_room WHERE login='".$temp."'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='$temp'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='$temp'");
-			grr_sql_command("DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='$temp'");
+			$selectedUsers = array_unique(array_map(array('SecuChaine', 'CleanLogin'), $p_utilisateurs));
+
+			foreach ($selectedUsers as $selectedUser)
+			{
+				if ($selectedUser === '' || strcasecmp($selectedUser, getUserName()) === 0)
+					continue;
+
+				$userStatus = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::ProtectDataSql($selectedUser)."'");
+				$isProtected = SecuAccess::UserLevel(getUserName(), -1, 'user') == 1
+					&& in_array($userStatus, array('gestionnaire_utilisateur', 'administrateur'), true);
+				if ($isProtected)
+					continue;
+			
+				if($p_action == 2) // Rendre actif en masse
+				{
+					grr_sql_query("UPDATE ".TABLE_PREFIX."_utilisateurs SET etat='actif' WHERE login='".SecuChaine::ProtectDataSql($selectedUser)."'");
+					$processedUsers++;
+				}
+				elseif($p_action == 3) // Rendre inactif en masse
+				{
+					grr_sql_query("UPDATE ".TABLE_PREFIX."_utilisateurs SET etat='inactif' WHERE login='".SecuChaine::ProtectDataSql($selectedUser)."'");
+					$processedUsers++;
+				} 
+				elseif($p_action == 4) // Suppression en masse
+				{
+					$login = SecuChaine::ProtectDataSql($selectedUser);
+					Adm_Suppression::Utilisateur($login);
+					$processedUsers++;
+				}
+			}
 
 			$d['enregistrement'] = 1;
-			$d['msgToast'] = get_vocab("del_user_succeed");
+			$d['msgToast'] = $processedUsers." utilisateur(s) traité(s).";
+
 		}
+
 	}
-}
-if (isset($mess) and ($mess != ""))
-	echo "<p>".$mess."</p>";
 
-if (empty($display))
-{
-	$display = 'actifs';
-}
-/* if (empty($order_by))
-{
-	$order_by = 'nom,prenom';
-} */
+/** Affichage de la page **/
+	$trad['TitrePage']	= $trad['admin_user'];
 
-$d['display'] = $display;
-
-get_vocab_admin('admin_user');
-get_vocab_admin("display_add_user");
-get_vocab_admin("via_fichier");
-get_vocab_admin("admin_menu_various");
-get_vocab_admin("admin_user_mdp_facile");
-get_vocab_admin("admin_purge_accounts");
-
-get_vocab_admin("maj_base_locale");
-get_vocab_admin("mess_maj_base_locale");
-get_vocab_admin("synchro_base_locale");
-get_vocab_admin("mess_synchro_base_locale");
-get_vocab_admin("confirm_del");
-
-
-get_vocab_admin("login_name");
-get_vocab_admin("mail_user");
-get_vocab_admin("names");
-get_vocab_admin("privileges");
-get_vocab_admin("statut");
-get_vocab_admin("activ_user");
-get_vocab_admin("authentification");
-get_vocab_admin("action");
-
-get_vocab_admin("cancel");
-get_vocab_admin("delete");
-
-if (SecuAccess::UserLevel(getUserName(),-1) >= 6)
-	$d['estAdministrateur'] = 1;
-
-$display == 'tous';
-
-// Affichage du tableau
-
-$sql = "SELECT nom, prenom, statut, login, etat, source, email FROM ".TABLE_PREFIX."_utilisateurs ORDER BY nom,prenom";
-$res = grr_sql_query($sql);
-if ($res)
-{
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	// Tableau des utilisateurs
+	$sql = "SELECT nom, prenom, statut, login, etat, source, email FROM ".TABLE_PREFIX."_utilisateurs ORDER BY nom,prenom";
+	$res = grr_sql_query($sql);
+	if ($res)
 	{
-		$user_nom = htmlspecialchars($row[0]);
-		$user_prenom = htmlspecialchars($row[1]);
-		$user_statut = $row[2];
-		$user_login = $row[3];
-		$user_etat[$i] = $row[4];
-		$user_source = $row[5];
-		$user_mail = $row[6];
-		//if (($user_etat[$i] == 'actif') && (($display == 'tous') || ($display == 'actifs')))
-		//	$affiche = 'yes';
-		//else if (($user_etat[$i] != 'actif') && (($display == 'tous') || ($display == 'inactifs')))
-		//	$affiche = 'yes';
-		//else
-		//	$affiche = 'no';
-		//if ($affiche == 'yes')
-		//{
+		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+		{
+			$user_nom = htmlspecialchars($row[0]);
+			$user_prenom = htmlspecialchars($row[1]);
+			$user_statut = $row[2];
+			$user_login = $row[3];
+			$user_etat[$i] = $row[4];
+			$user_source = $row[5];
+			$user_mail = $row[6];
+
 			$col[$i][6] = $user_etat[$i];
 			// Affichage des login, noms et prénoms
 			$col[$i][1] = $user_login;
@@ -146,7 +133,7 @@ if ($res)
 			$col[$i][3] = "";
 			if (Settings::get("module_multisite") == 1)
 			{
-			// On teste si l'utilisateur administre un site
+				// On teste si l'utilisateur administre un site
 				$test_admin_site = grr_sql_query1("SELECT count(s.id) FROM ".TABLE_PREFIX."_site s
 					left join ".TABLE_PREFIX."_j_useradmin_site j on s.id=j.id_site
 					WHERE j.login = '".$user_login."'");
@@ -218,14 +205,12 @@ if ($res)
 				$col[$i][7] = 0;
 			else
 				$col[$i][7] = 1;
-				//echo "<a href='admin_user.php?user_del=".urlencode($col[$i][1])."&amp;action_del=yes&amp;display=$display' onclick='return confirmlink(this, \"$user_login\", \"$themessage\")'>".get_vocab("delete")."</a>";
 
 			// Affichage email
 			$col[$i][9] = $user_mail;
-			//}
+		}
 	}
-}
 
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateurs' => $col));
+	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'utilisateurs' => $col));
 
 ?>
