@@ -60,9 +60,6 @@ switch($p_action)
 	case 4:
 		Adm_Site::delete_site($p_idsite);
 		break;
-	case 5:
-		Adm_Site::check_right($p_idsite);
-		break;
 	default:
 		$sites = Adm_Site::read_sites();
 		echo $twig->render('admin_site.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'sites' => $sites));
