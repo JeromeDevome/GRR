@@ -19,9 +19,9 @@
 
 	<div class="card">
 		<div class="card-header">
-			<a class="btn pull-right bg-green"href="?p=admin_type_modify&amp;p_id=0">{{trad.display_add_type}}</a>
-			<a class="btn pull-right bg-info"href="?p=admin_type&amp;p_action=1">{{trad.display_type_order_identifiant}}</a>
-			<a class="btn pull-right bg-info"href="?p=admin_type&amp;p_action=2">{{trad.display_type_order_nom}}</a>
+			<a class="btn pull-right btn-success"href="?p=admin_type_modify&amp;p_id=0"><i class="icon fa fa-plus"></i> {{trad.display_add_type}}</a>
+			<a class="btn pull-right btn-primary"href="?p=admin_type&amp;p_action=1"><i class="icon fa fa-sort-numeric-up"></i> {{trad.display_type_order_identifiant}}</a>
+			<a class="btn pull-right btn-primary"href="?p=admin_type&amp;p_action=2"><i class="icon fa fa-sort-alpha-up"></i> {{trad.display_type_order_nom}}</a>
 		</div>
 		<!-- /.card-header -->
 		<div class="card-body p-0">
@@ -50,8 +50,10 @@
 					{% endif %}
 					</td>
 					<td>
-						<a href="?p=admin_type_modify&amp;p_id_type={{type.id}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
-						<button type="button" class="btn btn-warning btn-md" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{type.type_letter}}" data-idsup="{{type.id}}"><i class="icon fa fa-trash"></i></button>
+						<div class="btn-group btn-group-md" role="group">
+							<a href="?p=admin_type_modify&amp;p_id_type={{type.id}}" class="btn btn-primary"><i class="icon fa fa-edit"></i></a> 
+							<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-warning" data-texte="{{trad.confirm_del}} : {{type.type_letter}}" data-idsup="{{type.id}}"><i class="icon fa fa-trash"></i></button>
+						</div>
 					</td>
 				</tr>
 			{% endfor %}
