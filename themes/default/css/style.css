@@ -6268,3 +6268,73 @@ td[class*="type"].quota-atteint > a.lienCellule:focus,
 td.quota-atteint > a.lienCellule:hover{
   font-weight:bold !important;
 }
+
+/* ============================================
+   FORMULAIRE RÉSERVATION - LAYOUT OPTIONS
+   Gestion du layout centré et empilé
+   Avec centrage du h2
+   ============================================ */
+
+/* Option : Formulaire centré et empilé verticalement */
+.row2.form-layout-centered {
+    display: flex;
+    flex-direction: column-reverse;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.row2.form-layout-centered > .col,
+.row2.form-layout-centered > .col-sm-6 {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.row2.form-layout-centered > .col:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================
+   CENTRER LE H2 DU FORMULAIRE
+   Solutions pour différentes structures
+   ============================================ */
+
+/* Solution 1 : h2 avant row2 (cas courant) */
+h2:has(+ .row2.form-layout-centered) {
+    text-align: center;
+}
+
+/* Solution 2 : h2 juste avant row2 (fallback) */
+.row2.form-layout-centered ~ h2 {
+    text-align: center;
+}
+
+/* Solution 3 : h2 dans le même conteneur */
+.form-layout-centered-container h2 {
+    text-align: center;
+}
+
+/* Solution 4 : Tous les h2 au sein d'un élément avec classe form-layout-centered */
+.form-layout-centered h2 {
+    text-align: center;
+}
+
+/* Solution 5 : h2 + row2 dans une section */
+section:has(.row2.form-layout-centered) > h2 {
+    text-align: center;
+}
+
+/* Responsive : très petits écrans */
+@media (max-width: 576px) {
+    .row2.form-layout-centered {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+}
+
+/* Responsive : tablettes */
+@media (min-width: 768px) and (max-width: 991px) {
+    .row2.form-layout-centered {
+        max-width: 800px;
+    }
+}
