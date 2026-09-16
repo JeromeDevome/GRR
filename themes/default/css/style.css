@@ -6268,3 +6268,101 @@ td[class*="type"].quota-atteint > a.lienCellule:focus,
 td.quota-atteint > a.lienCellule:hover{
   font-weight:bold !important;
 }
+
+/* ============================================
+   FORMULAIRE RÉSERVATION - LAYOUT OPTIONS
+   Layout centré avec H2 centré + H3 à gauche
+   ============================================ */
+
+/* === Base : row2 centré et empilé === */
+.row2.form-layout-centered {
+    display: flex;
+    flex-direction: column-reverse;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.row2.form-layout-centered > .col,
+.row2.form-layout-centered > .col-sm-6 {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.row2.form-layout-centered > .col:last-child {
+    margin-bottom: 0;
+}
+
+/* === Wrapper : contient H3 + row2 === */
+.form-layout-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.form-layout-wrapper h3 {
+    text-align: left;
+    margin-bottom: 15px;
+    margin-left: 0;
+}
+
+.form-layout-wrapper .row2.form-layout-centered {
+    max-width: 100%;  /* 100% du wrapper */
+    margin: 0;
+    padding: 0;
+}
+
+.form-layout-wrapper .row2.form-layout-centered > .col,
+.form-layout-wrapper .row2.form-layout-centered > .col-sm-6 {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.form-layout-wrapper .row2.form-layout-centered > .col:last-child {
+    margin-bottom: 0;
+}
+
+/* === Centrer les H2 === */
+h2:has(+ .row2.form-layout-centered) {
+    text-align: center;
+}
+
+h2:has(+ .form-layout-wrapper) {
+    text-align: center;
+}
+
+.row2.form-layout-centered ~ h2 {
+    text-align: center;
+}
+
+.form-layout-centered h2 {
+    text-align: center;
+}
+
+section:has(.row2.form-layout-centered) > h2 {
+    text-align: center;
+}
+
+/* === Responsive : tablettes === */
+@media (min-width: 768px) and (max-width: 991px) {
+    .row2.form-layout-centered {
+        max-width: 800px;
+    }
+    
+    .form-layout-wrapper {
+        max-width: 800px;
+    }
+}
+
+/* === Responsive : petits écrans === */
+@media (max-width: 576px) {
+    .row2.form-layout-centered {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    .form-layout-wrapper {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+}
