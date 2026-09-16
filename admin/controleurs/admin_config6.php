@@ -335,6 +335,17 @@ if (isset($_POST['allow_pdf'])) {
     }
 }
 
+// ============================================
+// Formulaire de réservation - Layout
+// ============================================
+
+// Option : formulaire centré et empilé
+if (isset($_POST['form_layout_centered'])) {
+    if (!Settings::set('form_layout_centered', $_POST['form_layout_centered'])) {
+        $msg .= "Erreur lors de l'enregistrement de form_layout_centered !<br />";
+    }
+}
+
 /** Affichage de la page de connexion **/
     // Template page login
     if (isset($_POST['login_template'])) {
