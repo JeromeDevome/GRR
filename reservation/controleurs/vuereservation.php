@@ -56,33 +56,41 @@ else
 	die();
 }	
 
-$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil() ;
-// echo $back;
-// ici on a l'id de la réservation, on peut donc construire un lien de retour complet, à la bonne date et avec la ressource précise
-$sql = "SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id=". $id;
-$res = grr_sql_query($sql);
-if (!$res)
-    fatal_error(0, grr_sql_error());
-if (grr_sql_count($res) >= 1)
+if (!isset($_GET["back"]))
 {
-    $row1 = grr_sql_row($res, 0);
-    $year = date ('Y', $row1['0']);
-    $month = date ('m', $row1['0']);
-    $day = date ('d', $row1['0']);
-}
-grr_sql_free($res);
-if (strstr ($back, 'p=vuereservation'))
-{
-    if (isset($year)&&isset($month)&&isset($day)){
-        $page = (isset($_GET['page']))? SecuChaine::CleanInput($_GET['page']) : "day";
-        $back = 'app.php?p='.$page.'&year='.$year.'&month='.$month.'&day='.$day;
-        if (($page == "semaine_all") || ($page == "mois_all") || ($page == "mois2_all") || ($page == "jour") || ($page == "annee") || ($page == "annee_all"))
-            $back .= "&area=".mrbsGetRoomArea($row1['1']);
-        if (($page == "semaine") || ($page == "mois"))
-            $back .= "&room=".$row1['1'];
+    $back = (isset($_SERVER['HTTP_REFERER'])) ? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES) : page_accueil();
+    // ici on a l'id de la réservation, on peut donc construire un lien de retour complet, à la bonne date et avec la ressource précise
+    $sql = "SELECT start_time, room_id FROM ".TABLE_PREFIX."_entry WHERE id=". $id;
+    $res = grr_sql_query($sql);
+    if (!$res)
+        fatal_error(0, grr_sql_error());
+    if (grr_sql_count($res) >= 1)
+    {
+        $row1 = grr_sql_row($res, 0);
+        $year = date ('Y', $row1['0']);
+        $month = date ('m', $row1['0']);
+        $day = date ('d', $row1['0']);
     }
-    else
-        $back = $page.".php";
+    grr_sql_free($res);
+    if (strstr ($back, 'p=vuereservation'))
+    {
+        if (isset($year)&&isset($month)&&isset($day)){
+            $page = (isset($_GET['page']))? SecuChaine::CleanInput($_GET['page']) : "jour";
+            $back = 'app.php?p='.$page.'&year='.$year.'&month='.$month.'&day='.$day;
+            if (($page == "semaine_all") || ($page == "mois_all") || ($page == "mois2_all") || ($page == "jour") || ($page == "annee") || ($page == "annee_all"))
+                $back .= "&area=".mrbsGetRoomArea($row1['1']);
+            if (($page == "semaine") || ($page == "mois"))
+                $back .= "&room=".$row1['1'];
+        }
+        else
+            $back = $page.".php";
+    }
+}
+else
+{
+    $back = html_entity_decode($_GET["back"], ENT_QUOTES, 'UTF-8');
+    if (strpos($back, $_SERVER['HTTP_HOST']) === false && strpos($back, '/') !== 0)
+        $back = page_accueil();
 }
 if (isset($_GET["action_moderate"])){
 	moderate_entry_do($id,$_GET["moderate"], $_GET["description"]);
