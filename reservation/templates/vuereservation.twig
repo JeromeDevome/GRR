@@ -29,8 +29,12 @@
                     <td>{{resa.description|raw}}</td>
                 </tr>
                 <tr>
+                    <th>{{trad.match_area}}{{trad.deux_points}}</th>
+                    <td>{{resa.domaine|raw}}{% if resa.lienAreaPlanning %} <a href="{{resa.lienAreaPlanning}}"><i class="fa fa-eye" aria-hideen="true"></i></a>{% endif %}</td>
+                </tr>
+                <tr>
                     <th>{{trad.room}}{{trad.deux_points}}</th>
-                    <td>{{resa.domaine}} - {{resa.ressource}}</td>
+                    <td>{{resa.ressource|raw}}{% if resa.lienRoomPlanning %} <a href="{{resa.lienRoomPlanning}}"><i class="fa fa-eye" aria-hideen="true"></i></a>{% endif %}</td>
                 </tr>
                 <tr>
                     <th>{{trad.start_date}}{{trad.deux_points}}</th>

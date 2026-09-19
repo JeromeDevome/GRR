@@ -444,6 +444,8 @@ $resa['idStatut'] = $statut_id;
 $resa['courrier'] = $courrier;
 $resa['ressourceClef'] = $active_cle;
 $resa['resaSupprimer'] = $resa_supprimer;
+$resa['lienRoomPlanning'] = "app.php?p=semaine&day=".$day."&month=".$month."&year=".$year."&room=".$room_id;
+$resa['lienAreaPlanning'] = "app.php?p=semaine_all&day=".$day."&month=".$month."&year=".$year."&area=".$area;
 
 if ($beneficiaire != $create_by)
     $resa['beneficiaire'] = affiche_nom_prenom_email($beneficiaire, $beneficiaire_ext, $option_affiche_nom_prenom_email);
