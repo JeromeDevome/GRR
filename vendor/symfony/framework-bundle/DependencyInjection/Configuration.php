@@ -2285,6 +2285,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->scalarNode('secret')
                                     ->defaultValue('')
+                                    ->info('The secret used to verify incoming request signatures. It must be set in production: with an empty value, requests from any sender are accepted.')
                                 ->end()
                             ->end()
                         ->end()
@@ -2298,7 +2299,7 @@ class Configuration implements ConfigurationInterface
     {
         $rootNode
             ->children()
-                ->arrayNode('remote-event')
+                ->arrayNode('remote_event')
                     ->info('RemoteEvent configuration')
                     ->{$enableIfStandalone('symfony/remote-event', RemoteEvent::class)}()
                 ->end()

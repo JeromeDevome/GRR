@@ -567,8 +567,8 @@ class FrameworkExtension extends Extension
             }
         }
 
-        if ($this->readConfigEnabled('remote-event', $container, $config['remote-event'])) {
-            $this->registerRemoteEventConfiguration($config['remote-event'], $container, $loader);
+        if ($this->readConfigEnabled('remote_event', $container, $config['remote_event'])) {
+            $this->registerRemoteEventConfiguration($config['remote_event'], $container, $loader);
         }
 
         if ($this->readConfigEnabled('html_sanitizer', $container, $config['html_sanitizer'])) {
@@ -1313,6 +1313,9 @@ class FrameworkExtension extends Extension
         $defaultPackage = $this->createPackageDefinition($config['base_path'], $config['base_urls'], $defaultVersion);
         $container->setDefinition('assets._default_package', $defaultPackage);
 
+        // used by the asset mapper for the assets it resolves itself, which already carry a content hash
+        $container->setDefinition('assets._default_package_without_version', $this->createPackageDefinition($config['base_path'], $config['base_urls'], new Reference('assets.empty_version_strategy')));
+
         foreach ($config['packages'] as $name => $package) {
             if (null !== $package['version_strategy']) {
                 $version = new Reference($package['version_strategy']);
@@ -1341,7 +1344,8 @@ class FrameworkExtension extends Extension
             $container->removeDefinition('asset_mapper.asset_package');
         } else {
             $container->getDefinition('asset_mapper.asset_package')
-                ->replaceArgument(3, $config['server'] ? $config['public_prefix'] : null);
+                ->replaceArgument(3, $config['server'] ? $config['public_prefix'] : null)
+                ->replaceArgument(5, $config['public_prefix']);
         }
 
         if (!$httpClientEnabled) {
@@ -1369,14 +1373,15 @@ class FrameworkExtension extends Extension
         $container->getDefinition('asset_mapper.public_assets_path_resolver')
             ->setArgument(0, $config['public_prefix']);
 
+        $parameterBag = $container->getParameterBag();
         $publicDirectory = $this->getPublicDirectory($container);
         $publicAssetsDirectory = rtrim($publicDirectory.'/'.ltrim($config['public_prefix'], '/'), '/');
         $container->getDefinition('asset_mapper.local_public_assets_filesystem')
-            ->setArgument(0, $publicDirectory)
+            ->setArgument(0, $parameterBag->escapeValue($publicDirectory))
         ;
 
         $container->getDefinition('asset_mapper.compiled_asset_mapper_config_reader')
-            ->setArgument(0, $publicAssetsDirectory);
+            ->setArgument(0, $parameterBag->escapeValue($publicAssetsDirectory));
 
         if (!$config['server']) {
             $container->removeDefinition('asset_mapper.dev_server_subscriber');
@@ -1516,9 +1521,12 @@ class FrameworkExtension extends Extension
 
             $dirs[] = $transPaths[] = \dirname($r->getFileName(), 2).'/Resources/translations';
         }
-        $defaultDir = $container->getParameterBag()->resolveValue($config['default_path']);
+        $parameterBag = $container->getParameterBag();
+        // the parameter bag returns paths in their escaped form, the filesystem needs the literal one
+        $defaultDir = $parameterBag->unescapeValue($parameterBag->resolveValue($config['default_path']));
         foreach ($container->getParameter('kernel.bundles_metadata') as $name => $bundle) {
-            if ($container->fileExists($dir = $bundle['path'].'/Resources/translations') || $container->fileExists($dir = $bundle['path'].'/translations')) {
+            $bundlePath = $parameterBag->unescapeValue($bundle['path']);
+            if ($container->fileExists($dir = $bundlePath.'/Resources/translations') || $container->fileExists($dir = $bundlePath.'/translations')) {
                 $dirs[] = $transPaths[] = $dir;
             } else {
                 $nonExistingDirs[] = $dir;
@@ -1534,11 +1542,11 @@ class FrameworkExtension extends Extension
         }
 
         if ($container->hasDefinition('console.command.translation_debug')) {
-            $container->getDefinition('console.command.translation_debug')->replaceArgument(5, $transPaths);
+            $container->getDefinition('console.command.translation_debug')->replaceArgument(5, $parameterBag->escapeValue($transPaths));
         }
 
         if ($container->hasDefinition('console.command.translation_extract')) {
-            $container->getDefinition('console.command.translation_extract')->replaceArgument(6, $transPaths);
+            $container->getDefinition('console.command.translation_extract')->replaceArgument(6, $parameterBag->escapeValue($transPaths));
         }
 
         if (null === $defaultDir) {
@@ -1572,15 +1580,15 @@ class FrameworkExtension extends Extension
                 }
             }
 
-            $projectDir = $container->getParameter('kernel.project_dir');
+            $projectDir = $parameterBag->unescapeValue($container->getParameter('kernel.project_dir'));
 
             $options = array_merge(
                 $translator->getArgument(4),
                 [
-                    'resource_files' => $files,
-                    'scanned_directories' => $scannedDirectories = array_merge($dirs, $nonExistingDirs),
+                    'resource_files' => $parameterBag->escapeValue($files),
+                    'scanned_directories' => $parameterBag->escapeValue($scannedDirectories = array_merge($dirs, $nonExistingDirs)),
                     'cache_vary' => [
-                        'scanned_directories' => array_map(static fn ($dir) => str_starts_with($dir, $projectDir.'/') ? substr($dir, 1 + \strlen($projectDir)) : $dir, $scannedDirectories),
+                        'scanned_directories' => $parameterBag->escapeValue(array_map(static fn ($dir) => str_starts_with($dir, $projectDir.'/') ? substr($dir, 1 + \strlen($projectDir)) : $dir, $scannedDirectories)),
                     ],
                 ]
             );
@@ -1723,8 +1731,10 @@ class FrameworkExtension extends Extension
 
     private function registerValidatorMapping(ContainerBuilder $container, array $config, array &$files): void
     {
-        $fileRecorder = static function ($extension, $path) use (&$files) {
-            $files['yaml' === $extension ? 'yml' : $extension][] = $path;
+        $parameterBag = $container->getParameterBag();
+        // mapping files are collected from the filesystem as literals and handed back to the container
+        $fileRecorder = static function ($extension, $path) use (&$files, $parameterBag) {
+            $files['yaml' === $extension ? 'yml' : $extension][] = $parameterBag->escapeValue($path);
         };
 
         if (ContainerBuilder::willBeAvailable('symfony/form', Form::class, ['symfony/framework-bundle', 'symfony/validator'])) {
@@ -1733,7 +1743,8 @@ class FrameworkExtension extends Extension
         }
 
         foreach ($container->getParameter('kernel.bundles_metadata') as $bundle) {
-            $configDir = is_dir($bundle['path'].'/Resources/config') ? $bundle['path'].'/Resources/config' : $bundle['path'].'/config';
+            $bundlePath = $parameterBag->unescapeValue($bundle['path']);
+            $configDir = is_dir($bundlePath.'/Resources/config') ? $bundlePath.'/Resources/config' : $bundlePath.'/config';
 
             if (
                 $container->fileExists($file = $configDir.'/validation.yaml', false)
@@ -1751,7 +1762,7 @@ class FrameworkExtension extends Extension
             }
         }
 
-        $projectDir = $container->getParameter('kernel.project_dir');
+        $projectDir = $parameterBag->unescapeValue($container->getParameter('kernel.project_dir'));
         if ($container->fileExists($dir = $projectDir.'/config/validator', '/^$/')) {
             $this->registerMappingFilesFromDir($dir, $fileRecorder);
         }
@@ -1768,7 +1779,7 @@ class FrameworkExtension extends Extension
 
     private function registerMappingFilesFromConfig(ContainerBuilder $container, array $config, callable $fileRecorder): void
     {
-        foreach ($config['mapping']['paths'] as $path) {
+        foreach ($container->getParameterBag()->unescapeValue($config['mapping']['paths']) as $path) {
             if (is_dir($path)) {
                 $this->registerMappingFilesFromDir($path, $fileRecorder);
                 $container->addResource(new DirectoryResource($path, '/^$/'));
@@ -1811,7 +1822,8 @@ class FrameworkExtension extends Extension
             $definition->addTag('kernel.cache_warmer');
         } else {
             $cacheService = 'annotations.filesystem_cache_adapter';
-            $cacheDir = $container->getParameterBag()->resolveValue($config['file_cache_dir']);
+            $parameterBag = $container->getParameterBag();
+            $cacheDir = $parameterBag->unescapeValue($parameterBag->resolveValue($config['file_cache_dir']));
 
             if (!is_dir($cacheDir) && false === @mkdir($cacheDir, 0o777, true) && !is_dir($cacheDir)) {
                 throw new \RuntimeException(\sprintf('Could not create cache directory "%s".', $cacheDir));
@@ -1819,7 +1831,7 @@ class FrameworkExtension extends Extension
 
             $container
                 ->getDefinition('annotations.filesystem_cache_adapter')
-                ->replaceArgument(2, $cacheDir)
+                ->replaceArgument(2, $parameterBag->escapeValue($cacheDir))
             ;
         }
 
@@ -1964,13 +1976,16 @@ class FrameworkExtension extends Extension
             $serializerLoaders[] = $annotationLoader;
         }
 
-        $fileRecorder = static function ($extension, $path) use (&$serializerLoaders) {
-            $definition = new Definition(\in_array($extension, ['yaml', 'yml']) ? YamlFileLoader::class : XmlFileLoader::class, [$path]);
+        $parameterBag = $container->getParameterBag();
+        // mapping files are collected from the filesystem as literals and handed back to the container
+        $fileRecorder = static function ($extension, $path) use (&$serializerLoaders, $parameterBag) {
+            $definition = new Definition(\in_array($extension, ['yaml', 'yml']) ? YamlFileLoader::class : XmlFileLoader::class, [$parameterBag->escapeValue($path)]);
             $serializerLoaders[] = $definition;
         };
 
         foreach ($container->getParameter('kernel.bundles_metadata') as $bundle) {
-            $configDir = is_dir($bundle['path'].'/Resources/config') ? $bundle['path'].'/Resources/config' : $bundle['path'].'/config';
+            $bundlePath = $parameterBag->unescapeValue($bundle['path']);
+            $configDir = is_dir($bundlePath.'/Resources/config') ? $bundlePath.'/Resources/config' : $bundlePath.'/config';
 
             if ($container->fileExists($file = $configDir.'/serialization.xml', false)) {
                 $fileRecorder('xml', $file);
@@ -1988,7 +2003,7 @@ class FrameworkExtension extends Extension
             }
         }
 
-        $projectDir = $container->getParameter('kernel.project_dir');
+        $projectDir = $parameterBag->unescapeValue($container->getParameter('kernel.project_dir'));
         if ($container->fileExists($dir = $projectDir.'/config/serializer', '/^$/')) {
             $this->registerMappingFilesFromDir($dir, $fileRecorder);
         }
@@ -3228,7 +3243,7 @@ class FrameworkExtension extends Extension
 
     private function getPublicDirectory(ContainerBuilder $container): string
     {
-        $projectDir = $container->getParameter('kernel.project_dir');
+        $projectDir = $container->getParameterBag()->unescapeValue($container->getParameter('kernel.project_dir'));
         $defaultPublicDir = $projectDir.'/public';
 
         $composerFilePath = $projectDir.'/composer.json';

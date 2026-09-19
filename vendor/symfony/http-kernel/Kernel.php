@@ -77,11 +77,11 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
      */
     private static array $freshCache = [];
 
-    public const VERSION = '6.4.45';
-    public const VERSION_ID = 60445;
+    public const VERSION = '6.4.46';
+    public const VERSION_ID = 60446;
     public const MAJOR_VERSION = 6;
     public const MINOR_VERSION = 4;
-    public const RELEASE_VERSION = 45;
+    public const RELEASE_VERSION = 46;
     public const EXTRA_VERSION = '';
 
     public const END_OF_MAINTENANCE = '11/2026';
@@ -580,16 +580,20 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
         $bundles = [];
         $bundlesMetadata = [];
 
+        // filesystem paths are literals: a percent sign in them must be escaped
+        // so that the parameter bag does not read it as a parameter reference
+        $escape = static fn (string $path): string => str_replace('%', '%%', $path);
+
         foreach ($this->bundles as $name => $bundle) {
             $bundles[$name] = $bundle::class;
             $bundlesMetadata[$name] = [
-                'path' => $bundle->getPath(),
+                'path' => $escape($bundle->getPath()),
                 'namespace' => $bundle->getNamespace(),
             ];
         }
 
         return [
-            'kernel.project_dir' => realpath($this->getProjectDir()) ?: $this->getProjectDir(),
+            'kernel.project_dir' => $escape(realpath($this->getProjectDir()) ?: $this->getProjectDir()),
             'kernel.environment' => $this->environment,
             'kernel.runtime_environment' => '%env(default:kernel.environment:APP_RUNTIME_ENV)%',
             'kernel.runtime_mode' => '%env(query_string:default:container.runtime_mode:APP_RUNTIME_MODE)%',
@@ -597,9 +601,9 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
             'kernel.runtime_mode.cli' => '%env(not:default:kernel.runtime_mode.web:)%',
             'kernel.runtime_mode.worker' => '%env(bool:default::key:worker:default:kernel.runtime_mode:)%',
             'kernel.debug' => $this->debug,
-            'kernel.build_dir' => realpath($buildDir = $this->warmupDir ?: $this->getBuildDir()) ?: $buildDir,
-            'kernel.cache_dir' => realpath($cacheDir = ($this->getCacheDir() === $this->getBuildDir() ? ($this->warmupDir ?: $this->getCacheDir()) : $this->getCacheDir())) ?: $cacheDir,
-            'kernel.logs_dir' => realpath($this->getLogDir()) ?: $this->getLogDir(),
+            'kernel.build_dir' => $escape(realpath($buildDir = $this->warmupDir ?: $this->getBuildDir()) ?: $buildDir),
+            'kernel.cache_dir' => $escape(realpath($cacheDir = ($this->getCacheDir() === $this->getBuildDir() ? ($this->warmupDir ?: $this->getCacheDir()) : $this->getCacheDir())) ?: $cacheDir),
+            'kernel.logs_dir' => $escape(realpath($this->getLogDir()) ?: $this->getLogDir()),
             'kernel.bundles' => $bundles,
             'kernel.bundles_metadata' => $bundlesMetadata,
             'kernel.charset' => $this->getCharset(),
