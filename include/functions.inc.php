@@ -3039,7 +3039,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 
     // Cas d'une réservation modérée : le bénéficiaire peut éventuellement la modifier ou supprimer, mais on prévient le modérateur
 	// Ou réservation en attente de modération, mail pour le modérateur OU  Notification d'un retard dans la restitution d'une ressource
-    if ( (($action == 2 || $action == 3) && ($moderate > 0)) || ($action == 5 || $action == 7))
+    if ( (($action == 1 ||$action == 2 || $action == 3) && ($moderate > 0)) || ($action == 5 || $action == 7))
 		$envoi3 = true;
 
 	if($envoi3 == true)
