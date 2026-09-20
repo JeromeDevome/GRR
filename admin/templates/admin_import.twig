@@ -1,0 +1,383 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block css %}{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-8">
+			{% if d.erreurImportation is defined %}
+				<div class="alert alert-danger" role="alert">{{ d.erreurImportation }}</div>
+			{% endif %}
+			{% if d.etape == 1 %}
+				<form enctype="multipart/form-data" action="?p=admin_import" method="post" class="form-horizontal">
+                    <input type="hidden" name="p_etape" value="2" />
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title"><i class="fas fa-file-import mr-2"></i>Importer</h4>
+							<div class="card-tools">
+        						{{trad.etape_n}} {{ d.etape }} / 4
+            				</div>
+						</div>
+					
+						<div class="card-body">
+							<div class="alert alert-info" role="alert">
+								<p class="mb-2">Le fichier doit respecter le format CSV</p>
+								<p class="mb-0">Une sauvegarde de la base de données est recommandée avant l'importation.</p>
+							</div>
+
+							<hr>
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label required" for="p_type">Que voulez-vous importer ?</label>
+								<div class="col-sm-8">
+									<select id="p_type" name="p_type" class="custom-select form-control">
+										<option value="groupes">Groupes</option>
+										<option value="reservations">Réservations</option>
+										<option value="types">Types de réservation</option>
+										<option value="utilisateurs" selected>Utilisateurs</option>
+									</select>
+									<small class="form-text text-muted">Cet import est dédié aux réservations GRR.</small>
+								</div>
+							</div>
+
+							<hr>
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label required" for="p_format">Quel format d'importation ?</label>
+								<div class="col-sm-8">
+									<select id="p_format" name="p_format" class="custom-select form-control">
+										<option value="grr_standard" data-import-types="groupes,reservations,types,utilisateurs" selected>GRR standard</option>
+										<option value="elycee" data-import-types="utilisateurs">eLycée</option>
+										<option value="undeuxtemps" data-import-types="reservations">UnDeuxTemps</option>
+										<!--<option value="personnalise" data-import-types="groupes,reservations,types,utilisateurs">Personnalisé</option> -->
+									</select>
+									<small class="form-text text-muted">Cet import est dédié aux réservations GRR.</small>
+								</div>
+							</div>
+
+							<hr>
+							<div class="form-group row">
+								<label class="col col-sm-4">{{ trad.select_fichier }}</label>
+								<div class="input-group col-sm-8">
+									<div class="custom-file">
+										<input type="file" class="custom-file-input col col-sm-4" for="p_import_file" id="p_import_file" name="p_import_file" />
+										<label class="custom-file-label" for="p_import_file">{{ trad.select_fichier }}</label>
+									</div>
+								</div>
+							</div>
+
+							<hr>
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label" for="p_sepateur_champs">Séparateur de champs</label>
+								<div class="col-sm-8">
+									<input type="text" id="p_sepateur_champs" name="p_sepateur_champs" class="form-control" value=";" />
+									<small class="form-text text-muted">Exemple : 2026-01-01;08h00;10h00;Salle 1;Réunion;A</small>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label" for="p_sepateur_multiples">Séparateur de champs à valeurs multiples </label>
+								<div class="col-sm-8">
+									<input type="text" id="p_sepateur_multiples" name="p_sepateur_multiples" class="form-control" value="," />
+									<small class="form-text text-muted">Exemple : Groupe1,Groupe2,Groupe3</small>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label class="col-sm-4 col-form-label" for="separator">Ignorer la première ligne</label>
+								<div class="col-sm-8">
+									<input type="checkbox" id="p_ignorer_premiere_ligne" name="p_ignorer_premiere_ligne" class="form-check-input" value="1" {% if d.p_ignorer_premiere_ligne == 1 %}checked{% endif %} />
+									<small class="form-text text-muted">La ligne sera affichée à la prochaine étape et ignorée lors de l'importation.</small>
+								</div>
+							</div>
+
+							<hr>
+							<div class="text-right">
+								<button class="btn btn-primary" type="submit" name="p_submit">
+									<i class="fas fa-upload mr-1"></i>{{ trad.submit }}
+								</button>
+							</div>
+						</div>
+					</div>
+					<input type="hidden" name="p_import" value="1" />
+				</form>
+			{% elseif d.etape == 2 %}
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title"><i class="fas fa-table mr-2"></i>Vérifier les colonnes</h4>
+						<div class="card-tools">
+							{{trad.etape_n}} {{ d.etape }} / 4
+						</div>
+					</div>
+					<div class="card-body">
+						{% if d.lignesApercu|length == 0 %}
+							<div class="alert alert-danger" role="alert">Impossible de lire le fichier sélectionné.</div>
+						{% else %}
+							<p class="text-muted">{{d.p_type}} - {{d.p_format}}</p>
+							<p class="text-muted">Séparateur de champs : <strong>{{ d.p_sepateur_champs }}</strong> - Séparateur de champs à valeurs multiples : <strong>{{ d.p_sepateur_multiples }}</strong></p>
+							<p class="text-muted">Fichier : <strong>{{ d.nomFichierApercu }}</strong>. Les 10 premières lignes sont affichées pour vérifier les colonnes.</p>
+							<form action="?p=admin_import" method="post">
+								<input type="hidden" name="p_etape" value="3" />
+								<input type="hidden" name="p_type" value="{{ d.p_type }}" />
+								<input type="hidden" name="p_format" value="{{ d.p_format }}" />
+								<input type="hidden" name="p_sepateur_multiples" value="{{ d.p_sepateur_multiples }}" />
+								<input type="hidden" name="p_ignorer_premiere_ligne" value="{{ d.p_ignorer_premiere_ligne }}" />
+								<div class="table-responsive">
+									<table class="table table-bordered table-sm">
+										<thead>
+											<tr>
+												{% for column in range(0, d.nombreColonnesApercu - 1) %}
+													<th class="align-top">
+														<label for="mapping-{{ column }}">Colonne {{ column + 1 }}</label>
+															<select id="mapping-{{ column }}" name="p_mapping[{{ column }}]" class="form-control form-control-sm">
+															<option value="">Ignorer cette colonne</option>
+															{% if d.p_type == 'reservations' %}
+																<option value="resa_date_debut" {% if column == 0 %}selected{% endif %}>Date de début</option>
+																<option value="resa_heure_debut" {% if column == 1 %}selected{% endif %}>Heure de début</option>
+																<option value="resa_date_fin" {% if column == 2 %}selected{% endif %}>Date de fin</option>
+																<option value="resa_heure_fin" {% if column == 3 %}selected{% endif %}>Heure de fin</option>
+																<option value="resa_ressource" {% if column == 4 %}selected{% endif %}>Ressource</option>
+																<option value="resa_description" {% if column == 5 %}selected{% endif %}>Description</option>
+																<option value="resa_type" {% if column == 6 %}selected{% endif %}>Type de réservation</option>
+															{% elseif d.p_type == 'utilisateurs' %}
+                                                                <option value="user_identifiant"{% if (d.p_format == 'grr_standard' and column == 0) or (d.p_format == 'elycee' and column == 6) %} selected{% endif %}>Identifiant</option>
+                                                                <option value="user_nom"{% if (d.p_format == 'grr_standard' and column == 1) or (d.p_format == 'elycee' and column == 5) %} selected{% endif %}>Nom</option>
+                                                                <option value="user_prenom"{% if (d.p_format == 'grr_standard' and column == 2) or (d.p_format == 'elycee' and column == 4) %} selected{% endif %}>Prénom</option>
+                                                                <option value="user_statut"{% if (d.p_format == 'grr_standard' and column == 3) or (d.p_format == 'elycee' and column == 3) %} selected{% endif %}>Statut</option>
+																<option value="user_email"{% if d.p_format == 'grr_standard' and column == 4 %} selected{% endif %}>Email</option>
+																<option value="user_mot_de_passe"{% if (d.p_format == 'grr_standard' and column == 5) or (d.p_format == 'elycee' and column == 7) %} selected{% endif %}>Mot de passe</option>
+                                                                <option value="user_authentification"{% if d.p_format == 'grr_standard' and column == 6 %} selected{% endif %}>Authentification</option>
+																<option value="user_actif"{% if d.p_format == 'grr_standard' and column == 7 %} selected{% endif %}>Actif</option>
+																<option value="user_changement_mdp"{% if d.p_format == 'grr_standard' and column == 8 %} selected{% endif %}>Doit changer le mot de passe</option>
+																<option value="user_groupes"{% if d.p_format == 'grr_standard' and column == 9 %} selected{% endif %}>Groupe(s)</option>
+																<option value="user_desactiver_mails"{% if d.p_format == 'grr_standard' and column == 10 %} selected{% endif %}>Désactiver mails</option>
+																<option value="user_commentaire"{% if d.p_format == 'grr_standard' and column == 11 %} selected{% endif %}>Commentaire</option>
+															{% elseif d.p_type == 'groupes' %}
+																<option value="gr_nom"{% if d.p_format == 'grr_standard' and column == 0 %} selected{% endif %}>Nom</option>
+																<option value="gr_description"{% if d.p_format == 'grr_standard' and column == 1 %} selected{% endif %}>Description</option>
+																<option value="gr_archiver"{% if d.p_format == 'grr_standard' and column == 2 %} selected{% endif %}>Archiver</option>
+															{% elseif d.p_type == 'types' %}
+																<option value="type_identifiant"{% if d.p_format == 'grr_standard' and column == 0 %} selected{% endif %}>Identifiant</option>
+																<option value="type_nom"{% if d.p_format == 'grr_standard' and column == 1 %} selected{% endif %}>Nom</option>
+																<option value="type_ordre"{% if d.p_format == 'grr_standard' and column == 2 %} selected{% endif %}>Ordre</option>
+																<option value="type_couleur_fond"{% if d.p_format == 'grr_standard' and column == 3 %} selected{% endif %}>Couleur du fond</option>
+																<option value="type_couleur_texte"{% if d.p_format == 'grr_standard' and column == 4 %} selected{% endif %}>Couleur du texte</option>
+																<option value="type_couleur_icones"{% if d.p_format == 'grr_standard' and column == 5 %} selected{% endif %}>Couleur des icônes</option>
+																<option value="type_disponible"{% if d.p_format == 'grr_standard' and column == 6 %} selected{% endif %}>Disponible pour</option>
+															{% endif %}
+														</select>
+													</th>
+												{% endfor %}
+											</tr>
+										</thead>
+										<tbody>
+											{% for row in d.lignesApercu %}
+													<tr{% if loop.first and d.p_ignorer_premiere_ligne == 1 %} class="table-secondary"{% endif %}>
+													{% for column in range(0, d.nombreColonnesApercu - 1) %}
+														<td>{{ row[column]|default('') }}</td>
+													{% endfor %}
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+								<div class="d-flex justify-content-between">
+									<a class="btn btn-secondary" href="?p=admin_import"><i class="fas fa-arrow-left mr-1"></i>Retour</a>
+									<button class="btn btn-primary" type="submit"><i class="fas fa-arrow-right mr-1"></i>Continuer</button>
+								</div>
+							</form>
+						{% endif %}
+					</div>
+				</div>
+			{% elseif d.etape == 3 %}
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title"><i class="fas fa-check-double mr-2"></i>Contrôle avant importation</h4>
+						<div class="card-tools">
+							{{trad.etape_n}} {{ d.etape }} / 4
+						</div>
+					</div>
+					<div class="card-body">
+						{% if d.lignesApercu|length == 0 %}
+							<div class="alert alert-danger" role="alert">Aucune ligne à contrôler.</div>
+						{% elseif d.colonnesCorrespondantes|length == 0 %}
+							<div class="alert alert-warning" role="alert">Aucune colonne n'a été associée à un champ. Retournez à l'étape précédente pour sélectionner le mapping.</div>
+						{% else %}
+							<p class="text-muted">Total : <strong>{{ d.nombreTotalLignes }}</strong> ligne(s) à importer{% if d.ligneCorrespondanceIgnoree %}, hors ligne de mapping{% endif %}. Toutes les lignes du fichier sont affichées avec le mapping sélectionné.</p>
+							<div class="table-responsive">
+								<table class="table table-bordered table-sm">
+									<thead>
+										<tr>
+											<th>Action</th>
+											{% for column, field in d.colonnesCorrespondantes %}
+												<th>{{ field }}</th>
+											{% endfor %}
+										</tr>
+									</thead>
+									<tbody>
+										{% for rowIndex, row in d.lignesApercu %}
+											{% if loop.first and d.p_ignorer_premiere_ligne == 1 %}
+											{% else %}
+											<tr>
+													<td class="{% if d.lignesInvalides[rowIndex] %}table-danger{% elseif d.lignesExistantes[rowIndex] %}table-warning{% else %}table-success{% endif %}"{% if d.lignesInvalides[rowIndex] %} title="Cette ligne ne sera pas importée car elle contient une valeur invalide."{% endif %}>
+													{% if d.lignesExistantes[rowIndex] %}Modification{% else %}Création{% endif %}
+												</td>
+												{% for column in d.colonnesCorrespondantes|keys %}
+													{% set cell = d.lignesValidees[rowIndex][column] %}
+													<td{% if not cell.valid %} class="table-danger" title="{{ cell.error }}"{% endif %}>{{ cell.value }}</td>
+												{% endfor %}
+											</tr>
+											{% endif %}
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+							<form action="?p=admin_import" method="post" class="text-right">
+								<input type="hidden" name="p_etape" value="4" />
+								<input type="hidden" name="p_type" value="{{ d.p_type }}" />
+								<input type="hidden" name="p_format" value="{{ d.p_format }}" />
+								<input type="hidden" name="p_sepateur_multiples" value="{{ d.p_sepateur_multiples }}" />
+								<input type="hidden" name="p_ignorer_premiere_ligne" value="{{ d.p_ignorer_premiere_ligne }}" />
+								<div class="d-flex justify-content-between">
+									<a class="btn btn-secondary" href="?p=admin_import"><i class="fas fa-arrow-left mr-1"></i>Retour</a>
+									<button class="btn btn-success" type="submit"{% if d.nombreLignesValides == 0 %} disabled{% endif %}>
+										<i class="fas fa-database mr-1"></i>Importer les lignes valides ({{ d.nombreLignesValides }} / {{ d.nombreTotalLignes }})
+									</button>
+								</div>
+							</form>
+						{% endif %}
+					</div>
+				</div>
+			{% elseif d.etape == 4 %}
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title"><i class="fas fa-check mr-2"></i>Importation terminée</h4>
+						<div class="card-tools">
+							{{trad.etape_n}} {{ d.etape }} / 4
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="alert alert-success" role="alert">{{ d.resultatImportation.importees }} ligne(s) importée(s) ou mise(s) à jour sur {{ d.nombreTotalLignes }} ligne(s).</div>
+						{% if d.resultatImportation.ignorees > 0 %}
+							<div class="alert alert-warning" role="alert">{{ d.resultatImportation.ignorees }} ligne(s) invalide(s) ignorée(s).</div>
+						{% endif %}
+						{% if d.resultatImportation.echecs > 0 %}
+							<div class="alert alert-danger" role="alert">{{ d.resultatImportation.echecs }} ligne(s) n'ont pas pu être enregistrée(s).</div>
+							<ul class="text-danger">
+								{% for rowIndex, error in d.erreursImportation %}
+									<li>Ligne {{ rowIndex + 1 }} : {{ error|default('Erreur SQL inconnue') }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+				</div>
+			{% endif %}
+		</div>
+
+		<div class="col-md-4">
+			<div class="card">
+				<h4 class="card-header"><i class="fas fa-list mr-2"></i>Champs disponibles</h4>
+				<div class="card-body">
+					<div class="alert alert-info mb-0" role="alert">
+						<div class="mb-2"><strong>Colonnes attendues</strong></div>
+						<ul id="reservations" class="import-fields{% if d.p_type != 'reservations' %} d-none{% endif %}">
+							<li>Date début*</li>
+							<li>Heure de début*</li>
+							<li>Date de fin</li>
+							<li>Heure de fin*</li>
+							<li>Ressource*</li>
+							<li>Description*</li>
+							<li>Type de réservation*</li>
+						</ul>
+						<ul id="utilisateurs" class="import-fields{% if d.p_type != 'utilisateurs' %} d-none{% endif %}">
+							<li><i class="fas fa-key"></i> Identifiant* <i class="fas fa-info-circle" data-toggle="tooltip" title="40 caractères maximum. Il peut s'agir de n'importe quelle suite de caractères et/ou de chiffres sans espace. Le caractère _ est également autorisé."></i></li>
+							<li>Nom*</li>
+							<li>Prénom*</li>
+							<li>Statut*</li>
+							<li>Email</li>
+							<li>Mot de passe</li>
+							<li>Type d'authentification</li>							
+							<li>Actif</li>
+							<li>Doit changer le mot de passe</li>
+							<li>Groupe(s)<sup>(1)</sup></li>
+							<li>Désactiver mails</li>
+							<li>Commentaire</li> 
+						</ul>
+						<ul id="groupes" class="import-fields{% if d.p_type != 'groupes' %} d-none{% endif %}">
+							<li><i class="fas fa-key"></i> Nom*</li>
+							<li>Description</li>
+							<li>Archiver</li>
+						</ul>
+						<ul id="types" class="import-fields{% if d.p_type != 'types' %} d-none{% endif %}">
+							<li><i class="fas fa-key"></i> Identifiant*</li>
+							<li>Nom*</li>
+							<li>Ordre</li>
+							<li>Couleur du fond</li>
+							<li>Couleur du texte</li>
+							<li>Couleur des icônes</li>
+							<li>Disponible pour</li>
+						</ul>
+					</div>
+                    <blockquote class="quote-info">
+                    <small>
+                    * : Champs obligatoires<br>
+                    <i class="fas fa-key"></i> : Champ unique, ne peut pas être dupliqué, si déjà existant dans la base GRR, les données existantes seront écrasées par les données présentes dans le fichier importé.<br>
+					<sup>1</sup> : Peut contenir plusieurs valeurs séparées par le séparateur de champs à valeurs multiples.
+				    </small>
+                </blockquote>
+                </div>
+			</div>
+			<div class="card">
+				<h4 class="card-header"><i class="fas fa-file-download mr-2"></i>Exemple CSV</h4>
+				<div class="card-body">
+                    <a href="./ressources/import-groupes.csv" class="btn btn-outline-info btn-block btn-flat"><i class="fas fa-download mr-1"></i>Groupes - GRR Standard</a>
+                    <hr>
+					<a href="./ressources/import-reservations.csv" class="btn btn-outline-info btn-block btn-flat"><i class="fas fa-download mr-1"></i>Réservations - GRR Standard</a>
+                    <a href="#" class="btn btn-outline-secondary btn-block btn-flat"><i class="fas fa-download mr-1"></i>Réservations - UnDeuxTemps</a>
+                    <hr>
+					<a href="./ressources/import-utilisateurs.csv" class="btn btn-outline-info btn-block btn-flat"><i class="fas fa-download mr-1"></i>Utilisateurs - GRR Standard</a>
+					<a href="./ressources/import-utilisateurs-elycee.csv" class="btn btn-outline-info btn-block btn-flat"><i class="fas fa-download mr-1"></i>Utilisateurs - eLycée</a>
+                    <hr>
+                    <a href="./ressources/import-types.csv" class="btn btn-outline-info btn-block btn-flat"><i class="fas fa-download mr-1"></i>Types - GRR Standard</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		$(function () {
+			var typeSelect = document.getElementById('p_type');
+			var formatSelect = document.getElementById('p_format');
+
+			function updateImportFormats() {
+				var selectedType = typeSelect.value;
+				var firstVisibleOption = null;
+				var selectedFields = document.getElementById(selectedType);
+
+				document.querySelectorAll('.import-fields').forEach(function (fields) {
+					fields.classList.toggle('d-none', fields !== selectedFields);
+				});
+
+				Array.from(formatSelect.options).forEach(function (option) {
+					var allowedTypes = option.dataset.importTypes.split(',');
+					var isAllowed = allowedTypes.indexOf(selectedType) !== -1;
+					option.hidden = !isAllowed;
+					option.disabled = !isAllowed;
+
+					if (isAllowed && !firstVisibleOption) {
+						firstVisibleOption = option;
+					}
+				});
+
+				if (formatSelect.selectedOptions.length === 0 || formatSelect.selectedOptions[0].disabled) {
+					formatSelect.value = firstVisibleOption.value;
+				}
+			}
+
+			typeSelect.addEventListener('change', updateImportFormats);
+			updateImportFormats();
+		});
+	</script>
+{% endblock %}

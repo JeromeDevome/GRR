@@ -117,6 +117,7 @@ $vocab["admin_delete_entry_after.php"] = "Supprimer les réservations après une
 $vocab["admin_delete_entry_before.php"] = "Supprimer les réservations avant une date donnée";
 $vocab["admin_email_manager"] = "Mails automatiques";
 $vocab["admin_groupe"] = "Groupes";
+$vocab["admin_import"] = "Importer";
 $vocab["admin_import_entries_csv_direct.php"] = "Importer un fichier de réservations au format CSV";
 $vocab["admin_import_entries_csv_udt.php"] = "Importer un fichier CSV issu de UnDeuxTemps";
 $vocab["admin_import_users_csv0"] = "Fichier CSV à importer : ";
@@ -125,37 +126,37 @@ $vocab["admin_import_users_csv10"] = "L'importation a échoué !";
 $vocab["admin_import_users_csv11"] = "Aucun fichier n'a été sélectionné !";
 $vocab["admin_import_users_csv12"] = "L'utilisateur a été créé !";
 $vocab["admin_import_users_csv2"] = "
-Le fichier d'importation doit être au format csv (séparateur : point-virgule, encodage : UTF-8)
-Le fichier doit contenir les différents champs suivants :
---> Identifiant : l'identifiant de l'utilisateur
---> Nom
---> Prénom
---> Mot de passe
---> Adresse email
---> Type d'utilisateur : trois valeurs autorisées : \"visiteur\", \"utilisateur\", \"administrateur\"
---> Statut : deux valeurs autorisées : \"actif\" ou \"inactif\"
---> Type d'authentification : deux valeurs autorisées : \"local\" ou \"ext\"
---> Changement de mot de passe à la prochaine connexion : deux valeurs autorisées : \"0\" = non ou \"1\" = oui
+Le fichier d'importation doit être au format csv (séparateur : point-virgule, encodage : UTF-8)<br>
+Le fichier doit contenir les différents champs suivants :<br>
+--> Identifiant : l'identifiant de l'utilisateur<br>
+--> Nom<br>
+--> Prénom<br>
+--> Mot de passe<br>
+--> Adresse email<br>
+--> Type d'utilisateur : trois valeurs autorisées : \"visiteur\", \"utilisateur\", \"administrateur\"<br>
+--> Statut : deux valeurs autorisées : \"actif\" ou \"inactif\"<br>
+--> Type d'authentification : deux valeurs autorisées : \"local\" ou \"ext\"<br>
+--> Changement de mot de passe à la prochaine connexion : deux valeurs autorisées : \"0\" = non ou \"1\" = oui<br>
 ";
 $vocab["admin_import_users_csv3"] = "
-QUELQUES PRECISIONS :
-
-Identifiant
-40 caractères maximum. Il peut s'agir de n'importe quelle suite de caractères et/ou de chiffres sans espace. Le caractère _ est également autorisé. Si ce format n'est pas respecté, la suite de caractère ??? Apparaît à la place de l'identifiant. Les identifiants qui apparaissent en rouge correspondent à des noms d'utilisateurs déjà existants dans la base GRR. Les données existantes seront alors écrasées par les données présentes dans le fichier importé !
-
-Nom
-Nom de l'utilisateur. 30 caractères maximum. Il peut s'agir de n'importe quelle suite de caractères et/ou de chiffres avec éventuellement des espaces et apostrophes.
-
-Prénom
-Prénom de l'utilisateur. Même remarque que pour le nom. Les noms et prénoms qui apparaissent en bleu correspondent à des utilisateurs existant dans la base GRR et portant les mêmes noms et prénoms.
-
-Mot de passe
-Laisser vide dans le cas où le type d'authentification est \"ext\". Sinon, ".$pass_leng." caractères minimum et 30 caractères maximum.
-
-Adresse Email
-100 caractères maximum. Mettre le symbole \"-\" si pas d'adresse Email
-
-Type d'authentification
+QUELQUES PRECISIONS :<br>
+<br>
+Identifiant<br>
+40 caractères maximum. Il peut s'agir de n'importe quelle suite de caractères et/ou de chiffres sans espace. Le caractère _ est également autorisé. Si ce format n'est pas respecté, la suite de caractère ??? Apparaît à la place de l'identifiant. Les identifiants qui apparaissent en rouge correspondent à des noms d'utilisateurs déjà existants dans la base GRR. Les données existantes seront alors écrasées par les données présentes dans le fichier importé !<br>
+<br>
+Nom<br>
+Nom de l'utilisateur. 30 caractères maximum. Il peut s'agir de n'importe quelle suite de caractères et/ou de chiffres avec éventuellement des espaces et apostrophes.<br>
+<br>
+Prénom<br>
+Prénom de l'utilisateur. Même remarque que pour le nom. Les noms et prénoms qui apparaissent en bleu correspondent à des utilisateurs existant dans la base GRR et portant les mêmes noms et prénoms.<br>
+<br>
+Mot de passe<br>
+Laisser vide dans le cas où le type d'authentification est \"ext\". Sinon, ".$pass_leng." caractères minimum et 30 caractères maximum.<br>
+<br>
+Adresse Email<br>
+100 caractères maximum. Mettre le symbole \"-\" si pas d'adresse Email<br>
+<br>
+Type d'authentification<br>
 Mettre \"local\" dans le cas général et \"ext\" s'il s'agit d'un utilisateur se connectant par l'intermédiaire d'un annuaire ldap, ou d'un système d'authentification (CAS, LemonLdap, ...)
 
 ";

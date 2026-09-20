@@ -105,6 +105,7 @@ $vocab["admin_delete_entry_after.php"] = "Reservierungen nach einem bestimmten D
 $vocab["admin_delete_entry_before.php"] = "Reservierungen vor einem bestimmten Datum löschen";
 $vocab["admin_email_manager"] = "Automatischen E-Mails";
 $vocab["admin_groupe"] = "Gruppen";
+$vocab["admin_import"] = "Importieren";
 $vocab["admin_import_entries_csv_direct.php"] = "Reservierungen aus CSV-Datei importieren";
 $vocab["admin_import_entries_csv_udt.php"] = "CSV-Datei importieren (UnDeuxTemps)";
 $vocab["admin_import_users_csv0"] = "Zu importierende CSV-Datei: ";

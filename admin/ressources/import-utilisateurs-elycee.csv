@@ -1,0 +1,3 @@
+rne;uid;classe;profil;prenom;nom;login;mot de passe;cle de jointure;uid pere;uid mere;uid tuteur1;uid tuteur2;prenom enfant;nom enfant;adresse;code postal;ville;pays
+0;1;6a;usager;jerome;bernard;jbernard;testtest;1;2;3;24;26;;;0 rue fleuve;62120;saint-augustin;France
+0;1;6a;usager;raphael;boulanger;rboulanger;testtest;1;41;42;24;26;;;0 rue de la mairie;62129;Therouanne;France

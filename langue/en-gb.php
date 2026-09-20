@@ -105,6 +105,7 @@ $vocab["admin_delete_entry_after.php"] = "Delete entries after a given date";
 $vocab["admin_delete_entry_before.php"] = "Delete entries before a given date";
 $vocab["admin_email_manager"] = "Automated Emails";
 $vocab["admin_groupe"] = "Groups";
+$vocab["admin_import"] = "Import";
 $vocab["admin_import_entries_csv_direct.php"] = "Import a CSV file of reservations";
 $vocab["admin_import_entries_csv_udt.php"] = "Import a CSV file from UnDeuxTemps";
 $vocab["admin_import_users_csv0"] = "CSV file to be imported: ";

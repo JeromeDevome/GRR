@@ -116,6 +116,7 @@ $vocab["admin_delete_entry_after.php"] = "Eliminar todas las reservas después d
 $vocab["admin_delete_entry_before.php"] = "Eliminar todas las reservas antes de una fecha determinada";
 $vocab["admin_email_manager"] = "Emails automáticos";
 $vocab["admin_groupe"] = "Grupos";
+$vocab["admin_import"] = "Importar";
 $vocab["admin_import_entries_csv_direct.php"] = "Importar un archivo de reserva en formato CSV";
 $vocab["admin_import_entries_csv_udt.php"] = "Importar un archivo CSV desde UnDeuxTemps";
 $vocab["admin_import_users_csv0"] = "Fichero CSV para importar : ";
