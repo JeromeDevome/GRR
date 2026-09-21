@@ -688,7 +688,7 @@ $vocab["error_duree_max_resa_area"] = "No está autorizado a reservar este recur
 
 Duración máxima de la reserva: ";
 $vocab["error_end_date"] = "Error en la fecha de finalización de la reserva";
-$vocab["error_exist_login"] = "***¡Cuidado! Ya existe un usuario que usa la misma clave de acceso . ¡Registro imposible! ***";
+$vocab["error_exist_login"] = "Ya existe un usuario que usa la misma clave de acceso . ¡Registro imposible!";
 $vocab["error_heure_debut_fin"] = "Atención, reserva imposible: la hora de inicio o la hora de fin de reserva está fuera de los horarios autorizados.";
 $vocab["error_qui_peut_reserver_pour"] = "Cuidado, reserva imposible: intenta reservar un recurso con el apellido de otra persona mientras no tenga los derechos suficientes.";
 $vocab["error_room"] = "Error : recurso ";

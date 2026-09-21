@@ -37,7 +37,7 @@
 										<tr>
 											<td><input type="checkbox" name="p_utilisateurs[]" value="{{ utilisateur.1 }}" class="user-selection"{% if utilisateur.8 != 1 %} disabled{% endif %}></td>
 											{% if utilisateur.8 == 1 %}
-												<td><a href="?p=admin_user_modify&amp;user_login={{utilisateur.1}}&amp;display={{ d.display }}">{{utilisateur.1}}</a></td>
+												<td><a href="?p=admin_user_modify&amp;p_user_login={{utilisateur.1}}">{{utilisateur.1}}</a></td>
 											{% else %}
 												<td>{{utilisateur.1}}</td>
 											{% endif %}
@@ -50,7 +50,7 @@
 											<td>
 												<div class="btn-group btn-group-sm" role="group">
 												{% if utilisateur.8 == 1 %}
-													<a href="?p=admin_user_modify&amp;user_login={{utilisateur.1}}&amp;display={{ d.display }}" class="btn btn-primary"><i class="icon fa fa-edit"></i></a> 
+													<a href="?p=admin_user_modify&amp;p_user_login={{utilisateur.1}}" class="btn btn-primary"><i class="icon fa fa-edit"></i></a> 
 												{% endif %}
 												{% if utilisateur.7 == 1 %}
 													<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalWarningSupUser" data-idsup="{{ utilisateur.1 }}"><i class="icon fa fa-trash"></i></button>

@@ -9,132 +9,136 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col col-md-12">
 
-         <div class="box box-success">
-            <div class="box-header">
-              <h3 class="box-title">{{ trad.admin_user_modify_modify }}</h3>
-            </div>
-			<form class="form-horizontal" method="GET">
+		<div class="col-lg-6">
+			<form class="form-horizontal" method="post" action="?p=admin_user_modify" id="form_user_modify">
 				<input type="hidden" name ="p" value="admin_user_modify" />
-				<input type="hidden" name ="display" value="{{ d.display }}" />
-				<input type="hidden" name="valid" value="yes" />
 
-				<div class="box-body">
-					<p>{{ trad.required }}</p>
-
-					{% if utilisateur.reg_login !=  '' %}
-						<div class="form-group row">
-							<label class="col col-sm-4" for="new_login">{{ trad.login }}</label>
-							<div class="col col-sm-8">
-								{{ utilisateur.reg_login }}
-							</div>
-              
-						<input type="hidden" name="user_login" id="new_login" value="{{ utilisateur.reg_login }}" />
-						</div>
-					{% else %}
-						{{ form.input('new_login', trad.login, utilisateur.reg_login, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
-					{% endif %}
-
-					{{ form.input('reg_nom', trad.last_name, utilisateur.nom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
-					{{ form.input('reg_prenom', trad.first_name, utilisateur.prenom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
-					{{ form.input('reg_email', trad.mail_user, utilisateur.email, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type:'email', autocomplete:'off'}) }}
-
-					<!-- Statut: Visiteur, usager... -->
-					<div class="form-group row">
-						<label class="col col-sm-4" for="reg_statut">{{ trad.statut }}</label>
-						<div class="input-group col-sm-8">
-							<select name="reg_statut" id="reg_statut" class="form-control" size="1">
-								<option value="visiteur" {% if utilisateur.statut == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
-								<option value="utilisateur" {% if utilisateur.statut == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
-								{% if d.estAdministrateur ==  1 %}
-									<option value="gestionnaire_utilisateur" {% if utilisateur.statut == 'gestionnaire_utilisateur' %} selected {% endif %}>{{ trad.statut_user_administrator }}</option>
-									<option value="administrateur" {% if utilisateur.statut == 'administrateur' %} selected {% endif %}>{{ trad.statut_administrator }}</option>
-								{% endif %}
-							</select>
-						</div>
+			<!-- Paramètres de base -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title"><i class="fa-solid fa-gear"></i> Paramètres de bases</h3>
 					</div>
+					<div class="card-body">
+						{% if utilisateur.reg_login !=  '' %}
+							<input type="hidden" name="p_type" id="type" value="2" />
+							<input type="hidden" name="p_user_login" id="p_user_login" value="{{utilisateur.reg_login}}" />
+							{{ form.input('p_user_login2', trad.login, utilisateur.reg_login, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1, disabled:1}) }}
+						{% else %}
+							<input type="hidden" name="p_type" id="type" value="1" />
+							{{ form.input('p_user_login', trad.login, utilisateur.reg_login, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+						{% endif %}
 
-					<!-- Etat : Actif/Inactif -->
-					{% if d.estPasLuiMeme == 1 %}
+						{{ form.input('p_nom', trad.last_name, utilisateur.nom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+						{{ form.input('p_prenom', trad.first_name, utilisateur.prenom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+						{{ form.input('p_email', trad.mail_user, utilisateur.email, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type:'email', autocomplete:'off'}) }}
+
+						<!-- Statut: Visiteur, usager... -->
 						<div class="form-group row">
-							<label class="col col-sm-4" for="reg_etat">{{ trad.activ_no_activ }}</label>
+							<label class="col col-sm-4" for="p_statut">{{ trad.statut }}</label>
 							<div class="input-group col-sm-8">
-								<select name="reg_etat" id="reg_etat" class="form-control">
-									<option value="actif" {% if utilisateur.etat == 'actif' %} selected {% endif %}>{{ trad.activ_user }}</option>
-									<option value="inactif" {% if utilisateur.etat == 'inactif' %} selected {% endif %}>{{ trad.no_activ_user }}</option>
+								<select name="p_statut" id="p_statut" class="form-control" size="1">
+									<option value="visiteur" {% if utilisateur.statut == 'visiteur' %} selected {% endif %}>{{ trad.statut_visitor }}</option>
+									<option value="utilisateur" {% if utilisateur.statut == 'utilisateur' %} selected {% endif %}>{{ trad.statut_user }}</option>
+									{% if d.estAdministrateur ==  1 %}
+										<option value="gestionnaire_utilisateur" {% if utilisateur.statut == 'gestionnaire_utilisateur' %} selected {% endif %}>{{ trad.statut_user_administrator }}</option>
+										<option value="administrateur" {% if utilisateur.statut == 'administrateur' %} selected {% endif %}>{{ trad.statut_administrator }}</option>
+									{% endif %}
 								</select>
 							</div>
 						</div>
-					{% else %}
-						<input type="hidden" name="reg_etat" value="{{ utilisateur.etat }}" />
-					{% endif %}
 
-					<!-- Type d'authentification: Local/Externe -->
-					<div class="form-group row">
-						<label class="col col-sm-4" for="reg_source">{{ trad.authentification }}</label>
-						<div class="input-group col-sm-8">
-							<select name="reg_source" id="reg_source" class="form-control" onchange="AffichageBlocMDP();">
-								<option value="local" {% if utilisateur.source == 'local' %} selected {% endif %}>{{ trad.authentification_base_locale }}</option>
-								<option value="ext" {% if utilisateur.source == 'ext' %} selected {% endif %}>{{ trad.authentification_base_externe }}</option>
-							</select>
-						</div>
-					</div>
-
-					<!-- Changement de mot de passe, n'ai affiché que pour l'auth. locale -->
-					<div id="password">
-						{% if utilisateur.reg_login !=  '' %}
-							<div class="form-group">
-								<label class="col col-sm-12" for="reg_statut">{{ trad.champ_vide_mot_de_passe_inchange }}</label>
+						<!-- Etat : Actif/Inactif -->
+						{% if d.estPasLuiMeme == 1 %}
+							<div class="form-group row">
+								<label class="col col-sm-4" for="p_etat">{{ trad.activ_no_activ }}</label>
+								<div class="input-group col-sm-8">
+									<select name="p_etat" id="p_etat" class="form-control">
+										<option value="actif" {% if utilisateur.etat == 'actif' %} selected {% endif %}>{{ trad.activ_user }}</option>
+										<option value="inactif" {% if utilisateur.etat == 'inactif' %} selected {% endif %}>{{ trad.no_activ_user }}</option>
+									</select>
+								</div>
 							</div>
+						{% else %}
+							<input type="hidden" name="p_reg_etat" value="{{ utilisateur.etat }}" />
 						{% endif %}
 
-						{{ form.input('reg_password', trad.pwd, '', {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type:'password', autocomplete:'new-password'}) }}
-						<div class="form-group row row">
-							<div class="col-sm-4"></div>
-							<div class="col-sm-8">
-								{{trad.pwd_toot_short}} 
-								{% if settings.pass_nb_min == 1 %}, {{settings.pass_nb_min}} {{trad.pass_x_min}}{% endif %}
-								{% if settings.pass_nb_min > 1 %}, {{settings.pass_nb_min}}  {{trad.pass_x_mins}}{% endif %}
-								{% if settings.pass_nb_maj == 1 %}, {{settings.pass_nb_maj}} {{trad.pass_x_maj}}{% endif %}
-								{% if settings.pass_nb_maj > 1 %}, {{settings.pass_nb_maj}} {{trad.pass_x_majs}}{% endif %}
-								{% if settings.pass_nb_ch == 1 %}, {{settings.pass_nb_ch}}  {{trad.pass_x_ch}}{% endif %}
-								{% if settings.pass_nb_ch > 1 %}, {{settings.pass_nb_ch}}  {{trad.pass_x_chs}}{% endif %}
-								{% if settings.pass_nb_sp == 1 %}, {{settings.pass_nb_sp}} {{trad.pass_x_sp}}{% endif %}
-								{% if settings.pass_nb_sp > 1 %}, {{settings.pass_nb_sp}} {{trad.pass_x_sps}}{% endif %}
+						<!-- Type d'authentification: Local/Externe -->
+						<div class="form-group row">
+							<label class="col col-sm-4" for="p_source">{{ trad.authentification }}</label>
+							<div class="input-group col-sm-8">
+								<select name="p_source" id="p_source" class="form-control">
+									<option value="local" {% if utilisateur.source == 'local' %} selected {% endif %}>{{ trad.authentification_base_locale }}</option>
+									<option value="ext" {% if utilisateur.source == 'ext' %} selected {% endif %}>{{ trad.authentification_base_externe }}</option>
+								</select>
 							</div>
 						</div>
-						{{ form.input('reg_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type:'password'}) }}
 
-						<div class="form-group row col-sm-12">
-							<label class="col col-sm-4" for="reg_changepwd">{{ trad.user_change_pwd_connexion }}</label>
-							<div class="col col-sm-8">
-								<input type="checkbox" name="reg_changepwd" id="reg_changepwd" value="1" {% if utilisateur.changepwd == '1' %} checked {% endif %}>
+						<!-- Changement de mot de passe, n'ai affiché que pour l'auth. locale -->
+						<div id="password">
+							<div class="callout callout-info">
+								{% if utilisateur.reg_login !=  '' %}
+									<div class="form-group">
+										<label class="col col-sm-12" for="p_statut">{{ trad.champ_vide_mot_de_passe_inchange }}</label>
+									</div>
+								{% endif %}
+
+								{{ form.input('p_password', trad.pwd, '', {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type:'password', autocomplete:'new-password'}) }}
+								<div class="form-group row row">
+									<div class="col-sm-4"></div>
+									<div class="col-sm-8">
+										{{trad.pwd_toot_short}} 
+										{% if settings.pass_nb_min == 1 %}, {{settings.pass_nb_min}} {{trad.pass_x_min}}{% endif %}
+										{% if settings.pass_nb_min > 1 %}, {{settings.pass_nb_min}}  {{trad.pass_x_mins}}{% endif %}
+										{% if settings.pass_nb_maj == 1 %}, {{settings.pass_nb_maj}} {{trad.pass_x_maj}}{% endif %}
+										{% if settings.pass_nb_maj > 1 %}, {{settings.pass_nb_maj}} {{trad.pass_x_majs}}{% endif %}
+										{% if settings.pass_nb_ch == 1 %}, {{settings.pass_nb_ch}}  {{trad.pass_x_ch}}{% endif %}
+										{% if settings.pass_nb_ch > 1 %}, {{settings.pass_nb_ch}}  {{trad.pass_x_chs}}{% endif %}
+										{% if settings.pass_nb_sp == 1 %}, {{settings.pass_nb_sp}} {{trad.pass_x_sp}}{% endif %}
+										{% if settings.pass_nb_sp > 1 %}, {{settings.pass_nb_sp}} {{trad.pass_x_sps}}{% endif %}
+									</div>
+								</div>
+								{{ form.input('p_password2', trad.confirm_pwd, '', {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type:'password'}) }}
+
+								{{ form.switch('p_changepwd', trad.user_change_pwd_connexion, utilisateur.changepwd, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}
 							</div>
 						</div>
-					</div>
 
-					<div class="form-group row col-sm-12">
-						<label class="col col-sm-4" for="reg_desactive_mail">Désactiver l'envoi de mail à cet utilisateur</label>
-						<div class="col col-sm-8">
-							<input type="checkbox" name="reg_desactive_mail" id="reg_desactive_mail" value="1" {% if utilisateur.desactive_mail == '1' %} checked {% endif %}>
+						{{ form.switch('p_desactive_mail', "Désactiver l'envoi de mail à cet utilisateur", utilisateur.desactive_mail, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}
+
+						<!-- Gestion des groupes -->
+						<div class="form-group">
+							<label>{{ trad.groupes }}</label>
+							<select name="p_groupes[]" id="p_groupes" class="duallistbox" multiple="multiple">
+								{% for groupe in groupesajoutable %}
+									<option value="{{ groupe.idgroupes }}">{{ groupe.nom }}</option>
+								{% endfor %}
+								{% for groupe in groupespresent %}
+									<option value="{{ groupe.idgroupes }}" selected>{{ groupe.nom }}</option>
+								{% endfor %}
+							</select>
 						</div>
-					</div>
 
-					<div class="row">
-						<label for="commentaire">Commentaire (visible uniquement par les gestionnaires utilisateurs et les administrateurs) :</label>
-						<textarea class="form-control" id="commentaire" name="reg_commentaire" cols="30" rows="4">{{ utilisateur.commentaire }}</textarea><br/>
+						<div class="row">
+							<label for="p_commentaire">Commentaire (visible uniquement par les gestionnaires utilisateurs et les administrateurs) :</label>
+							<textarea class="form-control" id="commentaire" name="p_commentaire" cols="30" rows="4">{{ utilisateur.commentaire }}</textarea><br/>
+						</div>
+		
 					</div>
-	
+				</div>
 
-					{% if utilisateur.reg_login !=  '' %}
-						<hr>
+			<!-- Préfrences d'affichage -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title"><i class="fa-solid fa-user-gear"></i> Paramètres d'affichage</h3>
+					</div>
+					<div class="card-body">
 
 						<!-- Format liste des domaines / ressources -->
 						<div class="form-group row col-sm-12">
-							<label class="col col-sm-6" for="area_list_format">{{ trad.explain_area_list_format }}</label>
+							<label class="col col-sm-6" for="p_area_list_format">{{ trad.explain_area_list_format }}</label>
 							<div class="col col-sm-6">
-								<select class="form-control" name="area_list_format" id="area_list_format">
+								<select class="form-control" name="p_area_list_format" id="p_area_list_format">
 									<option value="list" {% if utilisateur.default_list_type == 'list' %} selected {% endif %}>{{ trad.liste_area_list_format }}</option>
 									<option value="select" {% if utilisateur.default_list_type == 'select' %} selected {% endif %}>{{ trad.select_area_list_format }}</option>
 									<option value="item" {% if utilisateur.default_list_type == 'item' %} selected {% endif %}>{{ trad.item_area_list_format }}</option>
@@ -145,25 +149,25 @@
 						<!-- Site / Domaine et ressource par défaut -->
 						{% if settings.module_multisite == 1 %}
 							<div class="form-group row col-sm-12">
-								<label class="col col-sm-6" for="id_site">{{ trad.default_site }}</label>
+								<label class="col col-sm-6" for="p_id_site">{{ trad.default_site }}</label>
 								<div class="col col-sm-6">
-									<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+									<select class="form-control" id="p_id_site" name="p_id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 										<option value="-1">{{ trad.choose_a_site }}</option>
 										{{ d.optionSite | raw }}
 									</select>
 								</div>
 							</div>
 						{% else %}
-							<input type="hidden" id="id_site" name="id_site" value="-1" />
+							<input type="hidden" id="p_id_site" name="p_id_site" value="-1" />
 						{% endif %}
 						<div id="div_liste_domaines"></div>
 						<div id="div_liste_ressources"></div>
 
 						<!-- Style -->
 						<div class="form-group row col-sm-12">
-							<label class="col col-sm-6" for="default_css">{{ trad.explain_css }}</label>
+							<label class="col col-sm-6" for="p_default_css">{{ trad.explain_css }}</label>
 							<div class="col col-sm-6">
-								<select class="form-control" name="default_css" id="default_css">
+								<select class="form-control" name="p_default_css" id="p_default_css">
 									{{ d.optionTheme | raw }}
 								</select>
 							</div>
@@ -171,72 +175,47 @@
 
 						<!--Langue  -->
 						<div class="form-group row col-sm-12">
-							<label class="col col-sm-6" for="default_language">{{ trad.choose_language }}</label>
+							<label class="col col-sm-6" for="p_default_language">{{ trad.choose_language }}</label>
 							<div class="col col-sm-6">
-								<select class="form-control" name="default_language" id="default_language">
+								<select class="form-control" name="p_default_language" id="p_default_language">
 									{{ d.optionLangue | raw }}
 								</select>
 							</div>
 						</div>
-					{% endif %}
 
-					<hr>
-
-					<!-- Gestion des groupes -->
-					<div class="form-group">
-						<label>{{ trad.groupes }}</label>
-						<select name="groupes[]" id="groupes" class="duallistbox" multiple="multiple">
-							{% for groupe in groupesajoutable %}
-								<option value="{{ groupe.idgroupes }}">{{ groupe.nom }}</option>
-							{% endfor %}
-							{% for groupe in groupespresent %}
-								<option value="{{ groupe.idgroupes }}" selected>{{ groupe.nom }}</option>
-							{% endfor %}
-						</select>
-					</div>
-					<!-- /.form-group -->
-
+					</div><!-- /.box-body -->
 				</div>
 
-				<!-- /.box-body -->
-				<div class="box-footer">
-					<a href="?p=admin_user" class="btn btn-default btn-md">{{ trad.back }}</a>
-					<input type="submit" name="save" value="{{ trad.save }}" class="btn btn-success btn-md pull-right" />
-				</div>
+				<!-- Enregistrer -->
+				<a href="?p=admin_user" class="btn btn-default position-fixed elevation-4" style="bottom:125px; right:20px; z-index:99;">
+					<i class="fas fa-circle-left"></i> {{ trad.back }}
+				</a>
+				<button type="submit" name="ok" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+					<i class="fas fa-save"></i> {{ trad.save }}
+				</button>
 			</form>
-          </div>
-          <!-- /.box -->
+        </div><!-- /.col-6 -->
 
 		  <!-- Liste des privilèges de l'utilisateur  -->
 		 {% if utilisateur.reg_login !=  '' %}
-			<div class="box box-primary">
-				<div class="box-header">
-				  <h3 class="box-title">{{ trad.liste_privileges }}</h3>
-				</div>
-
-				<div class="box-body">
-					<ul>
-						{{ d.AdministrateurSite |raw }}
-						{{ d.AdministrateurDomaine |raw }}
-						{{ d.ressoureceRestreinte |raw }}
-						{{ d.AdministrateurOuRien |raw }}
-					</ul>
-
-
-
-				</div>
-				<!-- /.box-body -->
-
-				<div class="box-footer">
-					<a href="?p=admin_user" class="btn btn-default btn-md">{{ trad.back }}</a>
+			<div class="col-lg-6">
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title"><i class="fa-solid fa-id-card"></i> {{ trad.liste_privileges }}</h3>
+					</div>
+					<div class="card-body">
+						<ul>
+							{{ d.AdministrateurSite |raw }}
+							{{ d.AdministrateurDomaine |raw }}
+							{{ d.ressoureceRestreinte |raw }}
+							{{ d.AdministrateurOuRien |raw }}
+						</ul>
+					</div>
 				</div>
 			</div>
-			<!-- /.box -->
 		{% endif %}
 
-		</div>
 	</div>
-
 
 {% endblock %}
 
@@ -249,7 +228,7 @@
 				type: "get",
 				dataType: "html",
 				data: {
-					id_site: $('#id_site').val(),
+					id_site: $('#p_id_site').val(),
 					default_area : '{{ utilisateur.default_area }}',
 					session_login:'{{ d.nomUtilisateur }}',
 					use_site:'{{ d.use_site }}',
@@ -285,40 +264,34 @@
 		modifier_liste_domaines();
 		modifier_liste_ressources(1);
 		
-		$(function(){
-			AffichageBlocMDP()
-		})
+		$(function() {
+			// Afficher/masquer la section mot de passe
+			var $selectSource = $('select[name="p_source"]');
+			var $sectionMdp = $('#password');
+
+			function togglePassword() {
+				if ($selectSource.val() === 'local') {
+					$sectionMdp.slideDown();
+				} else {
+					$sectionMdp.slideUp();
+				}
+			}
+
+			$selectSource.on('change', togglePassword);
+
+			// État initial
+			togglePassword();
+		});
+
+
 
 		$('.duallistbox').bootstrapDualListbox()
-
-		function display_password_fields(id){
-			if ($('#'+id).val()=='locale')
-			{
-				$('#password_fields').show();
-			}
-			else
-			{
-				$('#password_fields').hide();
-			}
-		}
-
-		function AffichageBlocMDP(){
-			var regSource = document.getElementById("reg_source");
-			var typeAuth = regSource.options[regSource.selectedIndex].value;
-
-			if(typeAuth == "local")
-			{
-				password.style.visibility='visible';
-			} 
-			else 
-			{
-				password.style.visibility='hidden';
-			}
-		}
 
 		{% if d.enregistrement %}
 			{% if d.enregistrement == 1 %}
 				toastr.success("{{trad.message_records}}")
+			{% elseif d.enregistrement == 2 %}
+				toastr.error("{{d.message_erreur}}")
 			{% else %}
 				toastr.warning("{{d.enregistrement|raw}}")
 			{% endif %}

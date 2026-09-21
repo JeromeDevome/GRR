@@ -130,9 +130,9 @@
 
 			<div class="col-xs-12" id="div_liste_sites">
 				<div class="form-group row col-sm-12">
-					<label class="col-md-6" for="id_site">{{ trad.default_site }}</label>
+					<label class="col-md-6" for="p_id_site">{{ trad.default_site }}</label>
 					<div class="col-md-6">
-						<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+						<select class="form-control" id="p_id_site" name="p_id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 							<option value="-1">{{ trad.choose_a_site }}</option>
 							{% for site in sites %}
 								<option value="{{ site.idsite }}" {% if site.idsite == d.default_site %} selected {% endif %}>{{ site.nomsite }}</option>
@@ -143,7 +143,7 @@
       </div>
 			{% else %}
 				<h4>{{ trad.explain_default_area_and_room }}</h4>
-				<input type="hidden" id="id_site" name="id_site" value="-1" />
+				<input type="hidden" id="p_id_site" name="p_id_site" value="-1" />
 
 			{% endif %}
 
@@ -201,9 +201,9 @@
 			<input type="hidden" name="day" value="{{ d.dDay }}" />
 			<input type="hidden" name="month" value="{{ d.dMonth }}" />
 			<input type="hidden" name="year" value="{{ d.dYear }}" />
-			<input type="hidden" name="id_site" value="-1" />
-			<input type="hidden" name="id_area" value="-1" />
-			<input type="hidden" name="id_room" value="-1" />
+			<input type="hidden" name="p_id_site" value="-1" />
+			<input type="hidden" name="p_id_area" value="-1" />
+			<input type="hidden" name="p_id_room" value="-1" />
 			<input type="hidden" name="default_css" value="" />
 			<input type="hidden" name="area_item_format" value="item" />
 			<input type="hidden" name="default_language" value="" />
@@ -223,7 +223,7 @@
 				type: "get",
 				dataType: "html",
 				data: {
-					id_site: $('#id_site').val(),
+					id_site: $('#p_id_site').val(),
 					// default_area : '<?php echo Settings::get("default_area"); ?>',
 					default_area : '{{d.default_area}}',
 					session_login:'{{d.identifiant}}',
@@ -245,7 +245,7 @@
 				type: "get",
 				dataType: "html",
 				data: {
-					id_area:$('id_area').serialize(true),
+					id_area:$('p_id_area').serialize(true),
 					// default_room : '<?php echo Settings::get("default_room"); ?>',
 					default_room : '{{d.default_room}}',
 					type:'ressource',

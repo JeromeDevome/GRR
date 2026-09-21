@@ -179,14 +179,14 @@
 								<div class="form-group row">
 									<label class="col col-sm-6" for="default_css">{{ trad.default_site }}</label>
 									<div class="col col-sm-6">
-										<select class="form-control" id="id_site" name="id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+										<select class="form-control" id="p_id_site" name="p_id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
 											<option value="-1">{{ trad.choose_a_site }}</option>
 											{{ d.optionSite | raw }}
 										</select>
 									</div>
 								</div>
 							{% else %}
-								<input type="hidden" id="id_site" name="id_site" value="-1" />
+								<input type="hidden" id="p_id_site" name="p_id_site" value="-1" />
 							{% endif %}
 							<div id="div_liste_domaines"></div>
 							<div id="div_liste_ressources"></div>
@@ -647,7 +647,7 @@
 				type: "get",
 				dataType: "html",
 				data: {
-					id_site: $('#id_site').val(),
+					id_site: $('#p_id_site').val(),
 					default_area : '{{ settings.default_area }}',
 					session_login:'{{ d.nomUtilisateur }}',
 					use_site:'{{ settings.module_multisite }}',
@@ -668,7 +668,7 @@
 				type: "get",
 				dataType: "html",
 				data: {
-					id_area:$('id_area').serialize(true),
+					id_area:$('p_id_area').serialize(true),
 					default_room : '{{ settings.default_room }}',
 					type:'ressource',
 					action:+action,

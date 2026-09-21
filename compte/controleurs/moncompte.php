@@ -152,9 +152,9 @@ if ($valid == 'yes')
 }
 if (($valid == 'yes') || ($valid=='reset'))
 {
-	$default_site = isset($_POST['id_site']) ? $_POST['id_site'] : NULL;
-	$default_area = isset($_POST['id_area']) ? $_POST['id_area'] : NULL;
-	$default_room = isset($_POST['id_room']) ? $_POST['id_room'] : NULL;
+	$default_site = isset($_POST['p_id_site']) ? $_POST['p_id_site'] : NULL;
+	$default_area = isset($_POST['p_id_area']) ? $_POST['p_id_area'] : NULL;
+	$default_room = isset($_POST['p_id_room']) ? $_POST['p_id_room'] : NULL;
 	$default_style = isset($_POST['default_css']) ? $_POST['default_css'] : NULL;
 	$default_list_type = isset($_POST['area_item_format']) ? $_POST['area_item_format'] : NULL;
 	$default_language = isset($_POST['default_language']) ? $_POST['default_language'] : NULL;

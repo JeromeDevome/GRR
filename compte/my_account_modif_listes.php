@@ -80,7 +80,7 @@ if ($_GET['type'] == "domaine")
 	if (($id_site!=-1) || ($use_site==0)){
 		$resultat = grr_sql_query($sql);
 	}
-	$display_liste = '<div class="form-group row col-sm-12"><label class="col-sm-6" for="id_area">'.get_vocab('default_area').'</label><div class="col-sm-6"><select class="form-control" id="id_area" name="id_area" onchange="modifier_liste_ressources(1)"><option value="-1">'.get_vocab('choose_an_area').'</option>'."\n";
+	$display_liste = '<div class="form-group row col-sm-12"><label class="col-sm-6" for="p_id_area">'.get_vocab('default_area').'</label><div class="col-sm-6"><select class="form-control" id="p_id_area" name="p_id_area" onchange="modifier_liste_ressources(1)"><option value="-1">'.get_vocab('choose_an_area').'</option>'."\n";
 	if (($id_site!=-1) || ($use_site==0)){
 
 		for ($enr = 0; ($row = grr_sql_row($resultat, $enr)); $enr++)
@@ -112,7 +112,7 @@ if ($_GET['type'] == "ressource")
 	if ($_GET['action'] == 2)
 	{
 	//on vide la liste des ressources
-		$display_liste = '<div class="form-group row col-sm-12"><label class="col-sm-6" for="id_room">'.get_vocab('default_room').'</label><div class="col-sm-6"><select class="form-control" name="id_room" id="id_room"><option value="-1">'.get_vocab('default_room_all').'</option></select></div></div>'."\n";
+		$display_liste = '<div class="form-group row col-sm-12"><label class="col-sm-6" for="p_id_room">'.get_vocab('default_room').'</label><div class="col-sm-6"><select class="form-control" name="p_id_room" id="p_id_room"><option value="-1">'.get_vocab('default_room_all').'</option></select></div></div>'."\n";
 	}
 	else
 	{
@@ -134,7 +134,7 @@ if ($_GET['type'] == "ressource")
 		}
 		$sql .= " ORDER BY order_display,room_name";
 		$resultat = grr_sql_query($sql);
-		$display_liste = '<div class="form-group row col-sm-12"><label class="col-sm-6" for="id_room">'.get_vocab('default_room').'</label><div class="col-sm-6"><select class="form-control" name="id_room" id="id_room"><option value="-1"';
+		$display_liste = '<div class="form-group row col-sm-12"><label class="col-sm-6" for="p_id_room">'.get_vocab('default_room').'</label><div class="col-sm-6"><select class="form-control" name="p_id_room" id="p_id_room"><option value="-1"';
 		if ($default_room == -1)
 			$display_liste .= ' selected="selected" ';
 		$display_liste .= ' >'.get_vocab('default_room_all').'</option>'."\n".

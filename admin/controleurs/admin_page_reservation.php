@@ -53,9 +53,9 @@ $form_vars = array(
     'mail_contact_resa_captcha' => 'int',
     'textecontactresa' => '',
     'area_list_format' => 'string',
-    'default_site' => 'int',
-    'id_area' => 'int',
-    'id_room' => 'int',
+    'p_id_site' => 'int',
+    'p_id_area' => 'int',
+    'p_id_room' => 'int',
     'menu_gauche' => 'int',
     'display_beneficiaire_nc' => 'int',
     'display_beneficiaire_vi' => 'int',
@@ -199,13 +199,13 @@ foreach($form_vars as $var => $var_type)
         $settings_results[] = Settings::set2("area_list_format", $area_list_format);
 
         // Site par défaut
-        $settings_results[] = Settings::set2("default_site", $default_site);
+        $settings_results[] = Settings::set2("default_site", $p_id_site);
 
         // Domaine par défaut
-        $settings_results[] = Settings::set2("default_area", $id_area);
+        $settings_results[] = Settings::set2("default_area", $p_id_area);
 
         // Page par défaut
-        $settings_results[] = Settings::set2("default_room", $id_room);
+        $settings_results[] = Settings::set2("default_room", $p_id_room);
 
         // Affichage du menu domaine / ressource à gauche ou en haut de la page
         $settings_results[] = Settings::set2("menu_gauche", $menu_gauche);

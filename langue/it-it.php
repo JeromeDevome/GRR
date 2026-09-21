@@ -679,7 +679,7 @@ $vocab["error_duree_max_resa_area"] = "Non sei autorizzato a prenotare questa ri
 
 Durata massima della prenotazione:";
 $vocab["error_end_date"] = "Errore nella data di fine prenotazione";
-$vocab["error_exist_login"] = "*** Attenzione! Un utente con lo stesso login esiste già. Registrazione impossibile! ***";
+$vocab["error_exist_login"] = "Un utente con lo stesso login esiste già. Registrazione impossibile!";
 $vocab["error_heure_debut_fin"] = "Attenzione, prenotazione impossibile: l'ora di inizio o l'ora di fine della prenotazione è al di fuori delle fasce consentite.";
 $vocab["error_qui_peut_reserver_pour"] = "Attenzione, prenotazione impossibile: stai tentando di prenotare una risorsa a nome di un'altra persona senza avere diritti sufficienti.";
 $vocab["error_room"] = "Errore: risorsa ";
