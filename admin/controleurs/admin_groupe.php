@@ -3,8 +3,8 @@
  * admin_groupe.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-27 09:58$
- * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * Dernière modification : $Date: 2026-09-26 11:00$
+ * @author    JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -19,89 +19,68 @@
 
 $grr_script_name = "admin_groupe.php";
 
-$msg = '';
-
+// Accès à la page
 if ((SecuAccess::UserLevel(getUserName(), -1) < 6) && (SecuAccess::UserLevel(getUserName(), -1,'user') != 1))
 {
 	showAccessDenied($back);
 	exit();
 }
-if ((isset($_GET['action_del'])) && isset($_GET['js_confirmed']) && ($_GET['js_confirmed'] == 1))
-{
-	VerifyModeDemo();
-}
 
-//
-// Supression d'un utilisateur
-//
-if ((isset($_GET['action_del'])) and (isset($_GET['js_confirmed'])) and ($_GET['js_confirmed'] == 1))
-{
-	$id = $_GET['groupe_del'];
 
-	$sql = "DELETE FROM ".TABLE_PREFIX."_groupes WHERE idgroupes='$id'";
-	if (grr_sql_command($sql) < 0)
+// les variables attendues et leur type
+$form_vars = array(
+    'p_action' => array('int', 0), // 1 : supression, 2 : synchro
+	'p_groupe' => array('int', 0), // Id du groupe à traiter
+);
+// récupération des valeurs des variables passées en paramètres
+foreach($form_vars as $var => $params)
+    $$var = SecuChaine::GetFormVarSecure($var, $params[0], $params[1]);
+
+
+
+/** Actions **/
+	if($p_action == 1) //Suppression
 	{
-		fatal_error(1, "<p>" . grr_sql_error());
+		VerifyModeDemo();
+
+		$sql = "DELETE FROM ".TABLE_PREFIX."_groupes WHERE idgroupes='$p_groupe'";
+		if (grr_sql_command($sql) < 0)
+		{
+			fatal_error(1, "<p>" . grr_sql_error());
+		}
+		else
+		{
+			$d['enregistrement'] = 1;
+			$d['msgToast'] = get_vocab('del_group_succeed');
+		}
 	}
-	else
+	elseif($p_action == 2) // Synchronisation
 	{
+		synchro_groupe($p_groupe, 0);
 		$d['enregistrement'] = 1;
-		$d['msgToast'] = get_vocab('del_group_succeed');
+		$d['msgToast'] = "Synchronisation du groupe terminé";
 	}
-}
-// Synchro Groupe
-if (isset($_GET['groupe_sync']))
-{
-	$id = $_GET['groupe_sync'];
-	synchro_groupe($id, 0);
-}
 
 
 
-if (isset($mess) and ($mess != ""))
-	echo "<p>".$mess."</p>";
-
-get_vocab_admin('admin_groupe');
-
-get_vocab_admin('groupe_add');
-
-get_vocab_admin("name");
-get_vocab_admin("description");
-get_vocab_admin("statut");
-get_vocab_admin("action");
-
-get_vocab_admin("confirm_del");
-get_vocab_admin("cancel");
-get_vocab_admin("delete");
-
-if (SecuAccess::UserLevel(getUserName(),-1) >= 6)
-	$d['estAdministrateur'] = 1;
-
-
-// Affichage du tableau
-$groupes = array();
-$i = 0;
-$sql = "SELECT idgroupes, nom, description, archive FROM ".TABLE_PREFIX."_groupes ORDER BY nom ASC";
-$res = grr_sql_query($sql);
-if ($res)
-{
-	foreach($res as $row)
+/** Affichage de la page **/
+	$trad['TitrePage']	= $trad['admin_groupe'];
+	$groupes = array();
+	$i = 0;
+	$sql = "SELECT idgroupes, nom, description, archive FROM ".TABLE_PREFIX."_groupes ORDER BY nom ASC";
+	$res = grr_sql_query($sql);
+	if ($res)
 	{
-		$nom = htmlspecialchars($row['nom']);
-		$description = htmlspecialchars($row['description']);
-		// Id groupe
-		$groupes[$i][0] = $row['idgroupes'];
-		// Nom
-		$groupes[$i][1] = $nom;
-		// Description
-		$groupes[$i][2] = $description;
-		// Affichage du statut
-		if ($row['archive'] == 1)
-			$groupes[$i][3] = "<span class=\"text-red\">".get_vocab("archiver")."</span>";
-        $i++;
+		foreach($res as $row)
+		{
+			$groupes[$i][0] = $row['idgroupes'];
+			$groupes[$i][1] = $row['nom'];
+			$groupes[$i][2] = $row['description'];
+			if ($row['archive'] == 1)
+				$groupes[$i][3] = "<span class=\"text-red\">".get_vocab("archiver")."</span>";
+			$i++;
+		}
 	}
-}
 
-
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'groupes' => $groupes));
+	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'groupes' => $groupes));
 ?>

@@ -7,81 +7,77 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col col-md-9">
+		<div class="col col-md-12">
 
-			<div class="box">
-				<div class="box-header">
-					<h3 class="box-title">{{trad.admin_user}}</h3>
+			<div class="card">
+				<div class="card-header">
+					<a href="?p=admin_groupe_edit" class="btn btn-success"><i class="icon fa fa-plus"></i> {{ trad.groupe_add }}</a>
 				</div>
-				<!-- /.box-header -->
-				<div class="box-body">
-					<table id="tableuser" class="table table-bordered table-striped">
-						<thead>
-							<tr>
-								<th>{{trad.name}}</th>
-								<th>{{trad.description}}</th>
-								<th>{{trad.statut}}</th>
-								<th>{{trad.action}}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for groupe in groupes %}
+				<div class="card-body p-0">
+					<div class="table-responsive">
+						<table id="tableuser" class="table table-bordered table-striped">
+							<thead>
 								<tr>
-									<td>{{groupe.1}}</td>
-									<td>{{groupe.2}}</td>
-									<td>{{groupe.3|raw}}</td>
-									<td>
-										<a href="?p=admin_groupe_edit&amp;idgroupe={{groupe.0}}" class="btn btn-info btn-md"><i class="icon fa fa-edit"></i></a> 
-										<a href="?p=admin_groupe&amp;groupe_sync={{groupe.0}}" class="btn btn-warning btn-md"><i class="icon fa fa-sync"></i></a> 
-										<button type="button" class="btn btn-danger btn-md" data-bs-toggle="modal" data-bs-target="#modalWarningSupUser" data-idsup="{{ groupe.0 }}"><i class="icon fa fa-trash"></i></button>
-									</td>
+									<th>{{trad.name}}</th>
+									<th>{{trad.description}}</th>
+									<th>{{trad.statut}}</th>
+									<th>{{trad.action}}</th>
 								</tr>
-							{% endfor %}
-						</tbody>
-						<thead>
-							<tr>
-								<th>{{trad.name}}</th>
-								<th>{{trad.description}}</th>
-								<th>{{trad.statut}}</th>
-								<th>{{trad.action}}</th>
-							</tr>
-						</thead>
-				  </table>
+							</thead>
+							<tbody>
+								{% for groupe in groupes %}
+									<tr>
+										<td>{{groupe.1}}</td>
+										<td>{{groupe.2}}</td>
+										<td>{{groupe.3|raw}}</td>
+										<td>
+											<div class="btn-group btn-group-sm" role="group">
+												<a href="?p=admin_groupe_edit&amp;idgroupe={{groupe.0}}" class="btn btn-primary"><i class="icon fa fa-edit"></i></a> 
+												<a href="?p=admin_groupe&amp;p_action=2&amp;p_groupe={{groupe.0}}" class="btn btn-warning"><i class="icon fa fa-sync"></i></a> 
+												<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalWarningSupUser" data-idsup="{{ groupe.0 }}" data-nom="{{ groupe.1 }}"><i class="icon fa fa-trash"></i></button>
+											</div>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>{{trad.name}}</th>
+									<th>{{trad.description}}</th>
+									<th>{{trad.statut}}</th>
+									<th>{{trad.action}}</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 
 
-		<div class="col col-md-3">
-
-			<div class="box">
-				<!-- /.box-header -->
-				<div class="box-body no-padding">
-					<a href="?p=admin_groupe_edit" class="btn btn-primary btn-block">{{ trad.groupe_add }}</a>
-				</div>
-			</div>
-		</div>
 	</div>	
 
 	<div class="modal fade" id="modalWarningSupUser" tyle="display: none;" aria-hidden="true">
-		<form action="?p=admin_groupe">
-          <div class="modal-dialog">
-			<div class="modal-content bg-warning">
-              <div class="modal-header">
-                <h4 class="modal-title">{{trad.confirm_del}}</h4>
-				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				  </button>
-              </div>
-              <div class="modal-body">
-				{{trad.confirm_del}} : <span class="modalidsup" id="modalidsup"></span> 
-              </div>
-              <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.cancel}}</button>
-				<button type="submit" id="liensup" class="btn btn-outline-dark">{{trad.delete}}</button>
-              </div>
-            </div>
-          </div>
+		<form action="?p=admin_groupe" method="post">
+			<input type="hidden" name="p_action" value="1">
+			<input type="hidden" name="p_groupe" id="modalidsup" value="">
+        	<div class="modal-dialog">
+				<div class="modal-content bg-warning">
+				<div class="modal-header">
+					<h4 class="modal-title">{{trad.confirm_del}}</h4>
+					<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					{{trad.confirm_del}} : <span class="nomgr" id="nomgr"></span><span class="modalidsup" id="modalidsup" hidden></span> 
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">{{trad.cancel}}</button>
+					<button type="submit" id="liensup" class="btn btn-danger">{{trad.delete}}</button>
+				</div>
+				</div>
+          	</div>
 		  </form>
 	</div>
 {% endblock %}
@@ -89,9 +85,11 @@
 {% block javascript %}
 	<!-- DataTables -->
 	<script src="../jslib/datatables/dataTables.min.js"></script>
+	<script src="../jslib/datatables-bs5/js/dataTables.bootstrap5.min.js"></script>
 
 	<!-- Buttons -->
 	<script src="../jslib/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="../jslib/datatables-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
 	<script src="../jslib/datatables-buttons/js/buttons.html5.min.js"></script>
 	<script src="../jslib/datatables-buttons/js/buttons.print.min.js"></script>
 	<script src="../jslib/datatables-buttons/js/buttons.colVis.min.js"></script>
@@ -112,110 +110,34 @@
 		$('#modalWarningSupUser').on('show.bs.modal', function (event) {
 			var button = $(event.relatedTarget) // Button that triggered the modal
 			var idasup = button.data('idsup') // Extract info from data-* attributes
+			var nomgr = button.data('nom') // Extract info from data-* attributes
 		    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 		    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 		    var modal = $(this)
-		    modal.find('.modalidsup').text(idasup)
-		})
-
-		$(function(){
-			$('form').submit(function(e) {
-			  e.preventDefault()
-			  var $form = $(this)
-			  var v=document.getElementById('modalidsup').innerHTML
-			  $.post($form.attr('action'), $form.serialize())
-			  .done(function(data) {
-				$('#html').html(data);
-				$('#modalWarningSupUser').modal('hide');
-				document.location.href='?p=admin_groupe&groupe_del='+v+'&action_del=yes&js_confirmed=1';
-			  })
-			  .fail(function() {
-				alert('Une erreur est survenue : GRRJS')
-			  })
-			})
+		    modal.find('.modalidsup').val(idasup)
+		    modal.find('#modalidsup').val(idasup)
+		    modal.find('.nomgr').text(nomgr)
 		})
 
 		// DataTable
 		var table = $('#tableuser').DataTable({
-			lengthChange: true,
-			lengthMenu: [[10, 25, 50, 100, -1],[10, 25, 50, 100, 'All']],
-			dom:
-				"<'row mb-2'<'col-sm-4 d-flex align-items-center'l<'ms-2'B>><'col-sm-8 d-flex justify-content-end'f>>" +
-				"<'row'<'col-sm-12'tr>>" +
-				"<'row mt-2'<'col-sm-5'i><'col-sm-7 d-flex justify-content-end'p>>",
+				lengthChange: true,
+				lengthMenu: [[10, 25, 50, 100, -1],[10, 25, 50, 100, 'All']],
+				dom:
+					"<'row mb-2'<'col-md-6 d-flex align-items-center flex-nowrap gap-2'lB><'col-md-6 d-flex justify-content-end'f>>" +
+					"<'row'<'col-12'tr>>" +
+					"<'row mt-2'<'col-md-5'i><'col-md-7 d-flex justify-content-end'p>>",
 
-			pagingType: 'full_numbers', // Pagination complète
-			buttons: [
-				{
-					extend: 'copy',
-					className: 'btn btn-primary',
-					exportOptions: {
-						columns: ':visible'
-					}
-				},
-				{
-					extend: 'excel',
-					className: 'btn btn-success',
-					exportOptions: {
-						columns: ':visible'
-					}
-				},
-				{
-					extend: 'csv',
-					className: 'btn btn-info',
-					exportOptions: {
-						columns: ':visible'
-					}
-				},
-				{
-					extend: 'pdfHtml5',
-					className: 'btn btn-danger',
-					orientation: 'landscape',
-					pageSize: 'LEGAL',
-					exportOptions: {
-						columns: ':visible'
-					}
-				},
-				{
-					extend: 'colvis',
-					className: 'btn btn-secondary dropdown-toggle', // style Bootstrap
-					text: 'Colonnes',
-					collectionLayout: 'fixed two-column', // optionnel
-					postfixButtons: [], // aucun bouton supplémentaire
-					collectionTitle: 'Colonnes visibles',
-					init: function(api, node, config) {
-						// Ajouter la classe Bootstrap dropdown-menu à la collection
-						$(node).on('click', function() {
-							setTimeout(() => {
-								$('.dt-button-collection')
-									.addClass('dropdown-menu')
-									.css('display', 'block');
-								$('.dt-button-collection button').each(function() {
-									$(this).addClass('dropdown-item'); // style chaque item
-								});
-							}, 10);
-						});
-					}
-				}
-			],
-			language: {
-				lengthMenu: "_MENU_",
-				search: "",
-				searchPlaceholder: "Rechercher..."
-			},
-			initComplete: function () {
-				$('.dt-input[type="search"]')
-					.addClass('form-control')
-					.css('width', '250px');
+				pagingType: 'full_numbers',
 
-				$('.dt-length select')
-					.addClass('form-select')
-					.css('width', 'auto');
-			}
-
-		});
-
-		table.buttons().container().appendTo('#example_wrapper .col-sm-6:eq(0)');
+				buttons: [
+					'copy',
+					'excel',
+					'csv',
+					'pdfHtml5',
+					'colvis'
+				]
+			});
 
 	</script>
 {% endblock %}
