@@ -10,23 +10,17 @@
 		<div class="col col-md-12">
 			<div class="callout callout-info">{{trad.explications_active_type}}</div>
 
-			{% if listeManquant %}
-				{{ msgSyst.messageAlerte(trad.type_resa_manquant_titre, trad.type_resa_manquant_msg ~ listeManquant) }}
-			{% endif %}
-
-			<div class="box">
-				<div class="box-header">
-					<h3 class="box-title">{{trad.admin_type}} : {{d.nomDomaine}}</h3>
+			<div class="card">
+				<div class="card-header">
 					{% if d.droitsAdmin >= 6 %}
-						<a class="btn pull-right bg-green"href="?p=admin_type_modify&amp;id=0">{{trad.display_add_type}}</a>
+						<a class="btn pull-right bg-green" href="?p=admin_type_modify"><i class="icon fa fa-plus"></i> {{trad.display_add_type}}</a>
 					{% endif %}
 				</div>
-				<!-- /.box-header -->
-				<div class="box-body no-padding">
-				
-					<form action="?p=admin_type_area" id="type" method="get">
+				<form action="?p=admin_type_area" id="type" method="post">
+					<div class="card-body">
+
 						<input type="hidden" name="p" value="admin_type_area" />
-						<input type="hidden" name="id_area" value="{{d.idArea}}" />
+						<input type="hidden" name="p_id_area" value="{{d.idArea}}" />
 
 						<table class="table table-striped">
 							<tr>
@@ -43,8 +37,8 @@
 									<td>{{type.type_name}}</td>
 									<td style="background-color:{{type.couleurhexa}};color:{{type.couleurtexte}};">Texte</td>
 									<td>{{type.order_display}}</td>
-									<td><input type="checkbox" name="{{ type.id }}" value="y" {% if type.dispodomaine < 1 %}checked{% endif %} /></td>
-									<td><input type="radio" name="id_type_par_defaut" value="{{ type.id }}" {% if d.defautType == type.id %}checked{% endif %} /></td>
+									<td><input type="checkbox" name="p_types[]" value="{{ type.id }}" {% if type.dispodomaine < 1 %}checked{% endif %} /></td>
+									<td><input type="radio" name="p_id_type_par_defaut" value="{{ type.id }}" {% if d.defautType == type.id %}checked{% endif %} /></td>
 								</tr>
 							{% endfor %}
 							<tr>
@@ -53,17 +47,15 @@
 								<td></td>
 								<td></td>
 								<td></td>
-								<td><input type="radio" name="id_type_par_defaut" value="-1"{% if d.defautType <= 0 %}checked{% endif %} /> {{ trad.nobody }}</td>
+								<td><input type="radio" name="p_id_type_par_defaut" value="-1"{% if d.defautType <= 0 %}checked{% endif %} /> {{ trad.nobody }}</td>
 							</tr>
 						</table>
-
-						<div style="text-align:center;">
-							<input class="btn" type="submit" name="change_done" value="{{ trad.back }}" />
-							<input class="btn btn-primary" type="submit" name="valider" value="{{ trad.save }}" />
-						</div>
-					</form>
-
-				</div>
+					</div>
+					<div class="card-footer">
+						<a href="?p=admin_room" name="back" class="btn btn-default btn-md" /><i class="fas fa-circle-left"></i> {{ trad.back }}</a>
+						<button type="submit" name="p_submit" value="1" class="btn btn-primary btn-md float-right" /><i class="fas fa-save"></i> {{ trad.save }}</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -74,6 +66,8 @@
 		$(function () {
 			{% if d.enregistrement == 1 %}
 				toastr.success("{{d.msgToast}}")
+			{% elseif d.enregistrement == 2 %}
+				toastr.warning("{{d.msgToast}}")
 			{% elseif d.enregistrement == 3 %}
 				toastr.error("{{d.msgToast}}")
 			{% endif %}
