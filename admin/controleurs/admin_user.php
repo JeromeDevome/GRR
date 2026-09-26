@@ -31,6 +31,7 @@ include_once("modeles/suppression.class.php");
 // les variables attendues et leur type
 $form_vars = array(
     'p_action' => array('int', 0), // 1 : supression, 2 : rendre actif en masse, 3 : rendre inactif en masse, 4 : suppression en masse
+	'p_utilisateur' => array('string', ''),
 	'p_utilisateurs' => array('array', array()), // tableau des utilisateurs sélectionnés pour l'action groupée
 );
 // récupération des valeurs des variables passées en paramètres
@@ -46,20 +47,18 @@ foreach($form_vars as $var => $params)
 		
 		if($p_action == 1) // Suppression d'un unique utilisateur
 		{
-
-			$temp = SecuChaine::CleanLogin($_REQUEST['user_del']);
 			// un gestionnaire d'utilisateurs ne peut pas supprimer un administrateur général ou un gestionnaire d'utilisateurs
 			$can_delete = "yes";
 			if (SecuAccess::UserLevel(getUserName(), -1,'user') ==  1)
 			{
-				$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::CleanLogin($_GET['user_del'])."'");
+				$test_statut = grr_sql_query1("SELECT statut FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".SecuChaine::CleanLogin($p_utilisateur)."'");
 				if (($test_statut == "gestionnaire_utilisateur") || ($test_statut == "administrateur"))
 					$can_delete = "no";
 			}
-			if (($temp != getUserName()) && ($can_delete == "yes"))
+			if (($p_utilisateur != getUserName()) && ($can_delete == "yes"))
 			{
-				$temp = str_replace('\\', '\\\\', $temp);
-				Adm_Suppression::Utilisateur($temp);
+				$usersup = str_replace('\\', '\\\\', $p_utilisateur);
+				Adm_Suppression::Utilisateur($usersup);
 
 				$d['enregistrement'] = 1;
 				$d['msgToast'] = get_vocab("del_user_succeed");
