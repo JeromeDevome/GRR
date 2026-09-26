@@ -8,42 +8,25 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col col-md-12">
+		<div class="card col-12">
 
-         <div class="box box-success">
-            <div class="box-header">
-              <h3 class="box-title">{%if groupe.id != 0 %} {{ trad.groupe_modifier }}{%else%}{{ trad.groupe_add }}{%endif%}</h3>
-            </div>
-			<form class="form-horizontal" method="GET">
+			<form class="form-horizontal" method="post">
 				<input type="hidden" name ="p" value="admin_groupe_edit" />
-				<input type="hidden" name ="display" value="{{ trad.dDisplay }}" />
-				<input type="hidden" name="valid" value="yes" />
-				<input type="hidden" name ="idgroupe" value="{{groupe.idgroupes}}" />
+				<input type="hidden" name ="p_idgroupe" value="{{groupe.idgroupes}}" />
 
-				<div class="box-body">
-					<p>{{ trad.required }}</p>
-
-					{{ form.input('reg_nom', trad.name, groupe.nom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
-					{{ form.textarea('reg_description', trad.description, groupe.description, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
-					<div class="custom-control custom-checkbox">
-						<input class="custom-control-input custom-control-input-danger" type="checkbox" id="reg_archive" name="reg_archive" {%if groupe.archive == 1 %}checked{%endif%}>
-						<label for="reg_archive" class="custom-control-label">{{ trad.archiver }}</label>
-					  </div>
+				<div class="card-body">
+					{{ form.input('p_nom', trad.name, groupe.nom, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+					{{ form.textarea('p_description', trad.description, groupe.description, {classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
+					{{ form.switch('p_archive', trad.archiver, groupe.archive, {classGroup: 'col-12 custom-switch-on-danger', classLabel: 'col-10', classDivInput: 'col-2'}) }}
 				</div>
-				<br>
-
-				<!-- /.box-body -->
-				<div class="box-footer">
-					<a href="?p=admin_groupe" class="btn btn-default btn-md">{{ trad.back }}</a>
-					<input type="submit" name="save" value="{{ trad.save }}" class="btn btn-success btn-md pull-right" />
+				<div class="card-footer">
+						<a href="?p=admin_groupe" name="back" class="btn btn-default btn-md" /><i class="fas fa-circle-left"></i> {{ trad.back }}</a>
+						<button type="submit" name="p_submit" value="1" class="btn btn-success btn-md float-right" /><i class="fas fa-save"></i> {{ trad.save }}</button>
 				</div>
 			</form>
-          </div>
-          <!-- /.box -->
+
 		</div>
 	</div>
-
-
 {% endblock %}
 
 {% block javascript %}
