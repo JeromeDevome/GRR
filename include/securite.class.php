@@ -94,7 +94,7 @@ class SecuChaine {
     public static function GetFormVarSecure($nom, $type='', $default=NULL){
         $valeur = isset($_GET[$nom])? $_GET[$nom] : (isset($_POST[$nom])? $_POST[$nom] : (isset($_COOKIE[$nom])? $_COOKIE[$nom] : $default));
 
-        if (isset($valeur) && $valeur !== '') {
+        if ((isset($valeur) && $valeur !== '') || isset($default)) { // Si la valeur est vide et qu'aucune par défaut n'est transmise
             switch($type) {
                 case 'int':
                     $valeur = SecuChaine::Numeric($valeur);
