@@ -1,11 +1,10 @@
 <?php
 /**
- * admin_maj.php
+ * admin_infos.php
  * interface permettant la mise à jour de la base de données
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2018-04-11 11:30$
- * @author    JeromeB & Laurent Delineau & Yan Naessens
- * @author    Arnaud Fornerot pour l'intégation au portail Envole http://ent-envole.com/
+ * Dernière modification : $Date: 2026-09-27 18:20$
+ * @author    JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
@@ -21,25 +20,13 @@ $grr_script_name = "admin_infos.php";
 
 include('../include/fichier.class.php');
 
-$valid = isset($_POST["valid"]) ? $_POST["valid"] : 'no';
-$version_old = isset($_POST["version_old"]) ? $_POST["version_old"] : '';
 
-$trad = $vocab;
-
-if ((SecuAccess::UserLevel(getUserName(),-1) < 6) && ($valid != 'yes') && $connexionAdminMAJ == 1)
-{
-	showAccessDenied($back);
-	exit();
-}
-
-$result = '';
-
-// Numéro de version effective
-$version_old = Settings::get("version");
+// Accès à la page
+SecuAccess::CheckAccess(6, $back);
 
 /* GRR */
 $d['num_version'] = $version_grr." - ".$versionReposite;
-$d['num_versionbdd'] = $version_old;
+$d['num_versionbdd'] = Settings::get("version");
 $d['prefixe'] = TABLE_PREFIX;
 
 if (verif_version())
