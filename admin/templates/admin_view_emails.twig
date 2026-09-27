@@ -41,12 +41,12 @@
 	<div class="row">
 		<div class="col col-md-12">
 
-			<div class="box box-success">
-				<div class="box-header">
-					<h3 class="box-title">{{d.TitreDateLog}}</h3>
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title"><i class="fa-solid fa-list"></i> {{d.TitreDateLog}}</h3>
 				</div>
 				<!-- /.box-header -->
-				<div class="box-body">
+				<div class="card-body">
 				  <table id="tablelog" class="table display table-bordered table-striped">
 						<thead>
 							<tr>
@@ -70,7 +70,7 @@
 									<td>{{ log.message |striptags }}</td>
 									<td>{{ log.idresa }}</td>
 									<td>{{ log.erreur|slice(0, 8) }}</td>
-									<td><a href="?p=admin_view_emails&amp;idlogmail={{ log.idlogmail }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i></a></td>
+									<td><a href="?p=admin_view_emails&amp;p_idlogmail={{ log.idlogmail }}" class="btn btn-sm btn-info"><i class="fa-solid fa-eye"></i></a></td>
 								</tr>
 							{% endfor %}
 						</tbody>
