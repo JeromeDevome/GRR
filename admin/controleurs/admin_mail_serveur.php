@@ -3,7 +3,7 @@
  * admin_mail_serveur.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-05-03 21:00$
+ * Dernière modification : $Date: 2026-09-27 15:00$
  * @author    JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -16,149 +16,91 @@
  * (at your option) any later version.
  */
 
+$grr_script_name = 'admin_mail_serveur.php';
 
-$msg = "";
-$trad = $vocab;
+// Accès à la page
+SecuAccess::CheckAccess(6, $back);
 
-// Automatic mail
-if (isset($_GET['automatic_mail']))
-{
-	if (!Settings::set("automatic_mail", $_GET['automatic_mail']))
-		$msg .= "Erreur lors de l'enregistrement de automatic_mail !<br />";
-}
-if (isset($_GET['mail_serveur_from']))
-{
-	if (!Settings::set("mail_serveur_from", $_GET['mail_serveur_from']))
-		$msg .= "Erreur lors de l'enregistrement de mail_serveur_from !<br />";
-}
-if (isset($_GET['grr_mail_method']))
-{
-	if (!Settings::set("grr_mail_method", $_GET['grr_mail_method']))
-		$msg .= "Erreur lors de l'enregistrement de grr_mail_method !<br />";
-}
-if (isset($_GET['grr_mail_smtp']))
-{
-	if (!Settings::set("grr_mail_smtp", $_GET['grr_mail_smtp']))
-		$msg .= "Erreur lors de l'enregistrement de grr_mail_smtp !<br />";
-}
-if (isset($_GET['grr_mail_Username']))
-{
-	if (!Settings::set("grr_mail_Username", $_GET['grr_mail_Username']))
-		$msg .= "Erreur lors de l'enregistrement de grr_mail_Username !<br />";
-}
-if (isset($_GET['grr_mail_Password']))
-{
-	if (!Settings::set("grr_mail_Password", $_GET['grr_mail_Password']))
-		$msg .= "Erreur lors de l'enregistrement de grr_mail_Password !<br />";
-}
-
-if (isset($_GET['grr_mail_from']))
-{
-	if (!Settings::set("grr_mail_from", $_GET['grr_mail_from']))
-		$msg .= "Erreur lors de l'enregistrement de grr_mail_from !<br />";
-}
-if (isset($_GET['grr_mail_fromname']))
-{
-	if (!Settings::set("grr_mail_fromname", $_GET['grr_mail_fromname']))
-		$msg .= "Erreur lors de l'enregistrement de grr_mail_fromname !<br />";
-}
-if (isset($_GET['smtp_secure']))
-{
-	if (!Settings::set("smtp_secure", $_GET['smtp_secure']))
-		$msg .= "Erreur lors de l'enregistrement de smtp_secure !<br />";
-}
-if (isset($_GET['smtp_port']))
-{
-	if (!Settings::set("smtp_port", $_GET['smtp_port']))
-		$msg .= "Erreur lors de l'enregistrement de smtp_port !<br />";
-}
-if (isset($_GET['smtp_allow_self_signed']))
-{
-	if (!Settings::set("smtp_allow_self_signed", $_GET['smtp_allow_self_signed']))
-		$msg .= "Erreur lors de l'enregistrement de smtp_allow_self_signed !<br />";
-}
-if (isset($_GET['smtp_cafile']))
-{
-	if (!Settings::set("smtp_cafile", $_GET['smtp_cafile']))
-		$msg .= "Erreur lors de l'enregistrement de smtp_cafile !<br />";
-}
-if (isset($_GET['smtp_verify_peer_name']))
-{
-	if (!Settings::set("smtp_verify_peer_name", $_GET['smtp_verify_peer_name']))
-		$msg .= "Erreur lors de l'enregistrement de smtp_verify_peer_name !<br />";
-}
-if (isset($_GET['smtp_verify_peer']))
-{
-	if (!Settings::set("smtp_verify_peer", $_GET['smtp_verify_peer']))
-		$msg .= "Erreur lors de l'enregistrement de smtp_verify_peer !<br />";
-}
-if (isset($_GET['smtp_verify_depth']))
-{
-	if (!Settings::set("smtp_verify_depth", $_GET['smtp_verify_depth']))
-		$msg .= "Erreur lors de l'enregistrement de smtp_verify_depth !<br />";
-}
+// les variables attendues et leur type
+$form_vars = array(
+    'p_submit' => array('int', 0),
+    'p_automatic_mail' => array('int', 0),
+    'p_mail_serveur_from' => array('string', ''),
+    'p_grr_mail_method' => array('alphanumeric', 'bloque'),
+    'p_grr_mail_smtp' => array('string', ''),
+    'p_grr_mail_Username' => array('string', ''),
+    'p_grr_mail_Password' => array('string', ''),
+    'p_grr_mail_from' => array('string', ''),
+    'p_grr_mail_fromname' => array('string', ''),
+    'p_smtp_secure' => array('alphanumeric', ''),
+    'p_smtp_port' => array('int', 0),
+    'p_smtp_allow_self_signed' => array('int', 0),
+    'p_smtp_cafile' => array('string', ''),
+    'p_smtp_verify_peer_name' => array('int', 1),
+    'p_smtp_verify_peer' => array('int', 1),
+    'p_smtp_verify_depth' => array('int', 3),
+    'p_grr_mail_Bcc' => array('int', 0),
+    'p_log_mail' => array('int', 1),
+    'p_mail_test' => array('string', '')
+);
+// récupération des valeurs des variables passées en paramètres
+foreach($form_vars as $var => $params)
+    $$var = SecuChaine::GetFormVarSecure($var, $params[0], $params[1]);
 
 
-// Si Email test renseigné on y envois un mail
-if (isset($_GET['mail_test']) && !empty($_GET['mail_test']))
-{
-	require_once '../include/pages.class.php';
-	require_once '../include/mail.class.php';
-	if (!Pages::load())
-		die('Erreur chargement pages');
-	
-	$templateMail = Pages::get('mails_test_'.$locale);
-	$codes = ['%nomdusite%' => Settings::get('title_home_page'), '%nometablissement%' => Settings::get('company'),'%urlgrr%' =>  traite_grr_url("","y")];
-	$sujetMail = str_replace(array_keys($codes), $codes, $templateMail[0]);
-	$txtMail = str_replace(array_keys($codes), $codes, $templateMail[1]);
-	
-	$resultat_mail = Email::Envois($_GET['mail_test'], $sujetMail, $txtMail, Settings::get('grr_mail_from'), '', '', '', 'mails_test_'.$locale);
-	if (!$resultat_mail['success']) {
-		$msg .= "Erreur envoi mail de test: " . htmlspecialchars($resultat_mail['error']) . "<br />";
-	} else {
-		$msg .= "Mail de test envoyé avec succès<br />";
+/** Enregistrement **/
+	if($p_submit == 1)
+	{
+		$settings_results[] = Settings::set2("automatic_mail", $p_automatic_mail);
+		$settings_results[] = Settings::set2("mail_serveur_from", $p_mail_serveur_from);
+		$settings_results[] = Settings::set2("grr_mail_method", $p_grr_mail_method);
+		$settings_results[] = Settings::set2("grr_mail_smtp", $p_grr_mail_smtp);
+		$settings_results[] = Settings::set2("grr_mail_Username", $p_grr_mail_Username);
+		$settings_results[] = Settings::set2("grr_mail_Password", $p_grr_mail_Password);
+		$settings_results[] = Settings::set2("grr_mail_from", $p_grr_mail_from);
+		$settings_results[] = Settings::set2("grr_mail_fromname", $p_grr_mail_fromname);
+		$settings_results[] = Settings::set2("smtp_secure", $p_smtp_secure);
+		$settings_results[] = Settings::set2("smtp_port", $p_smtp_port);
+		$settings_results[] = Settings::set2("smtp_allow_self_signed", $p_smtp_allow_self_signed);
+		$settings_results[] = Settings::set2("smtp_cafile", $p_smtp_cafile);
+		$settings_results[] = Settings::set2("smtp_verify_peer_name", $p_smtp_verify_peer_name);
+		$settings_results[] = Settings::set2("smtp_verify_peer", $p_smtp_verify_peer);
+		$settings_results[] = Settings::set2("smtp_verify_depth", $p_smtp_verify_depth);
+		$settings_results[] = Settings::set2("grr_mail_Bcc", $p_grr_mail_Bcc);
+		$settings_results[] = Settings::set2("log_mail", $p_log_mail);
 	}
-}
-if (isset($_GET['ok']))
-{
-	if (isset($_GET['grr_mail_Bcc']))
-		$grr_mail_Bcc = 1;
-	else
-		$grr_mail_Bcc = 0;
-	if (!Settings::set("grr_mail_Bcc", $grr_mail_Bcc))
-		$msg .= "Erreur lors de l'enregistrement de grr_mail_Bcc !<br />";
-
-	if (isset($_GET['log_mail']))
-		$log_mail = 1;
-	else
-		$log_mail = 0;
-	if (!Settings::set("log_mail", $log_mail))
-		$msg .= "Erreur lors de l'enregistrement de log_mail !<br />";
-}
 
 
-if (!Settings::load())
-	die("Erreur chargement settings");
+	if($p_mail_test != "")
+	{
+		require_once '../include/pages.class.php';
+		require_once '../include/mail.class.php';
+		if (!Pages::load())
+			die('Erreur chargement pages');
+		
+		$templateMail = Pages::get('mails_test_'.$locale);
+		$codes = ['%nomdusite%' => Settings::get('title_home_page'), '%nometablissement%' => Settings::get('company'),'%urlgrr%' =>  traite_grr_url("","y")];
+		$sujetMail = str_replace(array_keys($codes), $codes, $templateMail[0]);
+		$txtMail = str_replace(array_keys($codes), $codes, $templateMail[1]);
+		
+		$resultat_mail = Email::Envois($p_mail_test, $sujetMail, $txtMail, Settings::get('grr_mail_from'), '', '', '', 'mails_test_'.$locale);
+		if (!$resultat_mail['success']) {
+			$d['message'] .= "Erreur envoi mail de test: " . htmlspecialchars($resultat_mail['error']) . "<br />";
+		} else {
+			$d['message'] .= "Mail de test envoyé avec succès<br />";
+		}
+	}
 
-// Si pas de problème, message de confirmation
-if (isset($_GET['ok'])) {
-    $_SESSION['displ_msg'] = 'yes';
-    if ($msg == '') {
-        $d['enregistrement'] = 1;
-    } else{
-        $d['enregistrement'] = $msg;
-    }
-}
+/** Résultat de l'enregistrement **/
+	if ($p_submit == 1){
+		$d['settings_results'] = $settings_results;
+	}
 
+/** Affichage de la page **/
+	$AllSettings = Settings::getAll();
+	$d['gMailExpediteur'] = $gMailExpediteur;
+	$d['fctMailRestriction'] = $fonction_mail_restrictions;
 
-// Affichage
-$AllSettings = Settings::getAll();
-
-
-$d['gMailExpediteur'] = $gMailExpediteur;
-
-$trad['dFctMailRestriction'] = $fonction_mail_restrictions;
-
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
+	echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 
 ?>
