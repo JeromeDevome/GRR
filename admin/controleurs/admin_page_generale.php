@@ -36,6 +36,7 @@ $form_vars = array(
     'sync' => 'int',
     'sup_img' => 'int',
     'authentification_obli' => 'int',
+    'p_redirection_https' => 'int',
     'company' => 'string',
     'grr_url' => 'string',
     'use_grr_url' => 'int',
@@ -56,6 +57,7 @@ foreach($form_vars as $var => $var_type)
 /** Accès & Droits **/
     if ($submit == 1) {
          $settings_results[] = Settings::set2("authentification_obli", $authentification_obli);
+         $settings_results[] = Settings::set2("redirection_https", $p_redirection_https);
     }
 
 /** Configuration **/

@@ -26,6 +26,8 @@
 					<div class="card-body">
 						{{ form.switch('authentification_obli', trad.authentification_obli1, settings.authentification_obli, {classGroup: 'col-12 custom-switch-off-warning custom-switch-on-success', classLabel: 'col-10', classDivInput: 'col-2'}) }}
 						<i>{{ trad.authentification_obli0 }}</i>
+						{{ form.switch('p_redirection_https', trad.redirection_https, settings.redirection_https, {classGroup: 'col-12 custom-switch-off-warning custom-switch-on-warning', classLabel: 'col-10', classDivInput: 'col-2'}) }}
+						<i class="text-danger">Attention : Avant d'activer la redirection https, votre serveur doit-être configuré pour l'accepter.</i>
 					</div>
 				</div>
 

@@ -45,6 +45,12 @@ if (isset($_GET['chemin_complet_grr']))
 	if (!Settings::set("chemin_complet_grr", $_GET['chemin_complet_grr']))
 		$msg .= "Erreur lors de l'enregistrement de chemin_complet_grr !<br />";
 }
+if (isset($_GET['motdepasse_backup']))
+{
+	if (!Settings::set("motdepasse_backup", $_GET['motdepasse_backup']))
+		$msg = "Erreur lors de l'enregistrement de motdepasse_backup !<br />";
+}
+
 if (!Settings::load())
 	die("Erreur chargement settings");
 
@@ -62,10 +68,11 @@ if (isset($_GET['ok'])) {
 // Affichage
 $AllSettings = Settings::getAll();
 
-
+$d['dbSys'] = $dbsys;
+$d['restaureBBD'] = $restaureBBD;
 $d['gMailExpediteur'] = $gMailExpediteur;
 
-$trad['dFctMailRestriction'] = $fonction_mail_restrictions;
+$trad['ctMailRestriction'] = $fonction_mail_restrictions;
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 

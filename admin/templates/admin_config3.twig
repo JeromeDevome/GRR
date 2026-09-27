@@ -12,18 +12,26 @@
 
         <div class="col col-sm-12">
             <div class="card card-primary card-outline card-tabs">
-              <div class="card-header p-0 pt-1 border-bottom-0">
-                <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-three-settings-tab" href="?p=admin_config3">{{ trad.admin_config3 }}</a>
-                  </li>
-				  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-settings-tab" href="?p=admin_config4">{{ trad.admin_config4 }}</a>
-                  </li>
-                </ul>
-              </div>
               <div class="card-body">
 				  <div class="tab-pane active" id="fa-icons">
+					{% if d.dbSys == "mysql" %}
+
+						{% if d.restaureBBD == 1 %}
+							<section id="restauration">
+								<form method="post" enctype="multipart/form-data" action="?p=admin_open_mysql">
+									<input type="hidden" name="p" value="admin_open_mysql" />
+									<h4 class="page-header">{{ trad.Restauration_de_la_base_GRR }}</h4>
+									<p>En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.</p>
+									<p><i>Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.</i></p>
+									<br><input type="file" name="sql_file" size="30" /><br>
+									<input class="btn btn-danger" type="submit" value="{{ trad.Restaurer_la_sauvegarde }}" />
+								</form>
+							</section>
+						{% endif %}
+					{% endif %}
+
+					<hr>
+
 					<form action="?p=admin_config3" id="nom_formulaire" method="get">
 						<input type="hidden" name="p" value="admin_config3" />
 
@@ -37,7 +45,12 @@
 							{{ form.input('motdepasse_verif_auto_grr', trad.verif_reservation_auto2, settings.motdepasse_verif_auto_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classDivInput: 'col col-sm-4 control-label', type: 'password'}) }}
 							{{ form.input('chemin_complet_grr', trad.verif_reservation_auto3, settings.chemin_complet_grr, {classGroup: 'col col-sm-12', classLabel: 'col col-sm-8', classDivInput: 'col col-sm-4 control-label'}) }}
 						</section>
-
+						<hr>
+						<section id="sauvegardeautomatique">
+							<h4 class="page-header">{{ trad.execution_automatique_backup }}</h4>
+							<p>{{ trad.execution_automatique_backup_explications |raw }}</p>
+							{{ form.input('motdepasse_backup', trad.execution_automatique_backup_mdp, settings.motdepasse_backup, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label', type: 'password'}) }}
+						</section>
 
 						<div style="text-align:center;">
 							<input class="btn btn-primary" type="submit" name="ok" value="{{ trad.save }}" />
