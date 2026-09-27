@@ -1,3 +1,23 @@
+Version 5.0.0 - En développement
+[Ajout] Possible de désactiver des langues - @JeromeDevome
+[Ajout] Système d'import personnalisable - 6a433c65e - @JeromeDevome
+[Ajout] Sélection multiple utilisateurs pour action en masse (suppression, actif, inactif) - f69b04ff5 - @JeromeDevome
+[Ajout] Sélection des préférences à la création de l'utilisateur - f86383a92 - @JeromeDevome
+[Ajout] Affichage des sites restreints avec ajout d'un lien - 2a722a2ac - @JeromeDevome
+[Ajout] Possibilité de rendre l'adresse mail obligatoirement unique - 496a12538 - @JeromeDevome
+[Ajout] Possibilité de bloqué l'accès à l'udtilisateur la page "Mes connexions" - 60c7fc1cd - @JeromeDevome
+[Ajout] Possibilité de bloqué l'accès à l'udtilisateur la page "Mes réservations" - 60c7fc1cd - @JeromeDevome
+[Ajout] Thème sombre - @JeromeDevome
+[Modification] La gestion de la brève description et la description complète son désormais géré au niveau du domaine au lieu de générale - @JeromeDevome
+[Modification] Séparation du calendrier jours fériés et des vacances - @JeromeDevome
+[Modification] Réorganisation des fonctions dans l'administration - @JeromeDevome
+[Modification] Actualisation de l'ensemble des pages de l'administration, amélioration de l'affichage, des types de champs - @JeromeDevome
+[Modification] Sécurisation de toute les entrées par formulaire, priorisation au formulaire par la méthode "post" dans l'administration - @JeromeDevome
+[Modification] Gestion des paramètre settings - @JeromeDevome
+[Modification] Update libraires JS - @JeromeDevome
+[Modification] Update libraires PHP - @JeromeDevome
+
+
 Version 4.6.6 - 18/08/2026 Généré par @JeromeDevome
 [Ajout] Possible de faire la mise à jour de la BDD via le paramètre l'url avec le paramètre maj - 466af8b76 - @JeromeDevome
 [Correction] Caractère html dans Nom de domaine et ressource pour les stats - 4196b7b7c - @JeromeDevome & @anteldan
