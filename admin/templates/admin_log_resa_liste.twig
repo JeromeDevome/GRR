@@ -11,12 +11,8 @@
 	<div class="row">
 		<div class="col col-md-12">
 
-			<div class="box box-success">
-				<div class="box-header">
-					<h3 class="box-title">Logs réservations</h3>
-				</div>
-				<!-- /.box-header -->
-				<div class="box-body">
+			<div class="card">
+				<div class="card-body">
 				  <table id="tablelog" class="table display table-bordered table-striped">
 						<thead>
 							<tr>
@@ -34,7 +30,7 @@
 									<td data-order="{{log.debutts}}">{{ log.debut }}</td>
 									<td data-order="{{log.fints}}">{{ log.fin }}</td>
 									<td>{{ log.titre }} {% if log.sup == 1 %} <i class="fa fa-trash"></i>{%endif%}</td>
-									<td><a class="btn btn-block btn-info btn-xs" href="?p=admin_log_resa&amp;idresa={{ log.idresa }}"><i class="fa fa-search bg-aqua"></i></a></td>
+									<td><a class="btn btn-block btn-info btn-xs" href="?p=admin_log_resa&amp;p_idresa={{ log.idresa }}"><i class="fa fa-search bg-aqua"></i></a></td>
 								</tr>
 							{% endfor %}
 						</tbody>

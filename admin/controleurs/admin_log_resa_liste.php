@@ -3,7 +3,7 @@
  * admin_log_resa_liste.php
  * Interface de gestion des connexions
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2023-12-03 17:48$
+ * Dernière modification : $Date: 2026-09-27 18:30$
  * @author    JeromeB & Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -18,46 +18,26 @@
 
 $grr_script_name = "admin_log_resa_liste.php";
 
+// Accès à la page
 SecuAccess::CheckAccess(6, $back);
 
-get_vocab_admin('admin_view_emails');
 
-// Afficher : Logs
-get_vocab_admin('date2');
-get_vocab_admin('mail_de');
-get_vocab_admin('mail_a');
-get_vocab_admin('mail_sujet');
-get_vocab_admin('mail_message');
+/** Affichage de la page **/
+  $trad['TitrePage'] = $trad["admin_log_resa_liste"];
+  $sql = "SELECT id, start_time, FROM_UNIXTIME(start_time,'%d-%m-%Y %H:%i:%s') as st, end_time, FROM_UNIXTIME(end_time,'%d-%m-%Y %H:%i:%s') as et, name, supprimer FROM ".TABLE_PREFIX."_entry ORDER by start_time desc";
+  $res = grr_sql_query($sql);
 
-get_vocab_admin('users_connected');
+  $logsMail = array ();
 
-$sql = "SELECT id, start_time, FROM_UNIXTIME(start_time,'%d-%m-%Y %H:%i:%s') as st, end_time, FROM_UNIXTIME(end_time,'%d-%m-%Y %H:%i:%s') as et, name, supprimer FROM ".TABLE_PREFIX."_entry ORDER by start_time desc";
-$res = grr_sql_query($sql);
+  while ($row = mysqli_fetch_assoc($res)) {
+    $logsMail[] = array('idresa' => $row["id"],
+                        'debut' => $row["st"],
+                        'fin' => $row["et"],
+                        'debutts' => $row["start_time"],
+                        'fints' => $row["end_time"],
+                        'titre' => $row["name"],
+                        'sup' => $row["supprimer"]);
+  }
 
-$logsMail = array ();
-
-while ($row = mysqli_fetch_assoc($res)) {
-  $logsMail[] = array('idresa' => $row["id"],
-                      'debut' => $row["st"],
-                      'fin' => $row["et"],
-                      'debutts' => $row["start_time"],
-                      'fints' => $row["end_time"],
-                      'titre' => $row["name"],
-                      'sup' => $row["supprimer"]);
-}
-/*
-$sql = "SELECT count(*) as cnt, FROM_UNIXTIME(date,'%d-%m-%Y') as date FROM ".TABLE_PREFIX."_log_resa ORDER BY date limit 1";
-$res = grr_sql_query($sql);
-
-if ($row = mysqli_fetch_assoc($res)) {
-  $d['DatePlusAncienne'] = $row["date"];
-  $d['NombreLog'] = $row["cnt"];
-} else {
-  $d['NombreLog'] = 0;
-  $d['DatePlusAncienne'] = "-";
-}
-
-$d['TitreDateLog'] = get_vocab("log_mail").$d['DatePlusAncienne'];
-*/
-echo $twig->render('admin_log_resa_liste.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'logsmail' => $logsMail ));
+  echo $twig->render('admin_log_resa_liste.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'logsmail' => $logsMail ));
 ?>
