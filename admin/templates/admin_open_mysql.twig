@@ -13,10 +13,10 @@
 				{% if trad.msg_logout3 %}
 					<a href="../app.php?p=login" class="btn btn-outline pull-left">{{trad.msg_logout3}}</a>
 				{% else %}
-					<a href="?p=admin_config4" class="btn btn-outline pull-left">{{trad.cancel}}</a>
+					<a href="?p=admin_nettoyage_bdd" class="btn btn-outline pull-left">{{trad.cancel}}</a>
 				{% endif %}
 				{% if trad.confirmer %}
-					<a href="?p=admin_open_mysql&file_name={{ trad.dFileName }}" class="btn btn-outline pull-right">{{ trad.confirmer }}</a>
+					<a href="?p=admin_open_mysql&amp;file_name={{ trad.dFileName }}" class="btn btn-outline pull-right">{{ trad.confirmer }}</a>
 				{% endif %}
 				<br>
 			</div>

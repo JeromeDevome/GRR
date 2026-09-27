@@ -13,24 +13,6 @@
         <div class="col col-sm-12">
             <div class="card card-primary card-outline card-tabs">
               <div class="card-body">
-				  <div class="tab-pane active" id="fa-icons">
-					{% if d.dbSys == "mysql" %}
-
-						{% if d.restaureBBD == 1 %}
-							<section id="restauration">
-								<form method="post" enctype="multipart/form-data" action="?p=admin_open_mysql">
-									<input type="hidden" name="p" value="admin_open_mysql" />
-									<h4 class="page-header">{{ trad.Restauration_de_la_base_GRR }}</h4>
-									<p>En cas de perte de donnée ou de problème sur la base GRR, cette fonction vous permet de la retrouver dans l'état antérieur lors d'une sauvegarde. Vous devez sélectionner un fichier créé à l'aide de la fonction Lancer une sauvegarde.</p>
-									<p><i>Attention! Restaurer la base vous fera perdre toutes les données qu'elle contient actuellement. De plus, tous les utilisateurs présentement connectés, ainsi que vous-mêmes, serez déconnectés. Alors, il est conseillé de créer d'abord une sauvegarde et de vous assurer que vous êtes le seul connecté.</i></p>
-									<br><input type="file" name="sql_file" size="30" /><br>
-									<input class="btn btn-danger" type="submit" value="{{ trad.Restaurer_la_sauvegarde }}" />
-								</form>
-							</section>
-						{% endif %}
-					{% endif %}
-
-					<hr>
 
 					<form action="?p=admin_config3" id="nom_formulaire" method="get">
 						<input type="hidden" name="p" value="admin_config3" />

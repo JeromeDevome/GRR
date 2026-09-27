@@ -18,7 +18,7 @@
 
 
 $msg = "";
-$trad = $vocab;
+
 
 if (isset($_GET['verif_reservation_auto']))
 {
@@ -64,15 +64,8 @@ if (isset($_GET['ok'])) {
     }
 }
 
-
 // Affichage
 $AllSettings = Settings::getAll();
-
-$d['dbSys'] = $dbsys;
-$d['restaureBBD'] = $restaureBBD;
-$d['gMailExpediteur'] = $gMailExpediteur;
-
-$trad['ctMailRestriction'] = $fonction_mail_restrictions;
 
 echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings));
 
