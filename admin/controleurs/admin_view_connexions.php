@@ -80,6 +80,7 @@ foreach($form_vars as $var => $params)
 	}
 
 	// Titre
+	$trad['TitrePage'] = $trad["admin_view_connexions"];
 	$sql = "SELECT START FROM ".TABLE_PREFIX."_log ORDER BY END";
 	$res = grr_sql_query($sql);
 

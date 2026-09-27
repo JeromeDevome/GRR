@@ -25,6 +25,7 @@ include('../include/fichier.class.php');
 SecuAccess::CheckAccess(6, $back);
 
 /* GRR */
+$trad['TitrePage'] = $trad["admin_infos"];
 $d['num_version'] = $version_grr." - ".$versionReposite;
 $d['num_versionbdd'] = Settings::get("version");
 $d['prefixe'] = TABLE_PREFIX;
