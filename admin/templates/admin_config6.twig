@@ -362,6 +362,45 @@
 											</select>
 										</td>
 									</tr>
+                                    <tr>
+                                        <th>{{ trad.created_by }}</th>
+                                        <td>
+                                            <select class="form-control" name="display_creator_nc">
+                                                <option value="0" {% if settings.display_creator_nc == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+                                                <option value="1" {% if settings.display_creator_nc == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+                                                <option value="2" {% if settings.display_creator_nc == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="display_creator_vi">
+                                                <option value="0" {% if settings.display_creator_vi == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+                                                <option value="1" {% if settings.display_creator_vi == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+                                                <option value="2" {% if settings.display_creator_vi == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="display_creator_us">
+                                                <option value="0" {% if settings.display_creator_us == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+                                                <option value="1" {% if settings.display_creator_us == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+                                                <option value="2" {% if settings.display_creator_us == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="display_creator_gr">
+                                                <option value="0" {% if settings.display_creator_gr == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+                                                <option value="1" {% if settings.display_creator_gr == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+                                                <option value="2" {% if settings.display_creator_gr == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="display_creator_ad">
+                                                <option value="0" {% if settings.display_creator_ad == '0' %} selected {% endif %}>{{ trad.afficher_non }}</option>
+                                                <option value="1" {% if settings.display_creator_ad == '1' %} selected {% endif %}>{{ trad.afficher_oui }}</option>
+                                                <option value="2" {% if settings.display_creator_ad == '2' %} selected {% endif %}>{{ trad.afficher_popup }}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
 								</tbody>
 							</table>
 
