@@ -21,6 +21,12 @@ $grr_script_name = "admin_access_site.php";
 // Accès à la page
 SecuAccess::CheckAccess(4, $back);
 
+if (Settings::get("module_multisite") != 1)
+{
+	showAccessDenied($back);
+	exit();
+}
+
 // les variables attendues et leur type
 $form_vars = array(
     'p_action' => array('int', 0), // 1 : mise a jour utilisateurs, 2 : mise à jour groupes
@@ -75,9 +81,6 @@ if($p_id_site != -1)
 				}
 			}
 		}
-
-
-
 	}
 	elseif($p_action == 2 && $p_id_site != -1) // Mise à jour des groupes
 	{
@@ -122,7 +125,8 @@ if($p_id_site != -1)
 	$groupesAjoutable = array();
 	$sites = array ();
 
-	$sql = "select id, sitename from ".TABLE_PREFIX."_site where access='r' order by sitename";
+	// Liste des sites
+	$sql = "SELECT id, sitename FROM ".TABLE_PREFIX."_site WHERE access='r' ORDER BY sitename";
 	$res = grr_sql_query($sql);
 	$nb = grr_sql_count($res);
 	if ($res)

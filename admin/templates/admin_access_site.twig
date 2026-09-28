@@ -24,9 +24,9 @@
 
 					<form id="site" action="?p=admin_access_site" method="post">
 						<div class="form-group">
-							<label class="col col-sm-3" for="f_site">{{ trad.sites }}</label>
+							<label class="col col-sm-3" for="id_site">{{ trad.sites }}</label>
 							<div class="col col-lg-6">
-								<select name="site" id="f_site" class="form-control" onchange="site_go()">
+								<select name="id_site" id="id_site" class="form-control" onchange="site_go()">
 									<option value="-1">{{ trad.select }}</option>
 									{% for site in sites %}
 										<option value="{{ site.id }}" {% if site.id == d.idSite %} selected {% endif %}>{{ site.nom }}</option>
@@ -122,7 +122,7 @@
 
 		function site_go()
 		{
-			box = document.getElementById("site").site;
+			box = document.getElementById("site").id_site;
 			destination = box.options[box.selectedIndex].value;
 			if (destination) location.href = "?p=admin_access_site&p_id_site="+destination;
 		}
