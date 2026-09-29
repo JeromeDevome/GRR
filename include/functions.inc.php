@@ -4553,6 +4553,18 @@ function affichage_resa_planning_complet($ofl, $vue, $resa, $heures)
 			$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."<br>";
 	}
 
+	// Créateur
+	if( ($UserLevel == 0 && Settings::get("display_creator_nc") == 1) || 
+		($UserLevel == 1 && Settings::get("display_creator_vi") == 1) ||
+		($UserLevel == 2 && Settings::get("display_creator_us") == 1) || 
+		($UserLevel == 3 && Settings::get("display_creator_gr") == 1) || 
+		($UserLevel >= 4 && Settings::get("display_creator_ad") == 1)  
+	)
+	{
+		if($resa[20] == 0 || getUserName() == $resa[4] || $UserLevel >= 3) // Si résa confidentielle, on n'affiche le créateur qu'à l'auteur ou aux gestionnaires
+			$affichage .= $resa[21]."<br>";
+	}
+
 	// Type
 	if( ($UserLevel == 0 && Settings::get("display_type_nc") == 1) || 
 		($UserLevel == 1 && Settings::get("display_type_vi") == 1) ||
@@ -4719,6 +4731,17 @@ function affichage_resa_info_bulle($ofl, $vue, $resa, $heures)
 		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail")."\n";
 	}
 
+	// Créateur
+	if( ($UserLevel == 0 && Settings::get("display_creator_nc") == 2) || 
+		($UserLevel == 1 && Settings::get("display_creator_vi") == 2) ||
+		($UserLevel == 2 && Settings::get("display_creator_us") == 2) || 
+		($UserLevel == 3 && Settings::get("display_creator_gr") == 2) || 
+		($UserLevel >= 4 && Settings::get("display_creator_ad") == 2)  
+	)
+	{
+		$affichage .= $resa[21]."\n";
+	}
+
 	// Type
 	if( ($UserLevel == 0 && Settings::get("display_type_nc") == 2) || 
 		($UserLevel == 1 && Settings::get("display_type_vi") == 2) ||
@@ -4803,6 +4826,15 @@ function titre_compact($ofl, $resa, $heures)
 		$affichage .= "\n".affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
 	}
 
+	// Créateur
+	if( ($UserLevel == 0 && Settings::get("display_creator_nc") >= 1) || 
+		($UserLevel == 1 && Settings::get("display_creator_vi") >= 1) ||
+		($UserLevel == 2 && Settings::get("display_creator_us") >= 1) || 
+		($UserLevel == 3 && Settings::get("display_creator_gr") >= 1) || 
+		($UserLevel >= 4 && Settings::get("display_creator_ad") >= 1)  
+	)
+	$affichage .= "\n".$resa[21];
+
 	// Type
 	if( ($UserLevel == 0 && Settings::get("display_type_nc") >= 1) || 
 		($UserLevel == 1 && Settings::get("display_type_vi") >= 1) ||
@@ -4870,6 +4902,15 @@ function lien_compact($resa)
 	  )
 		$affichage .= affiche_nom_prenom_email($resa[4], $resa[12], "nomail");
 
+		// Créateur
+	if( ($UserLevel == 0 && Settings::get("display_creator_nc") == 1) || 
+		($UserLevel == 1 && Settings::get("display_creator_vi") == 1) ||
+		($UserLevel == 2 && Settings::get("display_creator_us") == 1) || 
+		($UserLevel == 3 && Settings::get("display_creator_gr") == 1) || 
+		($UserLevel >= 4 && Settings::get("display_creator_ad") == 1)  
+	)
+		$affichage .= $resa[21];
+		
 	// Brève description ou le numéro de la réservation
 	if( (($UserLevel == 0 && Settings::get("display_short_description_nc") == 1) || 
 		($UserLevel == 1 && Settings::get("display_short_description_vi") == 1) ||
