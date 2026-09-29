@@ -19,6 +19,9 @@
 	{% endif %}
 
 	<h2>{{d.titre}}</h2>
+	{% if settings.form_layout_centered == '1' %}
+        <div class="form-layout-wrapper">
+	{% endif %}
 	{% if d.moderate %}
 		<h3><span class="texte_ress_moderee">{{trad.reservations_moderees}}</span></h3>
 	{% endif %}
@@ -40,7 +43,7 @@
 		<div id="error"></div>
 		
 
-		<div class="row2">
+		<div class="row2{% if settings.form_layout_centered == '1' %} form-layout-centered{% endif %}">
 			<!-- Colonne de Gauche : Données de la réservation -->
 			<div class="col col-sm-6 col-xs-12">
 
@@ -379,7 +382,9 @@
 			</div>
 		</div>
 	</form>
-
+	{% if settings.form_layout_centered == '1' %}
+        </div>
+	{% endif %}
 {% endblock %}
 
 {% block javascript %}

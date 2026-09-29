@@ -541,7 +541,36 @@
 
 						<section id="formulaire_reservation">
 							<h4 class="page-header">{{ trad.formulaire_reservation }}</h4>
+
+							<!-- Hauteur max liste ressources -->
 							{{ form.input('longueur_liste_ressources_max', trad.longueur_liste_ressources, settings.longueur_liste_ressources_max, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classInput: 'col-sm-6 control-label', type: 'number'}) }}
+			
+                 			<hr>
+                 			
+                 			<!-- Layout du formulaire -->
+                 			<div class="form-group row col-sm-12">
+                 				<label class="col col-sm-6"><strong>Affichage du formulaire</strong></label>
+                 				<div class="col col-sm-6">
+                 					<div class="form-check">
+                 						<input type="radio" name="form_layout_centered" value="0" id="form_layout_standard" class="form-check-input" 
+                 							{% if settings.form_layout_centered == '0' %}checked{% endif %}>
+                 						<label class="form-check-label" for="form_layout_standard">
+                 							Layout Bootstrap standard (2 colonnes côte à côte)
+                 						</label>
+                 					</div>
+                 					<div class="form-check mt-2">
+                 						<input type="radio" name="form_layout_centered" value="1" id="form_layout_centered" class="form-check-input"
+                 							{% if settings.form_layout_centered == '1' %}checked{% endif %}>
+                 						<label class="form-check-label" for="form_layout_centered">
+                 							Formulaire centré et empilé verticalement
+                 						</label>
+                 					</div>
+                 				</div>
+                 			</div>
+                 			
+                 			<p class="text-muted small" style="margin-left: 0; padding: 0 15px;">
+                 				<i class="fa fa-info-circle"></i> Le layout centré offre une meilleure expérience utilisateur sur mobile et rend l'interface plus actuelle.
+                 			</p>
 							<br>
 						</section>
 
