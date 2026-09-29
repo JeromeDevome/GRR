@@ -4,6 +4,13 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+<link rel="stylesheet" href="../jslib/datatables-bs5/css/dataTables.bootstrap5.min.css">
+<style>
+    #tableModeration_wrapper .dt-paging .pagination {
+        display: flex !important;
+        flex-wrap: nowrap;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +28,7 @@
                     <div class="card-body">
                         <div class="tab-content p-0">
                             <form method="POST" id="moderationForm">
-                                <table class="table table-condensed">
+                                <table class="table table-condensed" id="tableModeration">
                                     <thead>
                                         <tr>
                                             <th style="width: 30px;">
@@ -51,7 +58,7 @@
                                                 <td>{{ resaMode.domaine }}</td>
                                                 {% endif %}
                                                 <td>{{ resaMode.ressource }}</td>
-                                                <td>{{ resaMode.debut }}</td>
+                                                <td data-order="{{ resaMode.debut_ts }}">{{ resaMode.debut }}</td>
                                                 <td>{{ resaMode.createur }}</td>
                                                 <td>{{ resaMode.beneficiaire }}</td>
                                                 <td><a href='{{ resaMode.lien }}'><span class='fa fa-eye'></span></a></td>
@@ -83,6 +90,30 @@
 {% endblock %}
 
 {% block javascript %}
+
+<!-- DataTables -->
+<script src="../jslib/datatables/dataTables.min.js"></script>
+<script src="../jslib/datatables-bs5/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(function() {
+        $('#tableModeration').DataTable({
+            order: [[3, 'asc']],           // tri par défaut : colonne "Début", croissant
+            dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            columnDefs: [
+                { orderable: false, searchable: false, targets: 0 },   // colonne case à cocher
+                { orderable: false, searchable: false, targets: -1 },   // colonne action (œil)
+                { className: 'text-start', targets: 3 }                // force l'alignement à gauche
+            ],
+language: {
+    url: '../jslib/datatables/i18n/fr-FR.json'
+}
+        });
+    });
+</script>
+
 <script>
     // Sélectionner/Désélectionner tous les éléments
     document.getElementById('selectAll').addEventListener('change', function() {
