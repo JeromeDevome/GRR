@@ -103,5 +103,4 @@ if (!empty($resasAModerer)) {
 $langueActuelle = isset($_SESSION['default_language']) ? $_SESSION['default_language'] : Settings::get('default_language');
 
 echo $twig->render('moderationsliste.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'resas' => $listeModeration, 'langueActuelle' => $langueActuelle));
-// echo $twig->render('moderationsliste.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'resas' => $listeModeration));
 ?>
