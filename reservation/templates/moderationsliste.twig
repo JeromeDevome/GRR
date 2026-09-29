@@ -96,6 +96,16 @@
 <script src="../jslib/datatables-bs5/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
+    const dtLangFiles = {
+        'fr-fr': '../jslib/datatables/i18n/fr-FR.json',
+        'de-de': '../jslib/datatables/i18n/de-DE.json',
+        'it-it': '../jslib/datatables/i18n/it-IT.json',
+        'es-es': '../jslib/datatables/i18n/es-ES.json'
+        // 'en-gb' : pas de fichier nécessaire, l'anglais est la langue native de DataTables
+    };
+
+    const langUrl = dtLangFiles['{{ langueActuelle }}'] || null;
+
     $(function() {
         $('#tableModeration').DataTable({
             order: [[3, 'asc']],           // tri par défaut : colonne "Début", croissant
@@ -107,9 +117,7 @@
                 { orderable: false, searchable: false, targets: -1 },   // colonne action (œil)
                 { className: 'text-start', targets: 3 }                // force l'alignement à gauche
             ],
-language: {
-    url: '../jslib/datatables/i18n/fr-FR.json'
-}
+            language: langUrl ? { url: langUrl } : {}    
         });
     });
 </script>
