@@ -50,7 +50,7 @@
 					</div>
 				{% endif %}
 
-				<!-- Bénéficiare -->
+				<!-- Bénéficiaire -->
 				{% if d.flag_qui_peut_reserver_pour %}
 					<div id="choix_beneficiaire" class="row">
 						<div class="col col-sm-9">
@@ -91,6 +91,9 @@
 
 				<label for="name">{{ trad.namebooker }}{% if settings.remplissage_description_breve != 0 %} *{% endif %}{{ trad.deux_points }}</label>
 				<input id="name" class="pleine form-control" name="name" maxlength="80" size="60" autocomplete="on" value="{{d.resaBreveDescription}}" />
+
+				<label for="create_by">{{ trad.created_by }}{{ trad.deux_points }}</label>
+				<input id="created_by" name="created_by" class="pleine form-control" disabled size="60" value="{{d.create_by}}" />
 
 				<!-- Description complète -->
 				{% if settings.remplissage_description_complete != 2 %}
