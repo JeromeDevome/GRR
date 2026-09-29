@@ -77,6 +77,7 @@ if (!empty($resasAModerer)) {
                 'site' => $resa['site'],
                 'ressource' => $resa['room'],
                 'debut' => time_date_string($resa['start_time'], $dformat),
+                'debut_ts' => $resa['start_time'],
                 'createur' => $resa['create_by'],
                 'beneficiaire' => $resa['beneficiaire'],
                 'lien' => $link
@@ -89,6 +90,7 @@ if (!empty($resasAModerer)) {
                 'domaine' => $resa['area'],
                 'ressource' => $resa['room'],
                 'debut' => time_date_string($resa['start_time'], $dformat),
+                'debut_ts' => $resa['start_time'],
                 'createur' => $resa['create_by'],
                 'beneficiaire' => $resa['beneficiaire'],
                 'lien' => $link
