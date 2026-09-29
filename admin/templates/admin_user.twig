@@ -127,6 +127,17 @@
 
 	<script src="../jslib/toastr/toastr.min.js"></script>
 	<script>
+    
+	const dtLangFiles = {
+        'fr-fr': '../jslib/datatables/i18n/fr-FR.json',
+        'de-de': '../jslib/datatables/i18n/de-DE.json',
+        'it-it': '../jslib/datatables/i18n/it-IT.json',
+        'es-es': '../jslib/datatables/i18n/es-ES.json'
+        // 'en-gb' : pas de fichier nécessaire, l'anglais est la langue native de DataTables
+    };
+
+    const langUrl = dtLangFiles['{{ langueActuelle }}'] || null;
+
 		// Modal
 		$('#modalWarningSupUser').on('show.bs.modal', function (event) {
 			var button = $(event.relatedTarget) // Button that triggered the modal
@@ -157,9 +168,7 @@
 					'pdfHtml5',
 					'colvis'
 				],
-				language: {
-					url: '../jslib/datatables/i18n/fr-FR.json'
-				}
+            language: langUrl ? { url: langUrl } : {}   
 			});
 
 		});
