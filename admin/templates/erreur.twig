@@ -1,0 +1,21 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+	<div class="alert alert-danger alert-dismissible">
+		<h5><i class="icon fas fa-circle-xmark"></i></h5>
+		{{d.messageErreur|raw}}
+	</div>
+
+
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
