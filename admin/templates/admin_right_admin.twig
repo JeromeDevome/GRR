@@ -1,5 +1,14 @@
 {% extends 'layout.twig' %}
 
+{% block css %}
+	<link rel="stylesheet" href="../jslib/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+	<style>
+		.bootstrap-duallistbox-container select {
+			height: 500px !important;
+		}
+	</style>
+{% endblock %}
+
 {% import 'messagesysteme.twig' as msgSyst %}
 
 {% block content %}
@@ -11,10 +20,6 @@
 			{% endif %}
 
 			<div class="box">
-				<div class="box-header">
-					<h3 class="box-title">{{ trad.admin_right_admin }}</h3>
-				</div>
-				<!-- /.box-header -->
 				<div class="box-body no-padding">
 					<p>{{ trad.admin_right_admin_explain }}</p>
 
@@ -24,7 +29,7 @@
 
 						<div class="form-group">
 							<label class="col col-sm-3" for="f_area">{{ trad.areas }}</label>
-							<div class="col col-sm-9">
+							<div class="col col-lg-6">
 								<select id="f_area" name="area" class="form-control" onchange="area_go()">
 									<option value="-1">{{ trad.select }}</option>
 									{% for domaine in domaines %}
@@ -33,124 +38,64 @@
 								</select>
 							</div>
 						</div>
-
 					</form>
-
-					<hr>
-
-					{% if trad.dIdDomaine > 0 %}
-
-						<form action="?p=admin_right_admin" method="post">
-							<input type="hidden" name="p" value="admin_right_admin" />
-							<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
-
-							<div class="form-group">
-								<label class="col col-sm-3" for="f_ral">{{ trad.add_user_to_list }}</label>
-								<div class="col col-sm-9">
-									<select id="f_ral" name="reg_admin_login" class="form-control">
-										<option value="">{{ trad.select }}</option>
-										{% for user in utilisateursajoutable %}
-											<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
-										{% endfor %}
-									</select>
-								</div>
-							</div>
-
-							<div style="text-align:center;">
-								<input class="btn btn-primary" type="submit" value="{{ trad.add }}" />
-							</div>
-						</form>
-
-						{% if trad.dNbUserAjoutable > 0 %}
-
-							<form action="?p=admin_right_admin" method="post">
-								<input type="hidden" name="id_area" value="{{ trad.dIdDomaine }}" />
-								<div class="form-group">
-									<label class="col col-sm-3" for="f_agent">{{ trad.add_multiple_user_to_list }}</label>
-									<div class="col col-sm-9">
-										<select id="f_agent" name="agent" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])">
-											{% for user in utilisateursajoutable %}
-												<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
-											{% endfor %}
-										</select>
-										<button type="button" class="btn btn-danger" onclick="Deplacer(this.form.elements['reg_multi_admin_login[]'],this.form.agent)"><i class="fa fa-arrow-circle-left"></i></button>
-										<button type="button" class="btn btn-success" onclick="Deplacer(this.form.agent,this.form.elements['reg_multi_admin_login[]'])"><i class="fa fa-arrow-circle-right"></i></button>
-										<select name="reg_multi_admin_login[]" id="reg_multi_admin_login" size="8" style="width:200px;" multiple="multiple" ondblclick="Deplacer(this.form.elements['reg_multi_admin_login[]'],this.form.agent)">
-										</select>
-									</div>
-								</div>
-
-								<div style="text-align:center;">
-									<input class="btn btn-primary" type="submit" value="{{ trad.add }}" onclick="selectionner_liste(this.form.reg_multi_admin_login);" />
-								</div>
-							</form>
-
-						{% endif %}
-
-						<h3>{{ trad.user_admin_area_list }}</h3>
-
-						<table class="table table-striped">
-							<tr>
-								<th>{{ trad.login }}</th>
-								<th>{{ trad.last_name }}</th>
-								<th>{{ trad.first_name }}</th>
-								<th>{{ trad.action }}</th>
-							</tr>
-							{% for useradmin in utilisateursadmin %}
-								<tr>
-									<td>{{ useradmin.login }}</td>
-									<td>{{ useradmin.nom }}</td>
-									<td>{{ useradmin.prenom }}</td>
-									<td><a href="?p=admin_right_admin&action=del_admin&login_admin={{ useradmin.login }}&id_area={{ trad.dIdDomaine }}"><i class="fa fa-trash"></i></a></td>
-								</tr>
-							{% endfor %}
-						</table>
-
-					{% endif %}
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<hr>
+
+	{% if d.idDomaine > 0 %}
+
+		<div class="row">
+			<!-- Utilisateurs -->
+			<div class="col col-sm-12 col-lg-6">
+				<form name="utilisateurs" method="post">
+					<input type="hidden" name="p_action" value="1" />
+					<input type="hidden" name="p_id_site" value="{{ d.idSite }}" />
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title"><i class="fas fa-user"></i> {{ trad.admin_user }}</h3>
+						</div>
+						<div class="card-body no-padding">
+							<div class="form-group">
+								<select name="p_utilisateurs[]" id="p_utilisateurs" class="duallistbox" multiple="multiple">
+									{% for user in utilisateursajoutable %}
+										<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }}</option>
+									{% endfor %}
+									{% for useradmin in utilisateursadmin %}
+										<option value="{{ useradmin.login }}" {% if useradmin.groupeid > 0 %}disabled{% endif %} selected>{{useradmin.idgroupes}}{{ useradmin.nom }} {{ useradmin.prenom }}{% if useradmin.groupeid > 0 %} ({{useradmin.groupenom}}){% endif %}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<div class="card-footer">
+							<center><button type="submit" name="p_submit" value="1" class="btn btn-primary btn-md" /><i class="fas fa-save"></i> {{ trad.save }}</button></center>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	{% endif %}
+
 {% endblock %}
 
 {% block javascript %}
+	<script src="../jslib/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 	<script>
-
 		function area_go()
 		{
 			box = document.getElementById("area").area;
 			destination = box.options[box.selectedIndex].value;
-			if (destination) location.href = "?p=admin_right_admin&id_area="+destination;
+			if (destination) location.href = "?p=admin_right_admin&p_id_area="+destination;
 		}
 
-		function Deplacer(liste1, liste2)
-		{
-			while (liste1.options.selectedIndex >= 0)
-			{
-				opt = new Option(liste1.options[liste1.options.selectedIndex].text,liste1.options[liste1.options.selectedIndex].value);
-				liste2.options[liste2.options.length] = opt;
-				liste1.options[liste1.options.selectedIndex] = null;
-			}
-		}
-		
-		function vider_liste(IdListe)
-		{
-			var l = IdListe.options.length;
-			for (var i = 0; i < l; i++)
-			{
-				IdListe.options[i] = null;
-			}
-		}
+		$('#p_utilisateurs').bootstrapDualListbox({
+			nonSelectedListLabel: 'Utilisateurs disponibles',
+			selectedListLabel: 'Utilisateurs sélectionnés'
+		});
 
-		function selectionner_liste(IdListe)
-		{
-			var l = IdListe.options.length;
-			for(var i = 0; i < l; i++)
-			{
-				IdListe.options[i].selected = true;
-			}
-		}
-
-		vider_liste(document.getElementById('reg_multi_admin_login'));
+		$('.duallistbox').bootstrapDualListbox()
 	</script>
 {% endblock %}
