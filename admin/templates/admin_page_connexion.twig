@@ -285,6 +285,7 @@
 			// Afficher/masquer la section de création de compte
 			var $switchCreaCpt = $('input[name="fct_crea_cpt"]');
 			var $sectionCreaCpt = $('#aff_dyn_crea_compte');
+			$sectionCreaCpt.toggle($switchCreaCpt.is(':checked'));
 
 			// À la modification du switch
 			$switchCreaCpt.on('change', function() {
