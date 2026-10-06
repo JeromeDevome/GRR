@@ -191,6 +191,18 @@ else{
             FROM (".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
             WHERE ".TABLE_PREFIX."_room.id IN ".$ress." AND start_time < ".($pm7+$resolution)." AND end_time > ".$am7."
             ORDER BY start_time";
+// les réservations associées à notre recherche, ce jour dans ce domaine
+$sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name, type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax,
+COALESCE(participants_count.nbparticipants, 0) AS nbparticipants
+FROM ".TABLE_PREFIX."_entry
+INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id
+LEFT JOIN (
+    SELECT idresa, COUNT(*) AS nbparticipants
+    FROM ".TABLE_PREFIX."_participants
+    GROUP BY idresa
+) AS participants_count ON participants_count.idresa = ".TABLE_PREFIX."_entry.id
+WHERE ".TABLE_PREFIX."_room.id IN ".$ress." AND start_time < ".($pm7+$resolution)." AND end_time > ".$am7."
+ORDER BY start_time";            
 /* contenu de la réponse si succès :
     $row[0] : start_time
     $row[1] : end_time
@@ -248,6 +260,8 @@ else{
                     }
                     $today[$row["room_id"]][$start_t]["id"]		= $row["id"];
                     $today[$row["room_id"]][$start_t]["color"]	= $row["type"];
+                    if((isset($row["nbparticipantmax"]))&&(isset($row["nbparticipants"]))&&((int)$row["nbparticipants"] >= (int)$row["nbparticipantmax"]))
+                      $today[$row["room_id"]][$start_t]["color"] = "quota-atteint";
                     $today[$row["room_id"]][$start_t]["slots"]  = ($end_t - $start_t) / $resolution; // à vérifier
                     //$today[$row["room_id"]][$start_t]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
                     $descr = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
@@ -437,6 +451,7 @@ if(isset($alerte)){
   end_page();
   die();
 }
+
 echo "<table class='jour floatthead table-striped table-bordered'>";
 echo "<caption>";
 $class = "";

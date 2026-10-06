@@ -171,3 +171,73 @@ div.ui-datepicker{
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
     margin-left: 30%;
 }
+
+/* Réservation complète : hachure la cellule dès l'affichage */
+/* ===== Forcer les hachures pour tous les créneaux quota atteints (jour / semaine / mois) ===== */
+td.quota-atteint,
+td[class*="type"].quota-atteint,
+.pleine td.quota-atteint,
+.pleine td[class*="type"].quota-atteint {
+  background: repeating-linear-gradient(
+    45deg,
+    #f6ba52,
+    #f6ba52 10px,
+    #ffd180 10px,
+    #ffd180 20px
+  ) !important;
+  color:#000000 !important;
+}
+/* Le lien remplit visuellement la cellule : il faut aussi le hachurer */
+td.quota-atteint > a.lienCellule,
+td[class*="type"].quota-atteint > a.lienCellule,
+.pleine td.quota-atteint > a.lienCellule,
+.pleine td[class*="type"].quota-atteint > a.lienCellule {
+  display:block !important;
+  background: repeating-linear-gradient(
+    45deg,
+    #f6ba52,
+    #f6ba52 10px,
+    #ffd180 10px,
+    #ffd180 20px
+  ) !important;
+  color:#000000 !important;
+  font-weight:bold !important;
+  text-decoration:none !important;
+}
+/* Icônes dans la cellule complète */
+td.quota-atteint i,
+td[class*="type"].quota-atteint i,
+.pleine td.quota-atteint i,
+.pleine td[class*="type"].quota-atteint i,
+td.quota-atteint i.icone,
+td[class*="type"].quota-atteint i.icone,
+.pleine td.quota-atteint i.icone,
+.pleine td[class*="type"].quota-atteint i.icone {
+  color:#000000 !important;
+}
+/* Hachurer au survol / clic / focus */
+td.quota-atteint > a.lienCellule:hover,
+td.quota-atteint > a.lienCellule:active,
+td.quota-atteint > a.lienCellule:focus,
+td[class*="type"].quota-atteint > a.lienCellule:hover,
+td[class*="type"].quota-atteint > a.lienCellule:active,
+td[class*="type"].quota-atteint > a.lienCellule:focus,
+.pleine td.quota-atteint > a.lienCellule:hover,
+.pleine td.quota-atteint > a.lienCellule:active,
+.pleine td.quota-atteint > a.lienCellule:focus,
+.pleine td[class*="type"].quota-atteint > a.lienCellule:hover,
+.pleine td[class*="type"].quota-atteint > a.lienCellule:active,
+.pleine td[class*="type"].quota-atteint > a.lienCellule:focus {
+  background: repeating-linear-gradient(
+    45deg,
+    #f6ba52,
+    #f6ba52 10px,
+    #ffd180 10px,
+    #ffd180 20px
+  ) !important;
+  color:#000000 !important;
+}
+/* Empêche le style global du hover de griser le texte */
+td.quota-atteint > a.lienCellule:hover{
+  font-weight:bold !important;
+}

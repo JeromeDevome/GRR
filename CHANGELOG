@@ -78,6 +78,12 @@ Sous-version 3.5.2e
     modification : présentation de la page admin_user_modify
     modification : pop-up pour les utilisateurs
     modification : paramétrage de la sécurité des cookies de session (permet d'utiliser GRR dans un iframe ou en authentification CAS)
+Sous-version 3.5.2f
+    amélioration : gestion des caractères spéciaux
+    correctifs : préfixe de table, trombone, fermeture de session
+    modification : sécurisation de l'accès au script
+    modification : filtrage des données
+    modification : calcul du chemin de retour après une action sur les fichiers joints
 
 -----
 --
