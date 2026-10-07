@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-06-04 16:53$
+ * Dernière modification : $Date: 2026-10-07 15:13$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1684,7 +1684,7 @@ function verif_acces_fiche_reservation($user, $id_room)
 utilise la table grr_j_userbook_room
 */
 function authBooking($user,$room){
-  $sql = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_j_userbook_room WHERE (login = ? AND id_room = ?";
+  $sql = "SELECT COUNT(*) FROM ".TABLE_PREFIX."_j_userbook_room WHERE (login = ? AND id_room = ?)";
   $test = grr_sql_query1($sql,"si",[protect_data_sql($user),$room]);
   return ($test > 0);
 }
