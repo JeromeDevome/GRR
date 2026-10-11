@@ -2,7 +2,7 @@
 /**
  * admin_edit_domaine.php
  * Interface de creation/modification des domaines de l'application GRR
- * Dernière modification : $Date: 2026-05-28 10:11$
+ * Dernière modification : $Date: 2026-10-10 16:00$
  * @author    JeromeB, Yan Naessens
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -17,192 +17,184 @@
 
 $grr_script_name = "admin_edit_domaine.php";
 
-$trad = $vocab;
-$ok = NULL;
+// Accès à la page
 
-$action = isset($_POST["action"]) ? $_POST["action"] : (isset($_GET["action"]) ? $_GET["action"] : NULL);
-$add_area = isset($_POST["add_area"]) ? $_POST["add_area"] : (isset($_GET["add_area"]) ? $_GET["add_area"] : NULL);
-$area_id = isset($_POST["area_id"]) ? $_POST["area_id"] : (isset($_GET["area_id"]) ? $_GET["area_id"] : NULL);
-$retour_page = isset($_POST["retour_page"]) ? $_POST["retour_page"] : (isset($_GET["retour_page"]) ? $_GET["retour_page"] : NULL);
-$change_area = isset($_POST["change_area"]) ? $_POST["change_area"] : NULL;
-$area_name = isset($_POST["area_name"]) ? $_POST["area_name"] : NULL;
-$access = isset($_POST["access"]) ? $_POST["access"] : NULL;
-$ip_adr = isset($_POST["ip_adr"]) ? $_POST["ip_adr"] : NULL;
-$duree_max_resa_area1  = isset($_POST["duree_max_resa_area1"]) ? $_POST["duree_max_resa_area1"] : NULL;
-$duree_max_resa_area2  = isset($_POST["duree_max_resa_area2"]) ? $_POST["duree_max_resa_area2"] : NULL;
-$max_booking = isset($_POST["max_booking"]) ? $_POST["max_booking"] : NULL;
-$access_file = isset($_POST['access_file'])? 1:0;
-$user_right = (int)SecuChaine::GetFormVar("user_right","int");
-$upload_file = (int)SecuChaine::GetFormVar("upload_file","int");
-$description_breve = (int)SecuChaine::GetFormVar("description_breve","int");
-$description_complete = (int)SecuChaine::GetFormVar("description_complete","int");
-$id_area = intval(SecuChaine::GetFormVar("id_area","int",0));
-$id_site = intval(SecuChaine::GetFormVar("id_site","int",-1));
 
-settype($max_booking, "integer");
-if ($max_booking<-1)
-	$max_booking = -1;
+// les variables attendues et leur type
+$form_vars = array(
+    'p_action' => array('int', 0), // 1 : Création, 2 : Duplication, 3 : Modification
+    'p_submit' => array('int', 0), // 1 : soumission du formulaire
+    'p_id_site' => array('int', -1),
+    'p_id_area' => array('int', -1),
+    'p_area_name' => array('string', ''),
+    'p_area_order' => array('int', 0),
+    'p_access' => array('alphanumeric', 'a'),
+	'p_weekstarts_area' => array('int', 1), // 1er jour de la semaine (0=dimanche, 1=lundi, 2=mardi, 3=mercredi, 4=jeudi, 5=vendredi, 6=samedi)
+	'p_display_day' => array('array', array()), // tableau des jours sélectionnés
+	'p_enable_periods' => array('alphanumeric', 'n'),
+	'p_morningstarts_area' => array('int', 8),
+	'p_eveningends_area' => array('int', 18),
+	'p_eveningends_minutes_area' => array('int', 0),
+    'p_resolution_area' => array('int', 1800),
+	'p_duree_par_defaut_reservation_area' => array('int', 1800),
+	'p_twentyfourhour_format_area' => array('int', 1),
+	'p_number_periodes' => array('int', 10),
+	'p_description_breve' => array('int', 1),
+	'p_description_complete' => array('int', 0),
+	'p_access_file' => array('int', 0),
+	'p_user_right' => array('int', 1),
+	'p_upload_file' => array('int', 1),
+	'p_ip_adr' => array('string', ''),
+	'p_max_booking' => array('int', -1),
+	'p_duree_max_resa_area1' => array('int', -1),
+	'p_duree_max_resa_area2' => array('int', -1),
+);
+// récupération des valeurs des variables passées en paramètres
+foreach($form_vars as $var => $params)
+    $$var = SecuChaine::GetFormVarSecure($var, $params[0], $params[1]);
 
-$change_done = isset($_POST["change_done"]) ? $_POST["change_done"] : NULL;
-if(!isset($_POST["area_order"]) || empty($_POST["area_order"])){
-	$area_order = 0;
-} else{
-	$area_order = $_POST["area_order"];
-}
-
-$number_periodes = isset($_POST["number_periodes"]) ? $_POST["number_periodes"] : NULL;
-$type_affichage_reser = isset($_POST["type_affichage_reser"]) ? $_POST["type_affichage_reser"] : NULL;
-
-settype($type_affichage_reser, "integer");
-
-if (isset($_POST["change_area_and_back"]))
+$i = 0;
+while ($i < $p_number_periodes)
 {
-	$change_area = "yes";
-	$change_done = "yes";
+	$varPeriode = 'p_periode_'.$i;
+	$$varPeriode = SecuChaine::GetFormVarSecure($varPeriode, 'string', '');
+	$i++;	
 }
-// memorisation du chemin de retour
-$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFERER']) : "./admin.php";
-if (!isset($retour_page))
-{
-	$retour_page = $back;
-	// on nettoie la chaine :
-	$long_chaine_a_supprimer = strlen(strstr($retour_page, "&amp;msg=")); // longueur de la chaine e partir de la premiere occurence de &amp;msg=
-	if ($long_chaine_a_supprimer == 0)
-		$long_chaine_a_supprimer = strlen(strstr($retour_page, "?msg="));
-	$long = strlen($retour_page) - $long_chaine_a_supprimer;
-	$retour_page = substr($retour_page, 0, $long);
-}
+
 // modification d'une resource : administrateur de domaine ou plus
 if (SecuAccess::UserLevel(getUserName(),-1) < 6)
 {
-  if (isset($id_area))
+  if ($p_id_area > 0)
 	{
 		// On verifie que le domaine $area existe
-		$test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
+		$test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_area WHERE id='".$p_id_area."'");
 		if ($test == -1)
 		{
-			showAccessDenied($retour_page);
+			showAccessDenied($back);
 			exit();
 		}
 		// Il s'agit de la modif d'un domaine
-		if ((SecuAccess::UserLevel(getUserName(), $id_area, 'area') < 4))
+		if ((SecuAccess::UserLevel(getUserName(), $p_id_area, 'area') < 4))
 		{
-			showAccessDenied($retour_page);
+			showAccessDenied($back);
 			exit();
 		}
 	}
-  elseif (isset($id_site)){
-        $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id='".$id_site."'");
+  	elseif ($p_id_site > 0){
+        $test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_site WHERE id='".$p_id_site."'");
         if ($test == -1){
-            showAccessDenied($retour_page);
+            showAccessDenied($back);
             exit();
         }
-        elseif(SecuAccess::UserLevel(getUserName(),$id_site,'site')<5){
-            showAccessDenied($retour_page);
+        elseif(SecuAccess::UserLevel(getUserName(),$p_id_site,'site')<5){
+            showAccessDenied($back);
             exit();
         }
     }
 }
-$msg ='';
 
-// Ajout ou modification d'un domaine
-if ((!empty($id_area)) || (isset($add_area)))
-{
-	if (isset($change_area))
+
+
+/** Actions **/
+	if($p_submit > 0)
 	{
-	// Affectation e un site : si aucun site n'a ete affecte
-		if ((Settings::get("module_multisite") == 1) && ($id_site == -1))
+		// Affectation un site : si aucun site n'a ete affecte
+		if ((Settings::get("module_multisite") == 1) && ($p_id_site == -1))
 		{
-	  		// On affiche un message d'avertissement
-			/*
-			<script type="text/javascript">
-				alert("<?php echo get_vocab('choose_a_site'); ?>");
-			</script>
-			*/
-	  		// On empeche le retour e la page admin_room
+			// On empeche le retour de la page admin_room
 			unset($change_done);
 		}
 		else
 		{
-	  		// Un site a ete affecte, on peut continuer
-	 		// la valeur par defaut ne peut etre inferiure au plus petit bloc reservable
-			if ($_POST['duree_par_defaut_reservation_area'] < $_POST['resolution_area'])
-				$_POST['duree_par_defaut_reservation_area'] = $_POST['resolution_area'];
-			// la valeur par defaut doit etre un multiple du plus petit bloc reservable
-			$_POST['duree_par_defaut_reservation_area'] = intval($_POST['duree_par_defaut_reservation_area'] / $_POST['resolution_area']) * $_POST['resolution_area'];
-	  		// Duree maximale de reservation
-			if (isset($_POST['enable_periods']))
-			{
-				if ($_POST['enable_periods'] == 'y')
-					$duree_max_resa_area = $duree_max_resa_area2 * 1440;
-				else
-				{
-					$duree_max_resa_area = $duree_max_resa_area1;
-					if ($duree_max_resa_area >= 0)
-						$duree_max_resa_area = max ($duree_max_resa_area, $_POST['resolution_area'] / 60, $_POST['duree_par_defaut_reservation_area'] / 60);
-				}
-				settype($duree_max_resa_area, "integer");
-				if ($duree_max_resa_area < 0)
-					$duree_max_resa_area = -1;
-			}
+			// Un site a ete affecte, on peut continuer
 
+			if($p_resolution_area <= 0)
+				$p_resolution_area = 1800;
+
+			// la valeur par defaut ne peut etre inferieure au plus petit bloc reservable
+			if($p_duree_par_defaut_reservation_area < $p_resolution_area)
+				$p_duree_par_defaut_reservation_area = $p_resolution_area;
+
+			// la valeur par defaut doit etre un multiple du plus petit bloc reservable
+			$duree_par_defaut_reservation_area = intval($p_duree_par_defaut_reservation_area / $p_resolution_area) * $p_resolution_area;
+			
+			// Duree maximale de reservation
+			$p_duree_max_resa_area1 = is_numeric($p_duree_max_resa_area1) ? (int) $p_duree_max_resa_area1 : -1;
+			$p_duree_max_resa_area2 = is_numeric($p_duree_max_resa_area2) ? (int) $p_duree_max_resa_area2 : -1;
+			if ($p_enable_periods == 'y')
+				$duree_max_resa_area = $p_duree_max_resa_area2 * 1440;
+			else
+			{
+				$duree_max_resa_area = $p_duree_max_resa_area1;
+				if ($duree_max_resa_area >= 0)
+					$duree_max_resa_area = max($duree_max_resa_area, $p_resolution_area / 60, $duree_par_defaut_reservation_area / 60);
+			}
+			settype($duree_max_resa_area, "integer");
+			if ($duree_max_resa_area < 0)
+				$duree_max_resa_area = -1;
+
+
+			// Affichage des jours de la semaine
 			$display_days = "";
 			for ($i = 0; $i < 7; $i++)
 			{
-				if (isset($_POST['display_day'][$i]))
+				if (isset($p_display_day[$i]))
 					$display_days .= "y";
 				else
 					$display_days .= "n";
 			}
 			if ($display_days != "nnnnnnn")
 			{
-				while (!isset($_POST['display_day'][$_POST['weekstarts_area']]))
-					$_POST['weekstarts_area']++;
+				while (!isset($p_display_day[$p_weekstarts_area]))
+					$p_weekstarts_area++;
 			}
-			if ($_POST['morningstarts_area'] > $_POST['eveningends_area'])
-				$_POST['eveningends_area'] = $_POST['morningstarts_area'];
-			if ($access)
-				$access='r';
+			if ($p_morningstarts_area > $p_eveningends_area)
+				$p_eveningends_area = $p_morningstarts_area;
+
+			// On verifie que l'utilisateur a le droit de modifier le domaine
+			if ($p_access == 'r')
+				$p_access='r';
 			else
-				$access='a';
-			if ((isset($id_area)) && $id_area > 0 && !((isset($action) && ($action == "duplique_area"))))
+				$p_access='a';
+			if ($p_action == 3 && $p_id_area != -1) // Modification d'un domaine
 			{
-				// s'il y a changement de type de creneaux, on efface les reservations du domaines
-				$old_enable_periods = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area WHERE id='".$id_area."'");
-				if ($old_enable_periods != $_POST['enable_periods'])
+				// S'il y a changement de type de creneaux, on efface les reservations du domaines
+				$old_enable_periods = grr_sql_query1("select enable_periods from ".TABLE_PREFIX."_area WHERE id='".$p_id_area."'");
+				if ($old_enable_periods != $p_enable_periods)
 				{
 					$del = grr_sql_query("DELETE ".TABLE_PREFIX."_entry FROM ".TABLE_PREFIX."_entry, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area WHERE
 						".TABLE_PREFIX."_entry.room_id = ".TABLE_PREFIX."_room.id and
 						".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id and
-						".TABLE_PREFIX."_area.id = '".$id_area."'");
+						".TABLE_PREFIX."_area.id = '".$p_id_area."'");
 					$del = grr_sql_query("DELETE ".TABLE_PREFIX."_repeat FROM ".TABLE_PREFIX."_repeat, ".TABLE_PREFIX."_room, ".TABLE_PREFIX."_area WHERE
 						".TABLE_PREFIX."_repeat.room_id = ".TABLE_PREFIX."_room.id and
 						".TABLE_PREFIX."_room.area_id = ".TABLE_PREFIX."_area.id and
-						".TABLE_PREFIX."_area.id = '".$id_area."'");
+						".TABLE_PREFIX."_area.id = '".$p_id_area."'");
 				}
+
 				$sql = "UPDATE ".TABLE_PREFIX."_area SET
-				area_name='".SecuChaine::ProtectDataSql($area_name)."',
-				access='".SecuChaine::ProtectDataSql($access)."',
-				order_display='".SecuChaine::ProtectDataSql($area_order)."',
-				ip_adr='".SecuChaine::ProtectDataSql($ip_adr)."',
+				area_name='".SecuChaine::ProtectDataSql($p_area_name)."',
+				access='".SecuChaine::ProtectDataSql($p_access)."',
+				order_display='".SecuChaine::ProtectDataSql($p_area_order)."',
+				ip_adr='".SecuChaine::ProtectDataSql($p_ip_adr)."',
 				calendar_default_values = 'n',
 				duree_max_resa_area = '".SecuChaine::ProtectDataSql($duree_max_resa_area)."',
-				morningstarts_area = '".SecuChaine::ProtectDataSql($_POST['morningstarts_area'])."',
-				eveningends_area = '".SecuChaine::ProtectDataSql($_POST['eveningends_area'])."',
-				resolution_area = '".SecuChaine::ProtectDataSql($_POST['resolution_area'])."',
-				duree_par_defaut_reservation_area = '".SecuChaine::ProtectDataSql($_POST['duree_par_defaut_reservation_area'])."',
-				eveningends_minutes_area = '".SecuChaine::ProtectDataSql($_POST['eveningends_minutes_area'])."',
-				weekstarts_area = '".SecuChaine::ProtectDataSql($_POST['weekstarts_area'])."',
-				enable_periods = '".SecuChaine::ProtectDataSql($_POST['enable_periods'])."',
-				twentyfourhour_format_area = '".SecuChaine::ProtectDataSql($_POST['twentyfourhour_format_area'])."',
-				max_booking='".$max_booking."',
+				morningstarts_area = '".SecuChaine::ProtectDataSql($p_morningstarts_area)."',
+				eveningends_area = '".SecuChaine::ProtectDataSql($p_eveningends_area)."',
+				resolution_area = '".SecuChaine::ProtectDataSql($p_resolution_area)."',
+				duree_par_defaut_reservation_area = '".SecuChaine::ProtectDataSql($duree_par_defaut_reservation_area)."',
+				eveningends_minutes_area = '".SecuChaine::ProtectDataSql($p_eveningends_minutes_area)."',
+				weekstarts_area = '".SecuChaine::ProtectDataSql($p_weekstarts_area)."',
+				enable_periods = '".SecuChaine::ProtectDataSql($p_enable_periods)."',
+				twentyfourhour_format_area = '".SecuChaine::ProtectDataSql($p_twentyfourhour_format_area)."',
+				max_booking='".$p_max_booking."',
 				display_days = '".$display_days."',
-				user_right = '".$user_right."',
-				access_file = ".$access_file.",
-				upload_file = ".$upload_file.",
-				description_breve = '".$description_breve."',
-				description_complete = '".$description_complete."'
-				WHERE id=$id_area";
+				user_right = '".$p_user_right."',
+				access_file = ".$p_access_file.",
+				upload_file = ".$p_upload_file.",
+				description_breve = '".$p_description_breve."',
+				description_complete = '".$p_description_complete."'
+				WHERE id=$p_id_area";
 				if (grr_sql_command($sql) < 0)
 				{
 					fatal_error(0, get_vocab('update_area_failed') . grr_sql_error());
@@ -212,138 +204,148 @@ if ((!empty($id_area)) || (isset($add_area)))
 			else
 			{
 				$sql = "INSERT INTO ".TABLE_PREFIX."_area SET
-				area_name='".SecuChaine::ProtectDataSql($area_name)."',
-				access='".SecuChaine::ProtectDataSql($access)."',
-				order_display='".SecuChaine::ProtectDataSql($area_order)."',
-				ip_adr='".SecuChaine::ProtectDataSql($ip_adr)."',
+				area_name='".SecuChaine::ProtectDataSql($p_area_name)."',
+				access='".SecuChaine::ProtectDataSql($p_access)."',
+				order_display='".SecuChaine::ProtectDataSql($p_area_order)."',
+				ip_adr='".SecuChaine::ProtectDataSql($p_ip_adr)."',
 				calendar_default_values = 'n',
 				duree_max_resa_area = '".SecuChaine::ProtectDataSql($duree_max_resa_area)."',
-				morningstarts_area = '".SecuChaine::ProtectDataSql($_POST['morningstarts_area'])."',
-				eveningends_area = '".SecuChaine::ProtectDataSql($_POST['eveningends_area'])."',
-				resolution_area = '".SecuChaine::ProtectDataSql($_POST['resolution_area'])."',
-				duree_par_defaut_reservation_area = '".SecuChaine::ProtectDataSql($_POST['duree_par_defaut_reservation_area'])."',
-				eveningends_minutes_area = '".SecuChaine::ProtectDataSql($_POST['eveningends_minutes_area'])."',
-				weekstarts_area = '".SecuChaine::ProtectDataSql($_POST['weekstarts_area'])."',
-				enable_periods = '".SecuChaine::ProtectDataSql($_POST['enable_periods'])."',
-				twentyfourhour_format_area = '".SecuChaine::ProtectDataSql($_POST['twentyfourhour_format_area'])."',
+				morningstarts_area = '".SecuChaine::ProtectDataSql($p_morningstarts_area)."',
+				eveningends_area = '".SecuChaine::ProtectDataSql($p_eveningends_area)."',
+				resolution_area = '".SecuChaine::ProtectDataSql($p_resolution_area)."',
+				duree_par_defaut_reservation_area = '".SecuChaine::ProtectDataSql($duree_par_defaut_reservation_area)."',
+				eveningends_minutes_area = '".SecuChaine::ProtectDataSql($p_eveningends_minutes_area)."',
+				weekstarts_area = '".SecuChaine::ProtectDataSql($p_weekstarts_area)."',
+				enable_periods = '".SecuChaine::ProtectDataSql($p_enable_periods)."',
+				twentyfourhour_format_area = '".SecuChaine::ProtectDataSql($p_twentyfourhour_format_area)."',
 				display_days = '".$display_days."',
-				max_booking='".$max_booking."',
+				max_booking='".$p_max_booking."',
 				id_type_par_defaut = '-1',
-				user_right = '".$user_right."',
-				access_file = ".$access_file.",
-				upload_file = ".$upload_file.",
-				description_breve = '".$description_breve."',
-				description_complete = '".$description_complete."'
+				user_right = '".$p_user_right."',
+				access_file = ".$p_access_file.",
+				upload_file = ".$p_upload_file.",
+				description_breve = '".$p_description_breve."',
+				description_complete = '".$p_description_complete."'
 				";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(1, "<p>" . grr_sql_error());
-				$id_area = grr_sql_insert_id();
+				$p_id_area = grr_sql_insert_id();
 			}
-	  		// Affectation e un site
+			// Affectation d'un site
 			if (Settings::get("module_multisite") == 1)
 			{
-				$sql = "delete from ".TABLE_PREFIX."_j_site_area where id_area='".$id_area."'";
+				$sql = "DELETE FROM ".TABLE_PREFIX."_j_site_area WHERE id_area='".$p_id_area."'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0, "<p>".grr_sql_error()."</p>");
-				$sql = "INSERT INTO ".TABLE_PREFIX."_j_site_area SET id_site='".$id_site."', id_area='".$id_area."'";
+				$sql = "INSERT INTO ".TABLE_PREFIX."_j_site_area SET id_site='".$p_id_site."', id_area='".$p_id_area."'";
 				if (grr_sql_command($sql) < 0)
 					fatal_error(0, "<p>".grr_sql_error()."</p>");
 			}
-			#Si area_name est vide on le change maintenant que l'on a l'id area
-			if ($area_name == '')
+			// Si area_name est vide on le change maintenant que l'on a l'id area
+			if ($p_area_name == '')
 			{
-				$area_name = get_vocab("match_area")." ".$id_area;
-				grr_sql_command("UPDATE ".TABLE_PREFIX."_area SET area_name='".SecuChaine::ProtectDataSql($area_name)."' WHERE id=$id_area");
+				$area_name = get_vocab("match_area")." ".$p_id_area;
+				grr_sql_command("UPDATE ".TABLE_PREFIX."_area SET area_name='".SecuChaine::ProtectDataSql($area_name)."' WHERE id=$p_id_area");
 			}
-		  	#on cree ou recree ".TABLE_PREFIX."_area_periodes pour le domaine
-			if (SecuChaine::ProtectDataSql($_POST['enable_periods']) == 'y')
+			// On crée ou recréé _area_periodes pour le domaine
+			if ($p_enable_periods == 'y')
 			{
-				if (isset($number_periodes))
+				if ($p_number_periodes < 1)
+					$p_number_periodes = 1;
+				$del_periode = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_area_periodes WHERE id_area='".$p_id_area."'");
+				// On efface le modele par defaut avec area=0
+				$del_periode = grr_sql_query("DELETE FROM ".TABLE_PREFIX."_area_periodes WHERE id_area='0'");
+				$i = 0;
+				$num = 0;
+				while ($i < $p_number_periodes)
 				{
-					settype($number_periodes, "integer");
-					if ($number_periodes < 1)
-						$number_periodes = 1;
-					$del_periode = grr_sql_query("delete from ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."'");
-		  			#on efface le modele par defaut avec area=0
-					$del_periode = grr_sql_query("delete from ".TABLE_PREFIX."_area_periodes where id_area='0'");
-					$i = 0;
-					$num = 0;
-					while ($i < $number_periodes)
+					$temp = "p_periode_".$i;
+					if (isset($$temp))
 					{
-						$temp = "periode_".$i;
-						if (isset($_POST[$temp]))
-						{
-							$nom_periode = corriger_caracteres($_POST[$temp]);
-							$reg_periode = grr_sql_query("insert into ".TABLE_PREFIX."_area_periodes set
-								id_area='".$id_area."',
-								num_periode='".$num."',
-								nom_periode='".SecuChaine::ProtectDataSql($nom_periode)."'
-								");
-			  				#on cree un modele par defaut avec area=0
-							$reg_periode = grr_sql_query("insert into ".TABLE_PREFIX."_area_periodes set
-								id_area='0',
-								num_periode='".$num."',
-								nom_periode='".SecuChaine::ProtectDataSql($nom_periode)."'");
-							$num++;
-						}
-						$i++;
+						$nom_periode = corriger_caracteres($$temp);
+						$reg_periode = grr_sql_query("INSERT INTO ".TABLE_PREFIX."_area_periodes SET
+							id_area='".$p_id_area."',
+							num_periode='".$num."',
+							nom_periode='".SecuChaine::ProtectDataSql($nom_periode)."'
+							");
+						// On crée un modele par defaut avec area=0
+						$reg_periode = grr_sql_query("INSERT INTO ".TABLE_PREFIX."_area_periodes SET
+							id_area='0',
+							num_periode='".$num."',
+							nom_periode='".SecuChaine::ProtectDataSql($nom_periode)."'");
+						$num++;
 					}
+					$i++;
 				}
 			}
-			//$msg = get_vocab("message_records");
-		}
-	}
-	if ($access=='a')
-	{
-		$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE id_area='$id_area'";
-		if (grr_sql_command($sql) < 0)
-			fatal_error(0, get_vocab('update_area_failed') . grr_sql_error());
+			// Le domaine n'est pas ou plus restreint, on supprime les droits des utilisateurs et des groupes
+			if ($p_access=='a')
+			{
+				$sql = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE id_area='$p_id_area'";
+				if (grr_sql_command($sql) < 0)
+					fatal_error(0, get_vocab('update_area_failed') . grr_sql_error());
 
-		$sql = "DELETE FROM ".TABLE_PREFIX."_j_group_area WHERE id_area='$id_area'";
-		if (grr_sql_command($sql) < 0)
-			fatal_error(0, get_vocab('update_area_failed') . grr_sql_error());
-	}
-	if ((isset($change_done)) && (!isset($ok)))
-	{
-		$msg .= get_vocab("message_records");
-		if ($msg != '') {
-			//$_SESSION['displ_msg'] = 'yes';
-			if (strpos($retour_page, ".php?") == "")
-				$param = "?ok=1&msg=".$msg;
-			else
-				$param = "&ok=1&msg=".$msg;
-		} else
-		$param = '';
-		Header("Location: ".$retour_page.$param);
-		exit();
-	}
+				$sql = "DELETE FROM ".TABLE_PREFIX."_j_group_area WHERE id_area='$p_id_area'";
+				if (grr_sql_command($sql) < 0)
+					fatal_error(0, get_vocab('update_area_failed') . grr_sql_error());
+			}
 
-	// Si pas de problème, message de confirmation
-	if (isset($_POST['area_name'])) {
-		//$_SESSION['displ_msg'] = 'yes';
-		if ($msg == '') {
 			$d['enregistrement'] = 1;
-		} else{
-			$d['enregistrement'] = $msg;
+			$p_action = 3; // On passe en mode modification une fois ajouté ou dupliqué
 		}
 	}
-	if ((isset($_GET['msg'])) && isset($_SESSION['displ_msg']) && ($_SESSION['displ_msg'] == 'yes')) {
-		$msg = $_GET['msg'];
-	} else {
-		$msg = '';
+
+/** Affichage de la page **/
+	$trad['TitrePage'] = $trad['admin_room'];
+
+	$d['idSite']	= $p_id_site;
+	$d['action']	= $p_action;
+	$d['gOptionIp'] = $gOptionIp;
+
+	if ($p_action == 1)
+		$trad['SousTitrePage'] = get_vocab("addarea");
+	elseif ($p_action == 2)
+		$trad['SousTitrePage'] = get_vocab("duplique_domaine");
+	else
+		$trad['SousTitrePage'] = get_vocab("editarea");
+
+	// Sites
+	$sites = array();
+	if (Settings::get("module_multisite") == 1)
+	{
+		if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
+			$sql = "SELECT id,sitecode,sitename
+					FROM ".TABLE_PREFIX."_site
+					ORDER BY sitename ASC";
+		else
+			$sql = "SELECT id,sitecode,sitename
+					FROM ".TABLE_PREFIX."_site s,  ".TABLE_PREFIX."_j_useradmin_site u
+					WHERE s.id=u.id_site and u.login='".getUserName()."'
+					ORDER BY s.sitename ASC";
+		$res = grr_sql_query($sql);
+		$nb_site = grr_sql_count($res);
+
+		for ($enr = 0; ($domaine1 = grr_sql_row($res, $enr)); $enr++)
+			$sites[] = array('id' => $domaine1[0], 'nom' => $domaine1[2]);
+
+		grr_sql_free($res);
 	}
 
-	if (isset($id_area) && $id_area <> 0)
+	// Jours de la semaine: 0 pour dimanche, 1 pour lundi, etc.
+	for ($i = 0; $i < 7; $i++)
+		$JoursSemaine[] = array('num' => $i, 'nom' => day_name($i));
+
+	// Infos du domaine
+	if ($p_id_area > 0) // Modification ou duplication d'un domaine
 	{
-		$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id=$id_area");
+		$res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id=$p_id_area");
 		if (! $res)
-			fatal_error(0, get_vocab('error_area') . $id_area . get_vocab('not_found'));
+			fatal_error(0, get_vocab('error_area') . $p_id_area . get_vocab('not_found'));
 		$domaine = grr_sql_row_keyed($res, 0);
 		grr_sql_free($res);
-		if ($action=="duplique_area")
-			$trad['editarea'] = get_vocab("duplique_domaine");
-		else
-			$trad['editarea'] = get_vocab("editarea");
+
+		$domaine["area_name"] = html_entity_decode($domaine["area_name"], ENT_QUOTES, 'UTF-8');
+
 		if ($domaine["calendar_default_values"] == 'y')
 		{
 			$domaine["morningstarts_area"] = $morningstarts;
@@ -359,9 +361,9 @@ if ((!empty($id_area)) || (isset($add_area)))
 		if ($domaine["enable_periods"] != 'y')
 			$domaine["enable_periods"] = 'n';
 		if (Settings::get("module_multisite") == 1)
-			$id_site=grr_sql_query1("select id_site from ".TABLE_PREFIX."_j_site_area where id_area='".$id_area."'");
+			$d['idSite'] = grr_sql_query1("SELECT id_site FROM ".TABLE_PREFIX."_j_site_area WHERE id_area='".$p_id_area."'");
 	}
-	else
+	else // Création d'un domaine
 	{
 		$domaine["id"] = '';
 		$domaine["area_name"] = '';
@@ -379,79 +381,40 @@ if ((!empty($id_area)) || (isset($add_area)))
 		$domaine["enable_periods"] = 'n';
 		$domaine["display_days"] = "yyyyyyy";
 		$domaine['max_booking'] = '-1';
-		$trad['editarea'] = get_vocab('addarea');
 	}
 
+	//Les creneaux de reservation sont bases sur des intitules pre-definis.
+	$sql_periode = grr_sql_query("SELECT num_periode, nom_periode FROM ".TABLE_PREFIX."_area_periodes WHERE id_area='".$p_id_area."' ORDER BY num_periode");
+	$num_periodes = grr_sql_count($sql_periode);
 
-	$trad['dIdSite'] = $id_site;
-	$trad['dIpClient'] = $gOptionIp;
+	if ($p_number_periodes == 0)
+		$number_periodes = 10;
+	else
+		$number_periodes = $p_number_periodes;
 
-		if (isset($action))
-			$trad['dHidden1'] = "<input type=\"hidden\" name=\"action\" value=\"duplique_area\" />";
-		if (isset($retour_page))
-			$trad['dHidden2'] = "<input type=\"hidden\" name=\"retour_page\" value=\"".$retour_page."\" />";
-		if (isset($add_area))
-			$trad['dHidden3'] = "<input type=\"hidden\" name=\"add_area\" value=\"".$add_area."\" />\n";
 
-		// Sites
-        $sites = array();
-		if (Settings::get("module_multisite") == 1)
-		{
+	$d['numberPeriodes'] = $number_periodes;
 
-			if (SecuAccess::UserLevel(getUserName(), -1, 'area') >= 6)
-				$sql = "SELECT id,sitecode,sitename
-						FROM ".TABLE_PREFIX."_site
-						ORDER BY sitename ASC";
-			else
-				$sql = "SELECT id,sitecode,sitename
-						FROM ".TABLE_PREFIX."_site s,  ".TABLE_PREFIX."_j_useradmin_site u
-						WHERE s.id=u.id_site and u.login='".getUserName()."'
-						ORDER BY s.sitename ASC";
-			$res = grr_sql_query($sql);
-			$nb_site = grr_sql_count($res);
+	$i = 0;
+	$d['nomCrenaux'] = "";
+	while ($i < 50)
+	{
+		$nom_periode = grr_sql_query1("SELECT nom_periode FROM ".TABLE_PREFIX."_area_periodes WHERE id_area='".$p_id_area."' AND num_periode= '".$i."'");
+		if ($nom_periode == -1)
+			$nom_periode = "";
+		$d['nomCrenaux'] .= "<div class=\"row mb-12\" style=\"display:none\" id=\"c".($i+1)."\">";
+		$d['nomCrenaux'] .= "<label for=\"p_periode_".$i."\" class=\"col-md-6 col-form-label\">".get_vocab("intitule_creneau").($i+1).get_vocab("deux_points")."</label>";
+		$d['nomCrenaux'] .= "<div class=\"col-md-6\">";
+		$d['nomCrenaux'] .= "<input type=\"text\" class=\"form-control\" id=\"p_periode_".$i."\" name=\"p_periode_".$i."\" value=\"".htmlentities($nom_periode, ENT_QUOTES, 'UTF-8')."\" />";
+		$d['nomCrenaux'] .= "</div></div>\n";
+		$i++;
+	}
 
-			for ($enr = 0; ($domaine1 = grr_sql_row($res, $enr)); $enr++)
-				$sites[] = array('id' => $domaine1[0], 'nom' => $domaine1[2]);
-
-			grr_sql_free($res);
-		}
-
-		// jours de la semaine: 0 pour dimanche, 1 pour lundi, etc.
-		for ($i = 0; $i < 7; $i++)
-			$JoursSemaine[] = array('num' => $i, 'nom' => day_name($i));
-
-		//Les creneaux de reservation sont bases sur des intitules pre-definis.
-		$sql_periode = grr_sql_query("SELECT num_periode, nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."' order by num_periode");
-		$num_periodes = grr_sql_count($sql_periode);
-		if (!isset($number_periodes))
-			if ($num_periodes == 0)
-				$number_periodes = 10;
-			else
-				$number_periodes = $num_periodes;
-			
-			$trad['dNumberPeriodes'] = $number_periodes;
-
-			$i = 0;
-			$trad['dNomCrenaux'] = "";
-			while ($i < 50)
-			{
-				$nom_periode = grr_sql_query1("select nom_periode FROM ".TABLE_PREFIX."_area_periodes where id_area='".$id_area."' and num_periode= '".$i."'");
-				if ($nom_periode == -1)
-					$nom_periode = "";
-				$trad['dNomCrenaux'] .= "<table style=\"display:none\" id=\"c".($i+1)."\"><tr><td>".get_vocab("intitule_creneau").($i+1).get_vocab("deux_points")."</td>";
-				$trad['dNomCrenaux'] .= "<td style=\"width:30%;\"><input type=\"text\" name=\"periode_".$i."\" value=\"".htmlentities($nom_periode)."\" size=\"20\" /></td></tr></table>\n";
-				$i++;
-			}
-
-			// L'utilisateur ne peut reserver qu'une duree limitee (-1 desactivee), exprimee en jours
-			if ($domaine["duree_max_resa_area"] > 0)
-				$trad['dNombreJourMax'] = max(round($domaine["duree_max_resa_area"]/1440,0),1);
-			else
-				$trad['dNombreJourMax'] = -1;
-
-/**/
-			//Hook::Appel("hookEditArea1");
-		}
+	// L'utilisateur ne peut reserver qu'une duree limitee (-1 desactivee), exprimee en jours
+	if ($domaine["duree_max_resa_area"] > 0)
+		$d['nombreJourMax'] = max(round($domaine["duree_max_resa_area"]/1440,0),1);
+	else
+		$d['nombreJourMax'] = -1;
 
 	echo $twig->render('admin_edit_domaine.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'domaine' => $domaine, 'sites' => $sites, 'JoursSemaine' => $JoursSemaine));
 ?>

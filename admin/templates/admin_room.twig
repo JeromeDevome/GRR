@@ -37,7 +37,7 @@
 								<button type="button" class="btn btn-default" onclick="expandAllDomaines(); return false;"><i class="fa fa-angles-down"></i> Déplier tout</button>
 								<button type="button" class="btn btn-default" onclick="collapseAllDomaines(); return false;"><i class="fa fa-angles-up"></i> Replier tout</button>
 								{% if d.ajoutDomaine == 1 %}
-									<a class="btn btn-success" href="?p=admin_edit_domaine&amp;id_site={{d.idSite}}&amp;add_area=yes"><i class="fa fa-add"></i> {{trad.addarea}}</a>
+									<a class="btn btn-success" href="?p=admin_edit_domaine&amp;p_id_site={{d.idSite}}&amp;p_action=1"><i class="fa fa-add"></i> {{trad.addarea}}</a>
 								{% else %}
 									<a href="#" class="btn btn-secondary"><i class="fa fa-add"></i> {{trad.addarea}}</a>
 								{% endif %}
@@ -48,17 +48,17 @@
 							{% for domaine in domaines %}
 								<div class="card mb-2">
 									<!-- Domaines -->
-									<div class="card-header p-2">
+									<div class="card-header bg-gray p-2">
 										<div class="d-flex justify-content-between align-items-center">
 											{% if domaine.acces == 'r' %}<a class="btn btn-primary btn-sm" href="?p=admin_access_area&amp;id_area={{ domaine.id }}" title="{{ trad.admin_access_area }}"><span class="fa fa-lock"></a>{% else %}&nbsp;{% endif %}
 											<button class="btn btn-link text-left p-0 text-dark text-decoration-none domaine-toggle" type="button" data-target="#collapse-domaine-{{ domaine.id }}" aria-expanded="{{ domaine.id == d.idDomaine ? 'true' : 'false' }}" aria-controls="collapse-domaine-{{ domaine.id }}" onclick="toggleDomaineCollapse('#collapse-domaine-{{ domaine.id }}'); return false;">		
-												<h5 class="text-primary">{{ domaine.nom }} <i class="fa chevron-icon {% if domaine.id == d.idDomaine %}fa-angles-up{% else %}fa-angles-down{% endif %}"></i></h5>
+												<h5 class="text-white">{{ domaine.nom }} <i class="fa chevron-icon {% if domaine.id == d.idDomaine %}fa-angles-up{% else %}fa-angles-down{% endif %}"></i></h5>
 											</button>
 											<div class="btn-group btn-group-sm" role="group">
-												<a class="btn btn-primary" href="?p=admin_edit_domaine&amp;id_site={{ d.idSite }}&amp;id_area={{ domaine.id }}" title="{{ trad.edit }}"><span class="fa fa-edit"></span></a>
+												<a class="btn btn-primary" href="?p=admin_edit_domaine&amp;p_id_site={{ d.idSite }}&amp;p_id_area={{ domaine.id }}&amp;p_action=3" title="{{ trad.edit }}"><span class="fa fa-edit"></span></a>
 												{% if domaine.droitsuser >= 5 %}
-													<a class="btn btn-success" href="?p=admin_edit_domaine&amp;id_area={{ domaine.id }}&amp;action=duplique_area" title="{{ trad.duplique_domaine }}"><span class="fa fa-copy"></span></a>
-													<a class="btn btn-danger" href="?p=admin_room_del&amp;id_site={{ d.idSite }}&amp;type=area&amp;id_area={{ domaine.id }}" title="{{ trad.delete }}"><span class="fa fa-trash"></span></a>
+													<a class="btn btn-success" href="?p=admin_edit_domaine&amp;p_id_area={{ domaine.id }}&amp;p_action=2" title="{{ trad.duplique_domaine }}"><span class="fa fa-copy"></span></a>
+													<a class="btn btn-danger" href="?p=admin_room_del&amp;p_id_site={{ d.idSite }}&amp;type=area&amp;p_id_area={{ domaine.id }}" title="{{ trad.delete }}"><span class="fa fa-trash"></span></a>
 												{% else %}
 													<a class="btn btn-secondary" href="#" title="{{ trad.copy }}"><span class="fa fa-copy"></span></a>
 													<a class="btn btn-secondary" href="#" title="{{ trad.delete }}"><span class="fa fa-trash"></span></a>
@@ -100,7 +100,7 @@
 												<div class="mt-2 text-muted">{{ trad.no_rooms_for_area }}</div>
 											{% endif %}
 											<div class="mt-2">
-												<a href="?p=admin_edit_room&amp;id_site={{ d.idSite }}&amp;area_id={{ domaine.id }}" class="btn btn-sm btn-success">{{ trad.addroom }}</a>
+												<a href="?p=admin_edit_room&amp;id_site={{ d.idSite }}&amp;area_id={{ domaine.id }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> {{ trad.addroom }}</a>
 											</div>
 										</div>
 									</div>
@@ -232,21 +232,23 @@
 
 		function centrerpopup(page,largeur,hauteur,options)
 		{
-		// les options :
-		//    * left=100 : Position de la fenêtre par rapport au bord gauche de l'écran.
-		//    * top=50 : Position de la fenêtre par rapport au haut de l'écran.
-		//    * resizable=x : Indique si la fenêtre est redimensionnable.
-		//    * scrollbars=x : Indique si les barres de navigations sont visibles.
-		//    * menubar=x : Indique si la barre des menus est visible.
-		//    * toolbar=x : Indique si la barre d'outils est visible.
-		//    * directories=x : Indique si la barre d'outils personnelle est visible.
-		//    * location=x : Indique si la barre d'adresse est visible.
-		//    * status=x : Indique si la barre des status est visible.
-		//
-		// x = yes ou 1 si l'affirmation est vrai ; no ou 0 si elle est fausse.
-		var top = (screen.height - hauteur) / 2;
-		var left = (screen.width - largeur) / 2;
-		window.open(page,"","top="+top+",left="+left+",width="+largeur+",height="+hauteur+",directories=no,toolbar=no,menubar=no,location=no,"+options);
+			// les options :
+			//    * left=100 : Position de la fenêtre par rapport au bord gauche de l'écran.
+			//    * top=50 : Position de la fenêtre par rapport au haut de l'écran.
+			//    * resizable=x : Indique si la fenêtre est redimensionnable.
+			//    * scrollbars=x : Indique si les barres de navigations sont visibles.
+			//    * menubar=x : Indique si la barre des menus est visible.
+			//    * toolbar=x : Indique si la barre d'outils est visible.
+			//    * directories=x : Indique si la barre d'outils personnelle est visible.
+			//    * location=x : Indique si la barre d'adresse est visible.
+			//    * status=x : Indique si la barre des status est visible.
+			//
+			// x = yes ou 1 si l'affirmation est vrai ; no ou 0 si elle est fausse.
+			var top = (screen.height - hauteur) / 2;
+			var left = (screen.width - largeur) / 2;
+			window.open(page,"","top="+top+",left="+left+",width="+largeur+",height="+hauteur+",directories=no,toolbar=no,menubar=no,location=no,"+options);
 		}
+
+		expandAllDomaines();
 	</script>
 {% endblock %}

@@ -7,58 +7,62 @@
 {% endblock %}
 
 {% block content %}
-	<div class="row">
-        <div class="col col-xs-12">
-            <div class="box">
-				<div class="box-header">
-					<h3 class="box-title">{{ trad.editarea }}</h3>
-				</div>
-				
-				<div class="box-body no-padding">
-					<form action="?p=admin_edit_domaine" method="post" id="main">
-						<input type="hidden" name="p" value="admin_edit_domaine" />
-						<input type="hidden" name="id_area" value="{{ domaine.id }}" />
-						{{ trad.dHidden1 |raw }}
-						{{ trad.dHidden2 |raw }}
-						{{ trad.dHidden3 |raw }}
 
-						<section id="rensignementdivers">
-							<h4 class="page-header">{{ trad.miscellaneous }}</h4>
-							{{ form.input('area_name', trad.name, domaine.area_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
-							{{ form.input('area_order', trad.order_display, domaine.order_display, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type: 'number'}) }}
-							<div class="form-group row col-sm-12">
-								<label class="col col-sm-4" for="access">{{ trad.access }}</label>
-								<div class="col col-sm-8">
-									<input type="checkbox" name="access" value="y" {% if domaine.access == 'r' %} checked {% endif %}>
-								</div>
-							</div>
+	<form action="?p=admin_edit_domaine" method="post" id="main">
+		<input type="hidden" name="p" value="admin_edit_domaine" />
+		<input type="hidden" name="p_action" value="{{ d.action }}" />
+		<input type="hidden" name="p_id_area" value="{{ domaine.id }}" />
+
+		<div class="row">
+			<div class="col col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+				<!-- Bloc informations -->
+				<div class="col col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title"><i class="fas fa-newspaper"></i> {{ trad.miscellaneous }}</h3>
+						</div>
+						<div class="card-body">
+
 							{% if settings.module_multisite == 1 %}
 								<div class="form-group row col-sm-12">
-									<label class="col col-sm-4" for="id_site">{{ trad.site }}</label>
+									<label class="col col-sm-4" for="p_id_site">{{ trad.site }}</label>
 									<div class="col col-sm-8">
-										<select class="form-control" name="id_site">
+										<select class="form-control" name="p_id_site">
 											<option value="-1">{{ trad.choose_a_site }}</option>
 											{% for site in sites %}
-												<option value="{{ site.id }}" {% if trad.dIdSite ==  site.id %} selected {% endif %}>{{ site.nom }}</option>
+												<option value="{{ site.id }}" {% if d.idSite ==  site.id %} selected {% endif %}>{{ site.nom }}</option>
 											{% endfor %}
 										</select>
 									</div>
 								</div>
 							{% endif %}
-							{% if trad.dIpClient == 1 %}
-								{{ form.input('ip_adr', trad.ip_adr, domaine.ip_adr, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label'}) }}
-								<p>{{ trad.ip_adr_explain |raw }}</p>
-							{% endif %}
-						</section>
 
-						<hr>
-
-						<section id="affichageplanning">
-							<h4 class="page-header">{{ trad.configuration_plages_horaires }}</h4>
+							{{ form.input('p_area_name', trad.name, domaine.area_name, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', require:1}) }}
+							{{ form.input('p_area_order', trad.order_display, domaine.order_display, {classGroup: 'col-sm-12', classLabel: 'col-sm-4', classDivInput: 'col-sm-8 control-label', type: 'number', min: 0}) }}
 							<div class="form-group row col-sm-12">
-								<label class="col col-sm-4" for="weekstarts_area">{{ trad.weekstarts_area }}</label>
+								<label class="col col-sm-4" for="p_access">{{ trad.access }}</label>
 								<div class="col col-sm-8">
-									<select class="form-control" name="weekstarts_area">
+									<input type="checkbox" name="p_access" value="r" {% if domaine.access == 'r' %} checked {% endif %}>
+								</div>
+							</div>
+
+						</div><!-- /.card-body -->
+					</div>
+				</div>
+
+				<!-- Bloc configuration des plages horaires -->
+				<div class="col col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title"><i class="fas fa-clock"></i> {{ trad.configuration_plages_horaires }}</h3>
+						</div>
+						<div class="card-body">
+
+							<div class="form-group row col-sm-12">
+								<label class="col col-sm-4" for="p_weekstarts_area">{{ trad.weekstarts_area }}</label>
+								<div class="col col-sm-8">
+									<select class="form-control" name="p_weekstarts_area">
 										{% for jour in JoursSemaine %}
 											<option value="{{ jour.num }}" {% if domaine.weekstarts_area ==  jour.num %} selected {% endif %}>{{ jour.nom }}</option>
 										{% endfor %}
@@ -66,232 +70,276 @@
 								</div>
 							</div>
 							<div class="form-group row col-sm-12">
-								<label class="col col-sm-4" for="display_day">{{ trad.cocher_jours_a_afficher |raw }}</label>
-								<div class="col col-sm-8">
+								<label class="col col-sm-8" for="p_display_day">{{ trad.cocher_jours_a_afficher |raw }}</label>
+								<div class="col col-sm-4">
 									{% for jour in JoursSemaine %}
-										<input name="display_day[{{ jour.num }}]" type="checkbox" {% if domaine.display_days|slice(jour.num, 1) ==  'y' %} checked {% endif %}> {{ jour.nom }}<br>
+										<input name="p_display_day[{{ jour.num }}]" type="checkbox" {% if domaine.display_days|slice(jour.num, 1) ==  'y' %} checked {% endif %}> {{ jour.nom }}<br>
 									{% endfor %}
 								</div>
 							</div>
-						</section>
-
-						<hr>
-
-						<section id="fichierjoint">
-							<h4 class="page-header">{{ trad.ajout_fichier_joint }}</h4>
-
-
-							<div class="form-group row col-sm-12">
-								<label class="col col-sm-11" for="access_file">{{ trad.ajout_fichier_joint_explain|raw }}</label>
-								<div class="col col-sm-1">
-									<input type="checkbox" name="access_file" value="1" {% if domaine.access_file == 1 %} checked {% endif %}>
-								</div>
-							</div>
-
-
-							<div class="form-group row col-sm-12">
-								<label class="col col-sm-8" for="user_right">Droit pour consulter les fichiers</label>
-
-								<div class="col col-sm-4">
-									<select class="form-control" name="user_right">
-										<option value="1" {% if domaine.user_right == 1 %} selected {% endif %}>{{ trad.visu_fiche_description1 }}</option>
-										<option value="2" {% if domaine.user_right == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
-										<option value="3" {% if domaine.user_right == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
-										<option value="4" {% if domaine.user_right == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
-										<option value="5" {% if domaine.user_right == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
-										<option value="6" {% if domaine.user_right == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="form-group row col-sm-12">
-								<label class="col col-sm-8" for="upload_file">Droit pour téléverser les fichiers</label>
-
-								<div class="col col-sm-4">
-									<select class="form-control" name="upload_file">
-										<option value="1" {% if domaine.upload_file == 1 %} selected {% endif %}>{{ trad.visu_fiche_description1 }}</option>
-										<option value="2" {% if domaine.upload_file == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
-										<option value="3" {% if domaine.upload_file == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
-										<option value="4" {% if domaine.upload_file == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
-										<option value="5" {% if domaine.upload_file == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
-										<option value="6" {% if domaine.upload_file == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>
-									</select>
-								</div>
-							</div>
-
-						</section>
-
-
-						<hr>
-
-						<section id="crenaux">
-							<h4 class="page-header">{{ trad.type_de_creneaux }}</h4>
-							<input type="radio" name="enable_periods" value="n" onclick="bascule()" id="label_1a" {% if domaine.enable_periods == 'n' %} checked {% endif %} /> <label for="label_1a">{{ trad.creneaux_de_reservation_temps }}</label><br>
-							<input type="radio" name="enable_periods" value="y" onclick="bascule()" id="label_1b" {% if domaine.enable_periods == 'y' %} checked {% endif %} /> <label for="label_1b">{{ trad.creneaux_de_reservation_pre_definis }}</label><br>
 
 							<hr>
 
-							<!-- CAS 1 Basé sur le temps -->
-							<div {% if domaine.enable_periods == 'y' %} style="display:none;" {% endif %} id="menu1">
-								<div class="form-group row col-sm-12">
-									<label class="col col-sm-8" for="morningstarts_area">{{ trad.morningstarts_area }}</label>
-									<div class="col col-sm-4">
-										<select class="form-control" name="morningstarts_area">
-											<option value="0" {% if domaine.morningstarts_area == 0 %} selected {% endif %}>0</option>
-											<option value="1" {% if domaine.morningstarts_area == 1 %} selected {% endif %}>1</option>
-											<option value="2" {% if domaine.morningstarts_area == 2 %} selected {% endif %}>2</option>
-											<option value="3" {% if domaine.morningstarts_area == 3 %} selected {% endif %}>3</option>
-											<option value="4" {% if domaine.morningstarts_area == 4 %} selected {% endif %}>4</option>
-											<option value="5" {% if domaine.morningstarts_area == 5 %} selected {% endif %}>5</option>
-											<option value="6" {% if domaine.morningstarts_area == 6 %} selected {% endif %}>6</option>
-											<option value="7" {% if domaine.morningstarts_area == 7 %} selected {% endif %}>7</option>
-											<option value="8" {% if domaine.morningstarts_area == 8 %} selected {% endif %}>8</option>
-											<option value="9" {% if domaine.morningstarts_area == 9 %} selected {% endif %}>9</option>
-											<option value="10" {% if domaine.morningstarts_area == 10 %} selected {% endif %}>10</option>
-											<option value="11" {% if domaine.morningstarts_area == 11 %} selected {% endif %}>11</option>
-											<option value="12" {% if domaine.morningstarts_area == 12 %} selected {% endif %}>12</option>
-											<option value="13" {% if domaine.morningstarts_area == 13 %} selected {% endif %}>13</option>
-											<option value="14" {% if domaine.morningstarts_area == 14 %} selected {% endif %}>14</option>
-											<option value="15" {% if domaine.morningstarts_area == 15 %} selected {% endif %}>15</option>
-											<option value="16" {% if domaine.morningstarts_area == 16 %} selected {% endif %}>16</option>
-											<option value="17" {% if domaine.morningstarts_area == 17 %} selected {% endif %}>17</option>
-											<option value="18" {% if domaine.morningstarts_area == 18 %} selected {% endif %}>18</option>
-											<option value="19" {% if domaine.morningstarts_area == 19 %} selected {% endif %}>19</option>
-											<option value="20" {% if domaine.morningstarts_area == 20 %} selected {% endif %}>20</option>
-											<option value="21" {% if domaine.morningstarts_area == 21 %} selected {% endif %}>21</option>
-											<option value="22" {% if domaine.morningstarts_area == 22 %} selected {% endif %}>22</option>
-											<option value="23" {% if domaine.morningstarts_area == 23 %} selected {% endif %}>23</option>
-										</select>
+							<h5>{{ trad.type_de_creneaux }}</h5>
+							<input type="radio" name="p_enable_periods" value="n" onclick="bascule()" id="label_1a" {% if domaine.enable_periods == 'n' %} checked {% endif %} /> <label for="label_1a">{{ trad.creneaux_de_reservation_temps }}</label><br>
+							<input type="radio" name="p_enable_periods" value="y" onclick="bascule()" id="label_1b" {% if domaine.enable_periods == 'y' %} checked {% endif %} /> <label for="label_1b">{{ trad.creneaux_de_reservation_pre_definis }}</label><br>
+
+							<blockquote class="quote-info">
+								<!-- CAS 1 Basé sur le temps -->
+								<div {% if domaine.enable_periods == 'y' %} style="display:none;" {% endif %} id="heure1">
+									<div class="form-group row col-sm-12">
+										<label class="col col-sm-10" for="p_morningstarts_area">{{ trad.morningstarts_area }}</label>
+										<div class="col col-sm-2">
+											<select class="form-control" name="p_morningstarts_area">
+												<option value="0" {% if domaine.morningstarts_area == 0 %} selected {% endif %}>0</option>
+												<option value="1" {% if domaine.morningstarts_area == 1 %} selected {% endif %}>1</option>
+												<option value="2" {% if domaine.morningstarts_area == 2 %} selected {% endif %}>2</option>
+												<option value="3" {% if domaine.morningstarts_area == 3 %} selected {% endif %}>3</option>
+												<option value="4" {% if domaine.morningstarts_area == 4 %} selected {% endif %}>4</option>
+												<option value="5" {% if domaine.morningstarts_area == 5 %} selected {% endif %}>5</option>
+												<option value="6" {% if domaine.morningstarts_area == 6 %} selected {% endif %}>6</option>
+												<option value="7" {% if domaine.morningstarts_area == 7 %} selected {% endif %}>7</option>
+												<option value="8" {% if domaine.morningstarts_area == 8 %} selected {% endif %}>8</option>
+												<option value="9" {% if domaine.morningstarts_area == 9 %} selected {% endif %}>9</option>
+												<option value="10" {% if domaine.morningstarts_area == 10 %} selected {% endif %}>10</option>
+												<option value="11" {% if domaine.morningstarts_area == 11 %} selected {% endif %}>11</option>
+												<option value="12" {% if domaine.morningstarts_area == 12 %} selected {% endif %}>12</option>
+												<option value="13" {% if domaine.morningstarts_area == 13 %} selected {% endif %}>13</option>
+												<option value="14" {% if domaine.morningstarts_area == 14 %} selected {% endif %}>14</option>
+												<option value="15" {% if domaine.morningstarts_area == 15 %} selected {% endif %}>15</option>
+												<option value="16" {% if domaine.morningstarts_area == 16 %} selected {% endif %}>16</option>
+												<option value="17" {% if domaine.morningstarts_area == 17 %} selected {% endif %}>17</option>
+												<option value="18" {% if domaine.morningstarts_area == 18 %} selected {% endif %}>18</option>
+												<option value="19" {% if domaine.morningstarts_area == 19 %} selected {% endif %}>19</option>
+												<option value="20" {% if domaine.morningstarts_area == 20 %} selected {% endif %}>20</option>
+												<option value="21" {% if domaine.morningstarts_area == 21 %} selected {% endif %}>21</option>
+												<option value="22" {% if domaine.morningstarts_area == 22 %} selected {% endif %}>22</option>
+												<option value="23" {% if domaine.morningstarts_area == 23 %} selected {% endif %}>23</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group row col-sm-12">
+										<label class="col col-sm-10" for="p_eveningends_area">{{ trad.eveningends_area }}</label>
+										<div class="col col-sm-2">
+											<select class="form-control" name="p_eveningends_area">
+												<option value="0" {% if domaine.eveningends_area == 0 %} selected {% endif %}>0</option>
+												<option value="1" {% if domaine.eveningends_area == 1 %} selected {% endif %}>1</option>
+												<option value="2" {% if domaine.eveningends_area == 2 %} selected {% endif %}>2</option>
+												<option value="3" {% if domaine.eveningends_area == 3 %} selected {% endif %}>3</option>
+												<option value="4" {% if domaine.eveningends_area == 4 %} selected {% endif %}>4</option>
+												<option value="5" {% if domaine.eveningends_area == 5 %} selected {% endif %}>5</option>
+												<option value="6" {% if domaine.eveningends_area == 6 %} selected {% endif %}>6</option>
+												<option value="7" {% if domaine.eveningends_area == 7 %} selected {% endif %}>7</option>
+												<option value="8" {% if domaine.eveningends_area == 8 %} selected {% endif %}>8</option>
+												<option value="9" {% if domaine.eveningends_area == 9 %} selected {% endif %}>9</option>
+												<option value="10" {% if domaine.eveningends_area == 10 %} selected {% endif %}>10</option>
+												<option value="11" {% if domaine.eveningends_area == 11 %} selected {% endif %}>11</option>
+												<option value="12" {% if domaine.eveningends_area == 12 %} selected {% endif %}>12</option>
+												<option value="13" {% if domaine.eveningends_area == 13 %} selected {% endif %}>13</option>
+												<option value="14" {% if domaine.eveningends_area == 14 %} selected {% endif %}>14</option>
+												<option value="15" {% if domaine.eveningends_area == 15 %} selected {% endif %}>15</option>
+												<option value="16" {% if domaine.eveningends_area == 16 %} selected {% endif %}>16</option>
+												<option value="17" {% if domaine.eveningends_area == 17 %} selected {% endif %}>17</option>
+												<option value="18" {% if domaine.eveningends_area == 18 %} selected {% endif %}>18</option>
+												<option value="19" {% if domaine.eveningends_area == 19 %} selected {% endif %}>19</option>
+												<option value="20" {% if domaine.eveningends_area == 20 %} selected {% endif %}>20</option>
+												<option value="21" {% if domaine.eveningends_area == 21 %} selected {% endif %}>21</option>
+												<option value="22" {% if domaine.eveningends_area == 22 %} selected {% endif %}>22</option>
+												<option value="23" {% if domaine.eveningends_area == 23 %} selected {% endif %}>23</option>
+											</select>
+										</div>
+									</div>
+									{{ form.input('p_eveningends_minutes_area', trad.eveningends_minutes_area, domaine.eveningends_minutes_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-10', classDivInput: 'col-sm-2 control-label', type: 'number', min: 0, max: 59}) }}
+									{{ form.input('p_resolution_area', trad.resolution_area, domaine.resolution_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-10', classDivInput: 'col-sm-2 control-label', type: 'number', min:1}) }}
+									{{ form.input('p_duree_par_defaut_reservation_area', trad.duree_par_defaut_reservation_area, domaine.duree_par_defaut_reservation_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-10', classDivInput: 'col-sm-2 control-label', type: 'number', min: 1}) }}
+									<div class="form-group row col-sm-12">
+										<label class="col col-sm-8" for="p_twentyfourhour_format_area">{{ trad.twentyfourhour_format_area }}</label>
+										<div class="col col-sm-4">
+											<input type="radio" name="p_twentyfourhour_format_area" value="0" id="label_2a" {% if domaine.twentyfourhour_format_area == '0' %} checked {% endif %} /> <label for="label_2a">{{ trad.twentyfourhour_format_12 }}</label><br>
+											<input type="radio" name="p_twentyfourhour_format_area" value="1" id="label_2b" {% if domaine.twentyfourhour_format_area == '1' %} checked {% endif %} /> <label for="label_2b">{{ trad.twentyfourhour_format_24 }}</label><br>
+										</div>
 									</div>
 								</div>
-								<div class="form-group row col-sm-12">
-									<label class="col col-sm-8" for="eveningends_area">{{ trad.eveningends_area }}</label>
-									<div class="col col-sm-4">
-										<select class="form-control" name="eveningends_area">
-											<option value="0" {% if domaine.eveningends_area == 0 %} selected {% endif %}>0</option>
-											<option value="1" {% if domaine.eveningends_area == 1 %} selected {% endif %}>1</option>
-											<option value="2" {% if domaine.eveningends_area == 2 %} selected {% endif %}>2</option>
-											<option value="3" {% if domaine.eveningends_area == 3 %} selected {% endif %}>3</option>
-											<option value="4" {% if domaine.eveningends_area == 4 %} selected {% endif %}>4</option>
-											<option value="5" {% if domaine.eveningends_area == 5 %} selected {% endif %}>5</option>
-											<option value="6" {% if domaine.eveningends_area == 6 %} selected {% endif %}>6</option>
-											<option value="7" {% if domaine.eveningends_area == 7 %} selected {% endif %}>7</option>
-											<option value="8" {% if domaine.eveningends_area == 8 %} selected {% endif %}>8</option>
-											<option value="9" {% if domaine.eveningends_area == 9 %} selected {% endif %}>9</option>
-											<option value="10" {% if domaine.eveningends_area == 10 %} selected {% endif %}>10</option>
-											<option value="11" {% if domaine.eveningends_area == 11 %} selected {% endif %}>11</option>
-											<option value="12" {% if domaine.eveningends_area == 12 %} selected {% endif %}>12</option>
-											<option value="13" {% if domaine.eveningends_area == 13 %} selected {% endif %}>13</option>
-											<option value="14" {% if domaine.eveningends_area == 14 %} selected {% endif %}>14</option>
-											<option value="15" {% if domaine.eveningends_area == 15 %} selected {% endif %}>15</option>
-											<option value="16" {% if domaine.eveningends_area == 16 %} selected {% endif %}>16</option>
-											<option value="17" {% if domaine.eveningends_area == 17 %} selected {% endif %}>17</option>
-											<option value="18" {% if domaine.eveningends_area == 18 %} selected {% endif %}>18</option>
-											<option value="19" {% if domaine.eveningends_area == 19 %} selected {% endif %}>19</option>
-											<option value="20" {% if domaine.eveningends_area == 20 %} selected {% endif %}>20</option>
-											<option value="21" {% if domaine.eveningends_area == 21 %} selected {% endif %}>21</option>
-											<option value="22" {% if domaine.eveningends_area == 22 %} selected {% endif %}>22</option>
-											<option value="23" {% if domaine.eveningends_area == 23 %} selected {% endif %}>23</option>
-										</select>
+								
+								<!-- CAS 2 Basé sur les intitulés -->
+								<div {% if domaine.enable_periods == 'n' %} style="display:none;" {% endif %} id="intitule1">
+									<div class="form-group row col-sm-12">
+										<label class="col col-sm-6" for="p_number_periodes">{{ trad.nombre_de_creneaux }}</label>
+										<div class="col col-sm-6">
+											<input class="form-control" type="number" id="p_number_periodes" name="p_number_periodes" onkeypress="if (event.keyCode==13) return aff_creneaux()" value="{{ d.numberPeriodes }}">
+											<a href="#Per" onclick="javascript:return(aff_creneaux())">{{ trad.goto }}</a>
+										</div>
 									</div>
+									{{ d.nomCrenaux |raw }}
 								</div>
-								{{ form.input('eveningends_minutes_area', trad.eveningends_minutes_area, domaine.eveningends_minutes_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
-								{{ form.input('resolution_area', trad.resolution_area, domaine.resolution_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
-								{{ form.input('duree_par_defaut_reservation_area', trad.duree_par_defaut_reservation_area, domaine.duree_par_defaut_reservation_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
-								<div class="form-groupcol-sm-12">
-									<label class="col col-sm-8" for="number_periodes">{{ trad.twentyfourhour_format_area }}</label>
-									<div class="col col-sm-4">
-										<input type="radio" name="twentyfourhour_format_area" value="0" id="label_2a" {% if domaine.twentyfourhour_format_area == '0' %} checked {% endif %} /> <label for="label_2a">{{ trad.twentyfourhour_format_12 }}</label><br>
-										<input type="radio" name="twentyfourhour_format_area" value="1" id="label_2b" {% if domaine.twentyfourhour_format_area == '1' %} checked {% endif %} /> <label for="label_2b">{{ trad.twentyfourhour_format_24 }}</label><br>
-									</div>
-								</div>
-								{{ form.input('duree_max_resa_area1', trad.duree_max_resa_area, domaine.duree_max_resa_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
-								{{ form.input('max_booking', trad.max_booking, domaine.max_booking, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
-							</div>
-							
-							<!-- CAS 2 Basé sur les intitulés -->
-							<div {% if domaine.enable_periods == 'n' %} style="display:none;" {% endif %} id="menu2">
-								<div class="form-groupcol-sm-12">
-									<label class="col col-sm-8" for="number_periodes">{{ trad.nombre_de_creneaux }}</label>
-									<div class="col col-sm-4">
-										<input class="form-control" type="number" id="number_periodes" name="number_periodes" onkeypress="if (event.keyCode==13) return aff_creneaux()" value="{{ trad.dNumberPeriodes }}">
-										<a href="#Per" onclick="javascript:return(aff_creneaux())">{{ trad.goto }}</a>
-									</div>
-								</div>
-								{{ trad.dNomCrenaux |raw }}
-								{{ form.input('duree_max_resa_area2', trad.duree_max_resa_area2, trad.dNombreJourMax, {classGroup: 'col-sm-12', classLabel: 'col-sm-8', classDivInput: 'col-sm-4 control-label', type: 'number'}) }}
-							</div>
+							</blockquote>
 
-							
-						</section>
-
-						
-						<hr>
-
-						<section id="remplissagedescriptionbreve">
-							<h5 class="page-header">{{ trad.remplissage_description_breve_msg }}</h5>
-							<input type="radio" name="description_breve" value="0" id="label_8a" {% if domaine.description_breve == 0 %} checked {% endif %} /> <label for="label_8a">{{ trad.remplissage_description_breve0 }}</label><br>
-							<input type="radio" name="description_breve" value="1" id="label_8b" {% if domaine.description_breve == 1 %} checked {% endif %} /> <label for="label_8b">{{ trad.remplissage_description_breve1 }}</label><br>
-							<input type="radio" name="description_breve" value="2" id="label_8c" {% if domaine.description_breve == 2 %} checked {% endif %} /> <label for="label_8c">{{ trad.remplissage_description_breve2 }}</label><br>
-						</section>
-
-						<hr>
-
-						<section id="remplissagedescripcomplete">
-							<h5 class="page-header">{{ trad.remplissage_description_complete_msg }}</h5>
-							<input type="radio" name="description_complete" value="2" id="label_9c" {% if domaine.description_complete == 2 %} checked {% endif %} /> <label for="label_9c">{{ trad.remplissage_description_complete2 }}</label><br>
-							<input type="radio" name="description_complete" value="0" id="label_9a" {% if domaine.description_complete == 0 %} checked {% endif %} /> <label for="label_9a">{{ trad.remplissage_description_complete0 }}</label><br>
-							<input type="radio" name="description_complete" value="1" id="label_9b" {% if domaine.description_complete == 1 %} checked {% endif %} /> <label for="label_9b">{{ trad.remplissage_description_complete1 }}</label><br>
-						</section>
-				
-			
-					<div style="text-align:center;">
-						<input class="btn btn-primary" type="submit" name="change_area" value="{{ trad.save }}" />
-						<input class="btn" type="submit" name="change_done" value="{{ trad.back }}" />	
-						<input class="btn btn-success" type="submit" name="change_area_and_back" value="{{ trad.save_and_back }}" />
+						</div><!-- /.card-body -->
 					</div>
-				</form>
-            </div>
-		  </div>
-        <!-- /.col -->
-      </div>
+				</div>
+
+			</div>
+
+			<!-- Bloc fonctionnalités -->
+			<div class="col col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="col col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title"><i class="fas fa-cog"></i> Fonctionnalités</h3>
+						</div>
+						<div class="card-body">
+							<section id="remplissagedescriptionbreve">
+								<h5>{{ trad.remplissage_description_breve_msg }}</h5>
+								<input type="radio" name="p_description_breve" value="0" id="label_8a" {% if domaine.description_breve == 0 %} checked {% endif %} /> <label for="label_8a">{{ trad.remplissage_description_breve0 }}</label><br>
+								<input type="radio" name="p_description_breve" value="1" id="label_8b" {% if domaine.description_breve == 1 %} checked {% endif %} /> <label for="label_8b">{{ trad.remplissage_description_breve1 }}</label><br>
+								<input type="radio" name="p_description_breve" value="2" id="label_8c" {% if domaine.description_breve == 2 %} checked {% endif %} /> <label for="label_8c">{{ trad.remplissage_description_breve2 }}</label><br>
+							</section>
+
+							<hr>
+
+							<section id="remplissagedescripcomplete">
+								<h5>{{ trad.remplissage_description_complete_msg }}</h5>
+								<input type="radio" name="p_description_complete" value="2" id="label_9c" {% if domaine.description_complete == 2 %} checked {% endif %} /> <label for="label_9c">{{ trad.remplissage_description_complete2 }}</label><br>
+								<input type="radio" name="p_description_complete" value="0" id="label_9a" {% if domaine.description_complete == 0 %} checked {% endif %} /> <label for="label_9a">{{ trad.remplissage_description_complete0 }}</label><br>
+								<input type="radio" name="p_description_complete" value="1" id="label_9b" {% if domaine.description_complete == 1 %} checked {% endif %} /> <label for="label_9b">{{ trad.remplissage_description_complete1 }}</label><br>
+							</section>
+
+							<hr>
+
+							<h5>{{ form.switch('p_access_file', trad.ajout_fichier_joint, domaine.access_file, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}</h5>
+
+							<div id="aff_dyn_fichier_joint">
+								<small>{{ trad.ajout_fichier_joint_explain|raw }}</small>
+
+								<div class="form-group row col-sm-12">
+									<label class="col col-sm-4" for="p_user_right">Droit pour consulter les fichiers</label>
+
+									<div class="col col-sm-8">
+										<select class="form-control" name="p_user_right">
+											<option value="1" {% if domaine.user_right == 1 %} selected {% endif %}>{{ trad.visu_fiche_description1 }}</option>
+											<option value="2" {% if domaine.user_right == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
+											<option value="3" {% if domaine.user_right == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
+											<option value="4" {% if domaine.user_right == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
+											<option value="5" {% if domaine.user_right == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
+											<option value="6" {% if domaine.user_right == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group row col-sm-12">
+									<label class="col col-sm-4" for="p_upload_file">Droit pour téléverser les fichiers</label>
+
+									<div class="col col-sm-8">
+										<select class="form-control" name="p_upload_file">
+											<option value="1" {% if domaine.upload_file == 1 %} selected {% endif %}>{{ trad.visu_fiche_description1 }}</option>
+											<option value="2" {% if domaine.upload_file == 2 %} selected {% endif %}>{{ trad.visu_fiche_description2 }}</option>
+											<option value="3" {% if domaine.upload_file == 3 %} selected {% endif %}>{{ trad.visu_fiche_description3 }}</option>
+											<option value="4" {% if domaine.upload_file == 4 %} selected {% endif %}>{{ trad.visu_fiche_description4 }}</option>
+											<option value="5" {% if domaine.upload_file == 5 %} selected {% endif %}>{{ trad.visu_fiche_description5 }}</option>
+											<option value="6" {% if domaine.upload_file == 6 %} selected {% endif %}>{{ trad.visu_fiche_description6 }}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						
+						</div>
+					</div>
+				</div>
+
+				<!-- Bloc fonctionnalités avancées -->
+				<div class="col col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title"><i class="fas fa-exclamation"></i> Fonctionnalités avancées</h3>
+						</div>
+						<div class="card-body">
+							{% if d.gOptionIp == 1 %}
+								{{ form.input('p_ip_adr', trad.ip_adr, domaine.ip_adr, {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label'}) }}
+								<small>{{ trad.ip_adr_explain |raw }}</small>
+								<hr>
+							{% endif %}
+
+							<h5>Restrictions</h5>
+							<small class="text-muted">{{ trad.noAdminRestrict }}</small><br><br>
+
+							{{ form.input('p_max_booking', trad.max_booking, domaine.max_booking, {classGroup: 'col-sm-12', classLabel: 'col-sm-9', classDivInput: 'col-sm-3 control-label', type: 'number', min: '-1'}) }}
+						
+							<div {% if domaine.enable_periods == 'y' %} style="display:none;" {% endif %} id="heure2">
+								{{ form.input('p_duree_max_resa_area1', trad.duree_max_resa_area, domaine.duree_max_resa_area, {classGroup: 'col-sm-12', classLabel: 'col-sm-9', classDivInput: 'col-sm-3 control-label', type: 'number', min: '-1'}) }}
+							</div>
+							<div {% if domaine.enable_periods == 'n' %} style="display:none;" {% endif %} id="intitule2">
+								{{ form.input('p_duree_max_resa_area2', trad.duree_max_resa_area2, d.nombreJourMax, {classGroup: 'col-sm-12', classLabel: 'col-sm-9', classDivInput: 'col-sm-3 control-label', type: 'number', min: '-1'}) }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Enregistrer -->
+		<a href="?p=admin_room{% if d.idSite %}&amp;id_site={{ d.idSite }}{% endif %}" class="btn btn-default position-fixed elevation-4" style="bottom:125px; right:20px; z-index:99;">
+			<i class="fas fa-circle-left"></i> {{ trad.back }}
+		</a>
+		<button type="submit" name="p_submit" value="1" class="btn btn-primary position-fixed elevation-4" style="bottom:70px; right:20px; z-index:99;">
+			<i class="fas fa-save"></i> {{ trad.save }}
+		</button>
+	</form>
 
 {% endblock %}
 
 {% block javascript %}
 	<script>
 		$(function () {
-			{%if d.enregistrement%}
+			{%if d.enregistrement %}
 				{%if d.enregistrement == 1 %}
 					toastr.success("{{trad.message_records}}")
 				{% else %}
 					toastr.warning("{{d.enregistrement|raw}}")
 				{%endif%}
 			{%endif%}
+
+			// Afficher/masquer la section de création de compte
+			var $switchFicJoint = $('input[name="p_access_file"]');
+			var $sectionFicJoint = $('#aff_dyn_fichier_joint');
+			$sectionFicJoint.toggle($switchFicJoint.is(':checked'));
+
+			// À la modification du switch
+			$switchFicJoint.on('change', function() {
+				if ($(this).is(':checked')) {
+					$sectionFicJoint.slideDown();
+				} else {
+					$sectionFicJoint.slideUp();
+				}
+			});
 		}); 
 
 		aff_creneaux();
 
 		function bascule()
 		{
-			menu_1 = document.getElementById('menu1');
-			menu_2 = document.getElementById('menu2');
-			if (document.getElementById('main').enable_periods[0].checked)
+			heure1 = document.getElementById('heure1');
+			heure2 = document.getElementById('heure2');
+			intitule1 = document.getElementById('intitule1');
+			intitule2 = document.getElementById('intitule2');
+			if (document.getElementById('main').p_enable_periods[0].checked)
 			{
-				menu_1.style.display = "";
-				menu_2.style.display = "none";
+				heure1.style.display = "";
+				heure2.style.display = "";
+				intitule1.style.display = "none";
+				intitule2.style.display = "none";
 			}
-			if (document.getElementById('main').enable_periods[1].checked)
+			if (document.getElementById('main').p_enable_periods[1].checked)
 			{
-				menu_1.style.display = "none";
-				menu_2.style.display = "";
+				heure1.style.display = "none";
+				heure2.style.display = "none";
+				intitule1.style.display = "";
+				intitule2.style.display = "";
 			}
 			alert("{{ trad.avertissement_change_type }}");
 		}
 
 		function aff_creneaux()
 		{
-			nb_cr = document.getElementById('number_periodes');
+			nb_cr = document.getElementById('p_number_periodes');
 			if (isNaN(Number(nb_cr.value)))
 				nb_cr.value = 1;
 			if (nb_cr.value > 50)
