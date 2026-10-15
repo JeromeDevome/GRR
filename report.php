@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-19 16:43$
+ * Dernière modification : $Date: 2026-10-15 11:19$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -85,7 +85,7 @@ $test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * FROM ".TABLE_PREFI
 // Report on one entry. See below for columns in $row[].
 function reporton(&$row, $dformat)
 {
-  global $enable_periods, $tablOverload;
+  global $enable_periods, $tablOverload, $user_id;
   echo "<tr>";
     //Affiche "area"
   $area_nom = htmlspecialchars($row[8]);
