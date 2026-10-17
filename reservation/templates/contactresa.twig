@@ -43,7 +43,7 @@
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon"><i class="fa-solid fa-at"></i></div>
-									<input class="form-control" type="email" id="email" size="8" name="email" placeholder="Votre adresse de courriel" value="{{d.emailConnecte}}" required />
+									<input class="form-control" type="email" id="email" size="8" maxlength="255" name="email" placeholder="Votre adresse de courriel" value="{{d.emailConnecte}}" required />
 								</div>
 							</div>
 							<div class="form-group">
@@ -83,7 +83,7 @@
 								<input type="hidden" disabled="disabled" id="mydate_start">
 								<br /><br />
 								<label for="heure">Heure début :</label>
-								<select name="heure" id="heure">
+								<select name="heure" id="heure" class="btn btn-default btn-sm">
 									<option value="1">01h</option>
 									<option value="2">02h</option>
 									<option value="3">03h</option>
@@ -108,15 +108,15 @@
 									<option value="22">22h</option>
 									<option value="23">23h</option>
 								</select>
-								<select id='debdureemin' name="minutes"></select><!-- class test non défini ?-->
+								<select id='debdureemin' name="minutes" class="btn btn-default btn-sm"></select><!-- class test non défini ?-->
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="input-group">
 							<label for="duree" >Durée en heure :</label>
-							<input type="number" id="duree" size="2" name="duree" value="1" min="0" required />
+							<input type="number" id="duree" size="2" name="duree" value="1" min="0" class="btn btn-default btn-sm" required />
 							<label for="dureemin"> et </label>
-								<select id="dureemin" name="dureemin">
+								<select id="dureemin" name="dureemin" class="btn btn-default btn-sm">
 									<option> </option>
 									<option> </option>
 								</select>
