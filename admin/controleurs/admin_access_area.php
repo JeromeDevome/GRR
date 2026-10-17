@@ -252,7 +252,6 @@ if ($id_area != -1)
 	// Groupes pouvant être ajouté
 	$sql = "SELECT idgroupes, nom FROM ".TABLE_PREFIX."_groupes WHERE archive = 0 AND idgroupes NOT IN (SELECT idgroupes FROM ".TABLE_PREFIX."_j_group_area WHERE id_area = '$id_area') order by nom";
 	$res = grr_sql_query($sql);
-	$d['nbUserAjoutable'] = grr_sql_count($res);
 	if ($res)
 		for ($i = 0; ($row3 = grr_sql_row($res, $i)); $i++)
 			$groupesAjoutable[] = array('id' => $row3[0], 'nom' => $row3[1]);
