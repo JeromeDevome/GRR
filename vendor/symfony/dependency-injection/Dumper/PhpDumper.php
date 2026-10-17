@@ -807,7 +807,7 @@ class PhpDumper extends Dumper
 
             if ($call[2] ?? false) {
                 if (null !== $sharedNonLazyId && $lastWitherIndex === $k && 'instance' === $variableName) {
-                    $witherAssignation = \sprintf('$container->%s[\'%s\'] = ', $definition->isPublic() ? 'services' : 'privates', $sharedNonLazyId);
+                    $witherAssignation = \sprintf('$container->%s[%s] = ', $definition->isPublic() ? 'services' : 'privates', $this->doExport($sharedNonLazyId));
                     $this->sharesBeforeSetup = true;
                 }
                 $witherAssignation .= \sprintf('$%s = ', $variableName);
@@ -911,7 +911,7 @@ class PhpDumper extends Dumper
                  *
                  * $return
             EOF;
-        $code = str_replace('*/', ' ', $code).<<<EOF
+        $code = str_replace('*/', '*\/', $code).<<<EOF
 
                  */
                 protected static function {$methodName}(\$container$lazyInitialization)
@@ -1217,6 +1217,8 @@ class PhpDumper extends Dumper
 
                 if ($callable instanceof Reference || $callable instanceof Definition) {
                     $callable = [$callable, '__invoke'];
+                } elseif (\is_string($callable) && str_contains($callable, '::')) {
+                    $callable = explode('::', $callable, 2);
                 }
             }
 
@@ -1545,12 +1547,14 @@ class PhpDumper extends Dumper
             $packageExported = $this->export($deprecation['package']);
             $versionExported = $this->export($deprecation['version']);
             $messageExported = $this->export($deprecation['message']);
+            $aliasComment = str_replace('*/', '*\/', $alias);
+            $idComment = str_replace('*/', '*\/', $id);
             $code .= <<<EOF
 
                     /*{$this->docStar}
-                     * Gets the $public '$alias' alias.
+                     * Gets the $public '$aliasComment' alias.
                      *
-                     * @return object The "$id" service.
+                     * @return object The "$idComment" service.
                      */
                     protected static function {$methodNameAlias}(\$container)
                     {
@@ -2001,14 +2005,14 @@ class PhpDumper extends Dumper
         } elseif ($value instanceof Parameter) {
             return $this->dumpParameter($value);
         } elseif ($interpolate && \is_string($value)) {
-            if (preg_match('/^%([^%]+)%$/', $value, $match)) {
+            if (preg_match('/^%([^%\s]+)%$/', $value, $match)) {
                 // we do this to deal with non string values (Boolean, integer, ...)
                 // the preg_replace_callback converts them to strings
                 return $this->dumpParameter($match[1]);
             }
             $replaceParameters = fn ($match) => "'.".$this->dumpParameter($match[2]).".'";
 
-            $code = str_replace('%%', '%', preg_replace_callback('/(?<!%)(%)([^%]+)\1/', $replaceParameters, $this->export($value)));
+            $code = str_replace('%%', '%', preg_replace_callback('/(?<!%)(%)([^%\s\']+)\1/', $replaceParameters, $this->export($value)));
 
             return $code;
         } elseif ($value instanceof \UnitEnum) {

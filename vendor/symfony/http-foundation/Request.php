@@ -317,7 +317,7 @@ class Request
         if (str_starts_with($request->headers->get('CONTENT_TYPE', ''), 'application/x-www-form-urlencoded')
             && \in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'DELETE', 'PATCH'])
         ) {
-            parse_str($request->getContent(), $data);
+            @parse_str($request->getContent(), $data);
             $request->request = new InputBag($data);
         }
 
@@ -446,7 +446,7 @@ class Request
 
         $queryString = '';
         if (isset($components['query'])) {
-            parse_str(html_entity_decode($components['query']), $qs);
+            @parse_str(html_entity_decode($components['query']), $qs);
 
             if ($query) {
                 $query = array_replace($qs, $query);
@@ -2120,17 +2120,15 @@ class Request
         $firstTrustedIp = null;
 
         foreach ($clientIps as $key => $clientIp) {
-            if (strpos($clientIp, '.')) {
-                // Strip :port from IPv4 addresses. This is allowed in Forwarded
-                // and may occur in X-Forwarded-For.
-                $i = strpos($clientIp, ':');
-                if ($i) {
-                    $clientIps[$key] = $clientIp = substr($clientIp, 0, $i);
-                }
-            } elseif (str_starts_with($clientIp, '[')) {
+            if (str_starts_with($clientIp, '[')) {
                 // Strip brackets and :port from IPv6 addresses.
                 $i = strpos($clientIp, ']', 1);
                 $clientIps[$key] = $clientIp = substr($clientIp, 1, $i - 1);
+            } elseif (strpos($clientIp, '.') && 1 === substr_count($clientIp, ':')) {
+                // Strip :port from IPv4 addresses. This is allowed in Forwarded
+                // and may occur in X-Forwarded-For. An IPv6 address with an
+                // embedded IPv4 address has at least two colons and is kept.
+                $clientIps[$key] = $clientIp = strstr($clientIp, ':', true);
             }
 
             if (!filter_var($clientIp, \FILTER_VALIDATE_IP)) {
