@@ -109,8 +109,9 @@
 				</div>
 
 				{% if settings.fct_crea_cpt_captcha == 'y' %}
-				<div class="row">
-					<img src="./include/captcha.inc.php" />
+				<div class="">
+					<img id="captcha-image" src="./reservation/ajax/captcha.inc.php" alt="Captcha" />
+					<button class="btn btn-default" type="button" id="captcha-refresh"><i class="fa-solid fa-sync"></i></button>
 					<input type="text" name="captcha" required />
 					<br><br>
 				</div>
@@ -135,4 +136,12 @@
 {% endblock %}
 
 {% block javascript %}
+	<script>
+		const captchaRefresh = document.getElementById('captcha-refresh');
+		if (captchaRefresh) {
+			captchaRefresh.addEventListener('click', function() {
+				document.getElementById('captcha-image').src = './reservation/ajax/captcha.inc.php?t=' + Date.now();
+			});
+		}
+	</script>
 {% endblock %}

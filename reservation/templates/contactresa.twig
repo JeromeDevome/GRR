@@ -124,7 +124,8 @@
 
 							{% if settings.mail_contact_resa_captcha == 'y' %}
 								<br/>
-								<img src="./include/captcha.inc.php" />
+								<img id="captcha-image" src="./reservation/ajax/captcha.inc.php" alt="Captcha" />
+								<button class="btn btn-default" type="button" id="captcha-refresh"><i class="fa-solid fa-sync"></i></button>
 								<input type="text" name="captcha" required />
 							{% endif %}
 
@@ -181,21 +182,6 @@
 			});
 		});
 
-		jQuery(document).ready(function() {
-			jQuery("#formStep").validate({
-			  rules: {
-				"email": {
-					"email": true,
-					"maxlength": 255
-					}}
-				})
-		});
-		jQuery.extend(jQuery.validator.messages, {
-			required: "votre message",
-			remote: "votre message",
-			email: "votre message",
-		});
-
 		function remplirdureemin(res)
 		{ 
 			frmContact.dureemin.options.length = 0;
@@ -224,23 +210,31 @@
 		}
 
 		$(function() {
-		$.datepicker.setDefaults( $.datepicker.regional['fr'] );
-		$('#mydate_start').datepicker({
-			beforeShow: readSelected, onSelect: updateSelected,
-			showOn: 'both', buttonImageOnly: true, buttonImage: 'img_grr/calendar.png',buttonText: "Choisir la date"});
-			function readSelected()
-			{
-				$('#mydate_start').val($('#start_day').val() + '/' +
-				$('#start_month').val() + '/' + $('#start_year').val());
-				return {};
-			}
-			function updateSelected(date)
-			{
-				$('#start_day').val(date.substring(0, 2));
-				$('#start_month').val(date.substring(3, 5));
-				$('#start_year').val(date.substring(6, 10));
-			}
+			$.datepicker.setDefaults( $.datepicker.regional['fr'] );
+			$('#mydate_start').datepicker({
+				beforeShow: readSelected, onSelect: updateSelected,
+				showOn: 'both', buttonImageOnly: true, buttonImage: 'img_grr/calendar.png',buttonText: "Choisir la date"});
+				function readSelected()
+				{
+					$('#mydate_start').val($('#start_day').val() + '/' +
+					$('#start_month').val() + '/' + $('#start_year').val());
+					return {};
+				}
+				function updateSelected(date)
+				{
+					$('#start_day').val(date.substring(0, 2));
+					$('#start_month').val(date.substring(3, 5));
+					$('#start_year').val(date.substring(6, 10));
+				}
 		});
+
+		const captchaRefresh = document.getElementById('captcha-refresh');
+		if (captchaRefresh) {
+			captchaRefresh.addEventListener('click', function() {
+				document.getElementById('captcha-image').src = './reservation/ajax/captcha.inc.php?t=' + Date.now();
+			});
+		}
+
 	</script>
 
 {% endblock %}
