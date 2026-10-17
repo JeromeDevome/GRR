@@ -1,3 +1,16 @@
+Version 4.6.8 -En développement
+[Ajout] Vue réservation : Ajout liens vers le planning de la ressource ou du domaine à la bonne date - b9dfdd860 - @robiinho & @JeromeDevome
+[Ajout] Possible d'actualiser un captcha - c524208fb - @JeromeDevome
+[Correction] Notification gestionnaire à la création d'une réservation - 3a03577 - @JeromeDevome
+[Correction] Suppression d'un utilisateur comportant un espace dans le login - 5e0ec63be - @JeromeDevome
+[Correction] Redirection après modération - 68fdcc4d0 - @robiinho & @JeromeDevome
+[Correction] Captcha accès + taille - c524208fb - @JeromeDevome
+[Correction] Affichage ajout multiple utilisateurs pour droits domaine et site - a291bce4e - @JeromeDevome
+[Correction] Envois de mail lors d'un glisser/déposer d'une réservation - cf84754c1 - @JeromeDevome
+[Modification] Amélioration de l'apparence du formulaire "contact résa" - 48486b424 - @JeromeDevome
+[Modification] Update twig & symfony - @JeromeDevome
+[Modification] Update JS : jszip & moment & ace-editor - c5c6dd308 & c5c6dd308- @JeromeDevome
+
 Version 4.6.7 - 13/09/2026 Généré par @JeromeDevome
 [Correction] Drag&Drop vue semaine_all - c2e2e2f08 - @JeromeDevome
 [Correction] Création de ressource - 6a1bb5bf0 - @JeromeDevome
