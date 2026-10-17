@@ -106,7 +106,8 @@ $_REQUEST['period']      = intval(date('i', $new_start));
 $_REQUEST['end_hour']    = intval(date('G', $new_end));
 $_REQUEST['end_minute']  = intval(date('i', $new_end));
 $_REQUEST['end_']        = sprintf('%02d:%02d', $_REQUEST['end_hour'], $_REQUEST['end_minute']);
-$_REQUEST['type_affichage_reser'] = 1;
+$_REQUEST['type_affichage_reser']   = 1;
+$_REQUEST['envoyer_notif']          = 1;
 if ($enable_periods == 'y') {
     $_REQUEST['end_period'] = intval(date('i', $new_end)) - 1;
 }
