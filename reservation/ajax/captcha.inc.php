@@ -1,7 +1,7 @@
 <?php
 // Including the autoload (you need to composer install in the main directory)
-require_once '../vendor/autoload.php';
-require_once './config.inc.php';
+require_once '../../vendor/autoload.php';
+require_once '../../include/config.inc.php';
 
 session_name($gSessionName);
 @session_start();
