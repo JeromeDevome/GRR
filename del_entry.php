@@ -3,9 +3,9 @@
  * del_entry.php
  * Interface de suppression d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-12-03 17:39$
+ * Dernière modification : $Date: 2026-10-20 15:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -78,7 +78,7 @@ if ($info = mrbsGetEntryInfo($id))
   $date_now = time();
   get_planning_area_values($area);
   $who_can_book = grr_sql_query1("SELECT who_can_book FROM ".TABLE_PREFIX."_room WHERE id='".$room_id."' ");
-  $user_can_book = $who_can_book || (authBooking($current_user,$room_id));
+  $user_can_book = $who_can_book || (authBooking($user_name,$room_id));
   if ((!(verif_booking_date($user_name, $id, $room_id, -1, $date_now, $enable_periods))) || ((verif_booking_date($user_name, $id, $room_id, -1, $date_now, $enable_periods)) && ($can_delete_or_create != "y")) && $user_can_book)
   {
     showAccessDenied($back);

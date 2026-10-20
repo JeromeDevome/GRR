@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-06-04 16:35$
+ * Dernière modification : $Date: 2026-10-20 15:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -761,7 +761,7 @@ if ($repeat_id != 0)
 {
   if ($enable_periods == 'y')
   {
-    list( $start_period, $start_date) = period_date_string($rep_start_time);
+    list( $start_period, $rep_start_date) = period_date_string($rep_start_time);
     toPeriodString($start_period, $rep_duration, $dur_units);
   }
   else

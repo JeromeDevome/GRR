@@ -3,7 +3,7 @@
  * week.php
  * Affichage du planning en mode "semaine" pour une ressource.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 15:47$
+ * Dernière modification : $Date: 2026-10-20 15:04$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -355,6 +355,8 @@ else
                         $d[$weekday][$slot]["id"] = $row["id"];
                         if (Settings::get("display_info_bulle") == 1)
                             $d[$weekday][$slot]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
+                        else
+                            $d[$weekday][$slot]["who"] = "";
                     }
                 }
                 $t += $this_area_resolution;
@@ -423,6 +425,8 @@ else
                         $d[$weekday][$slot]["id"] = $row["id"];
                         if (Settings::get("display_info_bulle") == 1)
                             $d[$weekday][$slot]["who"] = contenu_popup($options_popup, 1, $row, $horaires);
+                        else
+                            $d[$weekday][$slot]["who"] = "";
                     }
                 }
                 $t += 60; 
