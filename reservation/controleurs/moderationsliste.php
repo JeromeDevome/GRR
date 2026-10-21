@@ -77,6 +77,7 @@ if (!empty($resasAModerer)) {
                 'site' => $resa['site'],
                 'ressource' => $resa['room'],
                 'debut' => time_date_string($resa['start_time'], $dformat),
+                'debut_ts' => $resa['start_time'],
                 'createur' => $resa['create_by'],
                 'beneficiaire' => $resa['beneficiaire'],
                 'lien' => $link
@@ -89,6 +90,7 @@ if (!empty($resasAModerer)) {
                 'domaine' => $resa['area'],
                 'ressource' => $resa['room'],
                 'debut' => time_date_string($resa['start_time'], $dformat),
+                'debut_ts' => $resa['start_time'],
                 'createur' => $resa['create_by'],
                 'beneficiaire' => $resa['beneficiaire'],
                 'lien' => $link
@@ -98,6 +100,7 @@ if (!empty($resasAModerer)) {
 
     $d['nbResaAModerer'] = count($listeModeration);
 }
+$langueActuelle = isset($_SESSION['default_language']) ? $_SESSION['default_language'] : Settings::get('default_language');
 
-echo $twig->render('moderationsliste.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'resas' => $listeModeration));
+echo $twig->render('moderationsliste.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings, 'resas' => $listeModeration, 'langueActuelle' => $langueActuelle));
 ?>
