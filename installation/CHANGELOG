@@ -7,9 +7,11 @@ Version 4.6.8 -En développement
 [Correction] Captcha accès + taille - c524208fb - @JeromeDevome
 [Correction] Affichage ajout multiple utilisateurs pour droits domaine et site - a291bce4e - @JeromeDevome
 [Correction] Envois de mail lors d'un glisser/déposer d'une réservation - cf84754c1 - @JeromeDevome
+[Correction] Plus d'envois d'envois d'email si adresse destinataire non renseigné - 068ebd40a - @JeromeDevome
 [Modification] Amélioration de l'apparence du formulaire "contact résa" - 48486b424 - @JeromeDevome
+[Modification] Optimisation de l'affichage du bandeau - 9620d9044 - @JeromeDevome
 [Modification] Update twig & symfony - @JeromeDevome
-[Modification] Update JS : jszip & moment & ace-editor - c5c6dd308 & c5c6dd308- @JeromeDevome
+[Modification] Update JS : jszip & moment & ace-editor & pdfmake - c5c6dd308 & c5c6dd308 & a62cd9ddd - @JeromeDevome
 
 Version 4.6.7 - 13/09/2026 Généré par @JeromeDevome
 [Correction] Drag&Drop vue semaine_all - c2e2e2f08 - @JeromeDevome
