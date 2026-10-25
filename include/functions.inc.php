@@ -2819,6 +2819,9 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 
 	// Le bénéficiaire
 	$beneficiaire_email = affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"onlymail");
+	if ($beneficiaire_email == -1)
+		$beneficiaire_email = "";
+
 	if ($beneficiaire != "")
 	{
 		$beneficiaireInfos = grr_sql_query("SELECT etat, desactive_mail FROM ".TABLE_PREFIX."_utilisateurs WHERE login='$beneficiaire'");
@@ -3021,7 +3024,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		$envoi2 = true;
 	}
 
-	if($envoi2 == true && $beneficiaire_email != '' && $beneficiaire_actif == 'actif')
+	if($envoi2 == true && $destinataire2 != '' && $beneficiaire_actif == 'actif')
 	{
 		if ($repondre2 == '')
 			$repondre2 = $expediteur2;
