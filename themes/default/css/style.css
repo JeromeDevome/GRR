@@ -6065,7 +6065,7 @@ td.calendarHeader2{text-align:center;border:0;font-size:10pt;width:200px;font-we
 
 /* header */
 header{width:100%;z-index:999;text-align:center;border-bottom:1px solid;}
-.accueil{background-color: transparent;padding-left:1%; width:30%;display:inline-block}
+.accueil{background-color: transparent;padding-left:1%; width:45%;display:inline-block}
 .administration{background-color: transparent;width:15%;text-align:center;margin:0 auto;display:inline-block}
 .clock{margin:0 auto}
 .configuration{background-color: transparent;width:22%;text-align:center;margin:0 auto;display:inline-block;float:right}
