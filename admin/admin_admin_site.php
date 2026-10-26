@@ -3,9 +3,9 @@
  * admin_admin_site.php
  * Interface de gestion des administrateurs de sites de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-25 15:20$
+ * Dernière modification : $Date: 2026-10-26 11:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -78,7 +78,7 @@ else{
     $sel_site .= "<option value=\"admin_admin_site.php?id_site=-1\">".get_vocab('select')."</option>";
 	foreach($res as $row)
 	{
-		$selected = ($row['id'] == $id_site) ? "selected=\"selected\"" : "";
+		$selected = ($row['id'] == $id_site) ? "selected" : "";
 		$link = "admin_admin_site.php?id_site=".$row['id'];
 		$sel_site .= "<option $selected value=\"$link\">" . htmlspecialchars($row['sitename'])."</option>";
 	}

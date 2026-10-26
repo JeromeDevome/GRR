@@ -3,7 +3,7 @@
  * admin_config12.php
  * Interface permettant à l'administrateur la configuration de certains paramètres d'affichage
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2026-06-02 10:48$
+ * Dernière modification : $Date: 2026-10-26 11:37$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -348,7 +348,7 @@ if ($use_site) {
     foreach ($Sites as $row) {
         echo '<option value="'.$row['id'].'"';
         if (Settings::get('default_site') == $row['id']) {
-            echo ' selected="selected" ';
+            echo ' selected ';
         }
         echo '>'.htmlspecialchars($row['sitename']);
         echo '</option>'."\n";
@@ -385,7 +385,7 @@ $i = 0;
 while ($i < count($liste_themes)) {
     echo "<option value='".$liste_themes[$i]."'";
     if (Settings::get('default_css') == $liste_themes[$i]) {
-        echo ' selected="selected"';
+        echo ' selected ';
     }
     echo ' >'.encode_message_utf8($liste_name_themes[$i]).'</option>';
     ++$i;
@@ -403,7 +403,7 @@ $i = 0;
 while ($i < count($liste_language)) {
     echo "<option value='".$liste_language[$i]."'";
     if (Settings::get('default_language') == $liste_language[$i]) {
-        echo ' selected="selected"';
+        echo ' selected ';
     }
     echo ' >'.encode_message_utf8($liste_name_language[$i]).'</option>'.PHP_EOL;
     ++$i;
@@ -790,7 +790,7 @@ echo '<select class="form-control" name="holidays_zone">'.PHP_EOL;
 foreach ($acad as $key => $value) {
     echo '<option value="'.$value.'"';
     if (Settings::get('holidays_zone') == $value) {
-        echo ' selected="selected"';
+        echo ' selected ';
     }
     echo '>'.$value.'</option>'.PHP_EOL;
 }
@@ -819,7 +819,7 @@ $i = 1;
 while ($i < 101) {
     echo "<option value=\".$i.\"";
     if (Settings::get("nb_year_calendar") == $i)
-        echo " selected=\"selected\" ";
+        echo " selected ";
     echo ">".(date("Y") - $i)." - ".(date("Y") + $i)."</option>\n";
     $i++;
 }

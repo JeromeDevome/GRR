@@ -3,9 +3,9 @@
  * admin_config_calend1.php
  * Interface permettant à l'administrateur la configuration des paramètres pour le module Jours Cycles
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-02 16:41$
+ * Dernière modification : $Date: 2026-10-26 11:39$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -58,7 +58,7 @@ echo 	'</td>
 			for($i = 1; $i < 21; $i++)
 			{
 				if ($i == Settings::get("nombre_jours_Jours_Cycles"))
-					echo "<option selected=\"selected\">".$i."</option>\n";
+					echo "<option selected >".$i."</option>\n";
 				else
 					echo "<option>".$i."</option>\n";
 			}
@@ -75,7 +75,7 @@ echo 	'</td>
 			for($i = 1; $i < 21; $i++)
 			{
 				if ($i == Settings::get("jour_debut_Jours_Cycles"))
-					echo "<option selected=\"selected\">".$i."</option>\n";
+					echo "<option selected >".$i."</option>\n";
 				else
 					echo "<option>".$i."</option>\n";
 			}

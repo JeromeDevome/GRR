@@ -3,7 +3,7 @@
  * my_account_modif_listes.php
  * Page "Ajax" utilisée pour générer les listes de domaines et de ressources, en liaison avec my_account.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 09:25$
+ * Dernière modification : $Date: 2026-10-26 11:56$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -82,7 +82,7 @@ if ($type == "domaine")
       {
         $display_liste .= '<option value="'.$row['id'].'"';
         if ($default_area == $row['id'])
-          $display_liste .= ' selected="selected" ';
+          $display_liste .= ' selected  ';
         $display_liste .= '>'.htmlspecialchars($row['area_name']);
         if ($row['access']=='r')
           $display_liste .= ' ('.get_vocab('restricted').')';
@@ -98,19 +98,19 @@ if ($_GET['type'] == "ressource")
   // affichage minimal : choix des plannings généraux par défaut
   $display_liste = '<div class="form-group"><label class="control-label col-md-3 col-sm-3 col-xs-4" for="id_room">'.get_vocab('default_room').'</label><div class="col col-md-4 col-sm-6 col-xs-8"><select class="form-control" name="id_room" id="id_room"><option value="-1"';
     if ($default_room == -1)
-      $display_liste .= ' selected="selected" ';
+      $display_liste .= ' selected  ';
     $display_liste .= ' >'.get_vocab('default_room_all').'</option>'."\n".
     '<option value="-2"';
     if ($default_room == -2)
-      $display_liste .= ' selected="selected" ';
+      $display_liste .= ' selected  ';
     $display_liste .= ' >'.get_vocab('default_room_week_all').'</option>'."\n".
     '<option value="-3"';
     if ($default_room == -3)
-      $display_liste .= ' selected="selected" ';
+      $display_liste .= ' selected  ';
     $display_liste .= ' >'.get_vocab('default_room_month_all').'</option>'."\n".
     '<option value="-4"';
     if ($default_room == -4)
-      $display_liste .= ' selected="selected" ';
+      $display_liste .= ' selected  ';
     $display_liste .= ' >'.get_vocab('default_room_month_all_bis').'</option>'."\n";
   if (($action == 1)&&($id_area != 0)) // on affiche alors les ressources accessibles dans le domaine sélectionné
   {
@@ -130,7 +130,7 @@ if ($_GET['type'] == "ressource")
       foreach($resultat as $row){
         $display_liste .=  '<option value="'.$row['id'].'"';
         if ($default_room == $row['id'])
-          $display_liste .= ' selected="selected" ';
+          $display_liste .= ' selected  ';
         $display_liste .= '>'.htmlspecialchars($row['room_name']).' '.get_vocab('display_week');
         $display_liste .= '</option>'."\n";
       }

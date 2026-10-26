@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-10-26 10:05$
+ * Dernière modification : $Date: 2026-10-26 11:55$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -2637,9 +2637,9 @@ function genDateSelector($prefix, $day, $month, $year, $option)
     for ($i = 1; $i <= 31; $i++)
     {
       if ($i < 10)
-        $selector_data .= "<option" . ($i == $day ? " selected=\"selected\"" : "") . ">0$i</option>\n";
+        $selector_data .= "<option" . ($i == $day ? " selected " : "") . ">0$i</option>\n";
       else
-        $selector_data .= "<option" . ($i == $day ? " selected=\"selected\"" : "") . ">$i</option>\n";
+        $selector_data .= "<option" . ($i == $day ? " selected " : "") . ">$i</option>\n";
     }
     $selector_data .= "</select>";
   }
@@ -2649,11 +2649,11 @@ function genDateSelector($prefix, $day, $month, $year, $option)
     $m = utf8_strftime("%b", mktime(0, 0, 0, $i, 1, $year));
     if ($i < 10)
     {
-      $selector_data .=  "<option value=\"0$i\"" . ($i == $month ? " selected=\"selected\"" : "") . ">$m</option>\n";
+      $selector_data .=  "<option value=\"0$i\"" . ($i == $month ? " selected " : "") . ">$m</option>\n";
     }
     else
     {
-      $selector_data .=  "<option value=\"$i\"" . ($i == $month ? " selected=\"selected\"" : "") . ">$m</option>\n";
+      $selector_data .=  "<option value=\"$i\"" . ($i == $month ? " selected " : "") . ">$m</option>\n";
     }
   }
   $selector_data .=  "</select>";
@@ -2665,7 +2665,7 @@ function genDateSelector($prefix, $day, $month, $year, $option)
   if ($option == "more_years")
     $max = date("Y") + $nb_year_calendar;
   for($i = $min; $i <= $max; $i++)
-    $selector_data .= "<option value=\"$i\" " . ($i == $year ? " selected=\"selected\"" : "") . ">$i</option>\n";
+    $selector_data .= "<option value=\"$i\" " . ($i == $year ? " selected " : "") . ">$i</option>\n";
   $selector_data .= "</select> \n</div>\n";
   
   echo $selector_data;
@@ -3604,7 +3604,7 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
     {
       $out = array();
       foreach($Sites as $site){
-        $selected = ($site['id'] == $current_site) ? 'selected="selected"' : '';
+        $selected = ($site['id'] == $current_site) ? 'selected ' : '';
         $link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;id_site='.$site['id'];
         $out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($site['sitename']).'</option>'.PHP_EOL;
       }
@@ -3673,7 +3673,7 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
   {
     foreach($res as $row)
     {
-      $selected = ($row['id'] == $current_area) ? 'selected="selected"' : "";
+      $selected = ($row['id'] == $current_area) ? 'selected ' : "";
       $link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row['id'];
       if (authUserAccesArea($user,$row['id']) == 1)
       {
@@ -3742,7 +3742,7 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
   {
     foreach($res as $row)
     {
-      $selected = ($row['id'] == $current_area) ? 'selected="selected"' : "";
+      $selected = ($row['id'] == $current_area) ? 'selected ' : "";
       $link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row['id'];
       if (authUserAccesArea($user,$row['id']) == 1)
       {
@@ -3798,7 +3798,7 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
           $temp = " (".$row["description"].")";
         else
           $temp = "";
-        $selected = ($row['id'] == $current_room) ? "selected=\"selected\"" : "";
+        $selected = ($row['id'] == $current_room) ? "selected " : "";
         $link2 = $link.'.php?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row['id'];
         $out_html .= "<option $selected value=\"$link2\">" . htmlspecialchars($row["room_name"].$temp)."</option>".PHP_EOL;
       }

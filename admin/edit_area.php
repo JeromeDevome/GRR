@@ -3,7 +3,7 @@
  * edit_area.php
  * Interface de creation/modification des domaines de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-06-02 11:06$
+ * Dernière modification : $Date: 2026-10-26 11:47$
  * @author    Laurent Delineau & JeromeB & Marc-Henri PAMISEU & Yan Naessens & Daniel Antelme
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -449,7 +449,7 @@ while ($k < 7)
   $tmp=mktime(0, 0, 0, 10, 2 + $k, 2005);
   echo "<option value=\"".$k."\" ";
   if ($k == $Area['weekstarts_area'])
-    echo " selected=\"selected\"";
+    echo " selected ";
   echo ">".utf8_strftime("%A", $tmp)."</option>\n";
   $k++;
 }

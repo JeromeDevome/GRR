@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-03-16 18:10$
+ * Dernière modification : $Date: 2026-10-26 11:44$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -282,11 +282,11 @@ if(!empty($ovlfdata)){ // il existe des champs additionnels déjà définis
         echo "<span class='td CL'><select name=\"fieldtype\">\n";
         echo "<option value=\"textarea\" ";
         if ($row['fieldtype'] =="textarea")
-            echo " selected=\"selected\"";
+            echo " selected ";
         echo " >".get_vocab("type_area")."</option>\n";
         echo "<option value=\"text\" ";
         if ($row['fieldtype'] =="text")
-            echo  " selected=\"selected\"";
+            echo  " selected ";
         echo  " >".get_vocab("type_text")."</option>\n";
         echo '<option value="checkbox" ';
         if ($row['fieldtype'] == 'checkbox')
@@ -294,11 +294,11 @@ if(!empty($ovlfdata)){ // il existe des champs additionnels déjà définis
         echo ' >'.get_vocab('type_checkbox').'</option>\n';
         echo  "<option value=\"list\" ";
         if ($row['fieldtype'] =="list")
-            echo  " selected=\"selected\"";
+            echo  " selected ";
         echo  " >".get_vocab("type_list")."</option>\n";
         echo  "<option value=\"numeric\" ";
         if ($row['fieldtype'] =="numeric")
-            echo  " selected=\"selected\"";
+            echo  " selected ";
         echo  " >".get_vocab("type_numeric")."</option>\n";
         echo  "</select>";
         if (($row['fieldtype'] == "list")||($row['fieldtype'] == 'checkbox')) {

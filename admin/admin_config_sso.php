@@ -3,9 +3,9 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-05-28 15:44$
+ * Dernière modification : $Date: 2026-10-26 11:42$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -296,30 +296,30 @@ echo "<tr><td>".get_vocab("statut_eleve").get_vocab("deux_points")."</td>\n";
 echo "<td><select name=\"lcs_statut_eleve\" size=\"1\">\n";
 echo "<option value=\"aucun\"";
 if (Settings::get("lcs_statut_eleve") == 'aucun')
-	echo " selected=\"selected\" ";
+	echo " selected  ";
 echo ">(ne pas importer)</option>\n";
 echo "<option value=\"utilisateur\"";
 if (Settings::get("lcs_statut_eleve") == 'utilisateur')
-	echo " selected=\"selected\" ";
+	echo " selected  ";
 echo ">usager</option>\n";
 echo "<option value=\"visiteur\"";
 if (Settings::get("lcs_statut_eleve") == 'visiteur')
-	echo " selected=\"selected\" ";
+	echo " selected  ";
 echo ">visiteur</option>\n";
 echo "</select></td></tr>\n";
 echo "<tr><td>".get_vocab("statut_non_eleve").get_vocab("deux_points")."</td>\n";
 echo "<td><select name=\"lcs_statut_prof\" size=\"1\">\n";
 echo "<option value=\"aucun\"";
 if (Settings::get("lcs_statut_prof") == 'aucun')
-	echo " selected=\"selected\" ";
+	echo " selected  ";
 echo ">(ne pas importer)</option>\n";
 echo "<option value=\"utilisateur\"";
 if (Settings::get("lcs_statut_prof") == 'utilisateur')
-	echo " selected=\"selected\" ";
+	echo " selected  ";
 echo ">usager</option>\n";
 echo "<option value=\"visiteur\"";
 if (Settings::get("lcs_statut_prof") == 'visiteur')
-echo " selected=\"selected\" ";
+echo " selected  ";
 echo ">visiteur</option>\n";
 echo "</select></td></tr>\n";
 echo "</table>";

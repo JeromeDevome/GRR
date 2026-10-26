@@ -76,11 +76,11 @@ if (isset($_GET['champ'][0]))
     $k++;
   }
 }
-$summarize = isset($_GET["summarize"]) ? $_GET["summarize"] : NULL;
+$summarize = isset($_GET["summarize"]) ? clean_input($_GET["summarize"]) : 1;
 $sumBy = isset($_GET["sumby"])? intval($_GET["sumby"]) : -6 ;
-$sortby = isset($_GET["sortby"])? $_GET["sortby"] : "d";
+$sortby = isset($_GET["sortby"])? clean_input($_GET["sortby"]) : "d";
 // Si la table j_user_area est vide, il faut modifier la requête
-$test_grr_j_user_area = grr_sql_count(grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_j_user_area"));
+$test_grr_j_user_area = grr_sql_query("SELECT COUNT(*) FROM ".TABLE_PREFIX."_j_user_area");
 
 // Report on one entry. See below for columns in $row[].
 function reporton(&$row, $dformat)
@@ -400,8 +400,7 @@ else
 // 3=Les deux,
 // 4=Télécharger le CSV du rapport
 // 5=Télécharger le CSV du résumé
-if (empty($summarize))
-  $summarize = 1;
+
 // tous les champs additionnels... peut-être faudrait-il se limiter à ceux qui ont une valeur
 $overload_fields = grrOverloadGetFieldslist("");
 if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
@@ -454,27 +453,27 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
       echo "<option value=''>".get_vocab("choose")."</option>\n";
       echo "<option value='area' ";
       if (isset($champ[$k]) && ($champ[$k] == "area"))
-        echo " selected=\"selected\" ";
+        echo " selected  ";
       echo ">".get_vocab("match_area")."</option>\n";
       echo "<option value='room' ";
       if (isset($champ[$k]) && ($champ[$k] == "room"))
-        echo " selected=\"selected\" ";
+        echo " selected  ";
       echo ">".get_vocab("room")."</option>\n";
       echo "<option value='type' ";
       if (isset($champ[$k]) && ($champ[$k] == "type"))
-        echo " selected=\"selected\" ";
+        echo " selected  ";
       echo ">".get_vocab("type")."</option>\n";
       echo "<option value='name' ";
       if (isset($champ[$k]) && ($champ[$k] == "name"))
-        echo " selected=\"selected\" ";
+        echo " selected  ";
       echo ">".get_vocab("namebooker")."</option>\n";
       echo "<option value='descr' ";
       if (isset($champ[$k]) && ($champ[$k] == "descr"))
-        echo " selected=\"selected\" ";
+        echo " selected  ";
       echo ">".get_vocab("match_descr")."</option>\n";
       echo "<option value='login' ";
       if (isset($champ[$k]) && ($champ[$k] == "login"))
-        echo " selected=\"selected\" ";
+        echo " selected  ";
       echo ">".get_vocab("sum_by_creator")."</option>\n";
       // Boucle sur tous les champs additionnels
       foreach ($overload_fields as $fieldid=>$fielddata)
@@ -485,7 +484,7 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
         {
           echo "<option value='addon_".$fieldid."' ";
           if (isset($champ[$k]) && ($champ[$k] == "addon_".$fieldid))
-            echo " selected=\"selected\" ";
+            echo " selected  ";
           echo ">".$fielddata['name']."</option>\n";
         }
       }
@@ -493,11 +492,11 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
       echo "<select class=\"form-control\" name=\"type_recherche[]\" size=\"1\">\n";
       echo "<option value=\"1\" ";
       if (isset($type_recherche[$k]) && ($type_recherche[$k] == "1"))
-        echo " selected=\"selected\" ";
+        echo " selected  ";
       echo ">".get_vocab("contient").get_vocab("deux_points")."</option>\n";
       echo "<option value=\"0\" ";
       if (isset($type_recherche[$k]) && ($type_recherche[$k] == "0"))
-        echo " selected=\"selected\" ";
+        echo " selected  ";
       echo ">".get_vocab("ne contient pas").get_vocab("deux_points")."</option>\n";
       echo "</select>";
       if (!isset($texte_default[$k])) $texte_default[$k] ="";
@@ -537,15 +536,15 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
     echo "<select class=\"form-control\" name=\"sumby\" size=\"1\">\n";
     echo "<option value= '-6' ";
     if ($sumBy == -6)
-      echo " selected=\"selected\"";
+      echo " selected ";
     echo ">".get_vocab("sum_by_creator")."</option>\n";
     echo "<option value='-3' ";
     if ($sumBy == -3)
-      echo " selected=\"selected\"";
+      echo " selected ";
     echo ">".get_vocab("sum_by_descrip")."</option>\n";
     echo "<option value='-5' ";
     if ($sumBy == -5)
-      echo " selected=\"selected\"";
+      echo " selected ";
     echo ">".get_vocab("type")."</option>\n";
     // Boucle sur tous les champs additionnels
     foreach ($overload_fields as $fieldid=>$fielddata)
@@ -556,7 +555,7 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
       {
         echo "<option value='".$fieldid."' ";
         if ($sumBy == $fieldid)
-          echo " selected=\"selected\" ";
+          echo " selected  ";
         echo ">".$fielddata['name']."</option>\n";
       }
     }

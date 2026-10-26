@@ -3,9 +3,9 @@
  * admin_config_imap.php
  * Interface permettant l'activation de la configuration de l'authentification pop/imap  
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-03 15:52$
+ * Dernière modification : $Date: 2026-10-26 11:41$
  * @author    Laurent Delineau & JeromeB & Gilles Martin & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -162,51 +162,51 @@ if ($etape == 1)
 	echo "<select name=\"server_type\">";
 	echo "<option value=\"/imap\" ";
 	if ($imap_type == "/imap")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">IMAP</option>";
 	echo "<option value=\"/pop3\"";
 	if ($imap_type == "/pop3")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">POP</option>";
 	echo "</select>";
 
 	echo "<select name=\"server_ssl\">";
 	echo " <option value=\"\" ";
 	if ($imap_ssl == "")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">".get_vocab('noSSL')."</option>";
 	echo "<option value=\"/ssl\"";
 	if ($imap_ssl == "/ssl")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">".get_vocab('SSL')."</option>";
 	echo "</select>";
   
 	echo "<select name=\"server_cert\" >";
 	echo "<option value=\"\" ";
 	if ($imap_cert == "")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">(".get_vocab('non_precise').")</option>";
 	echo "<option value=\"/novalidate-cert\" ";
 	if ($imap_cert == "/novalidate-cert")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">NO-VALIDATE-CERT</option>";
 	echo "<option value=\"/validate-cert\" ";
 	if ($imap_cert == "/validate-cert")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">VALIDATE-CERT</option>";
 	echo "</select>";
 	echo "<select name=\"server_tls\">";
 	echo "<option value=\"\" ";
 	if ($imap_tls == "")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">(".get_vocab('non_precise').")</option>";
 	echo "<option value=\"/tls\" ";
 	if ($imap_tls == "/tls")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">TLS</option>";
 	echo "<option value=\"/notls\" ";
 	if ($imap_tls == "/notls")
-		echo "selected=\"selected\"";
+		echo "selected ";
 	echo ">NO-TLS</option>";
 	echo "</select>";
 	echo "<div style=\"text-align:center;\"><input type=\"submit\" name=\"Valider1\" value=\"".get_vocab('save')."\" /></div>";

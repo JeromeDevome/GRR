@@ -3,7 +3,7 @@
  * admin_config_calend3.php
  * interface permettant la configuration des jours-cycles (étape 3)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-05-18 16:21$
+ * Dernière modification : $Date: 2026-10-26 11:40$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -172,7 +172,7 @@ if (!isset($_GET['pview']))
 		{
 			echo "<option value=\"".$i."\" ";
 			if ($jour_cycle == $i)
-				echo " selected=\"selected\"";
+				echo " selected ";
 			echo " >j".$i."</option>";
 		}
 		echo "</select>\n";

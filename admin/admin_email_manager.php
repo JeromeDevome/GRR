@@ -3,7 +3,7 @@
  * admin_email_manager.php
  * Interface de gestion des mails automatiques
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-05-21 11:28$
+ * Dernière modification : $Date: 2026-10-26 11:43$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -192,7 +192,7 @@ echo "<label for='area_sel'>".get_vocab('areas')."&nbsp;</label>";
 echo "<select name=\"area\" id='area_sel' onchange=\"area_go()\">\n";
 echo "<option value=\"admin_email_manager.php?id_area=-1\">".get_vocab('select')."</option>\n";
 foreach($all_areas as $id => $area_name){
-  $selected = ($id == $id_area) ? "selected=\"selected\"" : "";
+  $selected = ($id == $id_area) ? "selected " : "";
   $link = "admin_email_manager.php?id_area=$id";
   echo "<option $selected value=\"$link\">" . htmlspecialchars($area_name)."</option>\n";
 }
@@ -219,7 +219,7 @@ echo "<label for='room_sel'>".get_vocab('rooms')."&nbsp;</label>";
 echo "<select name=\"room\" id='room_sel' onchange=\"room_go()\">\n";
 echo "<option value=\"admin_email_manager.php?id_area=$id_area&amp;room=-1\">".get_vocab('select')."</option>\n";
 foreach($all_rooms as $id => $data){
-  $selected = ($id == $room) ? "selected=\"selected\"" : "";
+  $selected = ($id == $room) ? "selected " : "";
   $link = "admin_email_manager.php?id_area=$id_area&amp;room=$id";
   echo "<option $selected value=\"$link\">" .$data."</option>\n";
 }

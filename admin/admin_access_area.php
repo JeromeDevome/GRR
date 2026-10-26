@@ -3,9 +3,9 @@
  * admin_access_area.php
  * Interface de gestion des accès aux domaines restreints
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-25 11:43$
+ * Dernière modification : $Date: 2026-10-26 11:32$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -98,7 +98,7 @@ else{
     $sel_dom .= "\n<option value=\"admin_access_area.php?id_area=-1\">".get_vocab('select')."</option>";
     foreach($res as $row)
 	{
-		$selected = ($row['id'] == $id_area) ? "selected = \"selected\"" : "";
+		$selected = ($row['id'] == $id_area) ? "selected" : "";
 		$link = "admin_access_area.php?id_area=".$row['id'];
 		// on n'affiche que les domaines que l'utilisateur connecté a le droit d'administrer
 		if (authGetUserLevel(getUserName(),$row['id'],'area') >= 4)

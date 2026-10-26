@@ -3,7 +3,7 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 10:38$
+ * Dernière modification : $Date: 2026-10-26 11:55$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -575,7 +575,7 @@ if ($use_site == 'y')
   {
     echo '<option value="'.$row['id'].'"';
     if ($default_site == $row['id'])
-      echo ' selected="selected" ';
+      echo ' selected  ';
     echo '>'.htmlspecialchars($row['sitename']);
     echo '</option>'."\n";
   }
@@ -610,7 +610,7 @@ echo '<div class="form-group">
           {
             echo '              <option value="'.$liste_themes[$i].'"';
             if ($default_css == $liste_themes[$i])
-              echo ' selected="selected"';
+              echo ' selected ';
             echo ' >'.encode_message_utf8($liste_name_themes[$i]).'</option>'."\n";
             $i++;
           }
@@ -630,7 +630,7 @@ echo '<div class="form-group">
                       {
                           echo '              <option value="'.$liste_language[$i].'"';
                           if ($default_language == $liste_language[$i])
-                              echo ' selected="selected"';
+                              echo ' selected ';
                           echo ' >'.encode_message_utf8($liste_name_language[$i]).'</option>'."\n";
                           $i++;
                       }

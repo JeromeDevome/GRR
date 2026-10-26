@@ -3,9 +3,9 @@
  * admin_user.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-11-06 10:53$
+ * Dernière modification : $Date: 2026-10-26 11:46$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -363,15 +363,15 @@ if (authGetUserLevel($user_id,-1,'user') !=  1)
 	echo "<label>".get_vocab("modification_parametres_personnels").get_vocab("deux_points")."<select name=\"allow_users_modify_profil\" size=\"1\">\n";
 	echo "<option value = '1' ";
 	if (Settings::get("allow_users_modify_profil") == '1')
-		echo " selected=\"selected\"";
+		echo " selected ";
 	echo ">".get_vocab("all")."</option>\n";
 	echo "<option value = '2' ";
 	if (Settings::get("allow_users_modify_profil") == '2')
-		echo " selected=\"selected\"";
+		echo " selected ";
 	echo ">".get_vocab("all_but_visitors")."</option>\n";
 	echo "<option value = '5' ";
 	if (Settings::get("allow_users_modify_profil") == '5')
-		echo " selected=\"selected\"";
+		echo " selected ";
 	echo ">".get_vocab("only_administrators")."</option>\n";
 	echo "</select></label>";
 	echo "<input type=\"submit\" value=\"".get_vocab("OK")."\" />\n";
@@ -386,15 +386,15 @@ if (authGetUserLevel($user_id, -1, 'user') != 1)
 	echo "<label>".get_vocab("modification_parametre_email").get_vocab("deux_points")."<select name=\"allow_users_modify_email\" size=\"1\">\n";
 	echo "<option value = '1' ";
 	if (Settings::get("allow_users_modify_email") == '1')
-		echo " selected=\"selected\"";
+		echo " selected ";
 	echo ">".get_vocab("all")."</option>\n";
 	echo "<option value = '2' ";
 	if (Settings::get("allow_users_modify_email") == '2')
-		echo " selected=\"selected\"";
+		echo " selected ";
 	echo ">".get_vocab("all_but_visitors")."</option>\n";
 	echo "<option value = '5' ";
 	if (Settings::get("allow_users_modify_email") == '5')
-		echo " selected=\"selected\"";
+		echo " selected ";
 	echo ">".get_vocab("only_administrators")."</option>\n";
 	echo "</select></label>";
 	echo "<input type=\"submit\" value=\"".get_vocab("OK")."\" />\n";
@@ -409,15 +409,15 @@ if (authGetUserLevel($user_id, -1, 'user') != 1)
 	echo "<label>".get_vocab("modification_mdp").get_vocab("deux_points")."<select name=\"allow_users_modify_mdp\" size=\"1\">\n";
 	echo "<option value = '1' ";
 	if (Settings::get("allow_users_modify_mdp") == '1')
-		echo " selected=\"selected\"";
+		echo " selected ";
 	echo ">".get_vocab("all")."</option>\n";
 	echo "<option value = '2' ";
 	if (Settings::get("allow_users_modify_mdp") == '2')
-		echo " selected=\"selected\"";
+		echo " selected ";
 	echo ">".get_vocab("all_but_visitors")."</option>\n";
 	echo "<option value = '5' ";
 	if (Settings::get("allow_users_modify_mdp") == '5')
-		echo " selected=\"selected\"";
+		echo " selected ";
 	echo ">".get_vocab("only_administrators")."</option>\n";
 	echo "</select></label>";
 	echo "<input type=\"submit\" value=\"".get_vocab("OK")."\" />\n";

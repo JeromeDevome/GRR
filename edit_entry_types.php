@@ -3,9 +3,9 @@
  * edit_entry_types.php
  * Page "Ajax" utilisée pour générer les types
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-02 16:54$
+ * Dernière modification : $Date: 2026-10-26 11:52$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -90,7 +90,7 @@ else
                 if ($type != "") // Modification d'une réservation
                 {
                     if ($type == $row['type_letter'])
-                        $display_type .=  ' selected="selected"';
+                        $display_type .=  ' selected ';
                 }
                 else // Nouvelle réservation
                 {
@@ -102,7 +102,7 @@ else
                         $cookie = "";
                     }
                     if ((!$cookie && ($id_type_par_defaut == $row['id'])) || ($cookie && $cookie == $row['type_name']))
-                        $display_type .=  ' selected="selected"';
+                        $display_type .=  ' selected ';
                 }
                 $display_type .=  ' >'.$row['type_name'].'</option>'.PHP_EOL;
             }

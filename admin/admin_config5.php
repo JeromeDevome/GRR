@@ -3,9 +3,9 @@
  * admin_config5.php
  * Interface permettant à l'administrateur la configuration des modules internes : Multisite, Jours Cycles, Export XML, Ckeditor
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-15 15:32$
+ * Dernière modification : $Date: 2026-10-26 11:39$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -114,13 +114,13 @@ echo get_vocab("Activer_module_jours_cycles").get_vocab("deux_points");
 echo "<select name='jours_cycles'>\n";
 if (Settings::get("jours_cycles_actif") == "Oui")
 {
-	echo "<option value=\"Oui\" selected=\"selected\">".get_vocab('YES')."</option>\n";
+	echo "<option value=\"Oui\" selected >".get_vocab('YES')."</option>\n";
 	echo "<option value=\"Non\">".get_vocab('NO')."</option>\n";
 }
 else
 {
 	echo "<option value=\"Oui\">".get_vocab('YES')."</option>\n";
-	echo "<option value=\"Non\" selected=\"selected\">".get_vocab('NO')."</option>\n";
+	echo "<option value=\"Non\" selected >".get_vocab('NO')."</option>\n";
 }
 echo "</select>\n</p><hr />\n";
 
@@ -131,13 +131,13 @@ echo get_vocab("Activer_module_multisite").get_vocab("deux_points");
 echo "<select name='module_multisite'>\n";
 if (Settings::get("module_multisite") == "Oui")
 {
-	echo "<option value=\"Oui\" selected=\"selected\">".get_vocab('YES')."</option>\n";
+	echo "<option value=\"Oui\" selected >".get_vocab('YES')."</option>\n";
 	echo "<option value=\"Non\">".get_vocab('NO')."</option>\n";
 }
 else
 {
 	echo "<option value=\"Oui\">".get_vocab('YES')."</option>\n";
-	echo "<option value=\"Non\" selected=\"selected\">".get_vocab('NO')."</option>\n";
+	echo "<option value=\"Non\" selected >".get_vocab('NO')."</option>\n";
 }
 echo "</select>\n</p>\n";
 echo "<hr />";
@@ -148,13 +148,13 @@ echo get_vocab("Activer_export_xml").get_vocab("deux_points");
 echo "<select name='export_xml'>\n";
 if (Settings::get("export_xml_actif") == "Oui")
 {
-	echo "<option value=\"Oui\" selected=\"selected\">".get_vocab('YES')."</option>\n";
+	echo "<option value=\"Oui\" selected >".get_vocab('YES')."</option>\n";
 	echo "<option value=\"Non\">".get_vocab('NO')."</option>\n";
 }
 else
 {
 	echo "<option value=\"Oui\">".get_vocab('YES')."</option>\n";
-	echo "<option value=\"Non\" selected=\"selected\">".get_vocab('NO')."</option>\n";
+	echo "<option value=\"Non\" selected >".get_vocab('NO')."</option>\n";
 }
 echo "</select> (./export/export".TABLE_PREFIX.".xml)\n</p>\n";
 
@@ -165,13 +165,13 @@ echo get_vocab("Activer_export_plus_xml").get_vocab("deux_points");
 echo "<select name='export_xml_plus'>\n";
 if (Settings::get("export_xml_plus_actif") == "Oui")
 {
-	echo "<option value=\"Oui\" selected=\"selected\">".get_vocab('YES')."</option>\n";
+	echo "<option value=\"Oui\" selected >".get_vocab('YES')."</option>\n";
 	echo "<option value=\"Non\">".get_vocab('NO')."</option>\n";
 }
 else
 {
 	echo "<option value=\"Oui\">".get_vocab('YES')."</option>\n";
-	echo "<option value=\"Non\" selected=\"selected\">".get_vocab('NO')."</option>\n";
+	echo "<option value=\"Non\" selected >".get_vocab('NO')."</option>\n";
 }
 echo "</select> (./export/exportplus".TABLE_PREFIX.".xml)\n</p>\n";
 
@@ -182,13 +182,13 @@ echo "\n<p>".get_vocab("use_fckeditor1").get_vocab("deux_points");
 echo "<select name='use_fckeditor'>\n";
 if (Settings::get("use_fckeditor") == 1)
 {
-	echo "<option value= '1' selected=\"selected\">".get_vocab('YES')."</option>\n";
+	echo "<option value= '1' selected >".get_vocab('YES')."</option>\n";
 	echo "<option value= '0'>".get_vocab('NO')."</option>\n";
 }
 else
 {
 	echo "<option value= '1'>".get_vocab('YES')."</option>\n";
-	echo "<option value= '0' selected=\"selected\">".get_vocab('NO')."</option>\n";
+	echo "<option value= '0' selected >".get_vocab('NO')."</option>\n";
 }
 echo "</select>\n</p>\n";
 

@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-28 11:54$
+ * Dernière modification : $Date: 2026-10-26 11:47$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -415,11 +415,11 @@ echo '<div>';
         echo "<select class=\"form-control\" id=\"select_auth_mode\" name='type_authentification' onchange=\"display_password_fields(this.id);\">\n";
         echo "<option value='locale'";
         if ($utilisateur['source'] == 'local')
-            echo " selected=\"selected\" ";
+            echo " selected  ";
         echo ">".get_vocab("authentification_base_locale")."</option>\n";
         echo "<option value='externe'";
         if ($utilisateur['source'] == 'ext')
-            echo " selected=\"selected\" ";
+            echo " selected  ";
         echo ">".get_vocab("authentification_base_externe")."</option>\n";
         echo "</select></div></div>".PHP_EOL;
     }

@@ -3,7 +3,7 @@
  * admin_calend2.php
  * interface permettant la réservation en bloc d'un créneau sur plusieurs Jours ou ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-06-02 11:32$
+ * Dernière modification : $Date: 2026-10-26 11:35$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -221,7 +221,7 @@ elseif($etape == 2){
     foreach($res as $row){
       $sel_user .= "<option value='".$row['login']."' ";
       if ($user_name == $row['login'])
-        $sel_user.= " selected=\"selected\"";
+        $sel_user.= " selected ";
       $sel_user.= ">".$row['nom']."  ".$row['prenom']." </option>";
     }
     $sel_user.="</select>";
@@ -257,7 +257,7 @@ elseif($etape == 2){
     foreach($res as $row){
       $sel_type.= "<option value=\"".$row['type_letter']."\" ";
       if ($type_ == $row['type_letter'])
-        $sel_type.= " selected=\"selected\"";
+        $sel_type.= " selected ";
       $sel_type.= " >".$row['type_name']."</option>\n";
     }
     $sel_type.= "</select>";

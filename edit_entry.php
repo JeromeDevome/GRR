@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-03-16 18:15$
+ * Dernière modification : $Date: 2026-10-26 11:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -120,19 +120,19 @@ function divBeneficiaire($id_resa=0,$id_user='',$id_room=-1,$id_area=-1){
     if (!isset($benef_ext_nom))
       $option .= '<option value="" >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
     else
-      $option .= '<option value="" selected="selected">'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
+      $option .= '<option value="" selected >'.get_vocab("personne exterieure").'</option>'.PHP_EOL;
     foreach ($bnf as $b){
       $option .= '<option value="'.$b[0].'" ';
       if (((!$benef && !$benef_ext_nom) && strtolower($id_user) == strtolower($b[0])) || ($benef && $benef == $b[0]))
         {
-          $option .= ' selected="selected" ';
+          $option .= ' selected  ';
         }
       $option .= '>'.$b[1].' '.$b[2].'</option>'.PHP_EOL;
     }
     $test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE login=? ","s",[$id_user]);
     if (($test == -1) && ($id_user != ''))
     {
-      $option .= '<option value="-1" selected="selected" >'.get_vocab("utilisateur_inconnu").$id_user.'</option>'.PHP_EOL;
+      $option .= '<option value="-1" selected  >'.get_vocab("utilisateur_inconnu").$id_user.'</option>'.PHP_EOL;
     }
     echo '<div id="choix_beneficiaire" class="row">'.PHP_EOL;
     echo '<div class="col col-sm-9">'.PHP_EOL;
@@ -210,7 +210,7 @@ function divTypes($id_user,$room,$area,$type=""){
           if ($type != "") // Modification d'une réservation
           {
             if ($type == $row['type_letter'])
-              $display_type .=  ' selected="selected"';
+              $display_type .=  ' selected ';
           }
           else // Nouvelle réservation
           {
@@ -222,7 +222,7 @@ function divTypes($id_user,$room,$area,$type=""){
               $cookie = "";
             }
             if ((!$cookie && ($id_type_par_defaut == $row['id'])) || ($cookie && $cookie == $row['type_name']))
-                $display_type .=  ' selected="selected"';
+                $display_type .=  ' selected ';
         }
           $display_type .=  ' >'.$row['type_name'].'</option>'.PHP_EOL;
         }
@@ -291,7 +291,7 @@ function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()
       {
         $display .= "<option ";
         if (htmlspecialchars($data) == trim($value,"&") || ($data == "" && $value[0]=="&"))
-          $display .= " selected=\"selected\"";
+          $display .= " selected ";
         $display .= ">".trim($value,"&")."</option>\n";
       }
           $display .= "</select></div>\n";
@@ -906,7 +906,7 @@ if ($enable_periods == 'y')
   {
     echo '<option value="'.$p_num.'"';
     if ((isset( $period ) && $period == $p_num ) || $p_num == $start_min)
-      echo ' selected="selected"';
+      echo ' selected ';
     echo '>'.$p_val.'</option>'.PHP_EOL;
   }
   echo '</select>'.PHP_EOL;
@@ -942,7 +942,7 @@ if ($type_affichage_reser == 0) // sélection de la durée
   {
     echo '<option value="'.$unit.'"';
     if ($dur_units ==  get_vocab($unit))
-      echo ' selected="selected"';
+      echo ' selected ';
     echo '>'.get_vocab($unit).'</option>'.PHP_EOL;
   }
   echo '</select>'.PHP_EOL;
@@ -977,7 +977,7 @@ else // sélection de l'heure ou du créneau de fin
     {
       echo "<option value=\"".$p_num."\"";
       if ( ( isset( $end_period ) && $end_period == $p_num ) || ($p_num+1) == $end_min)
-        echo " selected=\"selected\"";
+        echo " selected ";
       echo ">$p_val</option>\n";
     }
     echo '</select>'.PHP_EOL;
@@ -996,7 +996,7 @@ else{
   echo "<label for='areas' class='control-label'>".get_vocab("match_area").get_vocab("deux_points")."</label>".PHP_EOL;
   echo "<select class=\"form-control\" id=\"areas\" name=\"areas\" onchange=\"changeRooms(this.form);\" >";
   foreach($access_areas as $i => $area_name){
-    $selected = ($i == $area)? 'selected="selected"' : "";
+    $selected = ($i == $area)? 'selected ' : "";
     echo '<option '.$selected.' value="'.$i.'">'.$area_name.'</option>'.PHP_EOL;
   }
   echo '</select>',PHP_EOL;
@@ -1009,7 +1009,7 @@ foreach($access_rooms as $i => $tab)
 {
   $selected = "";
   if ($i == $room_id)
-    $selected = 'selected="selected"';
+    $selected = 'selected ';
   echo '<option ',$selected,' value="',$i,'" title="',$tab[1],'">',$tab[0],'</option>',PHP_EOL;
 }
 echo '</select>',PHP_EOL,'&nbsp; &nbsp;',get_vocab("ctrl_click"),'</div>',PHP_EOL; // voir pour supprimer si 1 ressource
@@ -1035,7 +1035,7 @@ if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || (
       $aff_options .= "<option value = \"".$date_courante."\" ";
       if ($option_reservation == $date_courante)
       {
-        $aff_options .= " selected=\"selected\" ";
+        $aff_options .= " selected  ";
         $selected = 'y';
       }
       $aff_options .= ">".$aff_date_courante."</option>\n";
@@ -1044,7 +1044,7 @@ if (($delais_option_reservation > 0) && (($modif_option_reservation == 'y') || (
     echo "<option value = \"-1\">".get_vocab("Reservation confirmee")."</option>\n";
     if (($selected == 'n') and ($option_reservation != -1))
     {
-      echo "<option value = \"".$option_reservation."\" selected=\"selected\">".time_date_string_jma($option_reservation, $dformat)."</option>\n";
+      echo "<option value = \"".$option_reservation."\" selected >".time_date_string_jma($option_reservation, $dformat)."</option>\n";
     }
     echo $aff_options;
     echo "</select>";
@@ -1149,7 +1149,7 @@ if($periodiciteConfig == 'y')
           {
             echo '<option value="',$weekit,'"';
             if ($rep_num_weeks == $weekit)
-              echo ' selected="selected"';
+              echo ' selected ';
             echo '>',get_vocab($weeklist[$weekit]),'</option>',PHP_EOL;
           }
           echo '</select>',PHP_EOL;
@@ -1168,8 +1168,8 @@ if($periodiciteConfig == 'y')
         }
         if ($i == '3') // mensuel
         {
-          $monthrep3 = ($rep_type == 3)? " selected=\"selected\" ": "";
-          $monthrep5 = ($rep_type == 5)? " selected=\"selected\" ": "";
+          $monthrep3 = ($rep_type == 3)? " selected  ": "";
+          $monthrep5 = ($rep_type == 5)? " selected  ": "";
           echo '&nbsp;</label><select class="form-control" name="rep_month" size="1" onfocus="check_3()" onclick="check_3()">'.PHP_EOL;
           echo "<option value=\"3\" $monthrep3>".get_vocab("rep_type_3")."</option>\n";
           echo "<option value=\"5\" $monthrep5>".get_vocab("rep_type_5")."</option>\n";

@@ -3,7 +3,7 @@
  * admin_book_room.php
  * Interface de gestion des accès restreints aux ressources restreintes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-06-02 11:10$
+ * Dernière modification : $Date: 2026-10-26 11:33$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -122,7 +122,7 @@ else{
       // on vérifie que l'utilisateur connecté a les droits suffisants
       if (authGetUserLevel($user_name,$row['id'],'room')>2)
       {
-        $selected = ($row['id'] == $id_room) ? "selected = \"selected\"" : "";
+        $selected = ($row['id'] == $id_room) ? "selected" : "";
         $text = '';
         if($multisite)
           $text.= $row['sitename']." > ";
