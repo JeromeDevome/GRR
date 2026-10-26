@@ -3,7 +3,7 @@
  * admin_user.php
  * interface de gestion des utilisateurs de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:46$
+ * Dernière modification : $Date: 2026-10-26 17:14$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -430,17 +430,17 @@ echo "<table class='table table-noborder'>\n";
 echo "<tr>\n<td><input type=\"submit\" value=\"".get_vocab('goto').get_vocab('deux_points')."\" /></td>";
 echo "<td>".get_vocab("display_all_user.php")."&nbsp;<input type=\"radio\" name=\"display\" value=\"tous\"";
 if ($display == 'tous')
-	echo " checked=\"checked\"";
+	echo " checked";
 echo " /></td>";
 echo "<td>";
 echo get_vocab("display_user_on.php");
 echo '&nbsp;<input type="radio" name="display" value="actifs" ';
-if ($display == 'actifs') {echo " checked=\"checked\"";}
+if ($display == 'actifs') {echo " checked";}
 echo ' /></td>';
 echo '<td>';
 echo get_vocab("display_user_off.php");
 echo '&nbsp;<input type="radio" name="display" value="inactifs" ';
-if ($display == 'inactifs') {echo " checked=\"checked\"";}
+if ($display == 'inactifs') {echo " checked";}
 echo ' /></td>';
 echo '</tr>
   </table>

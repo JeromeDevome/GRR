@@ -3,7 +3,7 @@
  * admin_overload.php
  * Interface de création/modification des champs additionnels.
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:44$
+ * Dernière modification : $Date: 2026-10-26 17:13$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -309,19 +309,19 @@ if(!empty($ovlfdata)){ // il existe des champs additionnels déjà définis
         $ind_div++;
         echo  "<span class='td CC'><input type=\"checkbox\" id=\"obligatoire_".$ind_div."\" name=\"obligatoire\" data-toggle=\"tooltip\" title=\"".get_vocab("champ_obligatoire")."\" value=\"y\" ";
         if ($row['obligatoire'] =="y")
-            echo  " checked=\"checked\" ";
+            echo  " checked ";
         echo  "/></span>\n";
         echo  "<span class='td CC'><input type=\"checkbox\" id=\"affichage_".$ind_div."\" name=\"affichage\" data-toggle=\"tooltip\" title=\"".get_vocab("affiche_dans_les_vues")."\" value=\"y\" ";
         if ($row['affichage'] =="y")
-            echo  " checked=\"checked\" ";
+            echo  " checked ";
         echo  "/></span>\n";
         echo  "<span class='td CC'><input type=\"checkbox\" id=\"overload_mail_".$ind_div."\" name=\"overload_mail\" data-toggle=\"tooltip\" title=\"".get_vocab("affiche_dans_les_mails")."\" value=\"y\" ";
         if ($row['overload_mail'] =="y")
-            echo  " checked=\"checked\" ";
+            echo  " checked ";
         echo  "/></span>\n";
         echo  "<span class='td CC'><input type=\"checkbox\" id=\"confidentiel_".$ind_div."\" name=\"confidentiel\" data-toggle=\"tooltip\" title=\"".get_vocab("champ_confidentiel")."\" value=\"y\" ";
         if ($row['confidentiel'] =="y")
-            echo  " checked=\"checked\" ";
+            echo  " checked ";
         echo  "/></span>\n";
         echo  '<span class="td CC"><input type="text" name="mail_spec" size="20" value="'.$row['mail_spec'].'" /></span>';
         echo  "<span class='td CC'>\n";

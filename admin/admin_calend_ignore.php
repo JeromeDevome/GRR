@@ -3,9 +3,9 @@
  * admin_calend_ignore.php
  * Interface gérant la définition des jours hors réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-28  10:55$
+ * Dernière modification : $Date: 2026-10-26  16:36$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -120,7 +120,7 @@ echo "\n<p>".get_vocab("les_journees_cochees_sont_ignorees")."</p>";
 echo "<form action=\"admin_calend_ignore.php\" method=\"post\" id=\"formulaire\" name=\"formulaire\">\n";
 echo "<p>".get_vocab("admin_calend_ignore_option_delai");
 echo "<input type='checkbox' name='delai_ouvert' value='1' ";
-if (Settings::get('delai_ouvert') == 1) echo 'checked="checked"';
+if (Settings::get('delai_ouvert') == 1) echo 'checked';
 echo " /><br />";
 echo "<em>".get_vocab("admin_calend_ignore_option_delai_exp")."</em>";
 echo "</p>";

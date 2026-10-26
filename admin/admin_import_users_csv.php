@@ -3,7 +3,7 @@
  * admin_import_users_csv.php
  * script d'importation d'utilisateurs à partir d'un fichier CSV
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-27 15:19$
+ * Dernière modification : $Date: 2026-10-26 17:12$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -372,7 +372,7 @@ if ($reg_data != 'yes')
 		echo '<input type="hidden" name="is_posted" value="1" />';
 		echo '<p>';
 		echo get_vocab("admin_import_users_csv1");
-		echo '<input type="checkbox" name="en_tete" value="yes" checked="checked" />';
+		echo '<input type="checkbox" name="en_tete" value="yes" checked />';
 		echo '</p>';
 		echo '<input type="submit" value="'.get_vocab("submit").'" />';
 		echo '<br />';

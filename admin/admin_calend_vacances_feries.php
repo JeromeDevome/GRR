@@ -3,9 +3,9 @@
  * admin_calend_vacances_feries.php
  * Interface permettant la définiton des jours fériés ou de vacances
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-02-28 11:41$
+ * Dernière modification : $Date: 2026-10-26 16:37$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -203,7 +203,7 @@ else if ($action == 'test2'){
     echo '<p>'.'<input type="submit" value="'.get_vocab('Definir').'">'.'&nbsp;';
     echo "<input type='radio' name='define_holidays' value='F' ";
     if ((!isset($_POST['define_holidays']))||($_POST['define_holidays']=='Oui')){
-        echo 'checked="checked"';
+        echo 'checked';
     }
     echo " />".PHP_EOL;
     echo get_vocab("les_jours_feries").'&nbsp;'.PHP_EOL;

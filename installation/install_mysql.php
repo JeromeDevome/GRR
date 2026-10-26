@@ -3,9 +3,9 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-09-25 18:28$
+ * Dernière modification : $Date: 2026-10-26 17:20$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -352,7 +352,7 @@ else if ($etape == 3)
       $base_fin = " /><label for='tab$i'>".$table_nom."</label></li>\n";
       if ($table_nom == $login_db)
       {
-        $bases = "$base checked=\"checked\"".$bases;
+        $bases = "$base checked ".$bases;
         $checked = TRUE;
       }
       else
@@ -370,7 +370,7 @@ else if ($etape == 3)
     {
       echo "Dans la seconde alternative, il est probable qu'une base portant votre nom de login soit utilisable :";
       echo "<ul>\n";
-      echo "<input name=\"choix_db\" value=\"".$login_db."\" type=\"radio\" id=\"stand\" checked=\"checked\" />\n";
+      echo "<input name=\"choix_db\" value=\"".$login_db."\" type=\"radio\" id=\"stand\" checked  />\n";
       echo "<label for='stand'>".$login_db."</label><br />\n";
       echo "</ul>\n";
       echo "ou... ";
@@ -379,7 +379,7 @@ else if ($etape == 3)
   }
   echo "<input name=\"choix_db\" value=\"new_grr\" type=\"radio\" id='nou'";
   if (!$checked)
-    echo " checked=\"checked\"";
+    echo " checked ";
   echo " />\n<label for='nou'>Créer une nouvelle base de données :</label>\n";
   echo "<input type='text' name='table_new' class='fondo' value=\"grr\" size='20' /></fieldset>\n";
   echo "<br /><fieldset><label><b>Préfixe des tables :</b><br /></label>\n";

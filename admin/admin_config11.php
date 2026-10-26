@@ -3,9 +3,9 @@
  * admin_config11.php
  * Interface permettant à l'administrateur la configuration de paramètres généraux présentant le site GRR
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2024-03-15 17:58$
+ * Dernière modification : $Date: 2026-10-26 17:02$
  * @author    Laurent Delineau & JeromeB &  Bouteillier Nicolas & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -316,7 +316,7 @@ echo '</div>'.PHP_EOL;
 echo '<div class="col col-xs-12">'.PHP_EOL;
 echo '<p><input type="checkbox" name="use_grr_url" value="y" ';
 if (Settings::get('use_grr_url') == 'y') 
-    echo ' checked="checked" ';
+    echo ' checked ';
 echo ' />'.PHP_EOL;
 echo '<em>'.get_vocab('grr_url_explain').'</em></p>'.PHP_EOL;
 echo '</div>'.PHP_EOL;

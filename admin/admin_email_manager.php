@@ -3,7 +3,7 @@
  * admin_email_manager.php
  * Interface de gestion des mails automatiques
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:43$
+ * Dernière modification : $Date: 2026-10-26 17:11$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -179,7 +179,7 @@ echo get_vocab("explain_automatic_mail3")."<br /><hr />\n";
 echo "<form action=\"admin_email_manager.php\" method=\"post\">\n";
 echo "<input type=\"checkbox\" name=\"send_always_mail_to_creator\" value=\"y\" ";
 if (Settings::get('send_always_mail_to_creator')=='1')
-	echo ' checked="checked" ';
+	echo ' checked ';
 echo ' />'."\n";
 echo get_vocab("explain_automatic_mail1");
 echo "\n".'<br /><div class="center"><input type="submit" name="mail1" value="'.get_vocab('save').'" /></div></form><hr />';

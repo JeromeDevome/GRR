@@ -3,7 +3,7 @@
  * admin_config_imap.php
  * Interface permettant l'activation de la configuration de l'authentification pop/imap  
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:41$
+ * Dernière modification : $Date: 2026-10-26 17:08$
  * @author    Laurent Delineau & JeromeB & Gilles Martin & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -235,11 +235,11 @@ else if ($etape ==0)
 		echo encode_message_utf8("<h3>".get_vocab('statutDefaut')."</h3>");
 		echo "<input type=\"radio\" name=\"imap_statut\" value=\"visiteur\" ";
 		if (Settings::get("imap_statut") == 'visiteur')
-			echo "checked=\"checked\" ";
+			echo "checked ";
 		echo "/>".get_vocab('statut_visitor')."<br />";
 		echo "<input type=\"radio\" name=\"imap_statut\" value=\"utilisateur\" ";
 		if (Settings::get("imap_statut") == 'utilisateur')
-			echo "checked=\"checked\" ";
+			echo "checked ";
 		echo "/>".get_vocab('statut_user')."<br />";
 		echo get_vocab('Ou_bien')." <br />";
 		echo "<input type=\"radio\" name=\"imap_statut\" value=\"no_imap\" />".encode_message_utf8(get_vocab('imapDesactiver'))."<br />";
@@ -314,7 +314,7 @@ else if ($etape ==0)
 		echo "<form action=\"admin_config_imap.php\" method=\"post\"><div>\n";
 		echo "<input type=\"radio\" name=\"imap_statut\" value=\"visiteur\" />".get_vocab('statut_visitor')."<br />\n";
 		echo "<input type=\"radio\" name=\"imap_statut\" value=\"utilisateur\" />".get_vocab('statut_user')."<br />\n";
-		echo "<input type=\"radio\" name=\"imap_statut\" value=\"no_imap\" checked=\"checked\" />".get_vocab('nonActive')."<br />\n";
+		echo "<input type=\"radio\" name=\"imap_statut\" value=\"no_imap\" checked />".get_vocab('nonActive')."<br />\n";
 		echo "<input type=\"hidden\" name=\"valid\" value=\"$valid\" />\n";
 		echo "<div style=\"text-align:center;\"><input type=\"submit\" name=\"Valider2\" value=\"".get_vocab('OK')."\"  /></div>\n";
 		echo "</div></form>";

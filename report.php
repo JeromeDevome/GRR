@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-15 11:19$
+ * Dernière modification : $Date: 2026-10-26 17:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -432,12 +432,12 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
       $_GET["condition_et_ou"] = "AND";
     echo "<tr><td class=\"CR\"><input type=\"radio\" name=\"condition_et_ou\" value=\"AND\" ";
     if ($_GET["condition_et_ou"] == "AND")
-      echo "checked=\"checked\"";
+      echo "checked ";
     echo " /></td>\n";
     echo "<td class='CL'>".get_vocab("valide_toutes_les_conditions_suivantes")."</td></tr>";
     echo "<tr><td class=\"CR\"><input type=\"radio\" name=\"condition_et_ou\" value=\"OR\" ";
     if ($_GET["condition_et_ou"] != "AND")
-      echo "checked=\"checked\"";
+      echo "checked ";
     echo " /></td>\n";
     echo "<td class='CL'>".get_vocab("valide_au_moins_une_des_conditions_suivantes")."</td></tr>\n";
     if (isset($texte))
@@ -506,22 +506,22 @@ if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
     echo '<tr><td class="CR">'.get_vocab("include").get_vocab("deux_points").'</td>';
     echo '<td class="CL">';
     echo '<input type="radio" name="summarize" value="1"';
-    if ($summarize == 1) echo " checked=\"checked\"";
+    if ($summarize == 1) echo " checked ";
     echo " />" . get_vocab("report_only")."&nbsp;";
     echo '<input type="radio" name="summarize" value="2"';
-    if ($summarize == 2) echo " checked=\"checked\"";
+    if ($summarize == 2) echo " checked ";
     echo " />" . get_vocab("summary_only")."&nbsp;";
     echo '<input type="radio" name="summarize" value="3"';
-    if ($summarize == 3) echo " checked=\"checked\"";
+    if ($summarize == 3) echo " checked ";
     echo " />" . get_vocab("report_and_summary");
     echo '<br /><input type="radio" name="summarize" value="4"';
-    if ($summarize == 4) echo " checked=\"checked\"";
+    if ($summarize == 4) echo " checked ";
     echo " />" . get_vocab("dlrapportcsv")."&nbsp;";
     echo '<input type="radio" name="summarize" value="5"';
-    if ($summarize == 5) echo " checked=\"checked\"";
+    if ($summarize == 5) echo " checked ";
     echo " />" . get_vocab("dlresumecsv")."&nbsp;";
     echo '<input type="radio" name="summarize" value="6"';
-    if ($summarize == 6) echo " checked=\"checked\"";
+    if ($summarize == 6) echo " checked ";
     echo " />" . get_vocab("dlcsv2");
     echo '<br />';
     echo get_vocab("dlcsv2_explain");

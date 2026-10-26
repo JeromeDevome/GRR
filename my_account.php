@@ -3,7 +3,7 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:55$
+ * Dernière modification : $Date: 2026-10-26 17:21$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -547,19 +547,19 @@ echo "\n".'<h4>'.get_vocab('explain_area_list_format').'</h4>';
 echo '<div class="radio">
         <label><input type="radio" name="area_item_format" value="list" ';
 if ($default_list_type == 'list')
-  echo 'checked="checked"';
+  echo 'checked ';
 echo ' />'.get_vocab('liste_area_list_format').'</label>
       </div>';
 echo '<div class="radio">
         <label><input type="radio" name="area_item_format" value="select" ';
 if ($default_list_type == 'select')
-  echo 'checked="checked" ';
+  echo 'checked  ';
 echo ' />'.get_vocab('select_area_list_format').'</label>
         </div>';
 echo '<div class="radio">
         <label><input type="radio" name="area_item_format" value="item" ';
 if ($default_list_type == 'item')
-  echo 'checked="checked" ';
+  echo 'checked  ';
 echo ' />'.get_vocab('item_area_list_format').'</label>
         </div> ';
 /* Liste des sites */

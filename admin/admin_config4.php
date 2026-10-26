@@ -3,9 +3,9 @@
  * admin_config4.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (sécurité, connexions)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-10-22 11:46$
+ * Dernière modification : $Date: 2026-10-26 17:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -131,12 +131,12 @@ if ($dbsys == "mysql")
 	echo "\n<p>".get_vocab("explain_disable_login");
     echo "<br />";
 	echo "<label><input type='radio' name='disable_login' value='yes' ";
-    if (Settings::get("disable_login")=='yes') echo "checked=\"checked\""; 
+    if (Settings::get("disable_login")=='yes') echo "checked"; 
     echo "/>";
 	echo "&nbsp".get_vocab("disable_login_on")."</label>";
 	echo "<br />";
 	echo "<label><input type='radio' name='disable_login' value='no' ";
-    if (Settings::get("disable_login")=='no') echo "checked=\"checked\"";
+    if (Settings::get("disable_login")=='no') echo "checked";
     echo " />";
 	echo "&nbsp".get_vocab("disable_login_off")."</label>";
 	echo "</p>";

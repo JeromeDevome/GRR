@@ -3,7 +3,7 @@
  * edit_entry.php
  * Interface d'édition d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:50$
+ * Dernière modification : $Date: 2026-10-26 17:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -277,7 +277,7 @@ function divChampsAdd($id_resa=0,$id_area=-1,$id_room=-1,$overloadFields=array()
         $valeurs = (is_array($data))? $data : explode("|", $data);
         $display .= "<label><input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
         if (in_array(trim($value,"&"), $valeurs) || ($id_resa == 0 && empty($data) && $value[0]=="&")) 
-            $display .= " checked=\"checked\"";
+            $display .= " checked ";
           $display .= ">\n".(trim($value,"&"))."</label>\n";
       }
       $display .= "</div>\n";
@@ -1137,7 +1137,7 @@ if($periodiciteConfig == 'y')
       {
         echo PHP_EOL,'<div><label><input name="rep_type" type="radio" value="',$i,'"';
         if (($i == $rep_type) || (($i == 3) && ($rep_type == 5)))
-          echo ' checked="checked"';
+          echo ' checked ';
         echo ' onclick="check_1()" />',PHP_EOL; // fin input
         if (($i != 2) && ($i != 3))
           echo get_vocab("rep_type_$i").'</label>'.PHP_EOL;
@@ -1161,7 +1161,7 @@ if($periodiciteConfig == 'y')
             $wday = ($d + $weekstarts) % 7;
             echo "<input name=\"rep_day[$wday]\" type=\"checkbox\"";
             if ($rep_day[$wday])
-              echo " checked=\"checked\"";
+              echo " checked ";
             echo " onclick=\"check_1()\" />" . day_name($wday) . "\n";
           }
           echo "</div>\n</div>\n";
@@ -1206,14 +1206,14 @@ if($periodiciteConfig == 'y')
             if (isset($jours_c))
             {
               if ($d == $jours_c)
-                echo ' checked="checked"';
+                echo ' checked ';
             }
             echo ' onclick="check_1()" />',get_vocab("rep_type_6"),' ',$wday,PHP_EOL;
           }
           echo '</div>',PHP_EOL;
           echo '<input type="checkbox" name="cycle_cplt" value=1'; // case pour choisir tous les jours du cycle
           if (isset($cycle_cplt) && ($cycle_cplt == 1))
-            echo ' checked="checked"';
+            echo ' checked ';
           echo ' onclick="check_1()" />'.get_vocab('cycle_cplt').PHP_EOL;
           echo '</div>',PHP_EOL;
         }

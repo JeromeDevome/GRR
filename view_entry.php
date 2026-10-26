@@ -3,7 +3,7 @@
  * view_entry.php
  * Interface de visualisation d'une réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-06-04 16:35$
+ * Dernière modification : $Date: 2026-10-26 17:22$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -845,7 +845,7 @@ if ($fin_session == 'n'){
     echo "<input type=\"hidden\" name=\"action_moderate\" value=\"y\" />\n";
     echo "<fieldset><legend style=\"font-weight:bold\">".get_vocab("moderate_entry")."</legend>\n";
     echo "<p>";
-    echo "<input type=\"radio\" name=\"moderate\" value=\"1\" checked=\"checked\" />".get_vocab("accepter_resa");
+    echo "<input type=\"radio\" name=\"moderate\" value=\"1\" checked  />".get_vocab("accepter_resa");
     echo "<br /><input type=\"radio\" name=\"moderate\" value=\"0\" />".get_vocab("refuser_resa");
     if ($repeat_id)
     {
@@ -870,16 +870,16 @@ if ($fin_session == 'n'){
       if ($statut_id == '-')
       {
         if (!affiche_ressource_empruntee($room_id,"autre") == 'yes')
-          echo " checked=\"checked\" ";
+          echo " checked  ";
       }
       echo " />".get_vocab("signaler_reservation_en_cours_option_0");
       echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"y\" ";
       if ($statut_id == 'y')
-          echo " checked=\"checked\" ";
+          echo " checked  ";
       echo " />".get_vocab("signaler_reservation_en_cours_option_1");
       echo "<br /><br /><input type=\"radio\" name=\"statut_id\" value=\"e\" ";
       if ($statut_id == 'e')
-        echo " checked=\"checked\" ";
+        echo " checked  ";
       if ((!(Settings::get("automatic_mail") == 'yes')) || ($mail_exist == ""))
         echo " disabled ";
       echo " />".get_vocab("signaler_reservation_en_cours_option_2");

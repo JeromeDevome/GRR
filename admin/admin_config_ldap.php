@@ -3,9 +3,9 @@
  * admin_config_ldap.php
  * Interface permettant la configuration de l'accès à un annuaire LDAP
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-05-28 15:19$
+ * Dernière modification : $Date: 2026-10-26 17:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens & Daniel Antelme
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -308,7 +308,7 @@ elseif ($etape == 2)
                         echo "<br /><input name=\"base_ldap\" value=\"".htmlspecialchars($names[$j])."\" type='radio' id='tab$n'";
                         if (!$checked)
                         {
-                            echo " checked=\"checked\"";
+                            echo " checked";
                             $checked = true;
                         }
                         echo " />\n";
@@ -321,7 +321,7 @@ elseif ($etape == 2)
         echo "<br /><input name=\"base_ldap\" value=\"\" type='radio' id=\"autre\"";
         if (!$checked)
         {
-            echo " checked=\"checked\"";
+            echo " checked";
             $checked = true;
         }
         echo " />\n";
@@ -386,11 +386,11 @@ elseif ($etape == 1)
     echo "<h3>".get_vocab('useTLS').get_vocab('deux_points')."</h3>\n";
     echo "<div>\n<input type=\"radio\" name=\"use_tls\" value=\"y\" ";
     if ($use_tls)
-        echo " checked=\"checked\" ";
+        echo " checked ";
     echo "/>".get_vocab('YES')."\n";
     echo "<input type=\"radio\" name=\"use_tls\" value=\"n\" ";
     if (!($use_tls))
-        echo " checked=\"checked\" ";
+        echo " checked ";
     echo "/>".get_vocab('NO')."\n";
     if (isset($ldap_filter))
         echo "<input type=\"hidden\" name=\"ldap_filter\" value=\"$ldap_filter\" />";
@@ -428,18 +428,18 @@ elseif ($etape == 0)
       echo "<div>".encode_message_utf8(get_vocab('choixStatutDefaut'))."<br />";
       echo "<input type=\"radio\" name=\"ldap_statut\" value=\"visiteur\" ";
       if (Settings::get("ldap_statut") == 'visiteur')
-          echo " checked=\"checked\" ";
+          echo " checked ";
       echo "/>".get_vocab('statut_visitor')."<br />";
       echo "<input type=\"radio\" name=\"ldap_statut\" value=\"utilisateur\" ";
       if (Settings::get("ldap_statut") == 'utilisateur')
-          echo " checked=\"checked\" ";
+          echo " checked ";
       echo "/>".get_vocab('statut_user')."<br />";
       echo get_vocab('Ou_bien')."<br />";
       echo "<input type=\"radio\" name=\"ldap_statut\" value=\"no_ldap\" />".encode_message_utf8(get_vocab('desactiverLDAPauth'))."<br />";
       echo "<br />";
       echo "<input type=\"checkbox\" name=\"ActiveModeDiagnostic\" value=\"y\" ";
       if (Settings::get("ActiveModeDiagnostic") == "y")
-          echo " checked=\"checked\"";
+          echo " checked";
       echo " />";
       echo encode_message_utf8(get_vocab('modeDiagnostic'));
       echo "<br /><br />";
@@ -471,7 +471,7 @@ elseif ($etape == 0)
       echo "<div><b>".encode_message_utf8(get_vocab('LDAPimpossible'))."</b>".encode_message_utf8(get_vocab('LDAPstatutExpl'))."<br />";
       echo "<input type=\"radio\" name=\"ldap_statut\" value=\"visiteur\" />".get_vocab('statut_visitor')."<br />\n";
       echo "<input type=\"radio\" name=\"ldap_statut\" value=\"utilisateur\" />".get_vocab('statut_user')."<br />\n";
-      echo "<input type=\"radio\" name=\"ldap_statut\" value=\"no_ldap\" checked=\"checked\" />".get_vocab('nonActive')."<br /></div>\n";
+      echo "<input type=\"radio\" name=\"ldap_statut\" value=\"no_ldap\" checked />".get_vocab('nonActive')."<br /></div>\n";
       echo "<div class=\"center\"><input type=\"submit\" name=\"Valider2\" value=\"".get_vocab('OK')."\"  /></div>\n";
     }
     echo "</form>\n";

@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-10-26 11:55$
+ * Dernière modification : $Date: 2026-10-26 17:19$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -4795,7 +4795,7 @@ function cal($month, $year, $type)
           $day = -1;
         $s .= '<br><input type="checkbox" name="'.$temp.'" value="'.$nameday.'" ';
         if (!($day < 0))
-          $s .= 'checked="checked" ';
+          $s .= 'checked ';
         $s .= '/>';
       }
       else

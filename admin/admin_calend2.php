@@ -3,7 +3,7 @@
  * admin_calend2.php
  * interface permettant la réservation en bloc d'un créneau sur plusieurs Jours ou ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:35$
+ * Dernière modification : $Date: 2026-10-26 16:35$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -519,7 +519,7 @@ else if (!$etape)
   echo "</td><td>";
   echo "<p><b>".get_vocab("choix_action")."</b></p>";
   echo "<table><tr>";
-  echo "<td><input type=\"radio\" name=\"type_resa\" value=\"resa\" checked=\"checked\" /></td>\n";
+  echo "<td><input type=\"radio\" name=\"type_resa\" value=\"resa\" checked /></td>\n";
   echo "<td>".get_vocab("reservation_en_bloc")."</td>\n";
   echo "</tr><tr>\n";
   echo "<td><input type=\"radio\" name=\"type_resa\" value=\"suppression\" /></td>\n";

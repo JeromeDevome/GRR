@@ -3,7 +3,7 @@
  * admin_config2.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (accès et droits)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 15:49$
+ * Dernière modification : $Date: 2026-10-26 17:04$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -103,13 +103,13 @@ echo "<h3>".get_vocab("authentification_obli_msg")."</h3>\n";
 echo "<div>";
 echo "<input type='radio' name='authentification_obli' value='0' ";
 if (Settings::get("authentification_obli") == '0')
-    echo "checked='checked'";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("authentification_obli0")."\n";
 echo "<br/>";
 echo "<input type='radio' name='authentification_obli' value='1' ";
 if (Settings::get("authentification_obli") == '1')
-    echo "checked='checked'";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("authentification_obli1");
 echo "</div>";
@@ -127,39 +127,39 @@ echo "<hr /><h3>".get_vocab("visu_fiche_description_msg")."</h3>\n";
 echo "<div>\n";
 echo "<input type='radio' name='visu_fiche_description' value='0' ";
 if (Settings::get("visu_fiche_description") == '0')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description0")."<br/>";
 echo "<input type='radio' name='visu_fiche_description' value='1' ";
 if (Settings::get("visu_fiche_description") == '1')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description1")."<br/>";
 echo "<input type='radio' name='visu_fiche_description' value='2' ";
 if (Settings::get("visu_fiche_description") == '2')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description2")."<br/>";
 echo "<input type='radio' name='visu_fiche_description' value='3' ";
 if (Settings::get("visu_fiche_description") == '3')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description3")."<br/>";
 echo "<input type='radio' name='visu_fiche_description' value='4' ";
 if (Settings::get("visu_fiche_description") == '4')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description4")."<br/>";
 if (Settings::get("module_multisite") == "Oui") {
   echo "<input type='radio' name='visu_fiche_description' value='5' ";
   if (Settings::get("visu_fiche_description") == '5')
-    echo "checked=\"checked\"";
+    echo "checked";
   echo " />&nbsp";
   echo get_vocab("visu_fiche_description5")."<br/>";
 }
 echo "<input type='radio' name='visu_fiche_description' value='6' ";
 if (Settings::get("visu_fiche_description") == '6')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description6");
 echo "</div>\n";
@@ -177,39 +177,39 @@ echo "<hr /><h3>".get_vocab("acces_fiche_reservation_msg")."</h3>\n";
 echo "<div>\n";
 echo "<input type='radio' name='acces_fiche_reservation' value='0' ";
 if (Settings::get("acces_fiche_reservation") == '0')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description0")."<br/>";
 echo "<input type='radio' name='acces_fiche_reservation' value='1' ";
 if (Settings::get("acces_fiche_reservation") == '1')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description1")."<br/>";
 echo "<input type='radio' name='acces_fiche_reservation' value='2' ";
 if (Settings::get("acces_fiche_reservation") == '2')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description2")."<br/>";
 echo "<input type='radio' name='acces_fiche_reservation' value='3' ";
 if (Settings::get("acces_fiche_reservation") == '3')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description3")."<br/>";
 echo "<input type='radio' name='acces_fiche_reservation' value='4' ";
 if (Settings::get("acces_fiche_reservation") == '4')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description4")."<br/>";
 if (Settings::get("module_multisite") == "Oui") {
   echo "<input type='radio' name='acces_fiche_reservation' value='5' ";
   if (Settings::get("acces_fiche_reservation") == '5')
-    echo "checked=\"checked\"";
+    echo "checked";
   echo " />&nbsp";
   echo get_vocab("visu_fiche_description5")."<br/>";
 }
 echo "<input type='radio' name='acces_fiche_reservation' value='6' ";
 if (Settings::get("acces_fiche_reservation") == '6')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description6");
 echo "</div>\n";
@@ -224,24 +224,24 @@ echo "<hr /><h3>".get_vocab("acces_config_msg")."</h3>\n";
 echo "<div>\n";
 echo "<input type='radio' name='acces_config' value='3' ";
 if (Settings::get("acces_config") == '3')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description3")."<br/>";
 echo "<input type='radio' name='acces_config' value='4' ";
 if (Settings::get("acces_config") == '4')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description4")."<br/>";
 if (Settings::get("module_multisite") == "Oui") {
   echo "<input type='radio' name='acces_config' value='5' ";
   if (Settings::get("acces_config") == '5')
-    echo "checked=\"checked\"";
+    echo "checked";
   echo " />&nbsp";
   echo get_vocab("visu_fiche_description5")."<br/>";
 }
 echo "<input type='radio' name='acces_config' value='6' ";
 if (Settings::get("acces_config") == '6')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("visu_fiche_description6");
 echo "</div>\n";
@@ -254,22 +254,22 @@ echo "<hr /><h3>".get_vocab("allow_search_level_msg")."</h3>\n";
 echo "<div>\n";
 echo "<input type='radio' name='allow_search_level' value='0' ";
 if (Settings::get("allow_search_level") == '0')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("allow_search_level0")."<br/>";
 echo "<input type='radio' name='allow_search_level' value='1' ";
 if (Settings::get("allow_search_level") == '1')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("allow_search_level1")."<br/>";
 echo "<input type='radio' name='allow_search_level' value='2' ";
 if (Settings::get("allow_search_level") == '2')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("allow_search_level2")."<br/>";
 echo "<input type='radio' name='allow_search_level' value='6' ";
 if (Settings::get("allow_search_level") == '6')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("allow_search_level5")."<br/>";
 echo "</div>\n";
@@ -282,17 +282,17 @@ echo "<hr /><h3>".get_vocab("allow_user_delete_after_beginning_msg")."</h3>\n";
 echo "<div>\n";
 echo "<input type='radio' name='allow_user_delete_after_begin' value='0' ";
 if (Settings::get("allow_user_delete_after_begin") == '0')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("allow_user_delete_after_beginning0")."<br/>";
 echo "<input type='radio' name='allow_user_delete_after_begin' value='1' ";
 if (Settings::get("allow_user_delete_after_begin") == '1')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("allow_user_delete_after_beginning1")."<br/>";
 echo "<input type='radio' name='allow_user_delete_after_begin' value='2' ";
 if (Settings::get("allow_user_delete_after_begin") == '2')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("allow_user_delete_after_beginning2")."<br/>";
 echo "</div>\n";
@@ -303,12 +303,12 @@ echo "<hr />\n";
 echo "<div>\n";
 echo "<input type='radio' name='allow_gestionnaire_modify_del' value='0' ";
 if (Settings::get("allow_gestionnaire_modify_del") == '0')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("allow_gestionnaire_modify_del0")."<br/>";
 echo "<input type='radio' name='allow_gestionnaire_modify_del' value='1' ";
 if (Settings::get("allow_gestionnaire_modify_del") == '1')
-    echo "checked=\"checked\"";
+    echo "checked";
 echo " />&nbsp";
 echo get_vocab("allow_gestionnaire_modify_del1");
 echo "</div>\n";

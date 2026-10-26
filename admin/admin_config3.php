@@ -3,9 +3,9 @@
  * admin_config3.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (interactivité)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-01-27 10:03$
+ * Dernière modification : $Date: 2026-10-26 17:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -171,7 +171,7 @@ echo "<p><i>".get_vocab("warning_message_mail")."</i></p>\n";
 echo "<p>".get_vocab("explain_automatic_mail")."\n";
 echo "<br />
 <input type='radio' name='automatic_mail' value='yes' id='label_3' ";
-if (Settings::get("automatic_mail") == 'yes') echo "checked=\"checked\"";
+if (Settings::get("automatic_mail") == 'yes') echo "checked";
 echo "/>
 <label for='label_3'>";
 echo get_vocab("mail_admin_on");
@@ -181,20 +181,20 @@ echo "
 </label>
 <br />
 <input type='radio' name='automatic_mail' value='no' id='label_4'";
- if (Settings::get("automatic_mail") == 'no') echo "checked=\"checked\"";
+ if (Settings::get("automatic_mail") == 'no') echo "checked";
 echo "/>
 <label for='label_4'>".get_vocab("mail_admin_off")."</label>";
 // Configuration des liens adresses
 echo "</p><hr /><h3>".get_vocab('configuration_liens_adresses')."</h3>\n";
 echo "<p>";
 echo "<input type='radio' name='envoyer_email_avec_formulaire' value='yes' id='label_5' ";
-if (Settings::get("envoyer_email_avec_formulaire") == 'yes') echo "checked=\"checked\"";
+if (Settings::get("envoyer_email_avec_formulaire") == 'yes') echo "checked";
 echo "/>
     <label for='label_5'>";
     echo get_vocab("envoyer_email_avec_formulaire_oui");
     echo "</label>
 <br /><input type='radio' name='envoyer_email_avec_formulaire' value='no' id='label_6' ";
-if (Settings::get("envoyer_email_avec_formulaire") == 'no') echo "checked=\"checked\"";
+if (Settings::get("envoyer_email_avec_formulaire") == 'no') echo "checked";
 echo "/> <label for='label_6'>";
 echo get_vocab("envoyer_email_avec_formulaire_non");
 echo "</label>";
@@ -204,12 +204,12 @@ echo "<p>".get_vocab('Explications_des_Parametres_configuration_envoi_automatiqu
 // Choix mail ou smtp
 echo "<br /><br /><input type=\"radio\" name=\"grr_mail_method\" value=\"mail\" ";
 if (Settings::get('grr_mail_method') == "mail")
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>\n";
 echo get_vocab('methode_mail');
 echo "  <input type=\"radio\" name=\"grr_mail_method\" value=\"smtp\" ";
 if (Settings::get('grr_mail_method') == "smtp")
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>\n";
 echo get_vocab('methode_smtp');
 // Serveur SMTP:
@@ -248,14 +248,14 @@ echo "\n<input type = \"email\" name=\"mail_test\" value =\"\" size=\"30\" />";
 echo "\n<br /><em>".get_vocab('grr_mail_sender_explain')."</em>";
 echo "\n<br /><input type=\"checkbox\" name=\"grr_mail_sender\" value='1' ";
 if (Settings::get('grr_mail_sender') == 1)
-    echo " checked=\"checked\" ";
+    echo " checked ";
 echo "/>";
 echo get_vocab('grr_mail_sender');
 // Copie CCi
 echo "\n<br /><br />";
 echo "\n<input type=\"checkbox\" name=\"grr_mail_Bcc\" value=\"y\" ";
 if (Settings::get('grr_mail_Bcc') == "y")
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>";
 echo get_vocab('copie_cachee');
 # Désactive les messages javascript (pop-up) après la création/modificatio/suppression d'une réservation
@@ -264,13 +264,13 @@ echo "\n</p><hr /><h3>".get_vocab("javascript_info_disabled_msg")."</h3>";
 echo "<p>";
 echo "\n<input id='label_7' type='radio' name='javascript_info_disabled' value='0' ";
 if (Settings::get("javascript_info_disabled") == '0')
-	echo "checked=\"checked\"";
+	echo "checked";
 echo " />";
 echo "\n<label for='label_7'>&nbsp;".get_vocab("javascript_info_disabled0")."</label>";
 echo "<br />";
 echo "\n<input id='label_8' type='radio' name='javascript_info_disabled' value='1' ";
 if (Settings::get("javascript_info_disabled") == '1')
-	echo "checked=\"checked\"";
+	echo "checked";
 echo " />";
 echo "\n<label for='label_8'>&nbsp;".get_vocab("javascript_info_disabled1")."</label>";
 echo "</p>";
@@ -280,13 +280,13 @@ echo "\n<hr /><h3>".get_vocab("javascript_info_admin_disabled_msg")."</h3>";
 echo "<p>";
 echo "\n<input id='label_9' type='radio' name='javascript_info_admin_disabled' value='0' ";
 if (Settings::get("javascript_info_admin_disabled") == '0')
-	echo "checked=\"checked\"";
+	echo "checked";
 echo " />";
 echo "\n<label for='label_9'>&nbsp;".get_vocab("javascript_info_admin_disabled0")."</label>";
 echo "\n<br />";
 echo "\n<input id='label_10' type='radio' name='javascript_info_admin_disabled' value='1' ";
 if (Settings::get("javascript_info_admin_disabled") == '1')
-	echo "checked=\"checked\"";
+	echo "checked";
 echo " />";
 echo "\n<label for='label_10'>&nbsp;".get_vocab("javascript_info_admin_disabled1")."</label>";
 echo "</p>";
@@ -296,13 +296,13 @@ echo "\n<p>".get_vocab('Explications_suppression_automatique_des_reservations').
 echo "<p>";
 echo "\n<input id ='label_11' type='radio' name='verif_reservation_auto' value='0' ";
 if (Settings::get("verif_reservation_auto") == '0')
-	echo "checked=\"checked\"";
+	echo "checked";
 echo " />";
 echo "\n<label for='label_11'>&nbsp;".get_vocab("verif_reservation_auto0")."</label>";
 echo "<br />";
 echo "\n<input id ='label_12' type='radio' name='verif_reservation_auto' value='1' ";
 if (Settings::get("verif_reservation_auto") == '1')
-	echo "checked=\"checked\"";
+	echo "checked";
 echo " />";
 echo "\n<label for='label_12'>&nbsp;".get_vocab("verif_reservation_auto1")."</label>";
 echo "<br />";

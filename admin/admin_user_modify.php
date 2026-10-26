@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:47$
+ * Dernière modification : $Date: 2026-10-26 17:15$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -520,8 +520,8 @@ echo '<div>';
     echo "<br />".get_vocab("confirm_pwd")." *".get_vocab("deux_points")."<input type=\"password\" name=\"reg_password2\" size=\"20\" autocomplete='off' />\n";
     echo '<br /><label for="reg_changepwd">'.get_vocab("user_change_pwd_connexion").'</label>
                                 <input type="checkbox" id="reg_changepwd" name="reg_changepwd" value="1"';
-                                if ($_SESSION['changepwd'] == 1) echo 'checked = "checked"';
-                            echo '/>
+                                if ($_SESSION['changepwd'] == 1) echo 'checked';
+                            echo ' />
           </div>';
     echo "<br />";
     echo "<input type=\"hidden\" name=\"valid\" value=\"yes\" />\n";

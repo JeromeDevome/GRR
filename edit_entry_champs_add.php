@@ -3,7 +3,7 @@
  * edit_entry_champs_add.php
  * Page "Ajax" utilisée pour générer les champs additionnels dans la page de réservation
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:51$
+ * Dernière modification : $Date: 2026-10-26 17:18$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -92,7 +92,7 @@ foreach ($overload_fields as $fieldname=>$fieldtype)
             $valeurs = explode("|", $data);
             $display .= "<label><input type=\"checkbox\" name=\"addon_".$overload_fields[$fieldname]["id"]."[]\" value=\"".trim($value,"&")."\" ";
             if (in_array(trim($value,"&"), $valeurs) || ($id == 0 && empty($data) && $value[0]=="&")) 
-                $display .= " checked=\"checked\"";
+                $display .= " checked ";
             $display .= ">\n".(trim($value,"&"))."</label>\n";
         }
         $display .= "</div>\n";

@@ -2,7 +2,7 @@
 /**
  * admin_user_mdp_facile.php
  * interface de gestion des utilisateurs de l'application GRR
- * Dernière modification : $Date: 2026-03-16 18:12$
+ * Dernière modification : $Date: 2026-10-26 17:14$
  * @author    JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -122,13 +122,13 @@ echo "<div class='row'>\n";
 echo "<div class='col col-xs-3'><input type=\"submit\" value=\"".get_vocab('goto').get_vocab('deux_points')."\" /></div>";
 echo "<div class='col col-xs-3'><input type=\"radio\" name=\"display\" value=\"tous\"";
 if ($display == 'tous')
-  echo " checked=\"checked\"";
+  echo " checked";
 echo " />".get_vocab("display_all_user.php")."</div>";
 echo '<div class="col col-xs-3"><input type="radio" name="display" value="actifs" ';
-if ($display == 'actifs') {echo " checked=\"checked\"";}
+if ($display == 'actifs') {echo " checked";}
 echo './>'.get_vocab("display_user_on.php").'</div>';
 echo '<div class="col col-xs-3"><input type="radio" name="display" value="inactifs" ';
-if ($display == 'inactifs') {echo " checked=\"checked\"";}
+if ($display == 'inactifs') {echo " checked";}
 echo ' />'.get_vocab("display_user_off.php").'</div>';
 echo '</div>
 <input type="hidden" name="order_by" value="'.$order_by.'" />

@@ -3,7 +3,7 @@
  * admin_config_sso.php
  * Interface permettant l'activation de la prise en compte d'un environnement SSO
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:42$
+ * Dernière modification : $Date: 2026-10-26 17:10$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -173,7 +173,7 @@ echo "<h2>".get_vocab("admin_config_sso")."</h2>\n";
 echo "<form action=\"admin_config_sso.php\" method=\"post\">\n";
 echo "<div>\n<input type=\"radio\" name=\"sso_statut\" value=\"no_sso\" ";
 if (Settings::get("sso_statut") == '')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("Ne_pas_activer_Service_sso")."<br />\n";
 
 $CASserveurSSO = Settings::get("cas_serveur");
@@ -197,13 +197,13 @@ if (Settings::get("sso_statut") != '')
 	echo "<h2>".get_vocab("autres_parametres_sso")."</h2>\n";
 	echo "<input type=\"checkbox\" name=\"cacher_lien_deconnecter\" value=\"y\" ";
 	if (Settings::get("cacher_lien_deconnecter") == "y")
-		echo " checked=\"checked\"";
+		echo " checked";
 	echo " />";
 	echo get_vocab("sso_actif_cacher_lien_deconnecter");
 	// Ajout Check Box empecher les utilisateurs externes de modifier leurs nom prenom et email
 	echo "<br /><br /><input type=\"checkbox\" name=\"sso_IsNotAllowedModify\" value=\"y\" ";
 	if (Settings::get("sso_IsNotAllowedModify") == "y")
-		echo " checked=\"checked\"";
+		echo " checked";
 	echo " />";
 	echo get_vocab("sso_IsNotAllowedModify")."\n";
 	// URL pour empecher l'acces a la page login.php
@@ -239,17 +239,17 @@ echo "<h3>".get_vocab("Statut_par_defaut_utilisateurs_importes")."</h3>\n";
 echo "<div>".get_vocab("choix_statut_CAS_SSO")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"cas_visiteur\" ";
 if (Settings::get("sso_statut") == 'cas_visiteur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_visitor")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"cas_utilisateur\" ";
 if (Settings::get("sso_statut") == 'cas_utilisateur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_user")."<br />\n";
 // Forcer authentification ou rediriger vers la page d'accueil de GRR
 echo "<br />".get_vocab("sso_redirection_accueil_grr_text1");
 echo "<br /><input type=\"checkbox\" name=\"sso_redirection_accueil_grr\" value=\"y\" ";
 if (Settings::get("sso_redirection_accueil_grr") == "y")
-	echo " checked=\"checked\"";
+	echo " checked";
 echo " />";
 echo get_vocab("sso_redirection_accueil_grr_text2");
 // Activation du SSO en logout : la déconnexion de GRR déconnecte du portail CAS (Single-Sign-Out)
@@ -261,7 +261,7 @@ echo "<input type=\"text\" name=\"cas_logout\" size=\"40\" value =\"$cas_logout\
 echo "<br /><br />".get_vocab("sso_active_correspondance_profil_statut_text");
 echo "<br /><input type=\"checkbox\" name=\"sso_active_correspondance_profil_statut\" value=\"y\" ";
 if (Settings::get("sso_ac_corr_profil_statut") == "y")
-	echo " checked=\"checked\"";
+	echo " checked";
 echo " />";
 echo get_vocab("sso_active_correspondance_profil_statut");
 echo "</div>";
@@ -274,11 +274,11 @@ echo "<h3>".get_vocab("Statut_par_defaut_utilisateurs_importes")."</h3>\n";
 echo "<div>".get_vocab("choix_statut_lemon_SSO")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"lemon_visiteur\" ";
 if (Settings::get("sso_statut") == 'lemon_visiteur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_visitor")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"lemon_utilisateur\" ";
 if (Settings::get("sso_statut") == 'lemon_utilisateur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_user")."<br /></div>\n";
 echo "<hr />\n";
 // Configuration lcs
@@ -289,7 +289,7 @@ echo "<h3>".get_vocab("Statut_par_defaut_utilisateurs_importes")."</h3>\n";
 echo "<div>".get_vocab("choix_statut_lcs_SSO")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"lcs\" ";
 if (Settings::get("sso_statut") == 'lcs')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("active_lcs")."<br /></div>\n";
 echo "<table>\n";
 echo "<tr><td>".get_vocab("statut_eleve").get_vocab("deux_points")."</td>\n";
@@ -336,11 +336,11 @@ echo "<h3>".get_vocab("Statut_par_defaut_utilisateurs_importes")."</h3>\n";
 echo "<div>".get_vocab("choix_statut_lasso_SSO")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"lasso_visiteur\" ";
 if (Settings::get("sso_statut") == 'lasso_visiteur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_visitor")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"lasso_utilisateur\" ";
 if (Settings::get("sso_statut") == 'lasso_utilisateur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_user")."<br /></div>\n";
 echo "<hr />\n";
 // Configuration apache
@@ -351,11 +351,11 @@ echo "<h3>".get_vocab("Statut_par_defaut_utilisateurs_importes")."</h3>\n";
 echo "<div>".get_vocab("choix_statut_http_SSO")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"http_visiteur\" ";
 if (Settings::get("sso_statut") == 'http_visiteur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_visitor")."<br />\n";
 echo "<input type=\"radio\" name=\"sso_statut\" value=\"http_utilisateur\" ";
 if (Settings::get("sso_statut") == 'http_utilisateur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_user")."<br /></div>\n";
 //ajout des champs de recherche perso :
 echo "<div><br />".get_vocab("explain_champs_recherche")."<br />\n";
@@ -381,11 +381,11 @@ echo "/>";
 echo "<br />".get_vocab("statut").get_vocab("deux_points")."<br />";
 echo "<input type=\"radio\" name=\"http_sso_statut_domain\" value=\"visiteur\" ";
 if (Settings::get("http_sso_statut_domain") == 'visiteur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_visitor")."<br />\n";
 echo "<input type=\"radio\" name=\"http_sso_statut_domain\" value=\"utilisateur\" ";
 if (Settings::get("http_sso_statut_domain") == 'utilisateur')
-	echo " checked=\"checked\" ";
+	echo " checked ";
 echo "/>".get_vocab("statut_user")."<br /></div>\n";
 echo "<hr />\n";
 echo "<div class='center'><input type=\"submit\" name=\"Valider\" value=\"".get_vocab("save")."\" />\n</div>\n";
