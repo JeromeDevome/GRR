@@ -3,9 +3,9 @@
  * edit_entry_handler.php
  * Vérifie la validité des données de l'édition puis si OK crée une réservation (ou une série)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-11-25 10:56$
+ * Dernière modification : $Date: 2026-06-19 11:00$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -30,10 +30,6 @@ if (!Settings::load())
 	die("Erreur chargement settings");
 // Session related functions
 require_once("./include/session.inc.php");
-// paramètres
-//print_r($_COOKIE);
-//print_r($_GET);
-// die();
 // Resume session
 if (!grr_resumeSession())
 {
@@ -565,7 +561,7 @@ try {
         $err_msg = get_vocab("norights");
         throw new Exception('erreur');
     }
-   // echo '1er tests passés';
+
     // en cas de conflit, on forme une chaîne à afficher pour la gestion des conflits
     $conflits = "";
     foreach ($rooms as $room_id)
