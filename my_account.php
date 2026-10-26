@@ -3,7 +3,7 @@
  * my_account.php
  * Interface permettant à l'utilisateur de gérer son compte dans l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-01-26 16:33$
+ * Dernière modification : $Date: 2026-10-26 10:38$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -511,6 +511,8 @@ affiche_pop_up($msg);
         id_area:$('#id_area').val(),
         default_area : '<?php echo $default_area; ?>',
         default_room : '<?php echo $default_room; ?>',
+        session_login:'<?php echo $user_id; ?>',
+        use_site:'<?php echo $use_site; ?>',
         type:'ressource',
         action:+action,
         },

@@ -3,9 +3,9 @@
  * my_account_modif_listes.php
  * Page "Ajax" utilisée pour générer les listes de domaines et de ressources, en liaison avec my_account.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2025-05-06 17:40$
- * @author    Laurent Delineau & JeromeB
- * @copyright Copyright 2003-2025 Team DEVOME - JeromeB
+ * Dernière modification : $Date: 2026-10-26 09:25$
+ * @author    Laurent Delineau & JeromeB & Yan Naessens
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -18,6 +18,7 @@
 //Arguments passés par la méthode GET :
 //$use_site : 'y' (fonctionnalité multisite activée) ou 'n' (fonctionnalité multisite désactivée)
 //$id_site : l'identifiant du site
+//$id_area : identifiant du domaine
 //$default_area : domaine par défaut
 //$default_room : ressource par défaut
 //$session_login : identifiant
@@ -27,30 +28,30 @@
 //      2-> on vide la liste des ressources
 
 include "include/admin.inc.php";
-if ((authGetUserLevel(getUserName(), -1) < 1))
+// vérification du droit d'accès
+$session_login = getFormVar('session_login',"string",getUserName());
+$user_id = clean_input($session_login);
+if ((authGetUserLevel($user_id, -1) < 1)||(!isAjax()))
 {
   showAccessDenied("");
   exit();
 }
-if ($_GET['type'] == "domaine")
+// chargement et vérification des autres paramètres
+$use_site = getFormVar("use_site","string","n");
+$id_site  = getFormVar("id_site","int",-1);
+$id_site  = intval($id_site);
+$id_area  = getFormVar("id_area",'int',0);
+$id_area  = intval($id_area);
+$default_area = getFormVar("default_area","int",0);
+$default_area = intval($default_area);
+$default_room = getFormVar("default_room","int",0);
+$default_room = intval($default_room);
+$type = getFormVar("type","string","");
+$type = clean_input($type);
+$action = getFormVar("action",'int',2);
+
+if ($type == "domaine")
 {
- // Initialisation
-  if (isset($_GET["id_site"]))
-        $id_site = intval($_GET["id_site"]);
-  else
-    die();
-  if (isset($_GET["default_area"]))
-    $default_area = intval($_GET["default_area"]);
-  else
-    die();
-  if (isset($_GET["session_login"]))
-    $session_login = $_GET["session_login"];
-  else
-    die();
-  if (isset($_GET["use_site"]))
-    $use_site = $_GET["use_site"];
-  else
-    die();
   if ($use_site == 'y'){
     // on a activé les sites
     if ($id_site != -1){
@@ -94,8 +95,6 @@ if ($_GET['type'] == "domaine")
 }
 if ($_GET['type'] == "ressource")
 {
-  $default_room = (isset($_GET["default_room"]))? intval($_GET["default_room"]):0;
-  $id_area = (isset($_GET["id_area"]))? intval($_GET["id_area"]):0;
   // affichage minimal : choix des plannings généraux par défaut
   $display_liste = '<div class="form-group"><label class="control-label col-md-3 col-sm-3 col-xs-4" for="id_room">'.get_vocab('default_room').'</label><div class="col col-md-4 col-sm-6 col-xs-8"><select class="form-control" name="id_room" id="id_room"><option value="-1"';
     if ($default_room == -1)
@@ -113,18 +112,19 @@ if ($_GET['type'] == "ressource")
     if ($default_room == -4)
       $display_liste .= ' selected="selected" ';
     $display_liste .= ' >'.get_vocab('default_room_month_all_bis').'</option>'."\n";
-  if (($_GET['action'] == 1)&&($id_area != 0)) // on affiche alors les ressources acessibles dans le domaine sélectionné
+  if (($action == 1)&&($id_area != 0)) // on affiche alors les ressources accessibles dans le domaine sélectionné
   {
-    $sql = "SELECT id, room_name
-    FROM ".TABLE_PREFIX."_room
-    WHERE area_id='".$id_area."'";
     // on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-    $tab_rooms_noaccess = verif_acces_ressource(getUserName(), 'all');
-    foreach ($tab_rooms_noaccess as $key)
-    {
-      $sql .= " and id != $key ";
-    }
-    $sql .= " ORDER BY order_display,room_name";
+    $tab_rooms_noaccess = verif_acces_ressource($user_id, 'all');
+    if(empty($tab_rooms_noaccess))
+      $list_noaccess = "(0)";
+    else
+      $list_noaccess = array2list($tab_rooms_noaccess);
+    //impossible d'utiliser une requête préparée ici
+    $sql = "SELECT id, room_name 
+            FROM ".TABLE_PREFIX."_room 
+            WHERE area_id=$id_area AND id NOT IN $list_noaccess
+            ORDER BY order_display,room_name ";
     $resultat = grr_sql_query($sql);
     if($resultat){
       foreach($resultat as $row){

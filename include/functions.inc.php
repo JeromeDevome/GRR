@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-06-23 18:05$
+ * Dernière modification : $Date: 2026-10-26 10:05$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -1442,6 +1442,17 @@ function verif_acces_ressource($user, $id_room)
     }
     return $tab_rooms_noaccess;
   }
+}
+/**
+ * fonction array2list($array)
+ * paramètre $array : un tableau de données non vide
+ * rend une liste parenthésée contenant les données du tableau
+ * array2list([1,2,3]) rend (1,2,3)
+ */
+function array2list($a)
+{
+  $l = '(' . implode(', ', $a) . ')';
+  return $l;
 }
 /**
  * Fonction de vérification d'accès 
