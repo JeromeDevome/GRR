@@ -3,7 +3,7 @@
  * report.php
  * interface affichant un rapport des réservations
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 17:22$
+ * Dernière modification : $Date: 2026-11-01 09:39$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -400,7 +400,8 @@ else
 // 3=Les deux,
 // 4=Télécharger le CSV du rapport
 // 5=Télécharger le CSV du résumé
-
+if (empty($summarize))
+  $summarize = 1;
 // tous les champs additionnels... peut-être faudrait-il se limiter à ceux qui ont une valeur
 $overload_fields = grrOverloadGetFieldslist("");
 if (($summarize != 4) && ($summarize != 5) && ($summarize != 6))
