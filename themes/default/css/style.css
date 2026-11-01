@@ -90,9 +90,9 @@ td.cell_hours a{color:#fff}
 td.cell_hours2{color:#000;background-color:#ccc !important;text-align:center;font-size:13px;height:20px;line-height:20px;}
 td.cell_hours2 a{color:#000;}
 .cell_hours a{color:white;}
-td.cell_month_o{background-color:#ccc;}
-.empty_cell{text-align:center;min-height:20px;height:100%;vertical-align:middle !important;}
-.empty_cell a{display:block;vertical-align:middle;}
+td.cell_month_o{background-color:#ccc}
+.empty_cell{text-align:center;min-height:20px;height:100%;vertical-align:middle}
+.empty_cell a{display:block;}
 .empty_cell a:hover{background:lightgrey;}
 .jour, .mois, .semaine{width:100%;text-align:center;vertical-align:top;}
 .jour caption, .mois caption, .semaine caption{padding: 0 0 0 0;text-align:center;}
@@ -170,4 +170,74 @@ div.ui-datepicker{
 }
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
     margin-left: 30%;
+}
+
+/* Réservation complète : hachure la cellule dès l'affichage */
+/* ===== Forcer les hachures pour tous les créneaux quota atteints (jour / semaine / mois) ===== */
+td.quota-atteint,
+td[class*="type"].quota-atteint,
+.pleine td.quota-atteint,
+.pleine td[class*="type"].quota-atteint {
+  background: repeating-linear-gradient(
+    45deg,
+    #f6ba52,
+    #f6ba52 10px,
+    #ffd180 10px,
+    #ffd180 20px
+  ) !important;
+  color:#000000 !important;
+}
+/* Le lien remplit visuellement la cellule : il faut aussi le hachurer */
+td.quota-atteint > a.lienCellule,
+td[class*="type"].quota-atteint > a.lienCellule,
+.pleine td.quota-atteint > a.lienCellule,
+.pleine td[class*="type"].quota-atteint > a.lienCellule {
+  display:block !important;
+  background: repeating-linear-gradient(
+    45deg,
+    #f6ba52,
+    #f6ba52 10px,
+    #ffd180 10px,
+    #ffd180 20px
+  ) !important;
+  color:#000000 !important;
+  font-weight:bold !important;
+  text-decoration:none !important;
+}
+/* Icônes dans la cellule complète */
+td.quota-atteint i,
+td[class*="type"].quota-atteint i,
+.pleine td.quota-atteint i,
+.pleine td[class*="type"].quota-atteint i,
+td.quota-atteint i.icone,
+td[class*="type"].quota-atteint i.icone,
+.pleine td.quota-atteint i.icone,
+.pleine td[class*="type"].quota-atteint i.icone {
+  color:#000000 !important;
+}
+/* Hachurer au survol / clic / focus */
+td.quota-atteint > a.lienCellule:hover,
+td.quota-atteint > a.lienCellule:active,
+td.quota-atteint > a.lienCellule:focus,
+td[class*="type"].quota-atteint > a.lienCellule:hover,
+td[class*="type"].quota-atteint > a.lienCellule:active,
+td[class*="type"].quota-atteint > a.lienCellule:focus,
+.pleine td.quota-atteint > a.lienCellule:hover,
+.pleine td.quota-atteint > a.lienCellule:active,
+.pleine td.quota-atteint > a.lienCellule:focus,
+.pleine td[class*="type"].quota-atteint > a.lienCellule:hover,
+.pleine td[class*="type"].quota-atteint > a.lienCellule:active,
+.pleine td[class*="type"].quota-atteint > a.lienCellule:focus {
+  background: repeating-linear-gradient(
+    45deg,
+    #f6ba52,
+    #f6ba52 10px,
+    #ffd180 10px,
+    #ffd180 20px
+  ) !important;
+  color:#000000 !important;
+}
+/* Empêche le style global du hover de griser le texte */
+td.quota-atteint > a.lienCellule:hover{
+  font-weight:bold !important;
 }
