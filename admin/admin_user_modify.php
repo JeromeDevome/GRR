@@ -3,7 +3,7 @@
  * admin_user_modify.php
  * Interface de modification/création d'un utilisateur de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 17:15$
+ * Dernière modification : $Date: 2026-10-30 11:23$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -129,13 +129,10 @@ if ($valid == "yes")
                 else
                 {
                     $sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs SET nom=?,prenom=?,login=?,password=?,changepwd=?,statut=?,email=?,etat=?,
-                    default_site = '0',default_area = '0',default_room = '0',default_style = '',default_list_type = '',default_language = 'fr',";
-                    $types = "ssssisss";
-                    $params = [protect_data_sql($reg_nom),protect_data_sql($reg_prenom),protect_data_sql($new_login),protect_data_sql($reg_password_c),$reg_changepwd,protect_data_sql($reg_statut),protect_data_sql($reg_email),protect_data_sql($reg_etat)];
-                    if ($reg_type_authentification=="locale")
-                        $sql .= "source='local'";
-                    else
-                        $sql .= "source='ext'";
+                    default_site = '0',default_area = '0',default_room = '0',default_style = '',default_list_type = '',default_language = 'fr',source=?";
+                    $types = "ssssissss";
+                    $source = ($reg_type_authentification=="locale")? "local" : "ext";
+                    $params = [protect_data_sql($reg_nom),protect_data_sql($reg_prenom),protect_data_sql($new_login),protect_data_sql($reg_password_c),$reg_changepwd,protect_data_sql($reg_statut),protect_data_sql($reg_email),protect_data_sql($reg_etat),protect_data_sql($source)];
                     if (grr_sql_command($sql,$types,$params) < 0)
                     {
                         fatal_error(0, get_vocab("msg_login_created_error") . $_SESSION["msg_a_afficher"]);
@@ -191,30 +188,32 @@ if ($valid == "yes")
             }
             if ($retry != 'yes')
             {
-                $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET nom='".protect_data_sql($reg_nom)."',
-                prenom='".protect_data_sql($reg_prenom)."',
-                statut='".protect_data_sql($reg_statut)."',
-                changepwd='".protect_data_sql($reg_changepwd)."',
-                email='".protect_data_sql($reg_email)."',";
-                if ($reg_type_authentification=="locale")
-                {
-                    $sql .= "source='local',";
-                    if ($reg_password_c!='')
-                        $sql .= "password='".protect_data_sql($reg_password_c)."',";
-                }
-                else
-                    $sql .= "source='ext',password='',";
-                $sql .= "etat='".protect_data_sql($reg_etat)."'
-                WHERE login='".protect_data_sql($user_login)."'";
-                if (grr_sql_command($sql) < 0)
-                {
-                    fatal_error(0, get_vocab("message_records_error") . grr_sql_error());
-                }
-                else
-                {
-                    $msg = get_vocab("message_records");
-                }
-            // Cas où on a déclaré un utilisateur inactif, on le supprime dans les tables ".TABLE_PREFIX."_j_user_area,  ".TABLE_PREFIX."_j_mailuser_room
+              $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET nom=?,prenom=?,statut=?,changepwd=?,email=?,etat=?,source=? WHERE login=?";
+              $types = "sssissss";
+              $source = ($reg_type_authentification=="locale")? "local":"ext";
+              $params = [protect_data_sql($reg_nom),protect_data_sql($reg_prenom),protect_data_sql($reg_statut),$reg_changepwd,protect_data_sql($reg_email),protect_data_sql($reg_etat),$source,protect_data_sql($user_login)];
+              if (grr_sql_command($sql,$types,$params) < 0){
+                fatal_error(0, "ligne 196 ". get_vocab("message_records_error") . grr_sql_error());
+              }
+              else{
+                $msg = get_vocab("message_records");
+              }
+              // mise à jour éventuelle du mot de passe
+              $sql = "UPDATE ".TABLE_PREFIX."_utilisateurs SET password = ? WHERE login=?";
+              $types = "ss";
+              if(($source == "local")&&($reg_password_c!='')){
+                $params = [protect_data_sql($reg_password_c),protect_data_sql($user_login)];
+              }
+              else{
+                $params = ['',protect_data_sql($user_login)];
+              }
+              if (grr_sql_command($sql,$types,$params) < 0){
+                  fatal_error(0, "ligne 211 ".get_vocab("message_records_error") . grr_sql_error());
+              }
+              else{
+                  $msg = get_vocab("message_records");
+              }
+            // Cas où on a déclaré un utilisateur inactif, on le supprime dans les tables de jointure
                 if ($reg_etat != 'actif')
                 {
                     $sql = "DELETE FROM ".TABLE_PREFIX."_j_user_area WHERE login='$user_login'";
@@ -291,9 +290,8 @@ if (isset($user_login) && ($user_login != ''))
     grr_sql_free($res);
     $flag_is_local = $utilisateur['source']=="local";
 }
-// Privilèges
-$html_privileges = '';
 
+// Privilèges
 $privileges = array('site'=>array(),'area'=>array());
 if ((isset($user_login)) && ($user_login != ''))
 {

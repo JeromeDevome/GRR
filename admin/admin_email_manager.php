@@ -3,7 +3,7 @@
  * admin_email_manager.php
  * Interface de gestion des mails automatiques
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 17:11$
+ * Dernière modification : $Date: 2026-10-26 18:13$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -27,6 +27,10 @@ check_access(4, $back);
 // tableau des ressources auxquelles l'utilisateur n'a pas accès
 $user_id = getUserName();
 $tab_rooms_noaccess = verif_acces_ressource($user_id, 'all');
+if(empty($tab_rooms_noaccess))
+  $list_noaccess = "(0)";
+else
+  $list_noaccess = array2list($tab_rooms_noaccess);
 $msg="";
 if (isset($_POST['mail1']))
 {
@@ -46,7 +50,7 @@ if ($reg_admin_login) {
 	{
 		// Ressource
 		// On vérifie que la ressource $room existe
-		$test = grr_sql_query1("select id from ".TABLE_PREFIX."_room where id=? ","i",[$room]);
+		$test = grr_sql_query1("SELECT id FROM ".TABLE_PREFIX."_room WHERE id=? ","i",[$room]);
 		if ($test == -1)
 		{
 			showAccessDenied($back);
@@ -58,7 +62,7 @@ if ($reg_admin_login) {
 			exit();
 		}
 		// La ressource existe : on vérifie les privilèges de l'utilisateur
-		$sql = "SELECT * FROM ".TABLE_PREFIX."_j_mailuser_room WHERE (login =? and id_room =? )";
+		$sql = "SELECT * FROM ".TABLE_PREFIX."_j_mailuser_room WHERE (login =? AND id_room =? )";
 		$res = grr_sql_query($sql,"si",[$reg_admin_login,$room]);
     if(!$res)
       fatal_error(0,grr_sql_error());
@@ -89,7 +93,7 @@ if ($action)
 			showAccessDenied($back);
 			exit();
 		}
-		$sql = "DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE (login=? and id_room =? )";
+		$sql = "DELETE FROM ".TABLE_PREFIX."_j_mailuser_room WHERE (login=? AND id_room =? )";
 		if (grr_sql_command($sql,"si",[clean_input($_GET['login_admin']),$room]) < 0)
 			fatal_error(1, "<p>" . grr_sql_error());
 		else
@@ -99,7 +103,7 @@ if ($action)
 if (empty($room))
 	$room = -1;
 // données pour le formulaire
-$sql = "select id, area_name from ".TABLE_PREFIX."_area order by area_name";
+$sql = "SELECT id, area_name FROM ".TABLE_PREFIX."_area order by area_name";
 $res = grr_sql_query($sql);
 if(!$res)
   fatal_error(0,grr_sql_error());
@@ -112,16 +116,14 @@ else{
 }
 grr_sql_free($res);
 if($id_area > 0){
-  $this_area_name = grr_sql_query1("select area_name from ".TABLE_PREFIX."_area where id=$id_area");
-  $this_room_name = grr_sql_query1("select room_name from ".TABLE_PREFIX."_room where id=$room");
-  $this_room_name_des = grr_sql_query1("select description from ".TABLE_PREFIX."_room where id=$room");
-  $sql = "select id, room_name, description from ".TABLE_PREFIX."_room where area_id=$id_area ";
+  $this_area_name = grr_sql_query1("SELECT area_name FROM ".TABLE_PREFIX."_area WHERE id=$id_area");
+  $this_room_name = grr_sql_query1("SELECT room_name FROM ".TABLE_PREFIX."_room WHERE id=$room");
+  $this_room_name_des = grr_sql_query1("SELECT description FROM ".TABLE_PREFIX."_room WHERE id=$room");
+  $sql = "SELECT id, room_name, description 
+          FROM ".TABLE_PREFIX."_room 
+          WHERE area_id=$id_area AND id NOT IN $list_noaccess 
+          ORDER BY room_name";
     // on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-  foreach ($tab_rooms_noaccess as $key)
-  {
-    $sql .= " and id != $key ";
-  };
-  $sql .= "order by room_name";
   $res = grr_sql_query($sql);
   if (!$res)
     fatal_error(0,grr_sql_error());
@@ -137,7 +139,10 @@ if($id_area > 0){
   }
   grr_sql_free($res);
 }
-$sql = "SELECT u.login, u.nom, u.prenom FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_j_mailuser_room j ON u.login=j.login WHERE j.id_room=? ORDER BY u.nom, u.prenom";
+$sql = "SELECT u.login, u.nom, u.prenom 
+        FROM ".TABLE_PREFIX."_utilisateurs u JOIN ".TABLE_PREFIX."_j_mailuser_room j ON u.login=j.login 
+        WHERE j.id_room=? 
+        ORDER BY u.nom, u.prenom";
 $res = grr_sql_query($sql,"i",[$room]);
 if(!$res)
   fatal_error(0,grr_sql_error());
@@ -149,10 +154,12 @@ else{
       $mailed_users[$row['login']] = htmlspecialchars($row['nom']).' '.htmlspecialchars($row['prenom']);
     }
   }
-    
 }
 grr_sql_free($res);
-$sql = "SELECT DISTINCT login, nom, prenom FROM ".TABLE_PREFIX."_utilisateurs WHERE (etat!='inactif' and email!='' and statut!='visiteur' and login NOT IN(SELECT login FROM ".TABLE_PREFIX."_j_mailuser_room WHERE id_room=? )) ORDER BY nom, prenom";
+$sql = "SELECT DISTINCT login, nom, prenom 
+        FROM ".TABLE_PREFIX."_utilisateurs 
+        WHERE (etat!='inactif' AND email!='' AND statut!='visiteur' AND login NOT IN(SELECT login FROM ".TABLE_PREFIX."_j_mailuser_room WHERE id_room=? )) 
+        ORDER BY nom, prenom";
 $res = grr_sql_query($sql,"i",[$room]);
 if (!$res)
   fatal_error(0,grr_sql_error());

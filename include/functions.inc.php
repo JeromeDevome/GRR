@@ -2,7 +2,7 @@
 /**
  * include/functions.inc.php
  * fichier Bibliothèque de fonctions de GRR
- * Dernière modification : $Date: 2026-10-26 17:19$
+ * Dernière modification : $Date: 2026-10-31 12:03$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -888,15 +888,11 @@ function grrCheckRangeQuota($user,$id_room,$start_time,$end_time,$booking_range,
     for($k=1;$k<=$booking_range;$k++){
       $min_int = mktime(0,0,0,$this_month,$this_day+$k-$booking_range,$this_year);
       $max_int = mktime(0,0,0,$this_month,$this_day+$k,$this_year);
-      $sql = "SELECT count(id) FROM ".TABLE_PREFIX."_entry WHERE (
-      room_id = '".protect_data_sql($id_room)."'
-      AND beneficiaire = '".protect_data_sql($user)."'
-      AND end_time > '".$min_int."'
-      AND start_time < '".$max_int;
-      if($id > 0)// réservation à ne pas compter
-        $sql .= "' AND id <> '".$id;
-      $sql .= "')";
-      $nb_bookings = grr_sql_query1($sql);
+      $sql = "SELECT count(id) FROM ".TABLE_PREFIX."_entry
+              WHERE (room_id=? AND beneficiaire =? AND end_time >? AND start_time <? AND id <>?)";
+      $types = "isiii";
+      $params = [$id_room, protect_data_sql($user), $min_int, $max_int, $id];
+      $nb_bookings = grr_sql_query1($sql, $types, $params);
       if(empty($reps)) // ce n'est pas une série
         $nb_bookings += 1; 
       else{ // cas d'une série

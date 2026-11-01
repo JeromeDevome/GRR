@@ -3,7 +3,7 @@
  * admin_right.php
  * Interface de gestion des droits de gestion des ressources par les utilisateurs sélectionnés
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-06-02 11:13$
+ * Dernière modification : $Date: 2026-10-26 18:33$
  * @author    JeromeB & Laurent Delineau & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -27,6 +27,10 @@ $user_id = getUserName();
 
 // tableau des ressources auxquelles l'utilisateur n'a pas accès
 $tab_rooms_noaccess = verif_acces_ressource($user_id, 'all');
+if(empty($tab_rooms_noaccess))
+  $list_noaccess = "(0)";
+else
+  $list_noaccess = array2list($tab_rooms_noaccess);
 $reg_admin_login = isset($_POST["reg_admin_login"]) ? clean_input($_POST["reg_admin_login"]) : NULL;
 $reg_multi_admin_login = isset($_POST["reg_multi_admin_login"]) ? $_POST["reg_multi_admin_login"] : NULL;
 $test_user =  isset($_POST["reg_multi_admin_login"]) ? "multi" : (isset($_POST["reg_admin_login"]) ? "simple" : NULL);
@@ -94,10 +98,8 @@ if (($test_user == "multi")&& !empty($reg_multi_admin_login)){
 				showAccessDenied($back);
 				exit();
 			}
-			$sql = "SELECT id FROM ".TABLE_PREFIX."_room WHERE area_id=$id_area";
+			$sql = "SELECT id FROM ".TABLE_PREFIX."_room WHERE area_id=$id_area AND id NOT IN $list_noaccess ";
 		// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-			foreach ($tab_rooms_noaccess as $key)
-				$sql .= " and id != $key ";
 			$res = grr_sql_query($sql);
 			if ($res)
 			{
@@ -180,10 +182,8 @@ if ($test_user == "simple")
 				showAccessDenied($back);
 				exit();
 			}
-			$sql = "SELECT id FROM ".TABLE_PREFIX."_room WHERE area_id=$id_area";
+			$sql = "SELECT id FROM ".TABLE_PREFIX."_room WHERE area_id=$id_area AND id NOT IN $list_noaccess";
 			// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-			foreach ($tab_rooms_noaccess as $key)
-				$sql .= " and id != $key ";
 			$res = grr_sql_query($sql);
 			if ($res)
 			{
@@ -228,11 +228,11 @@ if ($action)
 			showAccessDenied($back);
 			exit();
 		}
-		$sql = "SELECT id FROM ".TABLE_PREFIX."_room WHERE area_id=$id_area ";
+		$sql = "SELECT id 
+            FROM ".TABLE_PREFIX."_room 
+            WHERE area_id=$id_area AND id NOT IN $list_noaccess 
+            ORDER BY room_name";
 		// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-		foreach ($tab_rooms_noaccess as $key)
-			$sql .= " and id != $key ";
-		$sql .= " order by room_name";
 		$res = grr_sql_query($sql);
 		if ($res)
 		{
@@ -289,10 +289,10 @@ $sel_area .= "</select></div>\n";
 // sélecteur de ressources
 $sel_room = "<div><SELECT name=\"room\" onchange=\"room_go()\">\n";
 $sel_room .= "<option value=\"admin_right.php?id_area=$id_area&amp;room=-1\">".get_vocab('select_all')."</option>\n";
-$sql = "SELECT id, room_name, description FROM ".TABLE_PREFIX."_room WHERE area_id=$id_area ";
-foreach ($tab_rooms_noaccess as $key)
-	$sql .= " and id != $key ";
-$sql .= " order by order_display,room_name";
+$sql = "SELECT id, room_name, description 
+        FROM ".TABLE_PREFIX."_room 
+        WHERE area_id=$id_area AND id NOT IN $list_noaccess
+        ORDER BY order_display,room_name";
 $res = grr_sql_query($sql);
 if ($res)
 {
@@ -341,10 +341,10 @@ else {
 		foreach($res as $row)
 		{
 			$is_admin = 'yes';
-			$sql2 = "SELECT id, room_name, description FROM ".TABLE_PREFIX."_room WHERE area_id=$id_area ";
-			foreach ($tab_rooms_noaccess as $key)
-				$sql2 .= " and id != $key ";
-			$sql2 .= " ORDER BY order_display,room_name";
+			$sql2 = "SELECT id, room_name, description 
+               FROM ".TABLE_PREFIX."_room 
+               WHERE area_id=$id_area AND id NOT IN $list_noaccess
+               ORDER BY order_display,room_name";
 			$res2 = grr_sql_query($sql2);
 			if ($res2)
 			{

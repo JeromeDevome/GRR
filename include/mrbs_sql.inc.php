@@ -2,7 +2,7 @@
 /**
  * mrbs_sql.inc.php
  * Bibliothèque de fonctions propres à l'application GRR
- * Dernière modification : $Date: 2026-06-18 10:40$
+ * Dernière modification : $Date: 2026-10-30 16:46$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @author    Eric Lemeur pour les champs additionnels de type checkbox
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
@@ -35,36 +35,29 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $lin
 {
 	global $vocab;
 	//SELECT any meetings which overlap ($starttime,$endtime) for this room:
-	$sql = "SELECT id, name, start_time FROM ".TABLE_PREFIX."_entry WHERE start_time < '".$endtime."' AND end_time > '".$starttime."' AND room_id = '".$room_id."'";
-	if ($ignore > 0)
-		$sql .= " AND id <> $ignore";
-	if ($repignore > 0)
-		$sql .= " AND repeat_id <> $repignore";
-	$sql .= " ORDER BY start_time";
-	$res = grr_sql_query($sql);
+  $sql = "SELECT id, name, start_time FROM ".TABLE_PREFIX."_entry 
+          WHERE start_time < ? AND end_time > ? AND room_id = ? AND id <> ? AND repeat_id <> ?
+          ORDER BY start_time";
+  $types = "iiiii";
+  if($ignore == 0) $ignore--;
+  if($repignore == 0) $repignore--;
+  $params = [$endtime,$starttime,$room_id,$ignore,$repignore];
+	$res = grr_sql_query($sql,$types,$params);
 	if (! $res)
 		return grr_sql_error();
-	if (grr_sql_count($res) == 0)
-	{
-		grr_sql_free($res);
-		return "";
-	}
-	// Get the room's area ID for linking to day, week, and month views:
-	$area = mrbsGetRoomArea($room_id);
-	// Build a string listing all the conflicts:
-	$err = "";
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
-	{
-		$starts = getdate($row[2]);
+  $err = "";
+  $area = mrbsGetRoomArea($room_id);
+  foreach($res as $row){
+    $starts = getdate($row['start_time']);
 		$param_ym = "area=$area&amp;year=$starts[year]&amp;month=$starts[mon]";
 		$param_ymd = $param_ym . "&amp;day=$starts[mday]";
-		$err .= "<li><a href=\"".$link."view_entry.php?id=$row[0]\">".htmlspecialchars($row[1])."</a>"
-		. " ( " . utf8_strftime('%A %d %B %Y %T', $row[2]) . ") "
-		. "(<a href=\"".$link."day.php?$param_ymd\">".get_vocab("viewday")."</a>"
-			. " | <a href=\"".$link."week.php?room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
-			. " | <a href=\"".$link."month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
-}
-return $err;
+    $err .= "<li><a href=\"".$link."view_entry.php?id=".$row['id']."\">".htmlspecialchars($row['name'])."</a>"
+          . " ( " . utf8_strftime('%A %d %B %Y %T', $row['start_time']) . ") "
+          . "(<a href=\"".$link."day.php?$param_ymd\">".get_vocab("viewday")."</a>"
+          . " | <a href=\"".$link."week.php?room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
+          . " | <a href=\"".$link."month.php?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
+  }
+  return $err;
 }
 /** grrCheckOverlap()
  *
@@ -107,14 +100,15 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
 {
 	global $vocab, $dformat;
 	//Select any meetings which overlap ($starttime,$endtime) for this room:
-	$sql = "SELECT id FROM ".TABLE_PREFIX."_entry WHERE start_time < '".$endtime."' AND end_time > '".$starttime."' AND room_id = '".$room_id."'";
-	if ($ignore > 0)
-		$sql .= " AND id <> $ignore";
-	if ($repignore > 0)
-		$sql .= " AND repeat_id <> $repignore";
-	$sql .= " ORDER BY start_time";
-	$res = grr_sql_query($sql);
-	if (!$res)
+  $sql = "SELECT id FROM ".TABLE_PREFIX."_entry 
+        WHERE start_time < ? AND end_time > ? AND room_id = ? AND id <> ? AND repeat_id <> ?
+        ORDER BY start_time";
+  $types = "iiiii";
+  if($ignore <= 0) $ignore--;
+  if($repignore <= 0) $repignore--;
+  $params = [$endtime,$starttime,$room_id,$ignore,$repignore];
+	$res = grr_sql_query($sql,$types,$params);
+  if (!$res)
 		return grr_sql_error();
 	if (grr_sql_count($res) == 0)
 	{
@@ -123,11 +117,11 @@ function grrDelEntryInConflict($room_id, $starttime, $endtime, $ignore, $repigno
 		else {return "";}
 	}
 	//Efface les résas concernées
-	for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+	foreach($res as $row)
 	{
 		if (Settings::get("automatic_mail") == 'yes')
-			$_SESSION['session_message_error'] = send_mail($row[0],3,$dformat);
-		$result = mrbsDelEntry(getUserName(), $row[0], NULL , 1);
+			$_SESSION['session_message_error'] = send_mail($row['id'],3,$dformat);
+		$result = mrbsDelEntry(getUserName(), $row['id'], NULL , 1);
 	}
 	if ($flag == 1)
 		return $result;
@@ -158,11 +152,12 @@ function mrbsDelEntry($user, $id, $series, $all)
 		return 0;
 	$sql = "SELECT beneficiaire, id, entry_type FROM ".TABLE_PREFIX."_entry WHERE ";
 	if (($series > 0) and ($repeat_id > 0))
-		$sql .= "repeat_id='".$repeat_id."' AND ";
+		$sql = "SELECT beneficiaire, id, entry_type FROM ".TABLE_PREFIX."_entry WHERE repeat_id='$repeat_id' AND id='$id'";
   if(($series == 2) and ($repeat_id > 0))
-    $sql .= "start_time >= (SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id='".$id."') ";
+    $sql = "SELECT beneficiaire, id, entry_type FROM ".TABLE_PREFIX."_entry 
+            WHERE start_time >= (SELECT start_time FROM ".TABLE_PREFIX."_entry WHERE id='$id') ";
 	else
-		$sql .= "id='".$id."'";
+		$sql = "SELECT beneficiaire, id, entry_type FROM ".TABLE_PREFIX."_entry WHERE id='$id'";
 	$res = grr_sql_query($sql);
 	$removed = 0;
   if($res){

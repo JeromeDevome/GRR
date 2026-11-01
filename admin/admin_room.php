@@ -3,7 +3,7 @@
  * admin_room.php
  * Interface d'accueil de Gestion des domaines et ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-03-16 18:10 $
+ * Dernière modification : $Date: 2026-10-27 11:05 $
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -58,41 +58,33 @@ else
 if (Settings::get("module_multisite") == "Oui")
 {
   $Sites = array();
-  if (authGetUserLevel($user,-1,'area') >= 6)
+  if (authGetUserLevel($user,-1,'area') >= 6){
     $sql = "SELECT id,sitecode,sitename FROM ".TABLE_PREFIX."_site ORDER BY sitename ASC";
-  else
-  {
-    // Administrateur de sites ou de domaines
-    $sql = "SELECT DISTINCT id,sitecode,sitename FROM ".TABLE_PREFIX."_site s ";
-    // l'utilisateur est-il administrateur d'un site ?
-    $test1 = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_useradmin_site WHERE login='".$user."'");
-    if ($test1 > 0)
-      $sql .=", ".TABLE_PREFIX."_j_useradmin_site u";
-    // l'utilisateur est-il administrateur d'un domaine ?
-    $test2 = grr_sql_query1("SELECT count(login) FROM ".TABLE_PREFIX."_j_useradmin_area WHERE login='".$user."'");
-    if ($test2 > 0)
-      $sql .=", ".TABLE_PREFIX."_j_useradmin_area a, ".TABLE_PREFIX."_j_site_area j";
-    $sql .=" WHERE (";
-      if ($test1 > 0)
-        $sql .= "(s.id=u.id_site AND u.login='".$user."') ";
-      if (($test1 > 0) && ($test2 > 0))
-        $sql .= " or ";
-      if ($test2 > 0)
-        $sql .= "(j.id_site=s.id AND j.id_area=a.id_area AND a.login='".$user."')";
-      $sql .= ") ORDER BY s.sitename ASC";
-    }
     $res = grr_sql_query($sql);
-    if(!$res)
-      fatal_error(0,grr_sql_error());
-    else{
-      foreach($res as $row){
-        $Sites[] = $row;
-      }
-      $nb_site = grr_sql_count($res);
-      grr_sql_free($res);
-      if($nb_site == 1)
-        $id_site = $Sites[0]['id'];
+  }
+  else
+  { // Administrateur de sites ou de domaines
+    $sql = "(SELECT DISTINCT id,sitecode,sitename
+             FROM grr_site s JOIN grr_j_useradmin_site u ON s.id=u.id_site
+             WHERE u.login=?
+             UNION
+             SELECT DISTINCT id,sitecode,sitename 
+             FROM grr_site s JOIN (grr_j_site_area j JOIN grr_j_useradmin_area a ON j.id_area=a.id_area) ON j.id_site=s.id
+             WHERE a.login=?)
+             ORDER BY sitename";
+    $res = grr_sql_query($sql,"ss",[$user,$user]);
+  }
+  if(!$res)
+    fatal_error(0,grr_sql_error());
+  else{
+    foreach($res as $row){
+      $Sites[] = $row;
     }
+    $nb_site = grr_sql_count($res);
+    grr_sql_free($res);
+    if($nb_site == 1)
+      $id_site = $Sites[0]['id'];
+  }
 }
 // domaines accessibles
 if ((Settings::get("module_multisite") == "Oui") && ($id_site > 0)) // un site choisi dans le cas multisite
@@ -118,16 +110,19 @@ else{
   }
 }
 // ressources à afficher
+// on ne cherche pas parmi les ressources invisibles pour l'utilisateur
+$tab_rooms_noaccess = verif_acces_ressource($user, 'all');
+if(empty($tab_rooms_noaccess))
+  $list_noaccess = "(0)";
+else
+  $list_noaccess = array2list($tab_rooms_noaccess);
 // Un domaine sélectionné
 if((isset($id_area))&&($id_area != -1)){
   $Rooms = array();
-  $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room from ".TABLE_PREFIX."_room where area_id=$id_area ";
-  // on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-  $tab_rooms_noaccess = verif_acces_ressource($user, 'all');
-  foreach ($tab_rooms_noaccess as $key){
-    $sql .= " and id != $key ";
-  }
-  $sql .= "ORDER BY order_display, room_name";
+  $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room 
+          FROM ".TABLE_PREFIX."_room 
+          WHERE area_id=$id_area AND id NOT IN $list_noaccess 
+          ORDER BY order_display, room_name";
   $res = grr_sql_query($sql);
   if (!$res)
     fatal_error(0, grr_sql_error());
@@ -139,15 +134,12 @@ if((isset($id_area))&&($id_area != -1)){
 // toutes les ressources de tous les domaines (accessibles)
 elseif((isset($id_area))&&($id_area == -1)){
   $Rooms = array();
-  $tab_rooms_noaccess = verif_acces_ressource($user, 'all');
   foreach($Areas as $row)
   { // ressources
-    $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room from ".TABLE_PREFIX."_room where area_id=".$row['id'];
-    // on ne cherche pas parmi les ressources invisibles pour l'utilisateur
-    foreach ($tab_rooms_noaccess as $key){
-      $sql .= " and id != $key ";
-    }
-    $sql .= " ORDER BY order_display, room_name";
+    $sql = "SELECT id, room_name, description, capacity, max_booking, statut_room 
+            FROM ".TABLE_PREFIX."_room 
+            WHERE area_id=".$row['id']." AND id NOT IN $list_noaccess
+            ORDER BY order_display, room_name";
     $res = grr_sql_query($sql);
     if (!$res)
       fatal_error(0, grr_sql_error());
