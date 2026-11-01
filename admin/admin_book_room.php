@@ -3,7 +3,7 @@
  * admin_book_room.php
  * Interface de gestion des accès restreints aux ressources restreintes
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:33$
+ * Dernière modification : $Date: 2026-11-01 09:24$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -98,14 +98,14 @@ if ($action=='del_user')
 $sel_room = '';
 if($multisite)
   $sql = "SELECT r.id,room_name,area_name,sitename
-          FROM ((`grr_room` r JOIN `grr_area` a ON r.area_id = a.id)
-          JOIN grr_j_site_area ON a.id = id_area)
-          JOIN grr_site s ON s.id = id_site
+          FROM ((`".TABLE_PREFIX."_room` r JOIN `".TABLE_PREFIX."_area` a ON r.area_id = a.id)
+          JOIN ".TABLE_PREFIX."_j_site_area ON a.id = id_area)
+          JOIN ".TABLE_PREFIX."_site s ON s.id = id_site
           WHERE r.who_can_book = 0
           ORDER BY room_name";
 else
   $sql = "SELECT r.id,room_name,area_name
-          FROM `grr_room` r JOIN `grr_area` a ON r.area_id = a.id
+          FROM `".TABLE_PREFIX."_room` r JOIN `".TABLE_PREFIX."_area` a ON r.area_id = a.id
           WHERE r.who_can_book = 0
           ORDER BY room_name";
 $res = grr_sql_query($sql);
