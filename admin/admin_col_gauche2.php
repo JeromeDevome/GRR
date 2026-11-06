@@ -3,9 +3,9 @@
  * admin_col_gauche2.php
  * colonne de gauche des écrans d'administration des sites, des domaines et des ressources de l'application GRR
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-07-14 14:22$
+ * Dernière modification : $Date: 2026-11-05 09:54$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,31 +21,22 @@ function sousMenu($liste,$titre='')
 {
     global $chaine;
     if (count($liste)>0)
-    {	
-		$lien = mb_strtolower($titre,'UTF-8');
-		$lien = preg_replace("/[^a-zA-Z0-9]/", "",$lien);
-		echo '<div class="panel panel-default">';
-        echo '      <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordeon" href="#'.$lien.'">'.$titre.'</a>
-                        </h4>
-                    </div>';
-		echo '		<div id="'.$lien.'" class="panel-collapse collapse';
-		if (in_array($chaine,$liste)) echo ' in';
-		echo '		">
-                        <div class="panel-body">
-                            <table class="table table-condensed">';
-						foreach ($liste as $key)
-							{
-								if ($chaine == $key)
-									echo "<tr><td class='active'><a href='".$key.".php'>".get_vocab($key)."</a></td></tr>\n";
-								else
-									echo "<tr><td><a href='".$key.".php'>".get_vocab($key)."</a></td></tr>\n";
-							}           
-		echo '				</table>
-						</div>
-					</div>
-			 </div>';
+    { 
+      $lien = mb_strtolower($titre,'UTF-8');
+      $lien = preg_replace("/[^a-zA-Z0-9]/", "",$lien);
+      echo '<li class="nav-item dropdown">';
+      echo '<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#'.$lien.'">'.$titre.'</a>';
+      echo '<ul class="dropdown-menu">';
+      foreach ($liste as $key)
+      {
+        if ($chaine == $key)
+          echo '<li><a class="dropdown-item active" href="'.$key.'.php">'.get_vocab($key).'</a></li>';
+        else
+          echo '<li><a class="dropdown-item " href="'.$key.'.php">'.get_vocab($key).'</a></li>';
+              
+      }
+    echo '</ul>
+       </li>';
     }
 }
 // calculs préliminaires
@@ -62,13 +53,13 @@ $titres = [get_vocab("admin_menu_general"),(Settings::get("module_multisite") ==
 $liste[1] = array(); // configuration
 $authUserLevel = authGetUserLevel(getUserName(), -1, 'area'); // niveau d'accès de l'utilisateur connecté
 if ($authUserLevel >= 6)
-			$liste[1] = ['admin_config11','admin_config12','admin_couleurs','admin_config2','admin_config3','admin_config4','admin_config5','admin_config6'];
+      $liste[1] = ['admin_config11','admin_config12','admin_couleurs','admin_config2','admin_config3','admin_config4','admin_config5','admin_config6'];
 $liste[2] = array(); // sites, domaines et ressources
 if (Settings::get("module_multisite") == "Oui")
-		{
-			if ($authUserLevel >= 6)
-				$liste[2][] = 'admin_site';
-		}
+    {
+      if ($authUserLevel >= 6)
+        $liste[2][] = 'admin_site';
+    }
 if ($authUserLevel >= 4) $liste[2][] = 'admin_room';
 if ($authUserLevel >= 6) $liste[2][] = 'admin_type';
 if ($authUserLevel >= 4) $liste[2][] = 'admin_overload';
@@ -120,7 +111,7 @@ if (Settings::get("sso_ac_corr_profil_statut") == 'y') {
 }
 // Affichage de la colonne de gauche
 echo '<div class="col col-sm-3 col-xs-12">';
-echo '<div class="panel-group" id="accordeon">';
+echo '<ul class="nav nav-pills flex-column" id="accordeon" >';
 // affichage des sous-menus calculés
     $k = 1;
     foreach ($titres as $titre)
@@ -128,6 +119,6 @@ echo '<div class="panel-group" id="accordeon">';
         sousMenu($liste[$k],$titre);
         $k++;
     }
-echo '	</div>
-	</div>';
+echo '  </ul>
+  </div>';
 ?>

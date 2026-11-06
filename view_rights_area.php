@@ -41,6 +41,7 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 $area_id = isset($_GET["area_id"]) ? intval($_GET["area_id"]) : NULL;
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): page_accueil();
 if (authGetUserLevel(getUserName(),$area_id,"area") < 4)
 {
 	showAccessDenied($back);
@@ -48,15 +49,15 @@ if (authGetUserLevel(getUserName(),$area_id,"area") < 4)
 }
 // les propriétés du domaine
 $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_area WHERE id='".$area_id."'");
-if (!$res)
-	fatal_error(0, get_vocab('error_room') . $area_id . get_vocab('not_found'));
+if ((!$res)||(grr_sql_count($res)==0))
+	fatal_error(0, get_vocab('error_area') . $area_id . get_vocab('not_found'));
 $Area = grr_sql_row_keyed($res, 0);
 grr_sql_free($res);
 
 // utilisateurs ayant des privilèges sur cette ressource
 $a_privileges = 'n';
 	// on teste si des utilateurs administrent le domaine
-$req_admin = "SELECT u.login, u.nom, u.prenom, u.etat FROM ".TABLE_PREFIX."_utilisateurs u left join ".TABLE_PREFIX."_j_useradmin_area j on u.login=j.login WHERE j.id_area =? ORDER BY u.nom, u.prenom";
+$req_admin = "SELECT u.login, u.nom, u.prenom, u.etat FROM ".TABLE_PREFIX."_utilisateurs u LEFT JOIN ".TABLE_PREFIX."_j_useradmin_area j ON u.login=j.login WHERE j.id_area =? ORDER BY u.nom, u.prenom";
 $res_admin = grr_sql_query($req_admin,"i",[$area_id]);
 $is_admin = '';
 $is_restreint = '';

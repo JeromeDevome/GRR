@@ -3,7 +3,7 @@
  * admin_config2.php
  * Interface permettant à l'administrateur la configuration de certains paramètres généraux (accès et droits)
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 17:04$
+ * Dernière modification : $Date: 2026-11-06 11:45$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -88,8 +88,9 @@ if (isset($_GET['ok']))
     $msg = get_vocab("message_records");
 }
 # print the page header
-start_page_w_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session",1);
 affiche_pop_up($msg,"admin");
+echo '<div class="row">';
 // Affichage de la colonne de gauche
 include "admin_col_gauche2.php";
 echo "<div class='col-md-9 col-sm-8 col-xs-12'>";
@@ -324,6 +325,7 @@ echo "<br /><br/><br/></p>";
 echo "<div id=\"fixe\" style=\"text-align:center;\"><input class=\"btn btn-primary\" type=\"submit\" name=\"ok\" value=\"".get_vocab("save")."\" style=\"font-variant: small-caps;\"/></div>\n";
 echo "</form>\n";
 // fin de l'affichage de la colonne de droite et de la page
-echo "</div>";
+echo "</div>".PHP_EOL;
+echo "</div>".PHP_EOL;
 end_page();
 ?>

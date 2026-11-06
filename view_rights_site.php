@@ -37,13 +37,14 @@ include "include/resume_session.php";
 include "include/language.inc.php";
 // contrôle d'accès
 $site_id = isset($_GET["site_id"]) ? intval(clean_input($_GET["site_id"])) : NULL;
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): page_accueil();
 if (authGetUserLevel(getUserName(),$site_id,"site") < 5)
 {
 	showAccessDenied($back);
 	exit();
 }
 $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_site WHERE id=? ","i",[$site_id]);
-if (!$res)
+if ((!$res)||(grr_sql_count($res)==0))
 	fatal_error(0, get_vocab('site') . $site_id . get_vocab('not_found'));
 $Site = grr_sql_row_keyed($res, 0);
 grr_sql_free($res);

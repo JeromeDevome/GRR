@@ -108,7 +108,7 @@ elseif($cas == 1){
   echo "</div>".PHP_EOL;
 }
 elseif($cas == 4){
-  echo start_page_wo_header("", "no_session");
+  echo start_page_wo_header("", "no_session",1);
   echo "<div class='container center'>";
   echo "<div class='alert alert-info'>".$out_html."</div>";
   echo "<h3>La restauration est terminée !</h3>" ;

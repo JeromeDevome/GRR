@@ -1,7 +1,7 @@
 <?php
 # GRR : fichier de langue allemande
 # GRR: Traduction : JeromeB & Karsten Schinkel & Jean-Yves Migeon & Paul Friedli
-# Last modification : 2026-06-23
+# Last modification : 2026-11-06
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -685,7 +685,7 @@ $vocab["explication_Jours_Cycles2"] = "Sobald der Kalender erstellt ist, können
 $vocab["explication_Jours_Cycles3"] = "Im untenstehenden Kalender finden Sie unter jedem Datum die Nummer des entsprechenden \"Zyklustages\". Durch Anklicken des Links können Sie die Zuordnung eines \"Zyklustages\" löschen oder ändern. Sie können auch einen Text anstelle einer Nummer zuweisen.";
 $vocab["explication_Jours_Cycles4"] = "Auf der vorherigen Registerkarte haben Sie auch die Möglichkeit, schnell einen Kalender mit \"Zyklustagen\" zu erstellen oder neu zu generieren und anschließend die so erstellten \"Zyklustage\" manuell zu ändern.";
 $vocab["explications_active_type"] = "Anmerkung: wenn eine Art nicht angeklickt wurde, kann sie vom Benutzer nicht mehr gewählt werden, aber die bereits getätigten Reservierungen erscheinen weiterhin auf der Übersicht mit der Reservierungsart.";
-$vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "GRR verwendet PHPMailer zum Versenden von E-Mails. PHPMailer bietet zwei Versandmethoden: 1) Die Methode „SMTP“ für die Verbindung mit einem Remote-Mailserver; 2) Die Methode „Mail“, wenn der Mailserver lokal ist. Die Methode „SMTP“ kann auch mit einem lokalen Server verwendet werden, die Methode „Mail“ ist jedoch aufgrund ihrer Geschwindigkeit vorzuziehen.";
+$vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "GRR verwendet PHPMailer zum Versenden von E-Mails. PHPMailer bietet zwei Versandmethoden:<br/> 1. Die Methode „SMTP“ für die Verbindung mit einem Remote-Mailserver;<br/> 2. Die Methode „Mail“, wenn der Mailserver lokal ist.<br/> Die Methode „SMTP“ kann auch mit einem lokalen Server verwendet werden, die Methode „Mail“ ist jedoch aufgrund ihrer Geschwindigkeit vorzuziehen.";
 $vocab["Explications_methode_smtp_1"] = "SMTP Server";
 $vocab["Explications_methode_smtp_2"] = "Wenn die SMTP-Methode gewählt wurde und der Server eine Authentifizierung erfordert, geben Sie bitte Benutzernamen und Passwort an.";
 $vocab["explications_signaler_reservation_en_cours"] = "Es ist möglich, anzugeben, dass eine Ressource ausgeliehen ist (wenn es sich um Material handelt). Durch Anklicken der zweiten oder dritten Option gibt der Verwalter an, dass die Ressource ausgeliehen ist und daher nicht zurückgegeben wurde. Wenn die Ressource zurückgegeben wurde, darf der Verwalter nicht vergessen, die Option Nr. 1 unten auszuwählen.";

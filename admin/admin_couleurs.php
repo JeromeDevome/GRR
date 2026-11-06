@@ -3,9 +3,9 @@
  * admin_couleurs.php
  * Interface permettant à l'administrateur la personnalisation de certaines couleurs
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2023-10-12 16:28$
+ * Dernière modification : $Date: 2026-11-06 11:41$
  * @author    Yan Naessens
- * @copyright Copyright 2003-2023 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -21,11 +21,11 @@ include "../include/admin.inc.php";
 $back = 'admin_accueil.php';
 // si pas administrateur, déconnexion
 if (authGetUserLevel(getUserName(), -1, 'area') < 6)
-	{
-        echo '<script text="javascript">window.alert(\''.get_vocab('accessdenied').'\');
-        document.location.href="../logout.php";</script>';
-		exit();
-	}; 
+{
+  echo '<script text="javascript">window.alert(\''.get_vocab('accessdenied').'\');
+  document.location.href="../logout.php";</script>';
+  exit();
+}; 
 
 $ok = (isset($_GET['ok']))? $_GET['ok']: NULL; // utile ?
 
@@ -114,116 +114,117 @@ $dc=array('header_bgcolor' => '#FFF'
 // enregistrement des couleurs dans la feuille de style
 if ((isset($_POST['record'])) && (!isset($ok)))
 {
-    try {
-        $fich=fopen("../themes/perso/css/perso.css","w+"); // première écriture
-        fwrite($fich,"/* personnalisations */");
-        fclose($fich);
-        $fich=fopen("../themes/perso/css/perso.css","a+");
-        fwrite($fich,":root{");
-        foreach($champs_couleur as $code_js => $code_css)
-        {
-            $couleur = valid_color($_POST[$code_js]);
-            fwrite($fich," 
-    ".$code_css.": ".$couleur.";");
-        }
-        fwrite($fich,"}
+  try {
+    $fich=fopen("../themes/perso/css/perso.css","w+"); // première écriture
+    fwrite($fich,"/* personnalisations */");
+    fclose($fich);
+    $fich=fopen("../themes/perso/css/perso.css","a+");
+    fwrite($fich,":root{");
+    foreach($champs_couleur as $code_js => $code_css)
+    {
+      $couleur = valid_color($_POST[$code_js]);
+      fwrite($fich," 
+".$code_css.": ".$couleur.";");
+    }
+    fwrite($fich,"}
 ");
-        fclose($fich);
-    }
-    catch (Exception $e) {
-        echo 'Exception reçue : ',  $e->getMessage(), "\n";
-        $ok = 'no';
-        die();
-    }
+    fclose($fich);
+  }
+  catch (Exception $e) {
+    echo 'Exception reçue : ',  $e->getMessage(), "\n";
+    $ok = 'no';
+    die();
+  }
 
-    // Si pas de problème, message de confirmation
-    $_SESSION['displ_msg'] = 'yes';
-    if ($msg == '') {
-        $msg = get_vocab('message_records');
-    }
+  // Si pas de problème, message de confirmation
+  $_SESSION['displ_msg'] = 'yes';
+  if ($msg == '') {
+    $msg = get_vocab('message_records');
+  }
 }
 // liste des couleurs du fichier perso.css
 $pc=array();
 if (@file_exists("../themes/perso/css/perso.css")){
-    try {
-        $fich=fopen("../themes/perso/css/perso.css","r"); // ouverture en lecture
-        fgets($fich);
-        while(!feof($fich)) {
-            $line = fgets($fich);
-            $data = explode(':',$line);
-            if (count($data)>1){
-                $key = str_replace('-','_',str_replace([' ','--'],'',$data[0]));
-                $value = trim(str_replace([';','}',' '],'',$data[1]));
-                $pc[$key] = $value;
-            }
-        }
-        fclose($fich);
+  try {
+    $fich=fopen("../themes/perso/css/perso.css","r"); // ouverture en lecture
+    fgets($fich);
+    while(!feof($fich)) {
+      $line = fgets($fich);
+      $data = explode(':',$line);
+      if (count($data)>1){
+        $key = str_replace('-','_',str_replace([' ','--'],'',$data[0]));
+        $value = trim(str_replace([';','}',' '],'',$data[1]));
+        $pc[$key] = $value;
+      }
     }
-    catch (Exception $e) {
-        echo 'Exception reçue : ',  $e->getMessage(), "\n";
-        $ok = 'no';
-        die();
-    }
+    fclose($fich);
+  }
+  catch (Exception $e) {
+    echo 'Exception reçue : ',  $e->getMessage(), "\n";
+    $ok = 'no';
+    die();
+  }
 }
 else { // il n'y a pas de fichier de style personnalisé, on récupère les couleurs par défaut
-    foreach($dc as $code_js => $hexa){
-        $pc[$code_js] = $hexa;
-    }
+  foreach($dc as $code_js => $hexa){
+    $pc[$code_js] = $hexa;
+  }
 }
 $c = array(); // tableau des couleurs à afficher
 if (isset($_GET['theme']) && ($_GET['theme']=="perso")){ // thème personnalisé
-    foreach($pc as $code_js => $hexa){
-        $c[$code_js] = $hexa;
-    }
+  foreach($pc as $code_js => $hexa){
+    $c[$code_js] = $hexa;
+  }
 }
 elseif (isset($_GET['theme']) && ($_GET['theme']=="defaut")){ // thème par défaut
-    foreach($dc as $code_js => $hexa){
-        $c[$code_js] = $hexa;
-    }
+  foreach($dc as $code_js => $hexa){
+    $c[$code_js] = $hexa;
+  }
 }
 else{// couleurs pour le formulaire ; si on arrive ici sans avoir enregistré, on récupère les valeurs par défaut, définies dans le tableau $dc
-$c['header_text'] = (isset($_POST['header_text']))? valid_color($_POST['header_text']) : $dc["header_text"];
-$c['header_bgcolor'] = (isset($_POST['header_bgcolor']))? valid_color($_POST['header_bgcolor']) : $dc["header_bgcolor"];
-$c['header_hover'] = (isset($_POST['header_hover']))? valid_color($_POST["header_hover"]) : $dc["header_hover"];
-$c['menuG_color'] = (isset($_POST['menuG_color']))? valid_color($_POST['menuG_color']) : $dc["menuG_color"];
-$c['menuG_bgcolor'] = (isset($_POST['menuG_bgcolor']))? valid_color($_POST['menuG_bgcolor']) : $dc["menuG_bgcolor"];
-$c['cal_titrecolor'] = (isset($_POST['cal_titrecolor']))? valid_color($_POST['cal_titrecolor']) : $dc["cal_titrecolor"];
-$c['cal_titrebgcolor'] = (isset($_POST['cal_titrebgcolor']))? valid_color($_POST['cal_titrebgcolor']) : $dc["cal_titrebgcolor"];
-$c['cal_jourscolor'] = (isset($_POST['cal_jourscolor']))? valid_color($_POST['cal_jourscolor']) : $dc["cal_jourscolor"];
-$c['cal_joursbgcolor'] = (isset($_POST['cal_joursbgcolor']))? valid_color($_POST['cal_joursbgcolor']) : $dc["cal_joursbgcolor"];
-$c['cal_semcolor'] = (isset($_POST['cal_semcolor']))? valid_color($_POST['cal_semcolor']) : $dc["cal_semcolor"];
-$c['cal_sembgcolor'] = (isset($_POST['cal_sembgcolor']))? valid_color($_POST['cal_sembgcolor']) : $dc["cal_sembgcolor"];
-$c['cal_semhovercolor'] = (isset($_POST['cal_semhovercolor']))? valid_color($_POST["cal_semhovercolor"]) : $dc["cal_semhovercolor"];
-$c['cal_weekcolor'] = (isset($_POST['cal_weekcolor']))? valid_color($_POST['cal_weekcolor']) : $dc["cal_weekcolor"];
-$c['cal_weekbgcolor'] = (isset($_POST['cal_weekbgcolor']))? valid_color($_POST['cal_weekbgcolor']) : $dc["cal_weekbgcolor"];
-$c['cal_cellcolor'] = (isset($_POST['cal_cellcolor']))? valid_color($_POST['cal_cellcolor']) : $dc["cal_cellcolor"];
-$c['cal_cellbgcolor'] = (isset($_POST['cal_cellbgcolor']))? valid_color($_POST['cal_cellbgcolor']) : $dc["cal_cellbgcolor"];
-$c['cal_cellhovercolor'] = (isset($_POST['cal_cellhovercolor']))? valid_color($_POST['cal_cellhovercolor']) : $dc["cal_cellhovercolor"];
-$c['cal_cellhoverbgcolor'] = (isset($_POST['cal_cellhoverbgcolor']))? valid_color($_POST['cal_cellhoverbgcolor']) : $dc['cal_cellhoverbgcolor'];
-$c['cal_current_day_col'] = (isset($_POST['cal_current_day_col']))? valid_color($_POST['cal_current_day_col']) : $dc["cal_current_day_col"];
-$c['cal_current_day_bg'] = (isset($_POST['cal_current_day_bg']))? valid_color($_POST['cal_current_day_bg']) : $dc["cal_current_day_bg"];
-$c['pl2_titrecolor'] = (isset($_POST['pl2_titrecolor']))? valid_color($_POST['pl2_titrecolor']) : $dc["pl2_titrecolor"];
-$c['pl2_titrebgcolor'] = (isset($_POST['pl2_titrebgcolor']))? valid_color($_POST['pl2_titrebgcolor']) : $dc['pl2_titrebgcolor'];
-$c['pl2_entetecolor'] = (isset($_POST['pl2_entetecolor']))? valid_color($_POST['pl2_entetecolor']) : $dc["pl2_entetecolor"];
-$c['pl2_entetebgcolor'] = (isset($_POST['pl2_entetebgcolor']))? valid_color($_POST['pl2_entetebgcolor']) : $dc["pl2_entetebgcolor"];
-$c['pl2_cellcolor'] = (isset($_POST['pl2_cellcolor']))? valid_color($_POST['pl2_cellcolor']) : $dc["pl2_cellcolor"];
-$c['pl2_cellbgcolor'] = (isset($_POST['pl2_cellbgcolor']))? valid_color($_POST['pl2_cellbgcolor']) : $dc["pl2_cellbgcolor"];
-$c['icons_color'] = (isset($_POST['icons_color']))? valid_color($_POST["icons_color"]) : $dc["icons_color"];
-$c['btn_primary_color'] = (isset($_POST['btn_primary_color']))? valid_color($_POST['btn_primary_color']) : $dc["btn_primary_color"];
-$c['btn_primary_bgcolor'] = (isset($_POST['btn_primary_bgcolor']))? valid_color($_POST['btn_primary_bgcolor']) : $dc["btn_primary_bgcolor"];
-$c['btn_primary_bordcolor'] = (isset($_POST['btn_primary_bordcolor']))? valid_color($_POST['btn_primary_bordcolor']) : $dc["btn_primary_bordcolor"];
-$c['active_btn_primary_color'] = (isset($_POST['active_btn_primary_color']))? valid_color($_POST['active_btn_primary_color']) : $dc["active_btn_primary_color"];
-$c['active_btn_primary_bgcolor'] = (isset($_POST['active_btn_primary_bgcolor']))? valid_color($_POST['active_btn_primary_bgcolor']) : $dc["active_btn_primary_bgcolor"];
-$c['active_btn_primary_bordcolor'] = (isset($_POST['active_btn_primary_bordcolor']))? valid_color($_POST['active_btn_primary_bordcolor']) : $dc["active_btn_primary_bordcolor"];
-$c['focus_btn_primary_color'] = (isset($_POST['focus_btn_primary_color']))? valid_color($_POST['focus_btn_primary_color']) : $dc["focus_btn_primary_color"];
-$c['focus_btn_primary_bgcolor'] = (isset($_POST['focus_btn_primary_bgcolor']))? valid_color($_POST['focus_btn_primary_bgcolor']) : $dc["focus_btn_primary_bgcolor"];
-$c['focus_btn_primary_bordcolor'] = (isset($_POST['focus_btn_primary_bordcolor']))? valid_color($_POST['focus_btn_primary_bordcolor']) : $dc["focus_btn_primary_bordcolor"];
-$c['ssmenuadm_actif_color'] = (isset($_POST['ssmenuadm_actif_color']))? valid_color($_POST['ssmenuadm_actif_color']) : $dc["ssmenuadm_actif_color"];
-$c['ssmenuadm_actif_bg'] = (isset($_POST['ssmenuadm_actif_bg']))? valid_color($_POST['ssmenuadm_actif_bg']) : $dc["ssmenuadm_actif_bg"];
+  $c['header_text'] = (isset($_POST['header_text']))? valid_color($_POST['header_text']) : $dc["header_text"];
+  $c['header_bgcolor'] = (isset($_POST['header_bgcolor']))? valid_color($_POST['header_bgcolor']) : $dc["header_bgcolor"];
+  $c['header_hover'] = (isset($_POST['header_hover']))? valid_color($_POST["header_hover"]) : $dc["header_hover"];
+  $c['menuG_color'] = (isset($_POST['menuG_color']))? valid_color($_POST['menuG_color']) : $dc["menuG_color"];
+  $c['menuG_bgcolor'] = (isset($_POST['menuG_bgcolor']))? valid_color($_POST['menuG_bgcolor']) : $dc["menuG_bgcolor"];
+  $c['cal_titrecolor'] = (isset($_POST['cal_titrecolor']))? valid_color($_POST['cal_titrecolor']) : $dc["cal_titrecolor"];
+  $c['cal_titrebgcolor'] = (isset($_POST['cal_titrebgcolor']))? valid_color($_POST['cal_titrebgcolor']) : $dc["cal_titrebgcolor"];
+  $c['cal_jourscolor'] = (isset($_POST['cal_jourscolor']))? valid_color($_POST['cal_jourscolor']) : $dc["cal_jourscolor"];
+  $c['cal_joursbgcolor'] = (isset($_POST['cal_joursbgcolor']))? valid_color($_POST['cal_joursbgcolor']) : $dc["cal_joursbgcolor"];
+  $c['cal_semcolor'] = (isset($_POST['cal_semcolor']))? valid_color($_POST['cal_semcolor']) : $dc["cal_semcolor"];
+  $c['cal_sembgcolor'] = (isset($_POST['cal_sembgcolor']))? valid_color($_POST['cal_sembgcolor']) : $dc["cal_sembgcolor"];
+  $c['cal_semhovercolor'] = (isset($_POST['cal_semhovercolor']))? valid_color($_POST["cal_semhovercolor"]) : $dc["cal_semhovercolor"];
+  $c['cal_weekcolor'] = (isset($_POST['cal_weekcolor']))? valid_color($_POST['cal_weekcolor']) : $dc["cal_weekcolor"];
+  $c['cal_weekbgcolor'] = (isset($_POST['cal_weekbgcolor']))? valid_color($_POST['cal_weekbgcolor']) : $dc["cal_weekbgcolor"];
+  $c['cal_cellcolor'] = (isset($_POST['cal_cellcolor']))? valid_color($_POST['cal_cellcolor']) : $dc["cal_cellcolor"];
+  $c['cal_cellbgcolor'] = (isset($_POST['cal_cellbgcolor']))? valid_color($_POST['cal_cellbgcolor']) : $dc["cal_cellbgcolor"];
+  $c['cal_cellhovercolor'] = (isset($_POST['cal_cellhovercolor']))? valid_color($_POST['cal_cellhovercolor']) : $dc["cal_cellhovercolor"];
+  $c['cal_cellhoverbgcolor'] = (isset($_POST['cal_cellhoverbgcolor']))? valid_color($_POST['cal_cellhoverbgcolor']) : $dc['cal_cellhoverbgcolor'];
+  $c['cal_current_day_col'] = (isset($_POST['cal_current_day_col']))? valid_color($_POST['cal_current_day_col']) : $dc["cal_current_day_col"];
+  $c['cal_current_day_bg'] = (isset($_POST['cal_current_day_bg']))? valid_color($_POST['cal_current_day_bg']) : $dc["cal_current_day_bg"];
+  $c['pl2_titrecolor'] = (isset($_POST['pl2_titrecolor']))? valid_color($_POST['pl2_titrecolor']) : $dc["pl2_titrecolor"];
+  $c['pl2_titrebgcolor'] = (isset($_POST['pl2_titrebgcolor']))? valid_color($_POST['pl2_titrebgcolor']) : $dc['pl2_titrebgcolor'];
+  $c['pl2_entetecolor'] = (isset($_POST['pl2_entetecolor']))? valid_color($_POST['pl2_entetecolor']) : $dc["pl2_entetecolor"];
+  $c['pl2_entetebgcolor'] = (isset($_POST['pl2_entetebgcolor']))? valid_color($_POST['pl2_entetebgcolor']) : $dc["pl2_entetebgcolor"];
+  $c['pl2_cellcolor'] = (isset($_POST['pl2_cellcolor']))? valid_color($_POST['pl2_cellcolor']) : $dc["pl2_cellcolor"];
+  $c['pl2_cellbgcolor'] = (isset($_POST['pl2_cellbgcolor']))? valid_color($_POST['pl2_cellbgcolor']) : $dc["pl2_cellbgcolor"];
+  $c['icons_color'] = (isset($_POST['icons_color']))? valid_color($_POST["icons_color"]) : $dc["icons_color"];
+  $c['btn_primary_color'] = (isset($_POST['btn_primary_color']))? valid_color($_POST['btn_primary_color']) : $dc["btn_primary_color"];
+  $c['btn_primary_bgcolor'] = (isset($_POST['btn_primary_bgcolor']))? valid_color($_POST['btn_primary_bgcolor']) : $dc["btn_primary_bgcolor"];
+  $c['btn_primary_bordcolor'] = (isset($_POST['btn_primary_bordcolor']))? valid_color($_POST['btn_primary_bordcolor']) : $dc["btn_primary_bordcolor"];
+  $c['active_btn_primary_color'] = (isset($_POST['active_btn_primary_color']))? valid_color($_POST['active_btn_primary_color']) : $dc["active_btn_primary_color"];
+  $c['active_btn_primary_bgcolor'] = (isset($_POST['active_btn_primary_bgcolor']))? valid_color($_POST['active_btn_primary_bgcolor']) : $dc["active_btn_primary_bgcolor"];
+  $c['active_btn_primary_bordcolor'] = (isset($_POST['active_btn_primary_bordcolor']))? valid_color($_POST['active_btn_primary_bordcolor']) : $dc["active_btn_primary_bordcolor"];
+  $c['focus_btn_primary_color'] = (isset($_POST['focus_btn_primary_color']))? valid_color($_POST['focus_btn_primary_color']) : $dc["focus_btn_primary_color"];
+  $c['focus_btn_primary_bgcolor'] = (isset($_POST['focus_btn_primary_bgcolor']))? valid_color($_POST['focus_btn_primary_bgcolor']) : $dc["focus_btn_primary_bgcolor"];
+  $c['focus_btn_primary_bordcolor'] = (isset($_POST['focus_btn_primary_bordcolor']))? valid_color($_POST['focus_btn_primary_bordcolor']) : $dc["focus_btn_primary_bordcolor"];
+  $c['ssmenuadm_actif_color'] = (isset($_POST['ssmenuadm_actif_color']))? valid_color($_POST['ssmenuadm_actif_color']) : $dc["ssmenuadm_actif_color"];
+  $c['ssmenuadm_actif_bg'] = (isset($_POST['ssmenuadm_actif_bg']))? valid_color($_POST['ssmenuadm_actif_bg']) : $dc["ssmenuadm_actif_bg"];
 }
 // code HTML
 // haut de page et début de section
-start_page_w_header("", "", "", $type="with_session");
+start_page_w_header("", "", "", $type="with_session",1);
+echo '<div class="row">';
 // Affichage de la colonne de gauche
 include 'admin_col_gauche2.php'; 
 // colonne de droite
@@ -408,6 +409,7 @@ echo '<input class="btn btn-primary" type="submit" name="record" value="'.get_vo
 echo "</div>";
 echo "</form>";
 echo '</div>'; // fin de la colonne droite
+echo '</div>';
 echo "</section>";
 // un div masqué pour utiliser tous les styles paramétrables et ainsi récupérer la valeur courante - reste à mettre au point
 echo "<footer id='masque' style='visibility:hidden'>";

@@ -45,7 +45,7 @@ if (!isset($_GET['mdp']))
 if ((!isset($_GET['mdp'])) || ($_GET['mdp'] != Settings::get("motdepasse_verif_auto_grr")) || (Settings::get("motdepasse_verif_auto_grr") == ''))
 {
 	if (!isset($argv[1]))
-		echo start_page_wo_header($titre, $page = "no_session")."<p>";
+		echo start_page_wo_header($titre, "no_session", 0)."<p>";
 	echo "Le mot de passe fourni est invalide.";
 	if (!isset($argv[1]))
 	{
@@ -56,7 +56,7 @@ if ((!isset($_GET['mdp'])) || ($_GET['mdp'] != Settings::get("motdepasse_verif_a
 	die();
 }
 if (!isset($argv[1]))
-	echo start_page_wo_header($titre,$page = "no_session");
+	echo start_page_wo_header($titre, "no_session", 0);
 // On vérifie une fois par jour si le délai de confirmation des réservations est dépassé
 // Si oui, les réservations concernées sont supprimées et un mail automatique est envoyé.
 verify_confirm_reservation();

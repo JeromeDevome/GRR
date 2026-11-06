@@ -1,7 +1,7 @@
 <?php
 # GRR : fichier de langue espagnole
 # GRR: Traduction By JeromeB
-# Last modification : 2026-06-23
+# Last modification : 2026-11-06
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -747,10 +747,10 @@ $vocab["explication_Jours_Cycles2"] = "Una vez el calendario generado, puede mod
 $vocab["explication_Jours_Cycles3"] = "En el calendario más abajo, debajo de cada fecha figura el número del \"día ciclo\" correspondiente. Hagando clic en el enlace, puede suprimir o modificar la afectación de un \"día ciclo\". Puede también afectar un texto en lugar de un número.";
 $vocab["explication_Jours_Cycles4"] = "Tiene también la posibilidad, en la pestaña precedente, de crear o regenerar rápidamente un calendario de \"días ciclo\", y de modificar manualmente los \"días ciclos\" así generados.";
 $vocab["explications_active_type"] = "Observación: cuando un tipo ya no está punteado, este ya no se propone al usuario efectuando o modificando una reserva, pero las reservas ya efectuadas siguen apareciendo en las planifaciones con este tipo, a pesar de estar desactivado.";
-$vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "GRR usa PHPMailer para el envío de correos electrónicos. Con PHPMailer, hay dos métodos para enviar mails:
-1) El método \"smtp\" permitiendo de conectarse a un servidor de mail lejano;
-2) El método \"mail\" cuando el servidor de mail es local.
-El método \"smtp\" puede también ser utilizado con un servidor local pero es preferible privilegiar la méthode \"mail\" con un servidor local porque es más rápida..";
+$vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "GRR usa PHPMailer para el envío de correos electrónicos. Con PHPMailer, hay dos métodos para enviar mails:<br/>
+1) El método \"smtp\" permitiendo de conectarse a un servidor de mail lejano;<br/>
+2) El método \"mail\" cuando el servidor de mail es local.<br/>
+El método \"smtp\" puede también ser utilizado con un servidor local pero es preferible privilegiar la méthode \"mail\" con un servidor local porque es más rápida.";
 $vocab["Explications_methode_smtp_1"] = "Servidor SMTP";
 $vocab["Explications_methode_smtp_2"] = "Si el método \"smtp\" es elegido y que ele servidor necesita una autentificación, indicar el nombre de usuario y la contraseña.";
 $vocab["explications_signaler_reservation_en_cours"] = "Se puede señalar cuando un recurso ha sido prestado (si el recurso es un material). Marcando la segunda o la tercera opción, el gestor señala que el recurso está prestado y no ha sido devuelto. Cuando el recurso ha sido restituido, el gestor no debe olvidar seleccionar la opción n° 1 más abajo.";

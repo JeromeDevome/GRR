@@ -49,7 +49,7 @@ if ((is_null($id_room))||((authGetUserLevel($user_id,-1) < 1) && (Settings::get(
 }
 
 $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_room WHERE id=? ","i",[$id_room]);
-if (!$res)
+if ((!$res)||(grr_sql_count($res)==0))
 	fatal_error(0, get_vocab('error_room') . $id_room . get_vocab('not_found'));
 $Room = grr_sql_row_keyed($res, 0);
 grr_sql_free($res);

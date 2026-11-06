@@ -197,6 +197,10 @@ if (Settings::get("module_multisite") == "Oui")
     </script>
     </form>';
   }
+  elseif($nb_site == 0)
+  {
+    // multisite activé mais aucun site défini, on fait comme si le multisite n'est pas activé
+  }
   else
   {
   // un seul site

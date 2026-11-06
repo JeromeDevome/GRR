@@ -19,7 +19,7 @@
 $grr_script_name = "admin_save_mysql.php";
 if ((!isset($_GET['mdp'])) && (!isset($argv[1])) && (!isset($_GET['flag_connect'])))
 {
-	echo "Il manque des arguments pour executer ce script. Reportez-vous a la documentation.";
+	echo "Il manque des arguments pour exécuter ce script. Reportez-vous a la documentation.";
 	die();
 }
 if ((!isset($_GET['mdp'])) && isset($argv[1]))
@@ -38,7 +38,7 @@ if (isset($_GET['mdp']))
 	if ((($_GET['mdp'] != Settings::get("motdepasse_backup")) || (Settings::get("motdepasse_backup")== '' )))
 	{
 		if (!isset($argv[1]))
-			echo start_page_wo_header("backup", $page = "no_session")."<p>";
+			echo start_page_wo_header("backup", "no_session", 1)."<p>";
 		echo "Le mot de passe fourni est invalide.";
 		if (!isset($argv[1]))
 		{

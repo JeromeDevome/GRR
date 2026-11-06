@@ -1,7 +1,7 @@
 <?php
 # GRR: fichier de langue anglaise
 # GRR: Translations provided by: JeromeB & Patricia Gaubert-Dubois et Yan Naessens
-# Last modification : 2026-06-23
+# Last modification : 2026-11-06
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -682,7 +682,7 @@ $vocab["explication_Jours_Cycles2"] = "When the calendar is generated, you can m
 $vocab["explication_Jours_Cycles3"] = "In the calendar below, under every date appears the corresponding \"cycle day\" number . By clicking on the link, you can delete or modify the \"cycle day\" occupancy. You can also affect one text rather than a number.";
 $vocab["explication_Jours_Cycles4"] = " You also have the possibility, in the previous tab, to create or to regenerate quickly a calendar of \"cycle days\", and then to modify manually the generated \"cycle days\".";
 $vocab["explications_active_type"] = "Comment: when a type is not ticked, it's no more available to users, but what is already made still appear on plannings with this type, although desactivated.";
-$vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "GRR uses PHPMailer for the sending of mails. With PHPMailer, there are two methods to send mails: 1) The \"smtp\" method allowing to connect to a remote server of mail; 2)The \"mail\" method when the server of mail is local. The \"smtp\" method can be also used with a local server but it's better to privilege the \"mail\" method with a local server because it is faster.";
+$vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "GRR uses PHPMailer for the sending of mails. With PHPMailer, there are two methods to send mails:<br/> 1. The \"smtp\" method allowing to connect to a remote server of mail;<br/> 2.The \"mail\" method when the server of mail is local.<br/> The \"smtp\" method can be also used with a local server but it's better to privilege the \"mail\" method with a local server because it is faster.";
 $vocab["Explications_methode_smtp_1"] = "SMTP server";
 $vocab["Explications_methode_smtp_2"] = "If you choose the \"smtp\" method, and the server needs an authentification, specify the user name and password.";
 $vocab["explications_signaler_reservation_en_cours"] = "It is possible to indicate that a resource is borrowed (if the resource is an equipment). By ticking the 2nd or the 3rd option, the administrator indicates that the resource is borrowed and so not restored. When the ressource has been restored, the manager has to remember to select the option n° 1 below.";

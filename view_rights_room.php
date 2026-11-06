@@ -40,14 +40,15 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 $id_room = isset($_GET["id_room"]) ? intval($_GET["id_room"]) : NULL;
+$back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars_decode($_SERVER['HTTP_REFERER'], ENT_QUOTES): page_accueil();
 if ((authGetUserLevel(getUserName(),$id_room) < 4) || (!verif_acces_ressource(getUserName(), $id_room)))
 {
-	showAccessDenied('');
+	showAccessDenied($back);
 	exit();
 }
 
 $res = grr_sql_query("SELECT * FROM ".TABLE_PREFIX."_room WHERE id=?","i",[$id_room]);
-if (!$res)
+if ((!$res)||(grr_sql_count($res)==0))
 	fatal_error(0, get_vocab('error_room') . $id_room . get_vocab('not_found'));
 $Room = grr_sql_row_keyed($res, 0);
 grr_sql_free($res);

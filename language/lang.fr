@@ -1,6 +1,6 @@
 <?php
 # GRR: fichier de langue française
-# Last modification : 2026-06-23
+# Last modification : 2026-11-06
 # Charset (jeu de caractères) utilisé dans l'en-tête des pages HTML
 $charset_html = "utf-8";
 $vocab = array();
@@ -710,9 +710,9 @@ $vocab["explication_Jours_Cycles2"] = "Une fois le calendrier généré, vous po
 $vocab["explication_Jours_Cycles3"] = "Dans le calendrier ci-dessous, en dessous de chaque date figure le numéro du \"jour cycle\" correspondant. En cliquant sur le lien, vous pouvez supprimer ou modifier l'affectation d'un \"jour cycle\". Vous pouvez également affecter une texte plutôt qu'un numéro.";
 $vocab["explication_Jours_Cycles4"] = "Vous avez également la possibilité, dans l'onglet précédent, de créer ou régénérer rapidement un calendrier de \"jours cycle\", puis de modifier manuellement les \"jours cycle\" ainsi générés.";
 $vocab["explications_active_type"] = "Remarque : quand un type est décoché, celui-ci n'est plus proposé à l'utilisateur effectuant ou modifiant une réservation, mais les réservations déjà effectuées continuent d'apparaître sur les plannings avec ce type, bien que désactivé.";
-$vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "GRR utilise PHPMailer pour l'envoi de mails. Avec PHPMailer, il y a deux méthodes pour envoyer des mails :
-1) La méthode \"smtp\" permettant de se connecter à un serveur de mail distant ;
-2) La méthode \"mail\" lorsque le serveur de mail est local.
+$vocab["Explications_des_Parametres_configuration_envoi_automatique_mails"] = "GRR utilise PHPMailer pour l'envoi de mails. Avec PHPMailer, il y a deux méthodes pour envoyer des mails :<br/>
+1) La méthode \"smtp\" permettant de se connecter à un serveur de mail distant ;<br/>
+2) La méthode \"mail\" lorsque le serveur de mail est local.<br/>
 La méthode \"smtp\" peut également être utilisée avec un serveur local mais il est préférable de privilégier la méthode \"mail\" avec un serveur local car elle est plus rapide.";
 $vocab["Explications_methode_smtp_1"] = "Serveur SMTP";
 $vocab["Explications_methode_smtp_2"] = "Si la méthode \"smtp\" est choisie et que le serveur nécessite une authentification, précisez les nom d'utilisateur et mot de passe.";
@@ -1112,7 +1112,7 @@ $vocab["noreservation"] = "La réservation que vous demandez n'existe pas. Il es
 $vocab["norights"] = "Vous n'avez pas les droits suffisants pour effectuer cette opération.";
 $vocab["norooms"] = "Aucune ressource n'est créée pour ce domaine.";
 $vocab["noSSL"] = "Ne pas utiliser SSL";
-$vocab["not_found"] = " non trouvée";
+$vocab["not_found"] = " non trouvé(e)";
 $vocab["not_php"] = "
 ATTENTION : Cette application peut ne pas fonctionner correctement avec une version antérieur à PHP7
 ";
@@ -1339,7 +1339,7 @@ $vocab["signaler_reservation_en_cours_option_0"] = "La ressource a été restitu
 (Sélectionner également cette option si vous n'utilisez pas cette fonctionnalité)";
 $vocab["signaler_reservation_en_cours_option_1"] = "Signaler que la ressource est empruntée dans le cadre de cette réservation.";
 $vocab["signaler_reservation_en_cours_option_2"] = "Signaler que la ressource est empruntée dans le cadre de cette réservation et envoyer quotidiennement un mail notifiant le retard.";
-$vocab["site"] = "Site";
+$vocab["site"] = "Site ";
 $vocab["site_access"] = "Accès restreint";
 $vocab["site_adresse_ligne1"] = "Adresse";
 $vocab["site_adresse_ligne2"] = "Adresse";

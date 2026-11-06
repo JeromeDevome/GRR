@@ -3,7 +3,7 @@
  * admin_accueil
  * Interface d'accueil de l'administration des domaines et des ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-03-16 18:08$
+ * Dernière modification : $Date: 2026-11-05 10:16$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -36,8 +36,8 @@ if ((authGetUserLevel($user, $area, 'area') < 4) && (authGetUserLevel($user, $ro
 $listeModeration = resaToModerate($user);
 $nbAModerer = count($listeModeration);    
 // code html
-start_page_w_header("", "", "", $type="with_session"); // affiche le header et la balise <section>
-
+start_page_w_header("", "", "", $type="with_session", 1); // affiche le header et la balise <section>
+echo '<div class="row">';
 include "admin_col_gauche2.php";
 // "colonne de droite"
 // titre 
@@ -79,5 +79,6 @@ echo'        </div>    </div>';
 echo'    <div class="col col-md-3 col-sm-4 col-xs-12">';
 echo'        <img src="../img_grr/totem_grr.png" alt="GRR !" class="image" />';
 echo'    </div>';
+echo'  </div>';
 end_page();
 ?>

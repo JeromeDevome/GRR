@@ -3,7 +3,7 @@
  * install_mysql.php
  * Interface d'installation de GRR pour un environnement mysql
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 17:20$
+ * Dernière modification : $Date: 2026-11-01 12:06$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -26,8 +26,8 @@ $nom_fic = "../include/connect.inc.php";
 $etape = getFormVar("etape","int",0);
 $adresse_db = getFormVar("adresse_db","string","localhost");
 $port_db = getFormVar("port_db","int",3306);
-$login_db = getFormVar("login_db","string","");
-$pass_db = getFormVar("pass_db","string","");
+$login_db = getFormVar("login_db","string","DB manager");
+$pass_db = getFormVar("pass_db","string","********");
 $choix_db = getFormVar("choix_db","string","");
 $table_new = getFormVar("table_new","string","");
 $table_prefix = getFormVar("table_prefix","string","");
@@ -55,11 +55,11 @@ $email = clean_input($email);
 
 function begin_html()
 {
-  echo '<div style="margin-left:15%;margin-right:15%;"><table><tr><td>';
+  echo '<div class="container pt-3">';
 }
 function end_html()
 {
-  echo '</td></tr></table></div></body></html>';
+  echo '</div></body></html>';
 }
 /**
  * @param $res : MySQL query result
@@ -93,7 +93,7 @@ if (@file_exists($nom_fic))
       {
         // Premier test
         $j = '0';
-        $test1 = 'yes';
+        $test1 = TRUE;
         $total = count($liste_tables);
         $tableManquantes = "";
         while ($j < $total)
@@ -103,7 +103,7 @@ if (@file_exists($nom_fic))
           {
             $tableManquantes .= " ". $table_prefix.$liste_tables[$j];
             $correct_install='no';
-            $test1 = 'no';
+            $test1 = FALSE;
           }
           $j++;
         }
@@ -113,7 +113,7 @@ if (@file_exists($nom_fic))
         }
         else
           $test2 = 0;
-        if (($test2 != 0) && ($test1 != 'no'))
+        if (($test2 != 0) && ($test1))
         {
           echo begin_simple_page("Installation de GRR");
           begin_html();
@@ -443,9 +443,9 @@ else if ($etape == 1)
   echo "(Si vous ne le connaissez pas, laissez la valeur par défaut.)<br />\n";
   echo "<input type='text' name='port_db' class='formo' value=\"$port_db\" size='40' /></fieldset>\n";
   echo "<fieldset><label><b>Le login de connexion</b><br /></label>\n";
-  echo "<input type='text' name='login_db' class='formo' value=\"$login_db\" size='40' /></fieldset>\n";
+  echo "<input type='text' name='login_db' class='formo' value=\"$login_db\" size='40' placeholder='DB manager' /></fieldset>\n";
   echo "<fieldset><label><b>Le mot de passe de connexion</b><br /></label>\n";
-  echo "<input type='password' name='pass_db' class='formo' value=\"$pass_db\" size='40' /></fieldset>\n";
+  echo "<input type='password' name='pass_db' class='formo' value=\"$pass_db\" size='40' autocomplete='off' /></fieldset>\n";
   echo "<div style=\"text-align:right;\"><input type='submit' class='fondl' name='Valider' value='Suivant &gt;&gt;' /></div>\n";
   echo "</div></form>\n";
   end_html();

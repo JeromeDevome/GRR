@@ -3,7 +3,7 @@
  * my_account_modif_listes.php
  * Page "Ajax" utilisée pour générer les listes de domaines et de ressources, en liaison avec my_account.php
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-10-26 11:56$
+ * Dernière modification : $Date: 2026-11-05 11:08$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -73,7 +73,7 @@ if ($type == "domaine")
   if (($id_site!=-1) || ($use_site=='n')){
     $resultat = grr_sql_query($sql);
   }
-  $display_liste = '<div class="form-group"><label class="control-label col-md-3 col-sm-3 col-xs-4" for="id_area">'.get_vocab('default_area').'</label><div class="col col-md-4 col-sm-6 col-xs-8"><select class="form-control" id="id_area" name="id_area" onchange="modifier_liste_ressources(1)"><option value="-1">'.get_vocab('choose_an_area').'</option>'."\n";
+  $display_liste = '<div class="row form-group"><label class="control-label col-sm-4 col-xs-12" for="id_area">'.get_vocab('default_area').'</label><div class="col-sm-4 col-xs-12"><select class="form-control" id="id_area" name="id_area" onchange="modifier_liste_ressources(1)"><option value="-1">'.get_vocab('choose_an_area').'</option>'."\n";
   if (($id_site!=-1) || ($use_site=='n')){
 
     foreach($resultat as $row)
@@ -96,7 +96,7 @@ if ($type == "domaine")
 if ($_GET['type'] == "ressource")
 {
   // affichage minimal : choix des plannings généraux par défaut
-  $display_liste = '<div class="form-group"><label class="control-label col-md-3 col-sm-3 col-xs-4" for="id_room">'.get_vocab('default_room').'</label><div class="col col-md-4 col-sm-6 col-xs-8"><select class="form-control" name="id_room" id="id_room"><option value="-1"';
+  $display_liste = '<div class="row form-group"><label class="control-label col-sm-4 col-xs-12" for="id_room">'.get_vocab('default_room').'</label><div class="col-sm-4 col-xs-12"><select class="form-control" name="id_room" id="id_room"><option value="-1"';
     if ($default_room == -1)
       $display_liste .= ' selected  ';
     $display_liste .= ' >'.get_vocab('default_room_all').'</option>'."\n".
