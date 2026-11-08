@@ -102,6 +102,6 @@ if ($res)
 	}
 }
 
-
-echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'groupes' => $groupes));
+$langueActuelle = isset($_SESSION['default_language']) ? $_SESSION['default_language'] : Settings::get('default_language');
+echo $twig->render($page.'.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'groupes' => $groupes, 'langueActuelle' => $langueActuelle));
 ?>
