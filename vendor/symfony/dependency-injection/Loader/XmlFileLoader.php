@@ -503,7 +503,9 @@ class XmlFileLoader extends FileLoader
     {
         $definitions = [];
         $count = 0;
-        $suffix = '~'.ContainerBuilder::hash($file);
+        $projectDir = $this->container->hasParameter('kernel.project_dir') ? $this->container->getParameter('kernel.project_dir') : null;
+        // hashing the path relative to the project keeps the ids independent from where the project is
+        $suffix = '~'.ContainerBuilder::hash(\is_string($projectDir) && str_starts_with($file, $projectDir) ? substr($file, \strlen($projectDir)) : $file);
 
         $xpath = new \DOMXPath($xml);
         $xpath->registerNamespace('container', self::NS);
@@ -796,8 +798,11 @@ class XmlFileLoader extends FileLoader
             $dom->loadXML('<?xml version="1.0"?><test/>');
 
             $tmpfile = tempnam(sys_get_temp_dir(), 'symfony');
-            register_shutdown_function(static function () use ($tmpfile) {
-                @unlink($tmpfile);
+            $pid = getmypid();
+            register_shutdown_function(static function () use ($tmpfile, $pid) {
+                if (getmypid() === $pid) {
+                    @unlink($tmpfile);
+                }
             });
             $schema = '<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">

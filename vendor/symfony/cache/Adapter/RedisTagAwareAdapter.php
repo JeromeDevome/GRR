@@ -19,6 +19,7 @@ use Predis\Response\ErrorInterface;
 use Predis\Response\Status;
 use Relay\Relay;
 use Symfony\Component\Cache\CacheItem;
+use Symfony\Component\Cache\Exception\CacheException;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
 use Symfony\Component\Cache\Exception\LogicException;
 use Symfony\Component\Cache\Marshaller\DeflateMarshaller;
@@ -156,9 +157,10 @@ class RedisTagAwareAdapter extends AbstractTagAwareAdapter
             }
         });
 
+        $failed = false;
         foreach ($results as $id => $result) {
-            if ($result instanceof \RedisException || $result instanceof \Relay\Exception || $result instanceof ErrorInterface) {
-                CacheItem::log($this->logger, 'Failed to delete key "{key}": '.$result->getMessage(), ['key' => substr($id, \strlen($this->namespace)), 'exception' => $result]);
+            if (false === $result || $result instanceof \RedisException || $result instanceof \Relay\Exception || $result instanceof ErrorInterface) {
+                $failed = true;
 
                 continue;
             }
@@ -168,6 +170,11 @@ class RedisTagAwareAdapter extends AbstractTagAwareAdapter
             } catch (\Exception) {
                 yield $id => [];
             }
+        }
+
+        if ($failed) {
+            // Make deleteItems() retry deleting the items one by one
+            throw new CacheException('Failed to delete some keys.');
         }
     }
 
@@ -193,27 +200,31 @@ class RedisTagAwareAdapter extends AbstractTagAwareAdapter
         // the scan, it means we're in cluster mode and that the linked items
         // are on other nodes: we move the links to a temporary set and we
         // garbage collect that set from the client side.
+        // With Relay, the client deletes the linked items itself. When the script
+        // deletes them, Relay can keep serving them from memory for a short time.
 
         $lua = <<<'EOLUA'
                         redis.replicate_commands()
 
-                        local cursor = '0'
                         local id = KEYS[1]
-                        repeat
-                            local result = redis.call('SSCAN', id, cursor, 'COUNT', 5000);
-                            cursor = result[1];
-                            local rems = {}
+                        if '1' == ARGV[2] then
+                            local cursor = '0'
+                            repeat
+                                local result = redis.call('SSCAN', id, cursor, 'COUNT', 5000);
+                                cursor = result[1];
+                                local rems = {}
 
-                            for _, v in ipairs(result[2]) do
-                                local ok, _ = pcall(redis.call, 'DEL', ARGV[1]..v)
-                                if ok then
-                                    table.insert(rems, v)
+                                for _, v in ipairs(result[2]) do
+                                    local ok, _ = pcall(redis.call, 'DEL', ARGV[1]..v)
+                                    if ok then
+                                        table.insert(rems, v)
+                                    end
                                 end
-                            end
-                            if 0 < #rems then
-                                redis.call('SREM', id, unpack(rems))
-                            end
-                        until '0' == cursor;
+                                if 0 < #rems then
+                                    redis.call('SREM', id, unpack(rems))
+                                end
+                            until '0' == cursor;
+                        end
 
                         redis.call('SUNIONSTORE', '{'..id..'}'..id, id)
                         redis.call('DEL', id)
@@ -222,14 +233,16 @@ class RedisTagAwareAdapter extends AbstractTagAwareAdapter
             EOLUA;
 
         $results = $this->pipeline(function () use ($tagIds, $lua) {
+            $isRelay = $this->redis instanceof Relay;
+
             if ($this->redis instanceof \Predis\ClientInterface) {
                 $prefix = $this->redis->getOptions()->prefix ? $this->redis->getOptions()->prefix->getPrefix() : '';
-            } elseif (\is_array($prefix = $this->redis->getOption($this->redis instanceof Relay ? Relay::OPT_PREFIX : \Redis::OPT_PREFIX) ?? '')) {
+            } elseif (\is_array($prefix = $this->redis->getOption($isRelay ? Relay::OPT_PREFIX : \Redis::OPT_PREFIX) ?? '')) {
                 $prefix = current($prefix);
             }
 
             foreach ($tagIds as $id) {
-                yield 'eval' => $this->redis instanceof \Predis\ClientInterface ? [$lua, 1, $id, $prefix] : [$lua, [$id, $prefix], 1];
+                yield 'eval' => $this->redis instanceof \Predis\ClientInterface ? [$lua, 1, $id, $prefix, '1'] : [$lua, [$id, $prefix, $isRelay ? '0' : '1'], 1];
             }
         });
 
@@ -301,14 +314,25 @@ class RedisTagAwareAdapter extends AbstractTagAwareAdapter
 
         foreach ($hosts as $host) {
             $info = $host->info('Memory');
+            $info = \is_array($info) ? ($info['Memory'] ?? $info) : [];
 
-            if (false === $info || null === $info || $info instanceof ErrorInterface) {
+            if (isset($info['maxmemory_policy'])) {
+                return $this->redisEvictionPolicy = $info['maxmemory_policy'];
+            }
+
+            // ElastiCache Serverless doesn't report its maxmemory-policy, which is always volatile-lru
+            $info = $host->info();
+            if (!\is_array($info)) {
                 continue;
             }
 
-            $info = $info['Memory'] ?? $info;
-
-            return $this->redisEvictionPolicy = $info['maxmemory_policy'] ?? '';
+            $server = $info['Server'] ?? $info;
+            $replication = $info['Replication'] ?? $info;
+            if ('cluster' === ($server['redis_mode'] ?? null) && '0' === (string) ($server['run_id'] ?? '')
+                && ('Amazon ElastiCache' === ($server['os'] ?? null) || preg_match('~^ip=[a-z0-9.-]+\.serverless\.[a-z0-9-]+\.cache\.amazonaws\.com(?:\.cn)?(?:,|$)~iD', $replication['slave0'] ?? ''))
+            ) {
+                return $this->redisEvictionPolicy = 'volatile-lru';
+            }
         }
 
         return $this->redisEvictionPolicy = '';

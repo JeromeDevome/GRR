@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Target;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\ErrorHandler\ErrorRenderer\FileLinkFormatter;
 
 /**
@@ -106,6 +107,13 @@ class DebugAutowiringCommand extends ContainerDebugCommand
         foreach ($serviceIds as $serviceId) {
             if ($container->hasDefinition($serviceId) && $container->getDefinition($serviceId)->hasTag('container.excluded')) {
                 continue;
+            }
+            try {
+                if ($container->findDefinition($serviceId)->isAbstract()) {
+                    continue;
+                }
+            } catch (ServiceNotFoundException) {
+                // the alias targets a service that was removed, it is listed as is
             }
             $text = [];
             $resolvedServiceId = $serviceId;

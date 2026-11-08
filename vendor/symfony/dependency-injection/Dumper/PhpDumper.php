@@ -1095,7 +1095,7 @@ class PhpDumper extends Dumper
             return $code;
         }
 
-        $arguments = [$inlineDef->getArguments(), $inlineDef->getFactory()];
+        $arguments = [$this->isLazyClosureOfService($inlineDef) ? [] : $inlineDef->getArguments(), $inlineDef->getFactory()];
 
         $code .= $this->addInlineVariables($id, $definition, $arguments, $forConstructor);
 
@@ -1217,6 +1217,8 @@ class PhpDumper extends Dumper
 
                 if ($callable instanceof Reference || $callable instanceof Definition) {
                     $callable = [$callable, '__invoke'];
+                } elseif (\is_string($callable) && str_contains($callable, '::')) {
+                    $callable = explode('::', $callable, 2);
                 }
             }
 
@@ -1848,7 +1850,7 @@ class PhpDumper extends Dumper
                 $definitions[$argument] = 1 + $definitions[$argument];
             } else {
                 $definitions[$argument] = 1;
-                $arguments = [$argument->getArguments(), $argument->getFactory()];
+                $arguments = [$this->isLazyClosureOfService($argument) ? [] : $argument->getArguments(), $argument->getFactory()];
                 $this->getDefinitionsFromArguments($arguments, $definitions, $calls, null === $byConstructor || $byConstructor);
                 $arguments = [$argument->getProperties(), $argument->getMethodCalls(), $argument->getConfigurator()];
                 $this->getDefinitionsFromArguments($arguments, $definitions, $calls, null !== $byConstructor && $byConstructor);
@@ -1856,6 +1858,20 @@ class PhpDumper extends Dumper
         }
 
         return $definitions;
+    }
+
+    /**
+     * Checks if the definition is a closure that gets its service only when it is called.
+     */
+    private function isLazyClosureOfService(Definition $definition): bool
+    {
+        if (['Closure', 'fromCallable'] !== $definition->getFactory() || ('Closure' === ($definition->getClass() ?: 'Closure') && !$definition->isLazy())) {
+            return false;
+        }
+
+        $callable = $definition->getArguments()[0] ?? null;
+
+        return $callable instanceof Reference || (\is_array($callable) && ($callable[0] ?? null) instanceof Reference);
     }
 
     /**
@@ -2003,14 +2019,14 @@ class PhpDumper extends Dumper
         } elseif ($value instanceof Parameter) {
             return $this->dumpParameter($value);
         } elseif ($interpolate && \is_string($value)) {
-            if (preg_match('/^%([^%]+)%$/', $value, $match)) {
+            if (preg_match('/^%([^%\s]+)%$/', $value, $match)) {
                 // we do this to deal with non string values (Boolean, integer, ...)
                 // the preg_replace_callback converts them to strings
                 return $this->dumpParameter($match[1]);
             }
             $replaceParameters = fn ($match) => "'.".$this->dumpParameter($match[2]).".'";
 
-            $code = str_replace('%%', '%', preg_replace_callback('/(?<!%)(%)([^%]+)\1/', $replaceParameters, $this->export($value)));
+            $code = str_replace('%%', '%', preg_replace_callback('/(?<!%)(%)([^%\s\']+)\1/', $replaceParameters, $this->export($value)));
 
             return $code;
         } elseif ($value instanceof \UnitEnum) {
