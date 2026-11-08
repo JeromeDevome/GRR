@@ -259,14 +259,7 @@ for ($weekcol = 0; $weekcol < 7; $weekcol++)
 	$temp_year = date('Y', $t);
 	$tt = mktime(0, 0, 0, $temp_month, $num_day, $temp_year);
 	$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE day='$t'");
-	$t += 86400;
-	if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-	{
-		if (heure_ete_hiver("hiver",$temp_year,0) == mktime(0, 0, 0, $temp_month, $num_day, $temp_year))
-			$t += 3600;
-		if (date("H", $t) == "01")
-			$t -= 3600;
-	}
+	$t = mktime(0, 0, 0, $temp_month, $num_day + 1, $temp_year);
 	if ($display_day[$num_week_day] == 1)
 	{
 		$class = "";
@@ -339,18 +332,7 @@ foreach($ressources as $row)
 			$cday = date("j", $t2);
 			$cmonth = date('m', $t2);
 			$cyear = date('Y', $t2);
-			$t2 += 86400;
-
-			if (!isset($correct_heure_ete_hiver) || ($correct_heure_ete_hiver == 1))
-			{
-				$temp_day = date('d', $t2);
-				$temp_month = date('m', $t2);
-				$temp_year = date('Y', $t2);
-				if (heure_ete_hiver("hiver", $temp_year,0) == mktime(0, 0, 0, $temp_month, $temp_day, $temp_year))
-					$t2 += 3600;
-				if (date("H", $t2) == "01")
-					$t2 -= 3600;
-			}
+			$t2 = mktime(0, 0, 0, $cmonth, $cday + 1, $cyear);
 			if ($display_day[$num_week_day] == 1)
 			{
 				$no_td = TRUE;
