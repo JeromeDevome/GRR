@@ -100,6 +100,7 @@ $form_vars = array(
     'nb_calendar' => 'int',
     'max_resa_affiche' => 'int',
     'longueur_liste_ressources_max' => 'int',
+    'form_layout_centered' => 'int',
     'calcul_plus_semaine_all' => 'int',
     'calcul_plus_mois' => 'int',
     'calcul_plus_mois2_all' => 'int'
@@ -295,6 +296,8 @@ foreach($form_vars as $var => $var_type)
             $longueur_liste_ressources_max = 1;
 
         $settings_results[] = Settings::set2("longueur_liste_ressources_max", $longueur_liste_ressources_max);
+
+        $settings_results[] = Settings::set2("form_layout_centered", $form_layout_centered);
 
     }
 

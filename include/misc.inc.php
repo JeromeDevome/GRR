@@ -236,6 +236,7 @@ $liste_settings = array(
 	"fct_echange_resa" => "0",
 	"file" => "1",
 	"firstversion" => "",
+	"form_layout_centered" => "0",
 	"gestion_lien_aide" => "ext",
 	"grr_mail_Bcc" => "0",
 	"grr_mail_method" => "bloque",
