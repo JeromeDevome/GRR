@@ -298,6 +298,16 @@ if (isset($_POST['remplissage_description_complete'])) {
         $msg .= "Erreur lors de l'enregistrement de remplissage_description_complete !<br />";
     }
 }
+// Affichage du créateur en planning
+$roles = array('nc', 'vi', 'us', 'gr', 'ad');
+foreach ($roles as $role) {
+    $key = 'display_creator_' . $role;
+    if (isset($_POST[$key])) {
+        if (!Settings::set($key, $_POST[$key])) {
+            $msg .= "Erreur lors de l'enregistrement de " . $key . " !<br />";
+        }
+    }
+}
 // pview_new_windows
 if (isset($_POST['pview_new_windows'])) {
     if (!Settings::set('pview_new_windows', $_POST['pview_new_windows'])) {

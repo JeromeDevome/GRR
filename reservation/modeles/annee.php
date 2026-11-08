@@ -32,11 +32,19 @@
         $typeExclu = (isset($row[0]))? $row[0]:NULL; // lettre identifiant le type exclu
         grr_sql_free($res);
         //Get all meetings for these months in the area that we care about
-        $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, nbparticipantmax, ".TABLE_PREFIX."_room.confidentiel_resa
-        FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
-          INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
-        WHERE (start_time <= $month_end AND end_time > $month_start AND area_id='".$area."' AND supprimer = 0)
-        ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
+        $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name, type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_type_area.type_name, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, nbparticipantmax,
+COALESCE(participants_count.nbparticipants, 0) AS nbparticipants,
+".TABLE_PREFIX."_room.confidentiel_resa,
+".TABLE_PREFIX."_entry.create_by
+FROM (".TABLE_PREFIX."_entry INNER JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id ) 
+  INNER JOIN ".TABLE_PREFIX."_type_area ON ".TABLE_PREFIX."_entry.type=".TABLE_PREFIX."_type_area.type_letter
+LEFT JOIN (
+    SELECT idresa, COUNT(*) AS nbparticipants
+    FROM ".TABLE_PREFIX."_participants
+    GROUP BY idresa
+) AS participants_count ON participants_count.idresa = ".TABLE_PREFIX."_entry.id
+WHERE (start_time <= $month_end AND end_time > $month_start AND area_id='".$area."' AND supprimer = 0)
+ORDER by ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time ";
         /* contenu de la réponse si succès :
             $row[0] : start_time
             $row[1] : end_time
@@ -56,8 +64,10 @@
             $row[15]: Type_name
             $row[16]: overload fields description
             $row[17]: room_id
-            $row[18]: nbparticipantmax
-            $row[19]: confidentiel_resa
+           	$row[18]: nbparticipantmax
+            $row[19]: nbparticipants
+            $row[20]: confidentiel_resa
+            $row[21]: entry create_by
         */
         //Build an array of information about each day in the month.
         //The information is stored as:
@@ -92,7 +102,7 @@
                         $da[$day_num][$month_num][$year_num]["room"][]=$row[5] ;
                         $da[$day_num][$month_num][$year_num]["color"][] = $row["type"];
                         $da[$day_num][$month_num][$year_num]["beneficiaire"][] = $row[4];
-                        $da[$day_num][$month_num][$year_num]["confidentiel_resa"][] = $row[19];
+                        $da[$day_num][$month_num][$year_num]["confidentiel_resa"][] = $row[20];
                         $midnight_tonight = $midnight + 86400;
                         //Describe the start and end time, accounting for "all day"
                         //and for entries starting before/ending after today.
