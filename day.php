@@ -3,7 +3,7 @@
  * day.php
  * Permet l'affichage de la page planning en mode d'affichage "jour".
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 15:32$
+ * Dernière modification : $Date: 2026-11-09 18:50$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -177,20 +177,14 @@ else{
         if (count($rooms) == 0)
             $alerte = get_vocab("droits_insuffisants_pour_voir_ressources");
         else{
-            $ress = "(";
-            foreach($rooms as $room_id){
-                if($ress !="(")
-                    $ress .= ",".$room_id;
-                else 
-                    $ress .= $room_id;
-            }
-            $ress .= ")";
+            $ress = "('" . implode("', '", $rooms) . "')";
+        
         // recherche des réservations dans ces ressources à la date étudiée
         // les paramètres $ress, $pm7, $resolution et $am7 ayant été calculés ou mis au format entier, ils devraient être sûrs
-            $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
+/*            $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name,type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc,".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax 
             FROM (".TABLE_PREFIX."_entry JOIN ".TABLE_PREFIX."_room ON ".TABLE_PREFIX."_entry.room_id=".TABLE_PREFIX."_room.id) 
             WHERE ".TABLE_PREFIX."_room.id IN ".$ress." AND start_time < ".($pm7+$resolution)." AND end_time > ".$am7."
-            ORDER BY start_time";
+            ORDER BY start_time";*/
 // les réservations associées à notre recherche, ce jour dans ce domaine
 $sql = "SELECT start_time, end_time, ".TABLE_PREFIX."_entry.id, name, beneficiaire, ".TABLE_PREFIX."_room.room_name, type, statut_entry, ".TABLE_PREFIX."_entry.description, ".TABLE_PREFIX."_entry.option_reservation, ".TABLE_PREFIX."_room.delais_option_reservation, ".TABLE_PREFIX."_entry.moderate, beneficiaire_ext, clef, ".TABLE_PREFIX."_entry.courrier, ".TABLE_PREFIX."_entry.overload_desc, ".TABLE_PREFIX."_entry.room_id, ".TABLE_PREFIX."_entry.create_by, ".TABLE_PREFIX."_entry.nbparticipantmax,
 COALESCE(participants_count.nbparticipants, 0) AS nbparticipants
@@ -224,6 +218,7 @@ ORDER BY start_time";
     $row[17]: room_id
     $row[18]: create_by
     $row[19]: nbparticipantmax
+    $row[20]: nbparticipants
 */
             $res = grr_sql_query($sql);
             if(!$res){
@@ -260,7 +255,7 @@ ORDER BY start_time";
                     }
                     $today[$row["room_id"]][$start_t]["id"]		= $row["id"];
                     $today[$row["room_id"]][$start_t]["color"]	= $row["type"];
-                    if((isset($row["nbparticipantmax"]))&&(isset($row["nbparticipants"]))&&((int)$row["nbparticipants"] >= (int)$row["nbparticipantmax"]))
+                    if (isset($row["nbparticipantmax"], $row["nbparticipants"]) && (int)$row["nbparticipantmax"] > 0 && (int)$row["nbparticipants"] >= (int)$row["nbparticipantmax"])
                       $today[$row["room_id"]][$start_t]["color"] = "quota-atteint";
                     $today[$row["room_id"]][$start_t]["slots"]  = ($end_t - $start_t) / $resolution; // à vérifier
                     //$today[$row["room_id"]][$start_t]["data"] = contenu_cellule($options, $overloadFieldList, 1, $row, $horaires);
