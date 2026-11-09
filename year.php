@@ -3,7 +3,7 @@
  * year.php
  * Interface d'accueil avec affichage par mois sur plusieurs mois des réservations de toutes les ressources d'un domaine
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2026-02-19 15:43$
+ * Dernière modification : $Date: 2026-11-04 11:25$
  * @author    Laurent Delineau & JeromeB & Yan Naessens
  * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -26,7 +26,7 @@ include "include/mincals.inc.php";
 require_once("./include/settings.class.php");
 $settings = new Settings();
 if (!$settings)
-	die("Erreur chargement settings");
+  die("Erreur chargement settings");
 require_once("./include/session.inc.php");
 include "include/resume_session.php";
 include "include/language.inc.php";
@@ -39,13 +39,13 @@ $acces_config_level = (Settings::get('acces_config'))? Settings::get('acces_conf
 
 $affiche_pview = '1';
 if (!isset($_GET['pview']))
-	$_GET['pview'] = 0;
+  $_GET['pview'] = 0;
 else
-	$_GET['pview'] = 1;
+  $_GET['pview'] = 1;
 if ($_GET['pview'] == 1)
-	$class_image = "print_image";
+  $class_image = "print_image";
 else
-	$class_image = "image";
+  $class_image = "image";
 $from_month = isset($_GET["from_month"]) ? intval($_GET["from_month"]) : (isset($_GET['month'])? intval($_GET['month']) : NULL);
 $from_year = isset($_GET["from_year"]) ? intval($_GET["from_year"]) : (isset($_GET['year'])? intval($_GET['year']) : NULL);
 $to_month = isset($_GET["to_month"]) ? intval($_GET["to_month"]) : (isset($_GET['month'])? intval($_GET['month']) : NULL);
@@ -54,44 +54,44 @@ $day = 1;
 $date_now = time();
 //Default parameters:
 if (empty($debug_flag))
-	$debug_flag = 0;
+  $debug_flag = 0;
 if (empty($from_month) || empty($from_year) || !checkdate($from_month, 1, $from_year))
 {
-	if ($date_now < Settings::get('begin_bookings'))
-		$date_ = Settings::get('begin_bookings');
-	else if ($date_now > Settings::get('end_bookings'))
-		$date_ = Settings::get('end_bookings');
-	else
-		$date_ = $date_now;
-	$day   = date('d',$date_);
-	$from_month = date('m',$date_);
-	$from_year  = date('Y',$date_);
+  if ($date_now < Settings::get('begin_bookings'))
+    $date_ = Settings::get('begin_bookings');
+  else if ($date_now > Settings::get('end_bookings'))
+    $date_ = Settings::get('end_bookings');
+  else
+    $date_ = $date_now;
+  $day   = date('d',$date_);
+  $from_month = date('m',$date_);
+  $from_year  = date('Y',$date_);
 }
 else
 {
-	$date_ = mktime(0, 0, 0, $from_month, $day, $from_year);
-	if ($date_ < Settings::get('begin_bookings'))
-		$date_ = Settings::get('begin_bookings');
-	else if ($date_ > Settings::get('end_bookings'))
-		$date_ = Settings::get('end_bookings');
-	$day   = date('d',$date_);
-	$from_month = date('m',$date_);
-	$from_year  = date('Y',$date_);
+  $date_ = mktime(0, 0, 0, $from_month, $day, $from_year);
+  if ($date_ < Settings::get('begin_bookings'))
+    $date_ = Settings::get('begin_bookings');
+  else if ($date_ > Settings::get('end_bookings'))
+    $date_ = Settings::get('end_bookings');
+  $day   = date('d',$date_);
+  $from_month = date('m',$date_);
+  $from_year  = date('Y',$date_);
 }
 if (empty($to_month) || empty($to_year) || !checkdate($to_month, 1, $to_year))
 {
-	$to_month = $from_month;
-	$to_year  = $from_year;
+  $to_month = $from_month;
+  $to_year  = $from_year;
 }
 else
 {
-	$date_ = mktime(0, 0, 0, $to_month, 1, $to_year);
-	if ($date_ < Settings::get('begin_bookings'))
-		$date_ = Settings::get('begin_bookings');
-	else if ($date_ > Settings::get('end_bookings'))
-		$date_ = Settings::get('end_bookings');
-	$to_month = date('m',$date_);
-	$to_year  = date('Y',$date_);
+  $date_ = mktime(0, 0, 0, $to_month, 1, $to_year);
+  if ($date_ < Settings::get('begin_bookings'))
+    $date_ = Settings::get('begin_bookings');
+  else if ($date_ > Settings::get('end_bookings'))
+    $date_ = Settings::get('end_bookings');
+  $to_month = date('m',$date_);
+  $to_year  = date('Y',$date_);
 }
 // définition de variables globales
 global $racine, $racineAd, $desactive_VerifNomPrenomUser;
@@ -102,9 +102,9 @@ $back = (isset($_SERVER['HTTP_REFERER']))? htmlspecialchars($_SERVER['HTTP_REFER
 // Type de session
 $user_name = getUserName();
 if ((Settings::get("authentification_obli") == 0) && ($user_name == ''))
-	$type_session = "no_session";
+  $type_session = "no_session";
 else
-	$type_session = "with_session";
+  $type_session = "with_session";
 // autres initialisations
 $adm = 0;
 $racine = "./";
@@ -118,14 +118,14 @@ VerifNomPrenomUser($type_session);
 if (check_begin_end_bookings($day, $from_month, $from_year))
 {
     start_page_w_header($day,$from_month,$from_year,$type_session);
-	showNoBookings($day, $from_month, $from_year, $back);
-	exit();
+  showNoBookings($day, $from_month, $from_year, $back);
+  exit();
 }
 if (((authGetUserLevel($user_name,-1) < 1) && (Settings::get("authentification_obli") == 1)) || authUserAccesArea($user_name, $area) == 0)
 {
     start_page_w_header($day,$from_month,$from_year,$type_session);
-	showAccessDenied($back);
-	exit();
+  showAccessDenied($back);
+  exit();
 }
 
 // On vérifie une fois par jour si le délai de confirmation des réservations est dépassé
@@ -134,8 +134,8 @@ if (((authGetUserLevel($user_name,-1) < 1) && (Settings::get("authentification_o
 // Si non, une notification email est envoyée
 if (Settings::get("verif_reservation_auto") == 0)
 {
-	verify_confirm_reservation();
-	verify_retard_reservation();
+  verify_confirm_reservation();
+  verify_retard_reservation();
 }
 
 //Month view start time. This ignores morningstarts/eveningends because it
@@ -181,10 +181,10 @@ if((isset($msg))&&($msg != "")) // les paramètres ne sont pas valides, on renvo
 
 if ($enable_periods == 'y')
 {
-	$resolution = 60;
-	$morningstarts = 12;
-	$eveningends = 12;
-	$eveningends_minutes = count($periods_name) - 1;
+  $resolution = 60;
+  $morningstarts = 12;
+  $eveningends = 12;
+  $eveningends_minutes = count($periods_name) - 1;
 }
 //Used below: localized "all day" text but with non-breaking spaces:
 $all_day = preg_replace("/ /", " ", get_vocab("all_day"));
@@ -217,7 +217,7 @@ ORDER BY ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time";
     $row[12]: beneficiaire_ext
     $row[13]: clef
     $row[14]: courrier
-	$row[15]: Type_name , supprimé le 07/11/22
+  $row[15]: Type_name , supprimé le 07/11/22
     $row[16]: overload fields description
     $row[17]: room_id
     $row[18]: create_by
@@ -229,14 +229,14 @@ ORDER BY ".TABLE_PREFIX."_room.order_display, room_name, start_time, end_time";
 // d[monthday]["data"][] = "start-stop" times of each entry.
 $res = grr_sql_query($sql,"iii",[ $area, $month_end, $month_start]);
 if (!$res)
-	echo grr_sql_error();
+  echo grr_sql_error();
 else
 {
     $overloadFieldList = mrbsOverloadGetFieldslist($area);
     foreach($res as $row)
-	{
-		if ($row["type"] <> $typeExclu)   // identifiant du type exclu
-		{
+  {
+    if ($row["type"] <> $typeExclu)   // identifiant du type exclu
+    {
             //Fill in data for each day during the month that this meeting covers.
             //Note: int casts on database rows for min and max is needed for PHP3.
             $t = max((int)$row["start_time"], $month_start);
@@ -281,7 +281,7 @@ else
                             $horaires = $start_str . "~==>";
                             break;
                         case "= = ":
-                            $horaires = $all_day2.$temp;
+                            $horaires = $all_day2;
                             break;
                         case "= > ":
                             $horaires = $all_day2 . "==>";
@@ -340,7 +340,7 @@ else
                 $year_num  = date("Y", $t);
             }
         } // fin condition type exclu
-	}
+  }
 }
 grr_sql_free($res);
 
@@ -374,7 +374,7 @@ include $racine."/include/hook.class.php";
 header('Content-Type: text/html; charset=utf-8');
 if (!isset($_COOKIE['open']))
 {
-	header('Set-Cookie: open=true; SameSite=Strict');
+  header('Set-Cookie: open=true; SameSite=Strict');
 }
 echo '<!DOCTYPE html>'.PHP_EOL;
 echo '<html lang="fr">'.PHP_EOL;
@@ -397,7 +397,7 @@ if ($_GET['pview'] != 1)
 {
     echo "<div class='row'>";
         echo "\n<div class=\"col-lg-3 col-md-4 col-xs-12\">\n".PHP_EOL; // choix du site et du domaine
-            	echo make_site_select_html('year.php',$id_site,$from_year,$from_month,$day,$user_name);
+              echo make_site_select_html('year.php',$id_site,$from_year,$from_month,$day,$user_name);
                 echo make_area_select_all_html('year',$id_site, $area, $from_year, $from_month, $day, $user_name);
         echo "</div>";
         echo "\n<div class=\"col-lg-4 col-md-6 col-xs-12\">\n".PHP_EOL; // choix des dates 
@@ -423,56 +423,56 @@ if ($_GET['pview'] != 1)
 // lien "précédent" pour les plannings imprimables dans la même fenêtre
 if (isset($_GET['precedent']))
 {
-	if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
-	{
-		echo '<span id="lienPrecedent">'.PHP_EOL;
-		echo '<button class="btn btn-default btn-xs" onclick="javascript:history.back();">Précedent</button>'.PHP_EOL;
-		echo '</span>'.PHP_EOL;
-	}
+  if ($_GET['pview'] == 1 && $_GET['precedent'] == 1)
+  {
+    echo '<span id="lienPrecedent">'.PHP_EOL;
+    echo '<button class="btn btn-default btn-xs" onclick="javascript:history.back();">Précedent</button>'.PHP_EOL;
+    echo '</span>'.PHP_EOL;
+  }
 }
 echo "<div class=\"col-xs-12 center\"><h4>".ucfirst($this_area_name)." - ".get_vocab("all_areas")."</h4></div>\n";
 // Boucle sur les mois
 $month_indice =  $month_start;
 while ($month_indice < $month_end)
 {
-	$month_num = date("m", $month_indice);
-	$year_num  = date("Y", $month_indice);
-	$days_in_month = date("t", $month_indice);
+  $month_num = date("m", $month_indice);
+  $year_num  = date("Y", $month_indice);
+  $days_in_month = date("t", $month_indice);
     echo "<table class='mois table-bordered table-striped'>";
     echo "<caption>";
     echo "<h4><a href='month_all2.php?month=".$month_num."&year=".$year_num."&area=".$area."'>".ucfirst(utf8_strftime("%B", $month_indice))."</a>".utf8_strftime(" %Y", $month_indice)."</h4>";
     echo "</caption>";
-	// Début affichage de la première ligne
-	echo "<thead><tr>";
-	tdcell("cell_hours");
-	echo get_vocab('rooms')."</td>\n";
-	$t2 = mktime(0, 0, 0, $month_num, 1, $year_num);
-	for ($k = 0; $k < $days_in_month; $k++)
-	{
-		$cday = date("j", $t2);
-		$cmonth =date("m", $t2);
-		$cweek = date("w", $t2);
-		$cyear = date("Y", $t2);
-		$name_day = ucfirst(utf8_strftime("%a<br />%d", $t2)); // On inscrit le quantième du jour dans la deuxième ligne
-		$temp = mktime(0,0,0,$cmonth,$cday,$cyear);
-//		$jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
-        $t2 = mktime(0,0,0,$month_num,$cday+1,$year_num);
-		if ($display_day[$cweek] == 1)
-		{
-			if (isHoliday($temp)) {echo tdcell("cell_hours ferie");}
-            else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours vacance");}
-            else {echo tdcell("cell_hours");}
-			echo "<div><a title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\"   href=\"day.php?year=$year_num&amp;month=$month_num&amp;day=$cday&amp;area=$area\">$name_day</a>";
-            if(isset($jours_cycle[$temp]))
-                echo "<br />".preg_replace( "/ /", "<br />", get_vocab("rep_type_6"))." ".$jours_cycle[$temp];
-			echo "</div></td>\n";
-		}
-	}
-	echo "</tr></thead>";
-	// Fin affichage de la première ligne
-	//$sql = "SELECT room_name, capacity, id, description, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
-	//$res = grr_sql_query($sql);
-	$li = 0;
+  // Début affichage de la première ligne
+  echo "<thead><tr>";
+  tdcell("cell_hours");
+  echo get_vocab('rooms')."</td>\n";
+  $t2 = mktime(0, 0, 0, $month_num, 1, $year_num);
+  for ($k = 0; $k < $days_in_month; $k++)
+  {
+    $cday = date("j", $t2);
+    $cmonth =date("m", $t2);
+    $cweek = date("w", $t2);
+    $cyear = date("Y", $t2);
+    $name_day = ucfirst(utf8_strftime("%a<br />%d", $t2)); // On inscrit le quantième du jour dans la deuxième ligne
+    $temp = mktime(0,0,0,$cmonth,$cday,$cyear);
+//    $jour_cycle = grr_sql_query1("SELECT Jours FROM ".TABLE_PREFIX."_calendrier_jours_cycle WHERE DAY='$temp'");
+    $t2 = mktime(0,0,0,$month_num,$cday+1,$year_num);
+    if ($display_day[$cweek] == 1)
+    {
+      if (isHoliday($temp)) {echo tdcell("cell_hours ferie");}
+      else if (isSchoolHoliday($temp)) {echo tdcell("cell_hours vacance");}
+      else {echo tdcell("cell_hours");}
+      echo "<div><a title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\"   href=\"day.php?year=$year_num&amp;month=$month_num&amp;day=$cday&amp;area=$area\">$name_day</a>";
+      if(isset($jours_cycle[$temp]))
+        echo "<br />".preg_replace( "/ /", "<br />", get_vocab("rep_type_6"))." ".$jours_cycle[$temp];
+      echo "</div></td>\n";
+    }
+  }
+  echo "</tr></thead>";
+  // Fin affichage de la première ligne
+  //$sql = "SELECT room_name, capacity, id, description, comment_room, show_comment FROM ".TABLE_PREFIX."_room WHERE area_id=$area ORDER BY order_display,room_name";
+  //$res = grr_sql_query($sql);
+  $li = 0;
     //$domaine_vide = (grr_sql_count($res) == 0);
     if ($domaine_vide)
         echo "<tbody><tr><td><strong>".get_vocab("no_rooms_for_area")."</strong></td></tr></tbody>";
@@ -555,10 +555,10 @@ while ($month_indice < $month_end)
                 echo "</tr>\n";
             } // fin ressources accessibles
         } // fin boucle ressources
-	}
+  }
     echo "</table>\n";
     grr_sql_free($res);
-	$month_indice = mktime(0, 0, 0, $month_num + 1, 1, $year_num);
+  $month_indice = mktime(0, 0, 0, $month_num + 1, 1, $year_num);
 } // Fin de la boucle sur les mois
 echo "<div class='pleine center'>";
 echo "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12'>";
@@ -573,19 +573,19 @@ affiche_pop_up(get_vocab("message_records"),"user");
 echo  "<div id=\"popup_name\" class=\"popup_block\" ></div>";
 if ($_GET['pview'] != 1)
 {
-	echo '<div id="toTop">'.PHP_EOL;
-	echo '<b>'.get_vocab('top_of_page').'</b>'.PHP_EOL;
-	bouton_retour_haut ();
-	echo '</div>'.PHP_EOL;
+  echo '<div id="toTop">'.PHP_EOL;
+  echo '<b>'.get_vocab('top_of_page').'</b>'.PHP_EOL;
+  bouton_retour_haut ();
+  echo '</div>'.PHP_EOL;
 }
 echo "</section>";
 ?>
 <script type="text/javascript">
-	$(document).ready(function(){
+  $(document).ready(function(){
         if ( $(window).scrollTop() == 0 )
             $("#toTop").hide(1);
-		$("#popup_name").draggable({containment: "#container"});
-		$("#popup_name").resizable();
+    $("#popup_name").draggable({containment: "#container"});
+    $("#popup_name").resizable();
     });
 </script>
 </body>
