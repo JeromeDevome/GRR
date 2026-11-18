@@ -2863,7 +2863,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		'%resaduree%' => $duration." ".$dur_units,
 		'%resatype%' => "?".$row[5]."?",
 		'%resachampsadditionnels%' =>  affichage_champ_add_mails($id_entry),
-		'%urldetail%' => "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry,
+		'%urldetail%' => traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry,
 		'%resaperiodique%' => "",
 		'%resaconfirmation%' => "",
 		'%resadescription%' => "",
@@ -2956,7 +2956,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		if (count($tab_id_moderes) != 0 )
 		{
 			foreach ($tab_id_moderes as $id_moderes)
-				$codes['%urldetail%'] =  "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
+				$codes['%urldetail%'] = traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
 		}
 	}
 	elseif ($action == 7){ // Notification d'un retard dans la restitution d'une ressource
