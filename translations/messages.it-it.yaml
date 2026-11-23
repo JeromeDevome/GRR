@@ -1585,3 +1585,30 @@ pwa_install_android_steps: "Apri il menu ⋮ di Chrome e scegli «Installa app»
 pwa_install_close: Chiudi
 proposition_connexion_locale: "Il servizio di autenticazione centralizzata (CAS) non è disponibile o ha restituito un errore. È possibile accedere con un account locale GRR."
 se_connecter_localement: "Accedi localmente"
+reinit_mdp_lien: 'Password dimenticata?'
+reinit_mdp_titre: 'Reimpostazione della password'
+reinit_mdp_explain_login: "Inserisci il tuo identificativo. Un link di reimpostazione verrà inviato all'indirizzo email associato al tuo account."
+reinit_mdp_explain_login_email: "Inserisci il tuo identificativo o il tuo indirizzo email. Un link di reimpostazione verrà inviato all'indirizzo email associato al tuo account."
+reinit_mdp_identifiant: Identificativo
+reinit_mdp_identifiant_email: 'Identificativo o indirizzo email'
+reinit_mdp_envoyer: 'Invia il link di reimpostazione'
+reinit_mdp_demande_ok: 'Se esiste un account corrispondente, è stata appena inviata una email contenente un link di reimpostazione. Questo link è valido per %duree% minuti.'
+reinit_mdp_lien_invalide: 'Questo link di reimpostazione non è valido o è scaduto. Puoi effettuare una nuova richiesta.'
+reinit_mdp_nouveau: 'Nuova password'
+reinit_mdp_confirmation: 'Conferma la nuova password'
+reinit_mdp_valider: 'Salva la password'
+reinit_mdp_ok: 'La tua password è stata modificata. Ora puoi accedere.'
+reinit_mdp_inactif: 'Errore: funzione non attiva'
+reinit_mdp_retour_login: "Torna all'accesso"
+reinit_mdp_admin_explain: "Consentire agli utenti locali attivi di reimpostare autonomamente la propria password dalla pagina di accesso. Un link a durata limitata, utilizzabile una sola volta, viene inviato all'indirizzo email del loro account."
+reinit_mdp_admin_activer: "Reimpostazione della password da parte dell'utente"
+reinit_mdp_admin_avert_mail: "L'invio delle email è disattivato: la funzione non sarà proposta finché non sarà configurato."
+reinit_mdp_admin_config_mail: "Configurare l'invio delle email"
+reinit_mdp_admin_avert_url: "L'indirizzo di GRR (parametro grr_url) non è impostato: la funzione non sarà proposta finché non sarà configurato."
+reinit_mdp_admin_mode_login: "L'utente inserisce il proprio identificativo. Attiva «L'indirizzo email deve essere unico» (parametri degli account) per consentire anche l'inserimento dell'indirizzo email."
+reinit_mdp_admin_mode_email: "L'utente inserisce il proprio identificativo o il proprio indirizzo email (gli indirizzi email sono unici)."
+reinit_mdp_admin_modele: 'Modifica il modello della email di reimpostazione'
+mail_type_reinit_mdp: 'Password dimenticata'
+mail_desc_reinit_mdp: "Email inviata all'utente che richiede la reimpostazione della password. Codici disponibili: %identifiant%, %nom%, %prenom%, %lienreinit% (link di reimpostazione), %dureevalidite% (in minuti), %nomdusite%, %nometablissement%, %urlgrr%, %webmasteremail%."
+reinit_mdp_admin_duree: 'Durata di validità del link (in minuti, da 5 a 1440)'
+reinit_mdp_admin_duree_erreur: 'La durata di validità del link deve essere compresa tra 5 e 1440 minuti.'

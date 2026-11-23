@@ -140,6 +140,11 @@ if(isset($_POST['ok']))
                 $msg .= "Erreur lors de l'enregistrement de mails_demandecompte3_".$langue." !<br />";
         }
 
+        if (isset($_POST['mails_reinitmdp_'.$langue])) {
+            if (!Pages::set("mails_reinitmdp_".$langue, $_POST['mails_reinitmdp_titre_'.$langue], $_POST['mails_reinitmdp_'.$langue]))
+                $msg .= "Erreur lors de l'enregistrement de mails_reinitmdp_".$langue." !<br />";
+        }
+
     }
 }
 /**/

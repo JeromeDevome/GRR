@@ -14,7 +14,7 @@ final class Pages
     /** Liste des pages, sous forme d'expression régulière utilisable dans #[Route(requirements: …)]. */
     public const ROUTE_REQUIREMENT = 'account|annee|annee_all|contact|contactresa|creationcompte|deconnexion'
         .'|dragdrop|echangeresa|editentree|editentreetrt|gestionfichier|jour|login|moderationsliste'
-        .'|mois|mois2_all|mois_all|page|participation|pdfgenerator|report|resahistorique|ressourcefiche'
+        .'|mois|mois2_all|mois_all|page|participation|pdfgenerator|reinitmdp|report|resahistorique|ressourcefiche'
         .'|semaine|semaine_all|supreservation|vuedroitsdomaine|vuedroitsressource|vuereservation';
 
     /** @return list<string> */

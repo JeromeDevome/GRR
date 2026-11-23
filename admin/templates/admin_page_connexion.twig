@@ -259,6 +259,34 @@
 					</div>
 				</div>
 
+				<!-- Réinitialisation du mot de passe -->
+				<div class="card col-12">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="fas fa-key"></i> {{ trad.reinit_mdp_titre }}
+						</h3>
+					</div>
+					<div class="card-body">
+
+						<p>{{ trad.reinit_mdp_admin_explain }}</p>
+
+						{{ form.switch('fct_reinit_mdp', trad.reinit_mdp_admin_activer, settings.fct_reinit_mdp, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}
+
+						<div id="aff_dyn_reinit_mdp" {% if not settings.fct_reinit_mdp %}style="display:none"{% endif %}>
+							{% if settings.grr_mail_method == 'bloque' or settings.grr_mail_method == '' %}
+								<p class="text-danger"><b>{{ trad.reinit_mdp_admin_avert_mail }}</b> - <a href="?p=admin_mail_serveur">{{ trad.reinit_mdp_admin_config_mail }}</a></p>
+							{% endif %}
+							{% if settings.grr_url|trim == '' %}
+								<p class="text-danger"><b>{{ trad.reinit_mdp_admin_avert_url }}</b></p>
+							{% endif %}
+							<p>{{ settings.mail_user_unique == 1 ? trad.reinit_mdp_admin_mode_email : trad.reinit_mdp_admin_mode_login }}</p>
+							<p><a href="?p=admin_mails">{{ trad.reinit_mdp_admin_modele }}</a></p>
+							{{ form.input('fct_reinit_mdp_duree', trad.reinit_mdp_admin_duree, settings.fct_reinit_mdp_duree|default(60), {classGroup: 'col-sm-12', classLabel: 'col-sm-6', classDivInput: 'col-sm-6 control-label', type: 'number', min: 5, max: 1440, require: 1}) }}
+							{{ form.switch('fct_reinit_mdp_captcha', trad.captcha_utiliser, settings.fct_reinit_mdp_captcha, {classGroup: 'col-12', classLabel: 'col-10', classDivInput: 'col-2'}) }}
+						</div>
+					</div>
+				</div>
+
 			</div><!-- /.col 12 -->
 
 			<!-- Enregistrer -->
@@ -294,6 +322,11 @@
 				} else {
 					$sectionCreaCpt.slideUp();
 				}
+			});
+
+			// Afficher/masquer la section de réinitialisation du mot de passe
+			$('input[name="fct_reinit_mdp"]').on('change', function() {
+				$('#aff_dyn_reinit_mdp')[$(this).is(':checked') ? 'slideDown' : 'slideUp']();
 			});
 		})
 	</script>

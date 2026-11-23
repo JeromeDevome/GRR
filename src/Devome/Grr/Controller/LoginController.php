@@ -3,6 +3,7 @@
 namespace Devome\Grr\Controller;
 
 use Devome\Grr\Service\GrrApplicationContext;
+use Devome\Grr\Service\PasswordReset;
 use Hook;
 use SecuChaine;
 use Settings;
@@ -116,6 +117,7 @@ final class LoginController
 
         $d['liensPerso2'] = liensPerso(2, $d['levelUser'] ?? 0);
         $d['lienGRR'] = $context['grr_devel_url'] ?? '';
+        $d['reinitMdp'] = PasswordReset::isEnabled();
         $templateNumber = Settings::get('login_template') > 0 ? Settings::get('login_template') : 1;
         $template = 'login'.$templateNumber.'.twig';
 

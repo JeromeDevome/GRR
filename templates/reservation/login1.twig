@@ -110,6 +110,9 @@
                         <tr>
                             <td colspan="2">
                                 <input class="btn btn-primary" type="submit" name="submit" value="{{'connect'|trans}}" />
+                                {% if d.reinitMdp %}
+                                    <br><a href="reinitmdp">{{'reinit_mdp_lien'|trans}}</a>
+                                {% endif %}
                             </td>
                         </tr>
 

@@ -1586,3 +1586,30 @@ pwa_install_android_steps: "Ouvrez le menu ⋮ de Chrome, puis choisissez « Ins
 pwa_install_close: Fermer
 proposition_connexion_locale: "Le service d'authentification centralisée (CAS) est indisponible ou a renvoyé une erreur. Vous pouvez vous connecter avec un compte local GRR."
 se_connecter_localement: "Se connecter localement"
+reinit_mdp_lien: 'Mot de passe oublié ?'
+reinit_mdp_titre: 'Réinitialisation du mot de passe'
+reinit_mdp_explain_login: "Saisissez votre identifiant. Un lien de réinitialisation sera envoyé à l'adresse mail associée à votre compte."
+reinit_mdp_explain_login_email: "Saisissez votre identifiant ou votre adresse mail. Un lien de réinitialisation sera envoyé à l'adresse mail associée à votre compte."
+reinit_mdp_identifiant: Identifiant
+reinit_mdp_identifiant_email: 'Identifiant ou adresse mail'
+reinit_mdp_envoyer: 'Envoyer le lien de réinitialisation'
+reinit_mdp_demande_ok: "Si un compte correspondant existe, un mail contenant un lien de réinitialisation vient d'être envoyé. Ce lien est valable %duree% minutes."
+reinit_mdp_lien_invalide: 'Ce lien de réinitialisation est invalide ou a expiré. Vous pouvez faire une nouvelle demande.'
+reinit_mdp_nouveau: 'Nouveau mot de passe'
+reinit_mdp_confirmation: 'Confirmez le nouveau mot de passe'
+reinit_mdp_valider: 'Enregistrer le mot de passe'
+reinit_mdp_ok: 'Votre mot de passe a été modifié. Vous pouvez maintenant vous connecter.'
+reinit_mdp_inactif: 'Erreur : fonction non active'
+reinit_mdp_retour_login: 'Retour à la connexion'
+reinit_mdp_admin_explain: "Permettre aux utilisateurs locaux actifs de réinitialiser eux-mêmes leur mot de passe depuis la page de connexion. Un lien à durée limitée, utilisable une seule fois, est envoyé à l'adresse mail de leur compte."
+reinit_mdp_admin_activer: "Réinitialisation du mot de passe par l'utilisateur"
+reinit_mdp_admin_avert_mail: "L'envoi de mails est désactivé : la fonction ne sera pas proposée tant qu'il ne sera pas configuré."
+reinit_mdp_admin_config_mail: "Configurer l'envoi de mails"
+reinit_mdp_admin_avert_url: "L'adresse de GRR (paramètre grr_url) n'est pas renseignée : la fonction ne sera pas proposée tant qu'elle ne sera pas configurée."
+reinit_mdp_admin_mode_login: "L'utilisateur saisit son identifiant. Activez « L'adresse mail doit être unique » (paramètres des comptes) pour permettre aussi la saisie de l'adresse mail."
+reinit_mdp_admin_mode_email: "L'utilisateur saisit son identifiant ou son adresse mail (les adresses mail sont uniques)."
+reinit_mdp_admin_modele: 'Modifier le modèle du mail de réinitialisation'
+mail_type_reinit_mdp: 'Mot de passe oublié'
+mail_desc_reinit_mdp: "Mail envoyé à l'utilisateur qui demande la réinitialisation de son mot de passe. Codes disponibles : %identifiant%, %nom%, %prenom%, %lienreinit% (lien de réinitialisation), %dureevalidite% (en minutes), %nomdusite%, %nometablissement%, %urlgrr%, %webmasteremail%."
+reinit_mdp_admin_duree: 'Durée de validité du lien (en minutes, de 5 à 1440)'
+reinit_mdp_admin_duree_erreur: 'La durée de validité du lien doit être comprise entre 5 et 1440 minutes.'

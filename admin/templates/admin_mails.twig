@@ -39,6 +39,7 @@
                       <a class="nav-link" id="vert-tabs-{{langue}}-resamoderationdecision-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-resamoderationdecision" role="tab" aria-controls="vert-tabs-{{langue}}-resamoderationdecision" aria-selected="false">{{trad.mail_type_resa_moderation_decision}}</a>
                       <a class="nav-link" id="vert-tabs-{{langue}}-retardrestitution-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-retardrestitution" role="tab" aria-controls="vert-tabs-{{langue}}-retardrestitution" aria-selected="false">{{trad.mail_type_resa_retard}}</a>
                       <a class="nav-link" id="vert-tabs-{{langue}}-demandecompte-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-demandecompte" role="tab" aria-controls="vert-tabs-{{langue}}-demandecompte" aria-selected="false">{{trad.mail_type_compte_demande}}</a>
+                      <a class="nav-link" id="vert-tabs-{{langue}}-reinitmdp-tab" data-bs-toggle="pill" href="#vert-tabs-{{langue}}-reinitmdp" role="tab" aria-controls="vert-tabs-{{langue}}-reinitmdp" aria-selected="false">{{trad.mail_type_reinit_mdp}}</a>
                     </div>
                   </div>
                   <!-- Contenu des types de mails -->
@@ -220,6 +221,17 @@
                         <p>{{trad.mail_desc_compte_decision2}}</p>
                         {{ form.input(titreform3, "", pages[namform3][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
                         {{ form.summernote(namform3, '', pages[namform3][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform3}) }}
+                      </div>
+
+                      <!-- Réinitialisation du mot de passe -->
+                      <div class="tab-pane fade" id="vert-tabs-{{langue}}-reinitmdp" role="tabpanel" aria-labelledby="vert-tabs-{{langue}}-reinitmdp-tab">
+                        <h3>{{trad.mail_type_reinit_mdp}}</h3>
+                        {% set titreform = 'mails_reinitmdp_titre_'~ langue %}
+                        {% set namform = 'mails_reinitmdp_'~ langue %}
+
+                        <p>{{trad.mail_desc_reinit_mdp}}</p>
+                        {{ form.input(titreform, "", pages[namform][0], {classGroup: 'col-sm-12', classLabel: 'col-sm-0', classDivInput: 'col-sm-12 control-label'}) }}
+                        {{ form.summernote(namform, '', pages[namform][1], {classGroup: 'col-sm-12', classDivInput: 'col-sm-12', name: namform}) }}
                       </div>
 
                     </div>

@@ -122,6 +122,10 @@
 
                         <input class="btn btn-primary" type="submit" name="submit" value="{{'connect'|trans}}" />
 
+                        {% if d.reinitMdp %}
+                            <a href="reinitmdp" class="btn btn-link">{{'reinit_mdp_lien'|trans}}</a>
+                        {% endif %}
+
                         {% if settings.fct_crea_cpt == 1 %}
                             <a href="creationcompte" class="btn btn-primary" >{{'crea_compte_inscrivez'|trans}}</a>
                         {% endif %}

@@ -47,7 +47,10 @@ $form_vars = array(
     'fct_crea_cpt' => 'int',
     'fct_crea_cpt_login' => 'int',
     'fct_crea_cpt_statut' => 'int',
-    'fct_crea_cpt_captcha' => 'int'
+    'fct_crea_cpt_captcha' => 'int',
+    'fct_reinit_mdp' => 'int',
+    'fct_reinit_mdp_captcha' => 'int',
+    'fct_reinit_mdp_duree' => 'int'
 );
 // récupération des valeurs des variables passées en paramètres
 foreach($form_vars as $var => $var_type)
@@ -151,6 +154,18 @@ foreach($form_vars as $var => $var_type)
 
         // Activer le captcha pour la création de compte
         $settings_results[] = Settings::set2("fct_crea_cpt_captcha", $fct_crea_cpt_captcha);
+    }
+
+/** Réinitialisation du mot de passe par l'utilisateur **/
+    if ($submit == 1) {
+        $settings_results[] = Settings::set2("fct_reinit_mdp", $fct_reinit_mdp);
+        $settings_results[] = Settings::set2("fct_reinit_mdp_captcha", $fct_reinit_mdp_captcha);
+
+        // Durée de validité du lien (en minutes), entre 5 minutes et 24 heures
+        if ($fct_reinit_mdp_duree >= 5 && $fct_reinit_mdp_duree <= 1440)
+            $settings_results[] = Settings::set2("fct_reinit_mdp_duree", $fct_reinit_mdp_duree);
+        else
+            $settings_results[] = array(4, $trad['reinit_mdp_admin_duree_erreur']);
     }
 
 /** Résultat de l'enregistrement **/

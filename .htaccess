@@ -64,7 +64,7 @@ ErrorDocument 504 /%{reqenv:GRR_BASE}erreur.php
     RewriteRule ^reservation(?:/.*)?$ public/index.php [QSA,L]
     RewriteRule ^app\.php$ public/index.php [QSA,L]
     # Routes propres des pages (liste = Devome\Grr\Routing\Pages::ROUTE_REQUIREMENT, vérifiée par tests/symfony_smoke.php)
-    RewriteRule ^(?:account|annee|annee_all|contact|contactresa|creationcompte|deconnexion|dragdrop|echangeresa|editentree|editentreetrt|gestionfichier|jour|login|moderationsliste|mois|mois2_all|mois_all|page|participation|pdfgenerator|report|resahistorique|ressourcefiche|semaine|semaine_all|supreservation|vuedroitsdomaine|vuedroitsressource|vuereservation)$ public/index.php [QSA,L]
+    RewriteRule ^(?:account|annee|annee_all|contact|contactresa|creationcompte|deconnexion|dragdrop|echangeresa|editentree|editentreetrt|gestionfichier|jour|login|moderationsliste|mois|mois2_all|mois_all|page|participation|pdfgenerator|reinitmdp|report|resahistorique|ressourcefiche|semaine|semaine_all|supreservation|vuedroitsdomaine|vuedroitsressource|vuereservation)$ public/index.php [QSA,L]
     RewriteRule ^_(?:symfony|profiler|wdt)(?:/.*)?$ public/index.php [QSA,L]
     RewriteRule ^\.git(/|$) - [F,L]
     RewriteRule ^\.env(/|$) - [F,L]

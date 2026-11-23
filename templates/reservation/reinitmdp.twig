@@ -1,0 +1,88 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div id="page-resa" class="col-lg-12 col-md-12 col-xs-12">
+	<div class="container" style="max-width: 640px;">
+
+		<h2>{{ 'reinit_mdp_titre'|trans }}</h2>
+
+		{% if d.msgErreur %}
+			<div class="alert alert-danger" role="alert">{{ d.msgErreur }}</div>
+		{% endif %}
+
+		{% if d.msgOk %}
+			<div class="alert alert-success" role="alert">{{ d.msgOk }}</div>
+		{% endif %}
+
+		{% if d.etape == 'demande' %}
+			<form method="post" action="reinitmdp" autocomplete="off">
+				<p>{{ (d.emailLookup ? 'reinit_mdp_explain_login_email' : 'reinit_mdp_explain_login')|trans }}</p>
+
+				<div class="form-group mb-3">
+					<label for="identifiant">{{ (d.emailLookup ? 'reinit_mdp_identifiant_email' : 'reinit_mdp_identifiant')|trans }}</label>
+					<input class="form-control" type="text" id="identifiant" name="identifiant" maxlength="190" required autofocus />
+				</div>
+
+				{% if d.captcha %}
+					<div class="form-group mb-3">
+						<img id="captcha-image" src="{{ path('symfony_reservation_ajax', {'action': 'captcha.inc.php'}) }}" alt="Captcha" />
+						<button class="btn btn-default" type="button" id="captcha-refresh"><i class="fa-solid fa-sync"></i></button>
+						<input class="form-control" type="text" name="captcha" required />
+					</div>
+				{% endif %}
+
+				<input class="btn btn-primary" type="submit" value="{{ 'reinit_mdp_envoyer'|trans }}" />
+				<a class="btn btn-secondary" href="login">{{ 'reinit_mdp_retour_login'|trans }}</a>
+			</form>
+
+		{% elseif d.etape == 'nouveau' %}
+			<form method="post" action="reinitmdp" autocomplete="off">
+				<input type="hidden" name="token" value="{{ d.token }}" />
+				<p>{{ 'login'|trans }}{{ 'deux_points'|trans }}<b>{{ d.login }}</b></p>
+
+				<div class="form-group mb-3">
+					<label for="mdp1">{{ 'reinit_mdp_nouveau'|trans }}</label>
+					<input class="form-control" type="password" id="mdp1" name="mdp1" autocomplete="new-password" required autofocus />
+				</div>
+				<div class="form-group mb-3">
+					<label for="mdp2">{{ 'reinit_mdp_confirmation'|trans }}</label>
+					<input class="form-control" type="password" id="mdp2" name="mdp2" autocomplete="new-password" required />
+				</div>
+				<p class="small">
+					{{ 'pwd_toot_short'|trans }}
+					{% if settings.pass_nb_min == 1 %}, {{settings.pass_nb_min}} {{'pass_x_min'|trans}}{% endif %}
+					{% if settings.pass_nb_min > 1 %}, {{settings.pass_nb_min}} {{'pass_x_mins'|trans}}{% endif %}
+					{% if settings.pass_nb_maj == 1 %}, {{settings.pass_nb_maj}} {{'pass_x_maj'|trans}}{% endif %}
+					{% if settings.pass_nb_maj > 1 %}, {{settings.pass_nb_maj}} {{'pass_x_majs'|trans}}{% endif %}
+					{% if settings.pass_nb_ch == 1 %}, {{settings.pass_nb_ch}} {{'pass_x_ch'|trans}}{% endif %}
+					{% if settings.pass_nb_ch > 1 %}, {{settings.pass_nb_ch}} {{'pass_x_chs'|trans}}{% endif %}
+					{% if settings.pass_nb_sp == 1 %}, {{settings.pass_nb_sp}} {{'pass_x_sp'|trans}}{% endif %}
+					{% if settings.pass_nb_sp > 1 %}, {{settings.pass_nb_sp}} {{'pass_x_sps'|trans}}{% endif %}
+				</p>
+
+				<input class="btn btn-primary" type="submit" value="{{ 'reinit_mdp_valider'|trans }}" />
+			</form>
+
+		{% else %}
+			<a class="btn btn-primary" href="login">{{ 'reinit_mdp_retour_login'|trans }}</a>
+		{% endif %}
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		const captchaRefresh = document.getElementById('captcha-refresh');
+		if (captchaRefresh) {
+			captchaRefresh.addEventListener('click', function() {
+				document.getElementById('captcha-image').src = '{{ path('symfony_reservation_ajax', {'action': 'captcha.inc.php'}) }}?t=' + Date.now();
+			});
+		}
+	</script>
+{% endblock %}
