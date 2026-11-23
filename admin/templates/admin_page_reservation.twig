@@ -697,7 +697,7 @@
 					id_area:$('#p_id_area').val(),
 					default_room : '{{ settings.default_room }}',
 					type:'ressource',
-					action:+action,
+					mode:+action,
 				},
 				success: function(returnData){
 					$("#div_liste_ressources").html(returnData);

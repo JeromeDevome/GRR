@@ -249,10 +249,10 @@
 				type: "get",
 				dataType: "html",
 				data: {
-					id_area:$('#id_area').val(),
+					id_area:$('#p_id_area').val(),
 					default_room : '{{ utilisateur.default_room }}',
 					type:'ressource',
-					action:+action,
+					mode:+action,
 				},
 				success: function(returnData){
 					$("#div_liste_ressources").html(returnData);

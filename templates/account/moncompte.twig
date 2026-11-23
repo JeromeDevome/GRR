@@ -250,7 +250,7 @@
 					// default_room : '<?php echo Settings::get("default_room"); ?>',
 					default_room : '{{d.default_room}}',
 					type:'ressource',
-					action:+action,
+					mode:+action,
 					},
 				success: function(returnData){
 					$("#div_liste_ressources").html(returnData);

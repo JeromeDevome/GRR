@@ -456,10 +456,11 @@ final class AccountController
 
     private function domainOptions(Request $request, string $targetLogin): string
     {
-        $site = $this->integerParameter($request, 'id_site', null);
-        $defaultArea = $this->integerParameter($request, 'default_area', null);
+        // Site / domaine par défaut absents (ex. création d'un utilisateur) : aucun (-1)
+        $site = $this->integerParameter($request, 'id_site', -1);
+        $defaultArea = $this->integerParameter($request, 'default_area', -1);
         $useSite = $this->integerParameter($request, 'use_site', null);
-        if ($site === null || $defaultArea === null || !in_array($useSite, [0, 1], true)) {
+        if (!in_array($useSite, [0, 1], true)) {
             throw new BadRequestHttpException('Paramètres de domaine manquants.');
         }
 
@@ -501,21 +502,18 @@ final class AccountController
 
     private function roomOptions(Request $request): string
     {
-        $defaultRoom = $this->integerParameter($request, 'default_room', null);
-        $action = $this->integerParameter($request, 'action', 1);
-        if ($defaultRoom === null) {
-            throw new BadRequestHttpException('Paramètre de ressource manquant.');
-        }
+        // Ressource par défaut absente (ex. création d'un utilisateur) : « toutes les ressources » (-1)
+        $defaultRoom = $this->integerParameter($request, 'default_room', -1);
+        // « mode » et non « action » : ce dernier est déjà utilisé dans l'URL (action=lists)
+        $action = $this->integerParameter($request, 'mode', 1);
 
         $label = htmlspecialchars($this->translator->trans('default_room'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         if ($action === 2) {
             return '<div class="form-group row col-sm-12"><label class="col-sm-6" for="p_id_room">'.$label.'</label><div class="col-sm-6"><select class="form-control" name="p_id_room" id="p_id_room"><option value="-1">'.htmlspecialchars($this->translator->trans('default_room_all'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</option></select></div></div>';
         }
 
-        $area = $this->integerParameter($request, 'id_area', null);
-        if ($area === null) {
-            throw new BadRequestHttpException('Paramètre de domaine manquant.');
-        }
+        // Aucun domaine choisi : seules les options « toutes les ressources » sont proposées
+        $area = $this->integerParameter($request, 'id_area', -1);
 
         return $this->buildRoomOptions($area, $defaultRoom);
     }
