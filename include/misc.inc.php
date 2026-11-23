@@ -40,7 +40,7 @@ $versionReposite = "Release-v".$version_grr.$gitHub;
 # Configuration Requise
 #################################
 // Version PHP minimum
-$php_mini = "8.1.0";
+$php_mini = "8.3.0";
 // Version PHP maximum testé et validé par : JeromeB
 $php_max_valide = "8.5.8";
 // Version PHP maximum qui est sensé fonctionné, si compatible avec toutes les versions à ce jour laisser vide
@@ -169,8 +169,8 @@ $liste_settings = array(
 	"acces_fiche_reservation" => "0",
 	"ActiveModeDemo" => "0",
 	"ActiveModeDiagnostic" => "0",
-	"allow_my_connections" => "0",
-	"allow_my_reservations" => "0",
+	"allow_my_connections" => "1",
+	"allow_my_reservations" => "1",
 	"allow_gestionnaire_modify_del" => "1",
 	"allow_search_level" => "1",
 	"allow_user_delete_after_begin" => "0",

@@ -21,6 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use Prophecy\Prophecy\ProphecySubjectInterface;
 use ProxyManager\Proxy\ProxyInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\DependencyInjection\Argument\LazyClosure;
 use Symfony\Component\ErrorHandler\Internal\TentativeTypes;
 use Symfony\Component\VarExporter\LazyObjectInterface;
@@ -70,12 +71,14 @@ class DebugClassLoader
         'iterable' => 'iterable',
         'object' => 'object',
         'string' => 'string',
+        'non-empty-string' => 'string',
         'self' => 'self',
         'parent' => 'parent',
         'mixed' => 'mixed',
         'static' => 'static',
         '$this' => 'static',
         'list' => 'array',
+        'non-empty-list' => 'array',
         'class-string' => 'string',
         'never' => 'never',
     ];
@@ -106,6 +109,10 @@ class DebugClassLoader
         '__toString' => 'string',
         '__debugInfo' => 'array',
         '__serialize' => 'array',
+        '__set' => 'void',
+        '__unset' => 'void',
+        '__unserialize' => 'void',
+        '__wakeup' => 'void',
     ];
 
     /**
@@ -171,13 +178,13 @@ class DebugClassLoader
             $test = realpath($dir.$test);
 
             if (false === $test || false === $i) {
-                // filesystem is case sensitive
+                // filesystem is case-sensitive
                 self::$caseCheck = 0;
             } elseif (str_ends_with($test, $file)) {
-                // filesystem is case insensitive and realpath() normalizes the case of characters
+                // filesystem is case-insensitive and realpath() normalizes the case of characters
                 self::$caseCheck = 1;
             } elseif ('Darwin' === \PHP_OS_FAMILY) {
-                // on MacOSX, HFS+ is case insensitive but realpath() doesn't normalize the case of characters
+                // on MacOSX, HFS+ is case-insensitive but realpath() doesn't normalize the case of characters
                 self::$caseCheck = 2;
             } else {
                 // filesystem case checks failed, fallback to disabling them
@@ -198,7 +205,7 @@ class DebugClassLoader
     {
         // Ensures we don't hit https://bugs.php.net/42098
         class_exists(ErrorHandler::class);
-        class_exists(\Psr\Log\LogLevel::class);
+        class_exists(LogLevel::class);
 
         if (!\is_array($functions = spl_autoload_functions())) {
             return;
@@ -388,7 +395,7 @@ class DebugClassLoader
 
         // Don't trigger deprecations for classes in the same vendor
         if ($class !== $className) {
-            $vendor = preg_match('/^namespace ([^;\\\\\s]++)[;\\\\]/m', @file_get_contents($refl->getFileName()), $vendor) ? $vendor[1].'\\' : '';
+            $vendor = $refl->getFileName() && preg_match('/^namespace ([^;\\\\\s]++)[;\\\\]/m', @file_get_contents($refl->getFileName()) ?: '', $vendor) ? $vendor[1].'\\' : '';
             $vendorLen = \strlen($vendor);
         } elseif (2 > $vendorLen = 1 + (strpos($class, '\\') ?: strpos($class, '_'))) {
             $vendorLen = 0;
@@ -590,9 +597,7 @@ class DebugClassLoader
             $forcePatchTypes = $this->patchTypes['force'];
 
             if ($canAddReturnType = null !== $forcePatchTypes && !str_contains($method->getFileName(), \DIRECTORY_SEPARATOR.'vendor'.\DIRECTORY_SEPARATOR)) {
-                if ('void' !== (self::MAGIC_METHODS[$method->name] ?? 'void')) {
-                    $this->patchTypes['force'] = $forcePatchTypes ?: 'docblock';
-                }
+                $this->patchTypes['force'] = $forcePatchTypes ?: 'docblock';
 
                 $canAddReturnType = 2 === (int) $forcePatchTypes
                     || false !== stripos($method->getFileName(), \DIRECTORY_SEPARATOR.'Tests'.\DIRECTORY_SEPARATOR)
@@ -631,7 +636,7 @@ class DebugClassLoader
                 continue;
             }
 
-            if (isset($doc['return']) || 'void' !== (self::MAGIC_METHODS[$method->name] ?? 'void')) {
+            if (isset($doc['return'])) {
                 $this->setReturnType($doc['return'] ?? self::MAGIC_METHODS[$method->name], $method->class, $method->name, $method->getFileName(), $parent, $method->getReturnType(), $templates);
 
                 if (isset(self::$returnTypes[$class][$method->name][0]) && $canAddReturnType) {
@@ -889,8 +894,8 @@ class DebugClassLoader
         $iterable = $object = true;
         foreach ($typesMap as $n => $t) {
             if ('null' !== $n) {
-                $iterable = $iterable && (\in_array($n, ['array', 'iterable']) || str_contains($n, 'Iterator'));
-                $object = $object && (\in_array($n, ['callable', 'object', '$this', 'static']) || !isset(self::SPECIAL_RETURN_TYPES[$n]));
+                $iterable = $iterable && (\in_array($n, ['array', 'iterable'], true) || str_contains($n, 'Iterator'));
+                $object = $object && (\in_array($n, ['callable', 'object', '$this', 'static'], true) || !isset(self::SPECIAL_RETURN_TYPES[$n]));
             }
         }
 
@@ -898,6 +903,35 @@ class DebugClassLoader
         $docTypes = [];
 
         foreach ($typesMap as $n => $t) {
+            if (str_contains($n, '::')) {
+                [$definingClass, $constantName] = explode('::', $n, 2);
+                $definingClass = match ($definingClass) {
+                    'self', 'static', 'parent' => $class,
+                    default => $definingClass,
+                };
+
+                // don't autoload here: the class that holds the constant might extend a class that is still being loaded
+                if (!class_exists($definingClass, false) && !interface_exists($definingClass, false)) {
+                    return;
+                }
+
+                if (!\defined($definingClass.'::'.$constantName)) {
+                    return;
+                }
+
+                $constant = new \ReflectionClassConstant($definingClass, $constantName);
+
+                if (\PHP_VERSION_ID >= 80300 && $constantType = $constant->getType()) {
+                    if ($constantType instanceof \ReflectionNamedType) {
+                        $n = $constantType->getName();
+                    } else {
+                        return;
+                    }
+                } else {
+                    $n = \gettype($constant->getValue());
+                }
+            }
+
             if ('null' === $n) {
                 $nullable = true;
                 continue;
@@ -921,7 +955,7 @@ class DebugClassLoader
                 continue;
             }
 
-            if (!isset($phpTypes[''])) {
+            if (!isset($phpTypes['']) && !\in_array($n, $phpTypes, true)) {
                 $phpTypes[] = $n;
             }
         }

@@ -1,103 +1,376 @@
-{% extends 'layout.twig' %}
+{#
+ # Assistant d'installation de GRR : page unique.
+ # Toute l'installation (prérequis, étapes 1 à 5, erreurs) est rendue par ce seul fichier ;
+ # l'étape affichée dépend de d.etape :
+ #   'droits' : connect.inc.php non modifiable      0 : prérequis
+ #   1 : serveur SQL      2 : choix de la base      3 : votre GRR
+ #   4 : tables créées    5 : terminé / erreur / déjà installé
+ #}
 
-{% import 'messagesysteme.twig' as msgSyst %}
-{% import 'champs.twig' as form %}
+{# ---- Macros : champ de formulaire et messages ---- #}
+{% macro champ(name, label, value = '', options = {}) %}
+	<div class="form-group row">
+		<label class="col-sm-5 col-form-label" for="{{ name }}">{{ label }}{% if options.require|default(false) %} *{% endif %}</label>
+		<div class="col-sm-7">
+			<input class="form-control" type="{{ options.type|default('text') }}" id="{{ name }}" name="{{ name }}" value="{{ value }}"
+				{%- if options.require|default(false) %} required{% endif %}
+				{%- if options.disabled|default(false) %} disabled{% endif %}
+				{%- if options.pattern|default('') %} pattern="{{ options.pattern }}"{% endif %}
+				{%- if options.autocomplete|default('') %} autocomplete="{{ options.autocomplete }}"{% endif %}>
+			{% if options.aide|default('') %}<small class="form-text text-muted">{{ options.aide }}</small>{% endif %}
+		</div>
+	</div>
+{% endmacro %}
 
-{% block content %}
+{% macro message(type, titre, texte) %}
+	<div class="alert alert-{{ type }}" role="alert">
+		<h5><i class="icon fas fa-{{ type == 'success' ? 'check' : 'exclamation-triangle' }}"></i> {{ titre }}</h5>
+		{{ texte }}
+	</div>
+{% endmacro %}
 
+{# Champs cachés reportant d'une étape à l'autre les réponses déjà données #}
+{% macro reports(d, noms) %}
+	{% for nom in noms %}
+		<input type="hidden" name="{{ nom }}" value="{{ d[nom] }}">
+	{% endfor %}
+{% endmacro %}
 
-	{% if d.connexionEchoue %}
-		{{ msgSyst.messageDanger('Connexion au serveur SQL :', 'La connexion au serveur SQL a échoué.') }}
-	{% endif %}
+{% macro statut(ok) %}
+	<span class="badge {{ ok ? 'bg-green' : 'bg-red' }}">{{ ok ? 'Oui' : 'Non' }}</span>
+{% endmacro %}
 
-	<div class="row">
+{% import _self as ui %}
 
-		<div class="col col-md-12 col-sm-12 col-xs-12">
+{% set etapes = [
+	{id: 0, nom: 'Prérequis'},
+	{id: 1, nom: 'Serveur SQL'},
+	{id: 2, nom: 'Base de données'},
+	{id: 3, nom: 'Votre GRR'},
+	{id: 4, nom: 'Création des tables'},
+	{id: 5, nom: 'Terminé'},
+] %}
+{% set etapeCourante = d.etape == 'droits' ? -1 : d.etape %}
 
-			<div class="box box-info">
-				<div class="box-header with-border">
-					<h3 class="box-title">Avant de commencer</h3>
-				</div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="noindex">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Installation de GRR</title>
+	<link rel="stylesheet" href="../jslib/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="../themes/adminlte/adminlte.min.css">
+</head>
 
-				<div class="box-body">
-					<p>Avant de commencer vérifier la compatibilié de votre version PHP et SQL avec GRR.</p>
-					<p>Vous devez avoir en votre possession les codes de connexion au serveur {{ d.dbsys }}.</p>
-					<p>Vous devez prendre connaissance de la licence GRR et en installant ce logiciel vous l'acceptez.</p>
-					<p>Ni DEVOME ni les développeurs ne sont responsables de vos données.</p>
-				</div>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
 
-				<hr>
+	<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link" data-widget="pushmenu" href="#" role="button" title="Étapes"><i class="fas fa-bars"></i></a>
+			</li>
+		</ul>
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item"><a class="nav-link" href="https://grr.devome.com/DOC/" target="_blank" rel="noopener">Documentation</a></li>
+			<li class="nav-item"><a class="nav-link" href="../index.php">Retour</a></li>
+		</ul>
+	</nav>
 
-				<div class="box-body">
-					<table class="table table-striped">
-						<tr>
-							<th>Librairie</th>
-							<th>Statut</th>
-							<th>Commentaire</th>
-						</tr>
-						<tr>
-							<td>PHP >= {{ d.phpmini }}
-								{% if d.phpmaxi %}
-									et <= {{ d.phpmaxi }}
+	{# ---- Étapes ---- #}
+	<aside class="main-sidebar sidebar-dark-primary elevation-4">
+		<a href="install_mysql.php" class="brand-link">
+			<span class="brand-text font-weight-light">GRR - Installation</span>
+		</a>
+		<div class="sidebar">
+			<nav class="mt-2">
+				<ul class="nav nav-pills nav-sidebar flex-column">
+					{% for etape in etapes %}
+						<li class="nav-item">
+							<span class="nav-link{% if etape.id == etapeCourante %} active{% endif %}"{% if etape.id == etapeCourante %} aria-current="step"{% endif %}>
+								{% if etape.id < etapeCourante %}
+									<i class="nav-icon fas fa-check-circle text-success"></i>
+								{% elseif etape.id == etapeCourante %}
+									<i class="nav-icon fas fa-arrow-right"></i>
+								{% else %}
+									<i class="nav-icon far fa-circle"></i>
 								{% endif %}
-							</td>
-							<td><span class="badge {{ d.checkPHP }}">{{ d.phpserveur }}</span></td>
-							<td>{{d.commentairePHP}}</td>
-						</tr>
-						<tr>
-							<td>MySQL >= {{ d.mysqlmini }}
-								{% if d.mysqlmaxi %}
-									et <= {{ d.mysqlmaxi }}
-								{% endif %}
-							</td>
-							<td>-</td>
-							<td>A contrôler manuellement</td>
-						</tr>
-						<tr>
-							<td>PHP fileinfo</td>
-							<td><span class="badge {% if d.phpfileinfo %}bg-green{% else %}bg-red{% endif %}">{% if d.phpfileinfo %}Oui{% else %}Non{% endif %}</span></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>PHP mbstring</td>
-							<td><span class="badge {% if d.phpmbstring %}bg-green{% else %}bg-red{% endif %}">{% if d.phpmbstring %}Oui{% else %}Non{% endif %}</span></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>PHP mysqli</td>
-							<td><span class="badge {% if d.phpmysqli %}bg-green{% else %}bg-red{% endif %}">{% if d.phpmysqli %}Oui{% else %}Non{% endif %}</span></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>PHP mysqlnd</td>
-							<td><span class="badge {% if d.phpmysqlnd %}bg-green{% else %}bg-red{% endif %}">{% if d.phpmysqlnd %}Oui{% else %}Non{% endif %}</span></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>PHP xml</td>
-							<td><span class="badge {% if d.phpxml %}bg-green{% else %}bg-red{% endif %}">{% if d.phpxml %}Oui{% else %}Non{% endif %}</span></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>PHP gd</td>
-							<td><span class="badge {% if d.phpgd %}bg-green{% else %}bg-red{% endif %}">{% if d.phpgd %}Oui{% else %}Non{% endif %}</span></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>PHP intl</td>
-							<td><span class="badge {% if d.phpintl %}bg-green{% else %}bg-red{% endif %}">{% if d.phpintl %}Oui{% else %}Non{% endif %}</span></td>
-							<td></td>
-						</tr>
-					</table>
-				</div>
+								<p>{{ etape.id == 0 ? etape.nom : etape.id ~ '. ' ~ etape.nom }}</p>
+							</span>
+						</li>
+					{% endfor %}
+				</ul>
+			</nav>
+		</div>
+	</aside>
 
-				<div style="text-align:center;">
-					<a href="?etape=1" class="btn btn-success">Installer GRR</a>
-				</div>
+	<div class="content-wrapper">
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0">Installation de GRR</h1>
 			</div>
-
 		</div>
 
+		<section class="content">
+		<div class="container-fluid">
+
+			{% if d.alerteVersion|default(false) %}
+				<div class="alert alert-danger" role="alert">
+					Version de développement, ne pas utiliser en production ! <a href="https://github.com/JeromeDevome/GRR/releases">Trouver une autre version</a>
+				</div>
+			{% endif %}
+
+			{# ================= Droits d'écriture sur connect.inc.php ================= #}
+			{% if d.etape == 'droits' %}
+
+				<div class="card card-danger">
+					<div class="card-header"><h3 class="card-title">Installation de la base {{ d.dbsys }} : problème de droits d'accès</h3></div>
+					<div class="card-body">
+						<p>{{ d.erreurDroits }}</p>
+						{% if d.fichierExiste %}
+							<p>Vous pouvez également renseigner manuellement le fichier "{{ d.nom_fic }}".</p>
+						{% elseif d.fichierOriExiste %}
+							<p>Vous pouvez renommer manuellement le fichier "{{ d.nom_fic }}.ori" en "{{ d.nom_fic }}", et lui donner les droits suffisants.</p>
+							<p>Une fois le fichier "{{ d.nom_fic }}.ori" renommé en "{{ d.nom_fic }}", vous pouvez également renseigner manuellement le fichier "{{ d.nom_fic }}".</p>
+						{% endif %}
+						<p>Vous pouvez par exemple utiliser votre client FTP afin de régler ce problème ou bien contacter l'administrateur technique. Une fois cette manipulation effectuée, vous pourrez continuer.</p>
+					</div>
+					<div class="card-footer text-right">
+						<a href="install_mysql.php" class="btn btn-primary">Continuer</a>
+					</div>
+				</div>
+
+			{# ================= Prérequis ================= #}
+			{% elseif d.etape == 0 %}
+
+				<div class="card card-info">
+					<div class="card-header"><h3 class="card-title">Avant de commencer</h3></div>
+					<div class="card-body">
+						<p>Avant de commencer vérifier la compatibilié de votre version PHP et SQL avec GRR.</p>
+						<p>Vous devez avoir en votre possession les codes de connexion au serveur {{ d.dbsys }}.</p>
+						<p>Vous devez prendre connaissance de la licence GRR et en installant ce logiciel vous l'acceptez.</p>
+						<p>Ni DEVOME ni les développeurs ne sont responsables de vos données.</p>
+					</div>
+					<div class="card-body table-responsive p-0">
+						<table class="table table-striped mb-0">
+							<thead>
+								<tr><th>Librairie</th><th>Statut</th><th>Commentaire</th></tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>PHP >= {{ d.phpmini }}{% if d.phpmaxi %} et <= {{ d.phpmaxi }}{% endif %}</td>
+									<td><span class="badge {{ d.checkPHP }}">{{ d.phpserveur }}</span></td>
+									<td>{{ d.commentairePHP|default('') }}</td>
+								</tr>
+								<tr>
+									<td>MySQL >= {{ d.mysqlmini }}{% if d.mysqlmaxi %} et <= {{ d.mysqlmaxi }}{% endif %}</td>
+									<td>-</td>
+									<td>A contrôler manuellement</td>
+								</tr>
+								{% for extension, presente in d.extensions %}
+									<tr>
+										<td>PHP {{ extension }}</td>
+										<td>{{ ui.statut(presente) }}</td>
+										<td></td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<div class="card-footer text-center">
+						<a href="?etape=1" class="btn btn-success">Installer GRR</a>
+					</div>
+				</div>
+
+			{# ================= Étape 1 : serveur SQL ================= #}
+			{% elseif d.etape == 1 %}
+
+				{% if d.connexionEchoue|default(false) %}
+					{{ ui.message('danger', 'Connexion au serveur SQL :', 'La connexion au serveur SQL a échoué.') }}
+				{% endif %}
+
+				<div class="card card-primary">
+					<div class="card-header"><h3 class="card-title">Etape 1 - La connexion au serveur de base de données MySQL</h3></div>
+					<form action="install_mysql.php?etape=2" method="post">
+						<div class="card-body">
+							<p>Vous devez avoir en votre possession les codes de connexion au serveur {{ d.dbsys }}. Si ce n'est pas le cas, contactez votre hébergeur ou bien l'administrateur technique du serveur sur lequel vous voulez implanter GRR.</p>
+							{{ ui.champ('adresse_db', 'Adresse du serveur', d.adresse_db ?: 'localhost', {aide: 'Souvent cette adresse est « localhost ».'}) }}
+							{{ ui.champ('port_db', 'Port du serveur', d.port_db ?: '3306', {type: 'number', aide: 'Si vous ne le connaissez pas, laissez la valeur par défaut.'}) }}
+							{{ ui.champ('login_db', 'Utilisateur', d.login_db, {autocomplete: 'off'}) }}
+							{{ ui.champ('pass_db', 'Mot de passe', '', {type: 'password', autocomplete: 'off'}) }}
+						</div>
+						<div class="card-footer text-right">
+							<button class="btn btn-primary" type="submit">Suivant</button>
+						</div>
+					</form>
+				</div>
+
+			{# ================= Étape 2 : choix de la base ================= #}
+			{% elseif d.etape == 2 %}
+
+				{% if d.connexionReussi|default(false) %}
+					{{ ui.message('success', 'Connexion au serveur SQL :', 'La connexion au serveur SQL a réussi.') }}
+				{% endif %}
+				{% if d.erreurSelectBase|default(false) %}
+					{{ ui.message('danger', 'Selection de la base :', 'Impossible de sélectionner ou de créer la base de données.') }}
+				{% endif %}
+				{% if d.erreurNom|default(false) %}
+					{{ ui.message('danger', 'Selection de la base :', 'Le nom de la base et le préfixe des tables ne peuvent contenir que des lettres non accentuées, des chiffres et le caractère « _ ».') }}
+				{% endif %}
+				{% if d.erreurCreationBase|default(false) %}
+					{{ ui.message('danger', 'Selection de la base :', 'L\'opération a échoué. Sélectionnez une autre base ou créez-en une nouvelle. Vérifiez les informations fournies par votre hébergeur.') }}
+					{% if d.erreursSql|default([]) %}
+						<div class="alert alert-light border" role="alert">
+							<p class="mb-1"><b>Requêtes en erreur :</b></p>
+							<ul class="mb-0 small">
+								{% for erreur in d.erreursSql %}<li><code>{{ erreur }}</code></li>{% endfor %}
+							</ul>
+						</div>
+					{% endif %}
+				{% endif %}
+
+				<div class="card card-primary">
+					<div class="card-header"><h3 class="card-title">Etape 2 - Choix de votre base</h3></div>
+					<form action="install_mysql.php?etape=3" method="post">
+						{{ ui.reports(d, ['adresse_db', 'port_db', 'login_db', 'pass_db']) }}
+						<div class="card-body">
+							<h4>Choisissez votre base :</h4>
+							<p><b>Le serveur {{ d.dbsys }} contient plusieurs bases de données. Sélectionnez celle dans laquelle vous voulez implanter GRR :</b></p>
+							<p>Vous devez avoir en votre possession les codes de connexion au serveur {{ d.dbsys }}. Si ce n'est pas le cas, contactez votre hébergeur ou bien l'administrateur technique du serveur sur lequel vous voulez implanter GRR.</p>
+
+							{% if d.bases|default([]) %}
+								{% for base in d.bases %}
+									<div class="form-check">
+										<input class="form-check-input" name="choix_db" value="{{ base }}" type="radio" id="base{{ loop.index }}"{% if base == d.choix_db %} checked{% endif %}>
+										<label class="form-check-label" for="base{{ loop.index }}">{{ base }}</label>
+									</div>
+								{% endfor %}
+							{% else %}
+								<p><b>Le programme d'installation n'a pas pu lire les noms des bases de données installées.</b> Soit aucune base n'est disponible, soit la fonction permettant de lister les bases a été désactivée pour des raisons de sécurité.</p>
+								<p>Dans la seconde alternative, il est probable qu'une base portant votre nom de login soit utilisable :</p>
+								<div class="form-check">
+									<input class="form-check-input" name="choix_db" value="{{ d.login_db }}" type="radio" id="baseLogin">
+									<label class="form-check-label" for="baseLogin">{{ d.login_db }}</label>
+								</div>
+							{% endif %}
+
+							{% set nouvelleBase = not d.choix_db or d.choix_db == 'new_grr' or d.choix_db not in d.bases|default([]) %}
+							<div class="form-check mt-2">
+								<input class="form-check-input" name="choix_db" value="new_grr" type="radio" id="baseNouvelle"{% if nouvelleBase %} checked{% endif %}>
+								<label class="form-check-label" for="baseNouvelle">Créer une nouvelle base de données :</label>
+								<input type="text" name="table_new" class="form-control form-control-sm d-inline-block w-auto ml-2" value="{{ d.table_new ?: 'grr' }}" size="20" pattern="[A-Za-z0-9_]+" aria-label="Nom de la nouvelle base">
+							</div>
+
+							<h4 class="mt-4">Préfixe des tables :</h4>
+							<p>Vous pouvez modifier le préfixe du nom des tables de données (ceci est indispensable lorsque l'on souhaite installer plusieurs sites GRR dans la même base de données). Ce préfixe s'écrit en <b>lettres minuscules, non accentuées, et sans espace</b>.</p>
+							{{ ui.champ('table_prefix', 'Préfixe des tables :', d.table_prefix ?: 'grr', {require: true, pattern: '[a-z0-9_]+'}) }}
+
+							<h4 class="text-danger mt-4"><b>Attention</b> lors de la prochaine étape :</h4>
+							<ul>
+								<li>Le fichier "{{ d.nom_fic }}" sera actualisé avec les données que vous avez fourni,</li>
+								<li>Les tables GRR seront créées dans la base sélectionnée. Si celle-ci contient déjà des tables GRR, ces tables, ainsi que les données qu'elles contiennent, seront supprimées et remplacées par une nouvelle structure.</li>
+							</ul>
+						</div>
+						<div class="card-footer text-right">
+							<button class="btn btn-primary" type="submit">Suivant</button>
+						</div>
+					</form>
+				</div>
+
+			{# ================= Étape 3 : votre GRR ================= #}
+			{% elseif d.etape == 3 %}
+
+				{% if d.SelectBase|default(false) %}
+					{{ ui.message('success', 'Selection de la base :', 'Création et/ou sélection de la base valide.') }}
+				{% endif %}
+				{% if d.erreurMDP|default(false) %}
+					{{ ui.message('danger', 'Mot de passe :', 'Doit comporter au moins 8 caractères, le mot de passe de confirmation doit correspondre au premier.') }}
+				{% endif %}
+
+				<div class="card card-primary">
+					<div class="card-header"><h3 class="card-title">Etape 3 - Votre GRR</h3></div>
+					<form action="install_mysql.php?etape=4" method="post">
+						{{ ui.reports(d, ['adresse_db', 'port_db', 'login_db', 'pass_db', 'choix_db', 'table_prefix']) }}
+						<div class="card-body">
+							<h4>GRR :</h4>
+							<p>Vous pourrez modifier les informations dans la configuration générale après avoir terminé l'installation.</p>
+							{{ ui.champ('company', 'Nom du GRR', d.saisie.company|default('')) }}
+							{{ ui.champ('grr_url', 'URL du GRR', d.saisie.grr_url|default(d.adresseServeur|default(''))) }}
+							{{ ui.champ('webmaster_email', 'E-mail webmater', d.saisie.webmaster_email|default(''), {type: 'email'}) }}
+							{{ ui.champ('technical_support_email', 'E-mail support', d.saisie.technical_support_email|default(''), {type: 'email'}) }}
+
+							<h4 class="mt-4">Votre compte :</h4>
+							<p>Identifiant du compte Administrateur :</p>
+							{{ ui.champ('identifiant', 'Identifiant :', 'ADMINISTRATEUR', {disabled: true}) }}
+							{{ ui.champ('mdp1', 'Mot de passe :', '', {type: 'password', require: true, autocomplete: 'new-password', aide: 'Au moins 8 caractères, différent des adresses e-mail saisies.'}) }}
+							{{ ui.champ('mdp2', 'Confirmer le mot de passe :', '', {type: 'password', require: true, autocomplete: 'new-password'}) }}
+							{{ ui.champ('email', 'E-mail :', d.saisie.email|default(''), {type: 'email'}) }}
+						</div>
+						<div class="card-footer text-right">
+							<button class="btn btn-primary" type="submit">Suivant</button>
+						</div>
+					</form>
+				</div>
+
+			{# ================= Étape 4 : tables créées ================= #}
+			{% elseif d.etape == 4 %}
+
+				<div class="card card-primary">
+					<div class="card-header"><h3 class="card-title">Etape 4 - Création des tables</h3></div>
+					<div class="card-body">
+						<p>La structure de votre base de données est installée.</p>
+					</div>
+					<div class="card-footer text-right">
+						<a href="install_mysql.php?etape=5" class="btn btn-primary">Suivant</a>
+					</div>
+				</div>
+
+			{# ================= Étape 5 : terminé, erreur ou déjà installé ================= #}
+			{% elseif d.etape == 5 %}
+
+				{% if d.erreurE5|default(0) %}
+					<div class="card card-danger">
+						<div class="card-header"><h3 class="card-title">Etape 5 - Erreur</h3></div>
+						<div class="card-body">
+							{% if d.erreurE5 == 1 %}
+								<p>L'installation n'a pas pu se terminer normalement : des tables sont manquantes. {{ d.tableManquantes }}</p>
+							{% elseif d.erreurE5 == 2 %}
+								<p>L'installation n'a pas pu se terminer normalement : la table {{ d.table_prefix }}_setting est vide ou bien n'existe pas.</p>
+							{% elseif d.erreurE5 == 3 %}
+								<p>Espace interdit - GRR est déjà installé.</p>
+							{% endif %}
+						</div>
+						<div class="card-footer text-right">
+							<a href="../index.php" class="btn btn-danger">Retour</a>
+						</div>
+					</div>
+				{% else %}
+					<div class="card card-success">
+						<div class="card-header"><h3 class="card-title">Etape 5 - Terminé</h3></div>
+						<div class="card-body">
+							<p>Vous pouvez maintenant commencer à utiliser le système de Gestion et Réservation de Ressources.</p>
+							<p>Pour vous connecter la première fois en tant qu'administrateur, utilisez l'identifiant "<b>ADMINISTRATEUR</b>" et le mot de passe choisi.</p>
+						</div>
+						<div class="card-footer text-center">
+							<a href="../login" class="btn btn-success">Se connecter à GRR</a>
+						</div>
+					</div>
+				{% endif %}
+
+			{% endif %}
+
+		</div>
+		</section>
 	</div>
 
-{% endblock %}
+	<footer class="main-footer">
+		<strong>GRR : Gestion et de Réservations de Ressources - <a href="https://devome.com/">DEVOME</a> - {{ d.version_grr }}</strong>
+	</footer>
+</div>
+
+<script src="../jslib/jquery/jquery.min.js"></script>
+<script src="../jslib/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../jslib/_grr/adminlte.min.js"></script>
+</body>
+</html>

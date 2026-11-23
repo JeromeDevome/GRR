@@ -1,0 +1,38 @@
+{% extends '@account/layout.twig' %}
+
+{% import '@account/messagesysteme.twig' as msgSyst %}
+{% import '@account/champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<form action="./account?pc=changemdp" method="post">
+	<input type="hidden" name="valid" value="yes" />
+	<table>
+		<tr><td><b>{{'login'|trans}} {{'deux_points'|trans}}</b> {{d.gNomUser}}</td></tr>
+
+		{% if d.droitChanger == 1 %}
+			{% if d.obligatoirement == 1 %}
+				<h2><span class='avertissement'>{{'user_change_pwd_obligatoire'|trans}}</span></h2>
+			{% endif %}
+
+			<tr>
+				<td>
+					<p>{{'pwd_msg_warning'|trans}}</p>{{'old_pwd'|trans}}{{'deux_points'|trans}}
+					<input type="password" name="reg_password_a" size="20" required />
+					<br />{{'new_pwd1'|trans}}{{'deux_points'|trans}}
+					<input type="password" name="reg_password1" size="20" required />
+					<br />{{'new_pwd1'|trans}}{{'deux_points'|trans}}
+					<input type="password" name="reg_password2" size="20" required />
+				</td>
+			</tr>
+		{% endif %}
+	</table>
+	<input class="btn btn-primary" type="submit" value="{{'save'|trans}}" />
+</form>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

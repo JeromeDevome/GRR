@@ -15,7 +15,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/JeromeDevome/GRR)
 ![GitHub code size](https://img.shields.io/github/languages/code-size/JeromeDevome/GRR)
 ![GitHub top language](https://img.shields.io/github/languages/top/JeromeDevome/GRR)
-![Symfony](https://img.shields.io/badge/Symfony-6-black?logo=symfony)
+![Symfony](https://img.shields.io/badge/Symfony-7.4-black?logo=symfony)
 ![PHP](https://img.shields.io/badge/PHP-8-777BB4?logo=php&logoColor=white)
 
 ![GRR](https://img.shields.io/badge/GRR-Open%20Source-blue)
@@ -59,7 +59,7 @@ Pour obtenir une description complète de la procédure d'installation, veuillez
 > [!NOTE]  
 >**Requiert :**
 >
->PHP : >= 8.1.0 && <= 8.5; nécessite au moins les modules php-fileinfo, php-gd, php-intl, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-zip (*)
+>PHP : >= 8.3.0 && <= 8.5; nécessite au moins les modules php-fileinfo, php-gd, php-intl, php-mbstring, php-mysqli, php-mysqlnd, php-xml, php-zip (*)
 > 
 >MySQL: >= 5.4 && <= 9.6
 
@@ -69,6 +69,21 @@ Pour une installation simplifiée, décompressez simplement cette archive sur un
 >disposer d'un espace FTP sur un serveur, pour y transférer les fichiers
 >disposer d'une base de données MySQL (adresse du serveur MySQL, login, mot de passe)
 
+### Migration progressive vers Symfony
+
+Un premier socle Symfony et Twig est disponible sur `/_symfony` (Apache avec `mod_rewrite`). Toutes les URL `app.php?p=...` sont dispatchées vers des contrôleurs Symfony dédiés pour les pages de réservation, dont les plannings `jour`, `semaine`, `semaine_all`, `mois`, `mois_all`, `mois2_all`, `annee` et `annee_all`, ainsi que les pages de réservation, de rapport et d'administration. Les templates sont dans `templates/reservation/`; les modèles partagés sont dans `src/Devome/Grr/Service/Annee.php` et `src/Devome/Grr/LegacyAjax/ReportFunctions.php`. Les endpoints AJAX de réservation sont également exposés par des routes Symfony, avec les anciens chemins maintenus comme alias. Le dossier `reservation/` a été supprimé. La gestion du compte utilisateur (`moncompte`, `changemdp`, `mesreservations`, `mesconnexions` et les listes dynamiques) est servie par Symfony via `app.php?p=account&pc=...`; ses templates sont dans `templates/account/` et son modèle de réservations dans `src/Devome/Grr/Service/AccountReservations.php`. Le dossier `compte/` a aussi été supprimé. Les anciennes URL de compte sont réacheminées par Apache vers Symfony, puis redirigées vers le dispatcher (mod_rewrite requis). `p=index` redirige depuis Symfony vers `index.php`. Les contrôleurs ne dispatchent plus les anciens scripts de page. Les contrôleurs et certains endpoints AJAX réutilisent toutefois le bootstrap commun, les sessions, l'accès aux données et les fonctions métier historiques de GRR afin de préserver le comportement existant : la migration de ces services partagés et des autres points d'entrée n'est donc pas terminée. Une invite d'installation de l'application est également disponible dans les pages GRR, avec installation native lorsque le navigateur la prend en charge et des étapes pour créer un raccourci Windows ou ajouter GRR à l'écran d'accueil Android. L'installation PWA nécessite que le site soit servi en HTTPS (ou sur `localhost`) ; les pages de réservation ne sont pas mises en cache et restent accessibles uniquement avec une connexion réseau. L'installateur et les autres points d'entrée legacy gardent leur fonctionnement actuel ; ne configurez pas encore `public/` comme document root du site GRR. Pour activer les routes Symfony, configurez la variable d'environnement `APP_SECRET` sur le serveur.
+
+`APP_SECRET` est une valeur aléatoire propre à chaque installation. L'assistant d'installation la génère et l'enregistre dans `personnalisation/connect.inc.php` (variable `$appSecret`), d'où elle est lue par `public/index.php` et `bin/console`. Pour une installation manuelle, ajoutez cette ligne en générant la valeur avec `php -r "echo bin2hex(random_bytes(32));"`. Une variable d'environnement `APP_SECRET` définie sur le serveur (par exemple `SetEnv APP_SECRET ...` dans le VirtualHost Apache) reste prioritaire.
+
+Le `.htaccess` fourni définit `APP_SECRET` (ainsi que `APP_ENV=dev` et `APP_DEBUG=1`) pour les accès depuis `localhost` uniquement ; cette valeur de développement ne doit pas être réutilisée en production.
+
+La barre de debug Symfony est installée et activée uniquement dans l'environnement `dev`. Configurez `APP_ENV=dev`, `APP_DEBUG=1` et `APP_SECRET` dans l'environnement du serveur de développement. Ses routes `/_wdt` et `/_profiler` sont transmises au point d'entrée Symfony ; n'activez pas le mode `dev` en production.
+
+La console Symfony est accessible avec `php bin/console`.
+
+### Internationalisation Symfony
+
+Le composant Translator de Symfony est configuré pour le domaine `messages`, avec les locales `fr-fr`, `en-gb`, `de-de`, `es-es` et `it-it`. Les catalogues `translations/messages.<locale>.yaml` sont la source unique des traductions : les pages servies par Symfony les chargent via le Translator, et les points d'entrée hors Symfony (administration, installation, tâches cron) les lisent via `include/language.inc.php`, avec `fr-fr` comme langue de repli et un cache dans `var/cache/translations/`. Les nouveaux templates Twig peuvent traduire leurs identifiants avec `{{ 'rooms'|trans }}` et leurs paramètres avec `{{ 'pwd_too_short'|trans({'%pass_leng%': 8}) }}`. Les appels legacy à `get_vocab()` utilisent le Translator lorsqu'ils sont servis par Symfony.
 
 Mise à jour
 -------------

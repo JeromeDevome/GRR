@@ -1,0 +1,136 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+
+{% block css %}
+{{d.cssTypeResa |raw}}
+{% endblock %}
+
+{% block content %}
+
+    {% if d.etape == 1 %}
+        <p>{{'swap_entry_choose'|trans|raw}}</p>
+
+        <form method="GET" action="app.php" >
+            <input type="hidden" name="p" value="echangeresa" />
+            <input type="hidden" name="ret_page" value="{{d.ret_page}}" />
+            <input type="hidden" name="id" value="{{resa1.resaId}}" />
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{'Choose'|trans}}</th>
+                        <th>{{'description'|trans}}</th>
+                        <th>{{'date'|trans}}</th>
+                        <th>{{'fin_reservation'|trans}}</th>
+                        <th>{{'room'|trans}}</th>
+                        <th>{{'sum_by_creator'|trans}}</th>
+                        <th>{{'type'|trans}}</th>
+                    </tr>
+                    <tr class="info">
+                        <td><i class="fa-solid fa-down-long"></i></td>
+                        <td>{{resa1.name}}<br><i>{{resa1.description|raw}}</i></td>
+                        <td>{{resa1.resaDebut}}</td>
+                        <td>{{resa1.resaFin}}</td>
+                        <td>{{resa1.resaRessource}}</td> 
+                        <td>{{resa1.beneficiaire}}</td>
+                        <td class="type{{resa1.type}}">{{resa1.resaType}}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for resa in resaDispo %}
+                    <tr>
+                        <td><input type="radio" name="id_alt" value="{{resa.resaId}}" /></td>
+                        <td>{{resa.name}}<br><i>{{resa.description|raw}}</i></td>
+                        <td>{{resa.resaDebut}}</td>
+                        <td>{{resa.resaFin}}</td>
+                        <td>{{resa.resaRessource}}</td>
+                        <td>{{resa.beneficiaire}}</td>
+                        <td class="type{{resa.type}}">{{resa.resaType}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+            <p style="text-align:center;">
+                <input class="btn btn-primary" type="submit" value="{{'OK'|trans}}" /> 
+                <input type="button" class="btn btn-danger" value="{{'cancel'|trans}}" onclick="window.location.href='{{d.ret_page}}'"/>
+            </p>
+
+        </form>
+    {% elseif d.etape == 2 %}
+        <p><strong>{{'swap_entry_confirm'|trans}}</strong></p>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>{{'description'|trans}}</th>
+                    <th>{{'date'|trans}}</th>
+                    <th>{{'fin_reservation'|trans}}</th>
+                    <th>{{'room'|trans}}</th>
+                    <th>{{'sum_by_creator'|trans}}</th>
+                    <th>{{'type'|trans}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="info">
+                    <td>{{resa1.name}}<br><i>{{resa1.description|raw}}</i></td>
+                    <td>{{resa1.resaDebut}}</td>
+                    <td>{{resa1.resaFin}}</td>
+                    <td>{{resa1.resaRessource}}</td> 
+                    <td>{{resa1.beneficiaire}}</td>
+                    <td class="type{{resa1.type}}">{{resa1.resaType}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>{{'swap_entry_confirm1'|trans}}</strong></p>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>{{'description'|trans}}</th>
+                    <th>{{'date'|trans}}</th>
+                    <th>{{'fin_reservation'|trans}}</th>
+                    <th>{{'room'|trans}}</th>
+                    <th>{{'sum_by_creator'|trans}}</th>
+                    <th>{{'type'|trans}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{resa2.name}}<br><i>{{resa2.description|raw}}</i></td>
+                    <td>{{resa2.resaDebut}}</td>
+                    <td>{{resa2.resaFin}}</td>
+                    <td>{{resa2.resaRessource}}</td> 
+                    <td>{{resa2.beneficiaire}}</td>
+                    <td class="type{{resa2.type}}">{{resa2.resaType}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <form method="GET" action="app.php" >
+            <input type="hidden" name="p" value="echangeresa" />
+            <input type="hidden" name="ret_page" value="{{d.ret_page}}" />
+            <input type="hidden" name="id" value="{{resa1.resaId}}" />
+            <input type="hidden" name="id_alt" value="{{resa2.resaId}}" />
+            <input type="hidden" name="choix" value="Valider" />
+
+            <p style="text-align:center;">
+                <input class="btn btn-primary" type="submit" value="{{'OK'|trans}}" />
+                <input type="button" class="btn btn-danger" value="{{'cancel'|trans}}" onclick="window.location.href='{{d.ret_page}}'"/>
+            </p>
+            </form>
+
+    {% elseif d.etape == 3 %}
+        <script type="text/javascript">
+            alert("Echange effectué correctement");
+            document.location.href='{{d.ret_page}}'
+        </script>
+    {% endif %}
+	
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

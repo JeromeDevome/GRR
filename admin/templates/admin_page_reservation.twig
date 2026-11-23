@@ -668,7 +668,7 @@
 
 		function modifier_liste_domaines(){
 			$.ajax({
-				url: "../compte/my_account_modif_listes.php",
+				url: "../app.php?p=account&action=lists",
 				type: "get",
 				dataType: "html",
 				data: {
@@ -681,19 +681,20 @@
 				success: function(returnData){
 					console.log(returnData);
 					$("#div_liste_domaines").html(returnData);
+					modifier_liste_ressources(1);
 				},
 				error: function(e){
-					alert(e);
+					gerer_erreur_liste(e);
 				}
 			});
 		}
 		function modifier_liste_ressources(action){
 			$.ajax({
-				url: "../compte/my_account_modif_listes.php",
+				url: "../app.php?p=account&action=lists",
 				type: "get",
 				dataType: "html",
 				data: {
-					id_area:$('p_id_area').serialize(true),
+					id_area:$('#p_id_area').val(),
 					default_room : '{{ settings.default_room }}',
 					type:'ressource',
 					action:+action,
@@ -702,12 +703,21 @@
 					$("#div_liste_ressources").html(returnData);
 				},
 				error: function(e){
-					alert(e);
+					gerer_erreur_liste(e);
 				}
 			});
 		}
+
+		function gerer_erreur_liste(xhr){
+			var redirect = xhr.getResponseHeader('X-GRR-Redirect');
+			if (redirect) {
+				window.location.assign(new URL(redirect, xhr.responseURL).toString());
+				return;
+			}
+			alert('Impossible de charger la liste (HTTP ' + xhr.status + ').');
+		}
+
 		modifier_liste_domaines();
-		modifier_liste_ressources(1);
 
 		// Modal
 		$('#modal-warning').on('show.bs.modal', function (event) {

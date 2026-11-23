@@ -23,6 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Extension\ConfigurationExtensionInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -39,9 +40,6 @@ class ConfigDumpReferenceCommand extends AbstractConfigCommand
 {
     protected function configure(): void
     {
-        $commentedHelpFormats = array_map(static fn ($format) => \sprintf('<comment>%s</comment>', $format), $this->getAvailableFormatOptions());
-        $helpFormats = implode('", "', $commentedHelpFormats);
-
         $this
             ->setDefinition([
                 new InputArgument('name', InputArgument::OPTIONAL, 'The Bundle name or the extension alias'),
@@ -57,10 +55,9 @@ class ConfigDumpReferenceCommand extends AbstractConfigCommand
                   <info>php %command.full_name% framework</info>
                   <info>php %command.full_name% FrameworkBundle</info>
 
-                The <info>--format</info> option specifies the format of the configuration,
-                these are "{$helpFormats}".
+                The <info>--format</info> option specifies the format of the command output:
 
-                  <info>php %command.full_name% FrameworkBundle --format=xml</info>
+                  <info>php %command.full_name% FrameworkBundle --format=json</info>
 
                 For dumping a specific option, add its path as second argument (only available for the yaml format):
 
@@ -127,6 +124,10 @@ class ConfigDumpReferenceCommand extends AbstractConfigCommand
             $message .= \sprintf(' at path "%s"', $path);
         }
 
+        if ($docUrl = $this->getExtensionDocUrl($extension)) {
+            $message .= \sprintf(' (see %s)', $docUrl);
+        }
+
         switch ($format) {
             case 'yaml':
                 $io->writeln(\sprintf('# %s', $message));
@@ -141,7 +142,7 @@ class ConfigDumpReferenceCommand extends AbstractConfigCommand
                 throw new InvalidArgumentException(\sprintf('Supported formats are "%s".', implode('", "', $this->getAvailableFormatOptions())));
         }
 
-        $io->writeln(null === $path ? $dumper->dump($configuration, $extension->getNamespace()) : $dumper->dumpAtPath($configuration, $path));
+        $io->writeln(null === $path ? $dumper->dump($configuration, method_exists($extension, 'getNamespace') ? $extension->getNamespace() : null) : $dumper->dumpAtPath($configuration, $path));
 
         return 0;
     }
@@ -181,8 +182,23 @@ class ConfigDumpReferenceCommand extends AbstractConfigCommand
         return $bundles;
     }
 
+    /** @return string[] */
     private function getAvailableFormatOptions(): array
     {
         return ['yaml', 'xml'];
+    }
+
+    private function getExtensionDocUrl(ConfigurationInterface|ConfigurationExtensionInterface $extension): ?string
+    {
+        $kernel = $this->getApplication()->getKernel();
+        $container = $this->getContainerBuilder($kernel);
+
+        $configuration = $extension instanceof ConfigurationInterface ? $extension : $extension->getConfiguration($container->getExtensionConfig($extension->getAlias()), $container);
+
+        return $configuration
+            ->getConfigTreeBuilder()
+            ->getRootNode()
+            ->getNode(true)
+            ->getAttribute('docUrl');
     }
 }

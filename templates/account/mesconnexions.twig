@@ -1,0 +1,48 @@
+{% extends '@account/layout.twig' %}
+
+{% import '@account/messagesysteme.twig' as msgSyst %}
+{% import '@account/champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div>
+
+	<p>{{ 'see_connexions_explain'|trans }}</p>
+
+	<table class="table-bordered">
+		<thead>
+			<th class="col">{{ 'begining_of_session'|trans }}</th>
+			<th class="col">{{ 'end_of_session'|trans }}</th>
+			<th class="col">{{ 'ip_adress'|trans }}</th>
+			<th class="col">{{ 'navigator'|trans }}</th>
+			<th class="col">{{ 'referer'|trans }}</th>
+		</thead>
+		<tbody>
+		{% for connexion in connexions %}
+			<tr>
+				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.debut }}</span></td>
+				<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.fin }}</span></td>
+				{% if settings.ActiveModeDemo == 1 %}
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ 'demo_info_cache'|trans }}</span></td>
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ 'demo_info_cache'|trans }}</span></td>
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ 'demo_info_cache'|trans }}</span></td>
+				{% else %}
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.ip }}</span></td>
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.navigateur }}</span></td>
+					<td class="col"><span style="color:{{connexion.couleur}};">{{ connexion.provenance }}</span></td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

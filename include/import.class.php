@@ -239,7 +239,7 @@ class Import {
                 } else {
                     if ($copie) {
                         $msg .= "<br> <span style='color:green'>Fichier enregistré</span></p>";
-                        header('Location: app.php?p=semaine&day='.$day.'&month='.$month.'&year='.$year.'&room='.$room_id);
+                        header('Location: semaine?day='.$day.'&month='.$month.'&year='.$year.'&room='.$room_id);
                     } else {
                         $msg .= "<br><span style='color:red'>Erreur d'enregistrement</span></p>";
                     }

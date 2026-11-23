@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Devome\Grr\Controller\:
+        resource: ../src/Devome/Grr/Controller/
+        tags: ['controller.service_arguments']
+
+    Devome\Grr\Service\:
+        resource: ../src/Devome/Grr/Service/
+
+    Devome\Grr\EventListener\:
+        resource: ../src/Devome/Grr/EventListener/

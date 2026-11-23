@@ -1,9 +1,9 @@
 <?php
 /**
  * app.php
- * Interface permettant à l'administrateur la configuration de certains paramètres généraux
+ * GRR legacy entry point.
  * Ce script fait partie de l'application GRR.
- * Dernière modification : $Date: 2021-03-18 15:30$
+ * Dernière modification : $Date: 2026-11-15 16:15$
  * @author    JeromeB
  * @copyright Since 2003 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
@@ -16,132 +16,4 @@
  * (at your option) any later version.
  */
 
-use Devome\Grr\Routing\AdminRouter;
-use Devome\Grr\Routing\FrontRouter;
-
-$niveauDossier = 1;
-include "./include/config.inc.php";
-
-ini_set('display_errors', $gDebugPHPresa);
-error_reporting(E_ALL);
-
-require './vendor/autoload.php';
-require './include/twiggrr.class.php';
-require "./include/securite.class.php";
-require "./include/functions.inc.php";
-
-$page = 'login';
-if(isset($_GET['p'])){
-	$page = SecuChaine::Alphanumeric($_GET['p']);
-}
-
-include "./personnalisation/connect.inc.php";
-include "./include/misc.inc.php";
-include "./include/$dbsys.inc.php";
-include "./include/mincals.inc.php"; // JeromeB :Pas besoin partout le laisser ici ? 
-include "./include/mrbs_sql.inc.php";
-
-require_once("./include/settings.class.php");
-if (!Settings::load())
-	die("Erreur chargement settings");
-require_once("./include/session.inc.php");
-
-if($page != "deconnexion")
-	grr_resumeSession();
-
-include "./include/language.inc.php";
-// pour le traitement des modules
-include "./include/hook.class.php";
-
-// Vérification du numéro de version et renvoi automatique vers la page de mise à jour
-if (verif_version())
-{
-	header("Location: ./installation/maj.php");
-	exit();
-}
-
-include "./verif_auto_grr.php";
-
-$trad = array();
-$back = '';
-
-if (isset($_SERVER['HTTP_REFERER']))
-	$back = htmlspecialchars($_SERVER['HTTP_REFERER']);
-	
-/*if ((SecuAccess::UserLevel(getUserName(), -1, 'area') < 4) && (SecuAccess::UserLevel(getUserName(), -1, 'user') !=  1))
-{
-	showAccessDenied($back);
-	exit();
-}
-*/
-
-if(getUserName() != '')
-	$userConnecte = "with_session";
-else
-	$userConnecte = "no_session";
-
-$day = isset($_POST['day']) ? $_POST['day'] : (isset($_GET['day']) ? intval($_GET['day']) : date('d'));
-$month = isset($_POST['month']) ? $_POST['month'] : (isset($_GET['month']) ? intval($_GET['month']) : date('m'));
-$year = isset($_POST['year']) ? $_POST['year'] : (isset($_GET['year']) ? intval($_GET['year']) : date('Y'));
-
-print_header_twig($day, $month, $year, $userConnecte);
-
-if(Settings::get('langues_dispo') != "")
-	$d['listeLangues'] = explode(';', Settings::get('langues_dispo'));
-else
-	$d['listeLangues'] = array("fr-fr");
-//$d['listeLangues'] = explode(';', Settings::get('langues_dispo'));
-
-$d['gDay'] = $day;
-$d['gMonth'] = $month;
-$d['gYear'] = $year;
-
-$d['levelUser'] = SecuAccess::UserLevel(getUserName(),-1);
-$d['accesStats'] = SecuAccess::UserSearch(getUserName());
-$AllSettings = Settings::getAll();
-
-$d['gNomUser'] = getUserName();
-$d['versionGRR'] = $version_grr;
-$d['versionCache'] = hash('sha256', $version_grr.Settings::get("tokenpublic"));
-
-$d['liensPerso1'] = liensPerso(1, $d['levelUser']);
-
-get_vocab_admin("admin");
-get_vocab_admin("manage_my_account");
-get_vocab_admin("report");
-get_vocab_admin("reserver");
-
-// Template Twig
-$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/reservation/templates');
-$twig = new \Twig\Environment($loader,['charset']);
-$twig->addExtension(new TwigGRR());
-$twig->addGlobal('router', [
-    'admin' => new AdminRouter(),
-    'front' => new FrontRouter()
-]);
-
-// Sécurité
-$listeFichiers = array();
-$dossierLister = new DirectoryIterator("./reservation/controleurs/");
-foreach ($dossierLister as $fileinfo) {
-	if($fileinfo->isFile() && $fileinfo->getExtension() == "php") {
-		$listeFichiers[] = $fileinfo->getFilename();
-	}
-}
-
-// Popup
-// Si $back contient p=login
-if ( (strpos($back, 'login') !== false) && $userConnecte == "with_session")
-{
-	$valeurPopup = grr_sql_query1("SELECT valeur FROM ".TABLE_PREFIX."_page WHERE nom = 'popup'");
-	if($valeurPopup != "" && $valeurPopup != -1)
-		$d['gPopup'] = grr_sql_query1("SELECT popup FROM ".TABLE_PREFIX."_utilisateurs WHERE login='".getUserName()."'");
-}
-
-// Page demandée
-if(in_array($page.".php",$listeFichiers))
-	include('./reservation/controleurs/'.$page.'.php');
-else
-	include('./reservation/controleurs/index.php');
-
-?>
+require __DIR__.'/public/index.php';

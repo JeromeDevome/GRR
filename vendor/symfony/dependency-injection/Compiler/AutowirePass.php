@@ -14,9 +14,9 @@ namespace Symfony\Component\DependencyInjection\Compiler;
 use Symfony\Component\Config\Resource\ClassExistenceResource;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\Attribute\AutowireCallable;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
-use Symfony\Component\DependencyInjection\Attribute\MapDecorated;
+use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -42,19 +42,15 @@ class AutowirePass extends AbstractRecursivePass
     private array $ambiguousServiceTypes;
     private array $autowiringAliases;
     private ?string $lastFailure = null;
-    private bool $throwOnAutowiringException;
     private ?string $decoratedClass = null;
     private ?string $decoratedId = null;
-    private ?array $methodCalls = null;
     private object $defaultArgument;
-    private ?\Closure $getPreviousValue = null;
-    private ?int $decoratedMethodIndex = null;
-    private ?int $decoratedMethodArgumentIndex = null;
+    private ?\Closure $restorePreviousValue = null;
     private ?self $typesClone = null;
 
-    public function __construct(bool $throwOnAutowireException = true)
-    {
-        $this->throwOnAutowiringException = $throwOnAutowireException;
+    public function __construct(
+        private bool $throwOnAutowiringException = true,
+    ) {
         $this->defaultArgument = new class {
             public $value;
             public $names;
@@ -70,10 +66,7 @@ class AutowirePass extends AbstractRecursivePass
         };
     }
 
-    /**
-     * @return void
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->defaultArgument->bag = $container->getParameterBag();
 
@@ -83,12 +76,9 @@ class AutowirePass extends AbstractRecursivePass
         } finally {
             $this->decoratedClass = null;
             $this->decoratedId = null;
-            $this->methodCalls = null;
             $this->defaultArgument->bag = null;
             $this->defaultArgument->names = null;
-            $this->getPreviousValue = null;
-            $this->decoratedMethodIndex = null;
-            $this->decoratedMethodArgumentIndex = null;
+            $this->restorePreviousValue = null;
             $this->typesClone = null;
         }
     }
@@ -105,7 +95,7 @@ class AutowirePass extends AbstractRecursivePass
             return $value;
         }
 
-        if ($value instanceof AutowireDecorated || $value instanceof MapDecorated) {
+        if ($value instanceof AutowireDecorated) {
             $definition = $this->container->getDefinition($this->currentId);
 
             return new Reference($definition->innerServiceId ?? $this->currentId.'.inner', $definition->decorationOnInvalid ?? ContainerInterface::NULL_ON_INVALID_REFERENCE);
@@ -168,7 +158,7 @@ class AutowirePass extends AbstractRecursivePass
             return $value;
         }
 
-        $this->methodCalls = $value->getMethodCalls();
+        $methodCalls = $value->getMethodCalls();
 
         try {
             $constructor = $this->getConstructor($value, false);
@@ -177,40 +167,42 @@ class AutowirePass extends AbstractRecursivePass
         }
 
         if ($constructor) {
-            array_unshift($this->methodCalls, [$constructor, $value->getArguments()]);
+            array_unshift($methodCalls, [$constructor, $value->getArguments()]);
         }
 
         $checkAttributes = !$value->hasTag('container.ignore_attributes');
-        $this->methodCalls = $this->autowireCalls($reflectionClass, $isRoot, $checkAttributes);
+        $methodCalls = $this->autowireCalls($methodCalls, $reflectionClass, $isRoot, $checkAttributes);
 
         if ($constructor) {
-            [, $arguments] = array_shift($this->methodCalls);
+            [, $arguments] = array_shift($methodCalls);
 
             if ($arguments !== $value->getArguments()) {
                 $value->setArguments($arguments);
             }
         }
 
-        if ($this->methodCalls !== $value->getMethodCalls()) {
-            $value->setMethodCalls($this->methodCalls);
+        if ($methodCalls !== $value->getMethodCalls()) {
+            $value->setMethodCalls($methodCalls);
         }
 
         return $value;
     }
 
-    private function autowireCalls(\ReflectionClass $reflectionClass, bool $isRoot, bool $checkAttributes): array
+    private function autowireCalls(array $methodCalls, \ReflectionClass $reflectionClass, bool $isRoot, bool $checkAttributes): array
     {
-        $this->decoratedId = null;
-        $this->decoratedClass = null;
-        $this->getPreviousValue = null;
+        if ($isRoot) {
+            $this->decoratedId = null;
+            $this->decoratedClass = null;
+            $this->restorePreviousValue = null;
 
-        if ($isRoot && ($definition = $this->container->getDefinition($this->currentId)) && null !== ($this->decoratedId = $definition->innerServiceId) && $this->container->has($this->decoratedId)) {
-            $this->decoratedClass = $this->container->findDefinition($this->decoratedId)->getClass();
+            if (($definition = $this->container->getDefinition($this->currentId)) && null !== ($this->decoratedId = $definition->innerServiceId) && $this->container->has($this->decoratedId)) {
+                $this->decoratedClass = $this->container->findDefinition($this->decoratedId)->getClass();
+            }
         }
 
         $patchedIndexes = [];
 
-        foreach ($this->methodCalls as $i => $call) {
+        foreach ($methodCalls as $i => $call) {
             [$method, $arguments] = $call;
 
             if ($method instanceof \ReflectionFunctionAbstract) {
@@ -227,10 +219,10 @@ class AutowirePass extends AbstractRecursivePass
                 }
             }
 
-            $arguments = $this->autowireMethod($reflectionMethod, $arguments, $checkAttributes, $i);
+            $arguments = $this->autowireMethod($reflectionMethod, $arguments, $checkAttributes);
 
             if ($arguments !== $call[1]) {
-                $this->methodCalls[$i][1] = $arguments;
+                $methodCalls[$i][1] = $arguments;
                 $patchedIndexes[] = $i;
             }
         }
@@ -238,7 +230,7 @@ class AutowirePass extends AbstractRecursivePass
         // use named arguments to skip complex default values
         foreach ($patchedIndexes as $i) {
             $namedArguments = null;
-            $arguments = $this->methodCalls[$i][1];
+            $arguments = $methodCalls[$i][1];
 
             foreach ($arguments as $j => $value) {
                 if ($namedArguments && !$value instanceof $this->defaultArgument) {
@@ -261,10 +253,10 @@ class AutowirePass extends AbstractRecursivePass
                 }
             }
 
-            $this->methodCalls[$i][1] = $arguments;
+            $methodCalls[$i][1] = $arguments;
         }
 
-        return $this->methodCalls;
+        return $methodCalls;
     }
 
     /**
@@ -272,7 +264,7 @@ class AutowirePass extends AbstractRecursivePass
      *
      * @throws AutowiringFailedException
      */
-    private function autowireMethod(\ReflectionFunctionAbstract $reflectionMethod, array $arguments, bool $checkAttributes, int $methodIndex): array
+    private function autowireMethod(\ReflectionFunctionAbstract $reflectionMethod, array $arguments, bool $checkAttributes): array
     {
         $class = $reflectionMethod instanceof \ReflectionMethod ? $reflectionMethod->class : $this->currentId;
         $method = $reflectionMethod->name;
@@ -280,10 +272,11 @@ class AutowirePass extends AbstractRecursivePass
         if ($reflectionMethod->isVariadic()) {
             array_pop($parameters);
         }
-        $this->defaultArgument->names = new \ArrayObject();
+        $defaultArgument = clone $this->defaultArgument;
+        $defaultArgument->names = new \ArrayObject();
 
         foreach ($parameters as $index => $parameter) {
-            $this->defaultArgument->names[$index] = $parameter->name;
+            $defaultArgument->names[$index] = $parameter->name;
 
             if (\array_key_exists($parameter->name, $arguments)) {
                 $arguments[$index] = $arguments[$parameter->name];
@@ -297,15 +290,16 @@ class AutowirePass extends AbstractRecursivePass
             $target = null;
             $name = Target::parseName($parameter, $target);
             $target = $target ? [$target] : [];
+            $currentId = $this->currentId;
 
-            $getValue = function () use ($type, $parameter, $class, $method, $name, $target) {
+            $getValue = function () use ($type, $parameter, $class, $method, $name, $target, $defaultArgument, $currentId) {
                 if (!$value = $this->getAutowiredReference($ref = new TypedReference($type, $type, ContainerBuilder::EXCEPTION_ON_INVALID_REFERENCE, $name, $target), false)) {
-                    $failureMessage = $this->createTypeNotFoundMessageCallback($ref, \sprintf('argument "$%s" of method "%s()"', $parameter->name, $class !== $this->currentId ? $class.'::'.$method : $method));
+                    $failureMessage = $this->createTypeNotFoundMessageCallback($ref, \sprintf('argument "$%s" of method "%s()"', $parameter->name, $class !== $currentId ? $class.'::'.$method : $method));
 
                     if ($parameter->isDefaultValueAvailable()) {
-                        $value = $this->defaultArgument->withValue($parameter);
+                        $value = $defaultArgument->withValue($parameter);
                     } elseif (!$parameter->allowsNull()) {
-                        throw new AutowiringFailedException($this->currentId, $failureMessage);
+                        throw new AutowiringFailedException($currentId, $failureMessage);
                     }
                 }
 
@@ -313,8 +307,25 @@ class AutowirePass extends AbstractRecursivePass
             };
 
             if ($checkAttributes) {
-                foreach ($parameter->getAttributes(Autowire::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+                $attributes = array_merge($parameter->getAttributes(Autowire::class, \ReflectionAttribute::IS_INSTANCEOF), $parameter->getAttributes(Lazy::class, \ReflectionAttribute::IS_INSTANCEOF));
+
+                if (1 < \count($attributes)) {
+                    throw new AutowiringFailedException($this->currentId, 'Using both attributes #[Lazy] and #[Autowire] on an argument is not allowed; use the "lazy" parameter of #[Autowire] instead.');
+                }
+
+                foreach ($attributes as $attribute) {
                     $attribute = $attribute->newInstance();
+                    $value = $attribute instanceof Autowire ? $attribute->value : null;
+
+                    if (\is_string($value) && str_starts_with($value, '%env(') && str_ends_with($value, ')%')) {
+                        if ($parameter->getType() instanceof \ReflectionNamedType && 'bool' === $parameter->getType()->getName() && !str_starts_with($value, '%env(bool:')) {
+                            $attribute = new Autowire(substr_replace($value, 'bool:', 5, 0));
+                        }
+                        if ($parameter->isDefaultValueAvailable() && $parameter->allowsNull() && null === $parameter->getDefaultValue() && !preg_match('/(^|:)default:/', $value)) {
+                            $attribute = new Autowire(substr_replace($value, 'default::', 5, 0));
+                        }
+                    }
+
                     $invalidBehavior = $parameter->allowsNull() ? ContainerInterface::NULL_ON_INVALID_REFERENCE : ContainerBuilder::EXCEPTION_ON_INVALID_REFERENCE;
 
                     try {
@@ -323,15 +334,20 @@ class AutowirePass extends AbstractRecursivePass
                         if (!$parameter->isDefaultValueAvailable()) {
                             throw new AutowiringFailedException($this->currentId, $e->getMessage(), 0, $e);
                         }
-                        $arguments[$index] = clone $this->defaultArgument;
+                        $arguments[$index] = clone $defaultArgument;
                         $arguments[$index]->value = $parameter->getDefaultValue();
 
                         continue 2;
                     }
 
-                    if ($attribute instanceof AutowireCallable) {
+                    if ($attribute instanceof AutowireInline) {
                         $value = $attribute->buildDefinition($value, $type, $parameter);
+                        $value = $this->doProcessValue($value);
                     } elseif ($lazy = $attribute->lazy) {
+                        if (true === $lazy && str_contains($type, '|')) {
+                            throw new AutowiringFailedException($this->currentId, \sprintf('Cannot use #[Autowire] with option "lazy: true" on union types for service "%s"; set the option to the interface(s) that should be proxied instead.', $this->currentId));
+                        }
+
                         $value ??= $getValue();
 
                         if (!$value instanceof Reference || ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $value->getInvalidBehavior() && !$this->container->has((string) $value)) {
@@ -340,20 +356,24 @@ class AutowirePass extends AbstractRecursivePass
                             continue 2;
                         }
 
-                        $definition = (new Definition($type))
+                        if (!\is_array($lazy)) {
+                            $lazy = str_contains($type, '&') && !str_contains($type, '|') ? explode('&', trim($type, '()')) : (\is_string($lazy) ? [$lazy] : []);
+                        }
+
+                        if (!$lazy && $value instanceof Reference && $this->container->has($value) && $this->container->findDefinition($value)->isLazy()) {
+                            $arguments[$index] = $value;
+
+                            continue 2;
+                        }
+
+                        $proxyType = $lazy ? $type : $this->resolveProxyType($type, $value);
+                        $definition = (new Definition($proxyType))
                             ->setFactory('current')
                             ->setArguments([[$value]])
                             ->setLazy(true);
 
-                        if (!\is_array($lazy)) {
-                            if (str_contains($type, '|')) {
-                                throw new AutowiringFailedException($this->currentId, \sprintf('Cannot use #[Autowire] with option "lazy: true" on union types for service "%s"; set the option to the interface(s) that should be proxied instead.', $this->currentId));
-                            }
-                            $lazy = str_contains($type, '&') ? explode('&', trim($type, '()')) : [];
-                        }
-
                         if ($lazy) {
-                            if (!class_exists($type) && !interface_exists($type, false)) {
+                            if (!$this->container->getReflectionClass($proxyType, false)) {
                                 $definition->setClass('object');
                             }
                             foreach ($lazy as $v) {
@@ -373,12 +393,6 @@ class AutowirePass extends AbstractRecursivePass
                 }
 
                 foreach ($parameter->getAttributes(AutowireDecorated::class) as $attribute) {
-                    $arguments[$index] = $this->processValue($attribute->newInstance());
-
-                    continue 2;
-                }
-
-                foreach ($parameter->getAttributes(MapDecorated::class) as $attribute) {
                     $arguments[$index] = $this->processValue($attribute->newInstance());
 
                     continue 2;
@@ -406,25 +420,24 @@ class AutowirePass extends AbstractRecursivePass
                 }
 
                 // specifically pass the default value
-                $arguments[$index] = $this->defaultArgument->withValue($parameter);
+                $arguments[$index] = $defaultArgument->withValue($parameter);
 
                 continue;
             }
 
             if ($this->decoratedClass && is_a($this->decoratedClass, $type, true)) {
-                if ($this->getPreviousValue) {
+                if ($this->restorePreviousValue) {
                     // The inner service is injected only if there is only 1 argument matching the type of the decorated class
                     // across all arguments of all autowired methods.
                     // If a second matching argument is found, the default behavior is restored.
-
-                    $getPreviousValue = $this->getPreviousValue;
-                    $this->methodCalls[$this->decoratedMethodIndex][1][$this->decoratedMethodArgumentIndex] = $getPreviousValue();
-                    $this->decoratedClass = null; // Prevent further checks
+                    ($this->restorePreviousValue)();
+                    $this->decoratedClass = $this->restorePreviousValue = null; // Prevent further checks
                 } else {
                     $arguments[$index] = new TypedReference($this->decoratedId, $this->decoratedClass);
-                    $this->getPreviousValue = $getValue;
-                    $this->decoratedMethodIndex = $methodIndex;
-                    $this->decoratedMethodArgumentIndex = $index;
+                    $argumentAtIndex = &$arguments[$index];
+                    $this->restorePreviousValue = static function () use (&$argumentAtIndex, $getValue) {
+                        $argumentAtIndex = $getValue();
+                    };
 
                     continue;
                 }
@@ -435,7 +448,7 @@ class AutowirePass extends AbstractRecursivePass
 
         if ($parameters && !isset($arguments[++$index])) {
             while (0 <= --$index) {
-                if (!$arguments[$index] instanceof $this->defaultArgument) {
+                if (!$arguments[$index] instanceof $defaultArgument) {
                     break;
                 }
                 unset($arguments[$index]);
@@ -472,30 +485,14 @@ class AutowirePass extends AbstractRecursivePass
         $name = $target = (array_filter($reference->getAttributes(), static fn ($a) => $a instanceof Target)[0] ?? null)?->name;
 
         if (null !== $name ??= $reference->getName()) {
-            if ($this->container->has($alias = $type.' $'.$name) && !$this->container->findDefinition($alias)->isAbstract()) {
+            if (null !== ($alias = $this->getCombinedAlias($type, $name, $target)) && $this->canDefinitionBeAutowired($alias)) {
                 return new TypedReference($alias, $type, $reference->getInvalidBehavior());
             }
 
-            if (null !== ($alias = $this->getCombinedAlias($type, $name)) && !$this->container->findDefinition($alias)->isAbstract()) {
-                return new TypedReference($alias, $type, $reference->getInvalidBehavior());
-            }
-
-            $parsedName = (new Target($name))->getParsedName();
-
-            if ($this->container->has($alias = $type.' $'.$parsedName) && !$this->container->findDefinition($alias)->isAbstract()) {
-                return new TypedReference($alias, $type, $reference->getInvalidBehavior());
-            }
-
-            if (null !== ($alias = $this->getCombinedAlias($type, $parsedName)) && !$this->container->findDefinition($alias)->isAbstract()) {
-                return new TypedReference($alias, $type, $reference->getInvalidBehavior());
-            }
-
-            if (($this->container->has($n = $name) && !$this->container->findDefinition($n)->isAbstract())
-                || ($this->container->has($n = $parsedName) && !$this->container->findDefinition($n)->isAbstract())
-            ) {
+            if ($this->container->has($name) && $this->canDefinitionBeAutowired($name)) {
                 foreach ($this->container->getAliases() as $id => $alias) {
-                    if ($n === (string) $alias && str_starts_with($id, $type.' $')) {
-                        return new TypedReference($n, $type, $reference->getInvalidBehavior());
+                    if ($name === (string) $alias && str_starts_with($id, $type.' $')) {
+                        return new TypedReference($name, $type, $reference->getInvalidBehavior());
                     }
                 }
             }
@@ -505,15 +502,18 @@ class AutowirePass extends AbstractRecursivePass
             }
         }
 
-        if ($this->container->has($type) && !$this->container->findDefinition($type)->isAbstract()) {
-            return new TypedReference($type, $type, $reference->getInvalidBehavior());
-        }
-
-        if (null !== ($alias = $this->getCombinedAlias($type)) && !$this->container->findDefinition($alias)->isAbstract()) {
+        if (null !== ($alias = $this->getCombinedAlias($type)) && $this->canDefinitionBeAutowired($alias)) {
             return new TypedReference($alias, $type, $reference->getInvalidBehavior());
         }
 
         return null;
+    }
+
+    private function canDefinitionBeAutowired(string $id): bool
+    {
+        $definition = $this->container->findDefinition($id);
+
+        return !$definition->isAbstract() && !$definition->hasTag('container.excluded');
     }
 
     /**
@@ -643,7 +643,7 @@ class AutowirePass extends AbstractRecursivePass
             }
 
             if ($r->isInterface() && !$alternatives) {
-                $message .= ' Did you create a class that implements this interface?';
+                $message .= ' Did you create an instantiable class that implements this interface?';
             }
         }
 
@@ -692,7 +692,7 @@ class AutowirePass extends AbstractRecursivePass
     {
         $aliases = [];
         foreach (class_parents($type) + class_implements($type) as $parent) {
-            if ($container->has($parent) && !$container->findDefinition($parent)->isAbstract()) {
+            if ($container->has($parent) && $this->canDefinitionBeAutowired($parent)) {
                 $aliases[] = $parent;
             }
         }
@@ -702,9 +702,8 @@ class AutowirePass extends AbstractRecursivePass
             for ($i = 0, --$len; $i < $len; ++$i) {
                 $message .= \sprintf('%s "%s", ', class_exists($aliases[$i], false) ? 'class' : 'interface', $aliases[$i]);
             }
-            $message .= \sprintf('or %s "%s".', class_exists($aliases[$i], false) ? 'class' : 'interface', $aliases[$i]);
 
-            return $message;
+            return $message.\sprintf('or %s "%s".', class_exists($aliases[$i], false) ? 'class' : 'interface', $aliases[$i]);
         }
 
         if ($aliases) {
@@ -724,41 +723,72 @@ class AutowirePass extends AbstractRecursivePass
         $name = $m[3] ?? '';
 
         if (class_exists($type, false) || interface_exists($type, false)) {
-            if (null !== $target && str_starts_with($target, '.'.$type.' $')
-                && (new Target($target = substr($target, \strlen($type) + 3)))->getParsedName() === $name
-            ) {
-                $name = $target;
+            if (null !== $target && str_starts_with($target, '.'.$type.' $')) {
+                $name = substr($target, \strlen($type) + 3);
             }
 
             $this->autowiringAliases[$type][$name] = $name;
         }
     }
 
-    private function getCombinedAlias(string $type, ?string $name = null): ?string
+    private function getCombinedAlias(string $type, ?string $name = null, ?string $target = null): ?string
     {
+        $prefix = $target && $name ? '.' : '';
+        $suffix = $name ? ' $'.($target ?? $name) : '';
+        $parsedName = $target ?? ($name ? (new Target($name))->getParsedName() : null);
+
+        if ($this->container->has($alias = $prefix.$type.$suffix) && $this->canDefinitionBeAutowired($alias)) {
+            return $alias;
+        }
+
         if (str_contains($type, '&')) {
             $types = explode('&', trim($type, '()'));
         } elseif (str_contains($type, '|')) {
             $types = explode('|', $type);
         } else {
-            return null;
+            return $prefix || $name !== $parsedName && ($name = $parsedName) ? $this->getCombinedAlias($type, $name) : null;
         }
 
         $alias = null;
-        $suffix = $name ? ' $'.$name : '';
 
         foreach ($types as $type) {
-            if (!$this->container->hasAlias($type.$suffix)) {
-                return null;
+            if (!$this->container->hasAlias($prefix.$type.$suffix)) {
+                return $prefix || $name !== $parsedName && ($name = $parsedName) ? $this->getCombinedAlias($type, $name) : null;
             }
 
             if (null === $alias) {
-                $alias = (string) $this->container->getAlias($type.$suffix);
-            } elseif ((string) $this->container->getAlias($type.$suffix) !== $alias) {
-                return null;
+                $alias = (string) $this->container->getAlias($prefix.$type.$suffix);
+            } elseif ((string) $this->container->getAlias($prefix.$type.$suffix) !== $alias) {
+                return $prefix || $name !== $parsedName && ($name = $parsedName) ? $this->getCombinedAlias($type, $name) : null;
             }
         }
 
         return $alias;
+    }
+
+    /**
+     * Resolves the class name that should be proxied for a lazy service.
+     *
+     * @param string $originalType The original parameter type-hint (e.g., the interface)
+     * @param string $serviceId    The service ID the type-hint resolved to (e.g., the alias)
+     */
+    private function resolveProxyType(string $originalType, string $serviceId): string
+    {
+        if (!$this->container->has($serviceId)) {
+            return $originalType;
+        }
+
+        $resolvedType = $this->container->findDefinition($serviceId)->getClass();
+        $resolvedType = $this->container->getParameterBag()->resolveValue($resolvedType);
+
+        if (!$resolvedType || !$this->container->getReflectionClass($resolvedType, false)) {
+            return $originalType;
+        }
+
+        if (\PHP_VERSION_ID < 80400 && $this->container->getReflectionClass($resolvedType, false)->isFinal()) {
+            return $originalType;
+        }
+
+        return $resolvedType;
     }
 }

@@ -1,0 +1,99 @@
+.grr-install-banner[hidden] {
+	display: none;
+}
+
+.grr-install-banner {
+	position: fixed;
+	z-index: 1050;
+	right: 1rem;
+	bottom: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.25rem;
+	width: min(34rem, calc(100vw - 2rem));
+	padding: 1rem;
+	border: 1px solid #d5dee6;
+	border-radius: 0.6rem;
+	background: #fff;
+	box-shadow: 0 0.4rem 1.5rem rgb(0 0 0 / 20%);
+	color: #212529;
+}
+
+.grr-install-banner__copy p {
+	margin: 0.25rem 0 0;
+}
+
+.grr-install-banner__actions {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.grr-install-button,
+.grr-install-later {
+	padding: 0.55rem 0.8rem;
+	border: 0;
+	border-radius: 0.3rem;
+	cursor: pointer;
+}
+
+.grr-install-button {
+	background: #1f5f8b;
+	color: #fff;
+}
+
+.grr-install-button:hover,
+.grr-install-button:focus {
+	background: #17496b;
+	color: #fff;
+}
+
+.grr-install-later {
+	background: transparent;
+	color: #343a40;
+}
+
+.grr-install-dialog {
+	position: fixed;
+	width: min(34rem, calc(100vw - 2rem));
+	max-width: none;
+	max-height: calc(100vh - 2rem);
+	padding: 1.5rem;
+	border: 0;
+	border-radius: 0.6rem;
+	box-shadow: 0 0.5rem 2rem rgb(0 0 0 / 30%);
+	color: #212529;
+}
+
+.grr-install-dialog::backdrop {
+	background: rgb(0 0 0 / 55%);
+}
+
+.grr-install-dialog__close {
+	float: right;
+	padding: 0 0.35rem;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font-size: 1.75rem;
+	cursor: pointer;
+}
+
+.grr-install-dialog section {
+	margin: 1.25rem 0;
+}
+
+@media (max-width: 600px) {
+	.grr-install-banner {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.grr-install-banner__actions {
+		width: 100%;
+		justify-content: flex-end;
+	}
+}

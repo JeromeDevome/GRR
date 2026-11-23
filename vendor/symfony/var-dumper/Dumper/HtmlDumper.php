@@ -29,6 +29,7 @@ class HtmlDumper extends CliDumper
             'default' => 'background-color:#18171B; color:#FF8400; line-height:1.2em; font:12px Menlo, Monaco, Consolas, monospace; word-wrap: break-word; white-space: pre-wrap; position:relative; z-index:99999; word-break: break-all',
             'num' => 'font-weight:bold; color:#1299DA',
             'const' => 'font-weight:bold',
+            'virtual' => 'font-style:italic',
             'str' => 'font-weight:bold; color:#56DB3A',
             'note' => 'color:#1299DA',
             'ref' => 'color:#A0A0A0',
@@ -45,6 +46,7 @@ class HtmlDumper extends CliDumper
             'default' => 'background:none; color:#CC7832; line-height:1.2em; font:12px Menlo, Monaco, Consolas, monospace; word-wrap: break-word; white-space: pre-wrap; position:relative; z-index:99999; word-break: break-all',
             'num' => 'font-weight:bold; color:#1299DA',
             'const' => 'font-weight:bold',
+            'virtual' => 'font-style:italic',
             'str' => 'font-weight:bold; color:#629755;',
             'note' => 'color:#6897BB',
             'ref' => 'color:#6E6E6E',
@@ -59,14 +61,13 @@ class HtmlDumper extends CliDumper
         ],
     ];
 
-    protected $dumpHeader;
-    protected $dumpPrefix = '<pre class=sf-dump id=%s data-indent-pad="%s">';
-    protected $dumpSuffix = '</pre><script>Sfdump(%s)</script>';
-    protected $dumpId = 'sf-dump';
-    protected $colors = true;
+    protected ?string $dumpHeader = null;
+    protected string $dumpPrefix = '<pre class=sf-dump id=%s data-indent-pad="%s">';
+    protected string $dumpSuffix = '</pre><script>Sfdump(%s)</script>';
+    protected string $dumpId;
+    protected bool $colors = true;
     protected $headerIsDumped = false;
-    protected $lastDepth = -1;
-    protected $styles;
+    protected int $lastDepth = -1;
 
     private array $displayOptions = [
         'maxDepth' => 1,
@@ -83,19 +84,13 @@ class HtmlDumper extends CliDumper
         $this->styles = static::$themes['dark'] ?? self::$themes['dark'];
     }
 
-    /**
-     * @return void
-     */
-    public function setStyles(array $styles)
+    public function setStyles(array $styles): void
     {
         $this->headerIsDumped = false;
         $this->styles = $styles + $this->styles;
     }
 
-    /**
-     * @return void
-     */
-    public function setTheme(string $themeName)
+    public function setTheme(string $themeName): void
     {
         if (!isset(static::$themes[$themeName])) {
             throw new \InvalidArgumentException(\sprintf('Theme "%s" does not exist in class "%s".', $themeName, static::class));
@@ -108,10 +103,8 @@ class HtmlDumper extends CliDumper
      * Configures display options.
      *
      * @param array $displayOptions A map of display options to customize the behavior
-     *
-     * @return void
      */
-    public function setDisplayOptions(array $displayOptions)
+    public function setDisplayOptions(array $displayOptions): void
     {
         $this->headerIsDumped = false;
         $this->displayOptions = $displayOptions + $this->displayOptions;
@@ -119,20 +112,16 @@ class HtmlDumper extends CliDumper
 
     /**
      * Sets an HTML header that will be dumped once in the output stream.
-     *
-     * @return void
      */
-    public function setDumpHeader(?string $header)
+    public function setDumpHeader(?string $header): void
     {
         $this->dumpHeader = $header;
     }
 
     /**
      * Sets an HTML prefix and suffix that will encapse every single dump.
-     *
-     * @return void
      */
-    public function setDumpBoundaries(string $prefix, string $suffix)
+    public function setDumpBoundaries(string $prefix, string $suffix): void
     {
         $this->dumpPrefix = $prefix;
         $this->dumpSuffix = $suffix;
@@ -149,10 +138,8 @@ class HtmlDumper extends CliDumper
 
     /**
      * Dumps the HTML header.
-     *
-     * @return string
      */
-    protected function getDumpHeader()
+    protected function getDumpHeader(): string
     {
         $this->headerIsDumped = $this->outputStream ?? $this->lineDumper;
 
@@ -163,7 +150,6 @@ class HtmlDumper extends CliDumper
         $line = str_replace('{$options}', json_encode($this->displayOptions, \JSON_FORCE_OBJECT), <<<'EOHTML'
             <script>
             Sfdump = window.Sfdump || (function (doc) {
-
             doc.documentElement.classList.add('sf-js-enabled');
 
             var rxEsc = /([.*+?^${}()|\[\]\/\\])/g,
@@ -781,10 +767,7 @@ class HtmlDumper extends CliDumper
         return $this->dumpHeader = preg_replace('/\s+/', ' ', $line).'</style>'.$this->dumpHeader;
     }
 
-    /**
-     * @return void
-     */
-    public function dumpString(Cursor $cursor, string $str, bool $bin, int $cut)
+    public function dumpString(Cursor $cursor, string $str, bool $bin, int $cut): void
     {
         if ('' === $str && isset($cursor->attr['img-data'], $cursor->attr['content-type'])) {
             $this->dumpKey($cursor);
@@ -799,10 +782,7 @@ class HtmlDumper extends CliDumper
         }
     }
 
-    /**
-     * @return void
-     */
-    public function enterHash(Cursor $cursor, int $type, string|int|null $class, bool $hasChild)
+    public function enterHash(Cursor $cursor, int $type, string|int|null $class, bool $hasChild): void
     {
         if (Cursor::HASH_OBJECT === $type) {
             $cursor->attr['depth'] = $cursor->depth;
@@ -830,10 +810,7 @@ class HtmlDumper extends CliDumper
         }
     }
 
-    /**
-     * @return void
-     */
-    public function leaveHash(Cursor $cursor, int $type, string|int|null $class, bool $hasChild, int $cut)
+    public function leaveHash(Cursor $cursor, int $type, string|int|null $class, bool $hasChild, int $cut): void
     {
         $this->dumpEllipsis($cursor, $hasChild, $cut);
         if ($hasChild) {
@@ -949,14 +926,14 @@ class HtmlDumper extends CliDumper
         if ('label' === $style) {
             $v .= ' ';
         }
+        if ($attr['virtual'] ?? false) {
+            $v = '<span class=sf-dump-virtual>'.$v.'</span>';
+        }
 
         return $v;
     }
 
-    /**
-     * @return void
-     */
-    protected function dumpLine(int $depth, bool $endOfValue = false)
+    protected function dumpLine(int $depth, bool $endOfValue = false): void
     {
         if (-1 === $this->lastDepth) {
             $this->line = \sprintf($this->dumpPrefix, $this->dumpId, $this->indentPad).$this->line;

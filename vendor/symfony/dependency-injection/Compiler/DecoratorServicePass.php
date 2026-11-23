@@ -30,10 +30,7 @@ class DecoratorServicePass extends AbstractRecursivePass
 {
     protected bool $skipScalars = true;
 
-    /**
-     * @return void
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $definitions = new \SplPriorityQueue();
         $order = \PHP_INT_MAX;

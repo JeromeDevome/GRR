@@ -12,6 +12,7 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
@@ -32,6 +33,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory;
 use Symfony\Component\HttpKernel\EventListener\CacheAttributeListener;
 use Symfony\Component\HttpKernel\EventListener\DisallowRobotsIndexingListener;
 use Symfony\Component\HttpKernel\EventListener\ErrorListener;
+use Symfony\Component\HttpKernel\EventListener\IsSignatureValidAttributeListener;
 use Symfony\Component\HttpKernel\EventListener\LocaleListener;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\ValidateRequestListener;
@@ -72,6 +74,7 @@ return static function (ContainerConfigurator $container) {
                 service('serializer'),
                 service('validator')->nullOnInvalid(),
                 service('translator')->nullOnInvalid(),
+                param('validator.translation_domain'),
             ])
             ->tag('controller.targeted_value_resolver', ['name' => RequestPayloadValueResolver::class])
             ->tag('kernel.event_subscriber')
@@ -141,6 +144,7 @@ return static function (ContainerConfigurator $container) {
                 service('logger')->nullOnInvalid(),
                 param('kernel.debug'),
                 abstract_arg('an exceptions to log & status code mapping'),
+                abstract_arg('list of loggers by log_channel'),
             ])
             ->tag('kernel.event_subscriber')
             ->tag('monolog.logger', ['channel' => 'request'])
@@ -150,6 +154,18 @@ return static function (ContainerConfigurator $container) {
                 service('controller.expression_language')->nullOnInvalid(),
             ])
             ->tag('kernel.event_subscriber')
+            ->tag('kernel.reset', ['method' => '?reset'])
+
+        ->set('controller.is_signature_valid_attribute_listener', IsSignatureValidAttributeListener::class)
+            ->args([
+                service('uri_signer'),
+            ])
+            ->tag('kernel.event_subscriber')
+
+        ->set('controller.helper', ControllerHelper::class)
+            ->tag('container.service_subscriber')
+
+        ->alias(ControllerHelper::class, 'controller.helper')
 
         ->set('controller.expression_language', ExpressionLanguage::class)
             ->lazy()

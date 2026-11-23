@@ -55,8 +55,8 @@ class IpUtils
     /**
      * Ranges reserved for private networks, which a reverse proxy in front of the application can live in.
      *
-     * Unlike PRIVATE_SUBNETS, this list holds no prefix that a remote client can present as its own
-     * address, so it is the one to pass to Request::setTrustedProxies().
+     * Unlike PRIVATE_SUBNETS, this list holds no prefix that a remote client can present as its own address,
+     * so it can serve as an allow list, as Request::setTrustedProxies() does for "private_ranges".
      * An IPv4-mapped IPv6 address is matched as the IPv4 host it embeds.
      */
     public const PRIVATE_RANGES = [
@@ -226,10 +226,24 @@ class IpUtils
     /**
      * Anonymizes an IP/IPv6.
      *
-     * Removes the last byte for v4 and the last 8 bytes for v6 IPs
+     * Removes the last bytes of IPv4 and IPv6 addresses (1 byte for IPv4 and 8 bytes for IPv6 by default).
+     *
+     * @param int<0, 4>  $v4Bytes
+     * @param int<0, 16> $v6Bytes
      */
-    public static function anonymize(string $ip): string
+    public static function anonymize(string $ip/* , int $v4Bytes = 1, int $v6Bytes = 8 */): string
     {
+        $v4Bytes = 1 < \func_num_args() ? func_get_arg(1) : 1;
+        $v6Bytes = 2 < \func_num_args() ? func_get_arg(2) : 8;
+
+        if ($v4Bytes < 0 || $v6Bytes < 0) {
+            throw new \InvalidArgumentException('Cannot anonymize less than 0 bytes.');
+        }
+
+        if ($v4Bytes > 4 || $v6Bytes > 16) {
+            throw new \InvalidArgumentException('Cannot anonymize more than 4 bytes for IPv4 and 16 bytes for IPv6.');
+        }
+
         /*
          * If the IP contains a % symbol, then it is a local-link address with scoping according to RFC 4007
          * In that case, we only care about the part before the % symbol, as the following functions, can only work with
@@ -246,15 +260,23 @@ class IpUtils
             $ip = substr($ip, 1, -1);
         }
 
+        $mappedIpV4MaskGenerator = static function (string $mask, int $bytesToAnonymize) {
+            $mask .= str_repeat('ff', 4 - $bytesToAnonymize);
+            $mask .= str_repeat('00', $bytesToAnonymize);
+
+            return '::'.implode(':', str_split($mask, 4));
+        };
+
         $packedAddress = inet_pton($ip);
         if (4 === \strlen($packedAddress)) {
-            $mask = '255.255.255.0';
+            $mask = rtrim(str_repeat('255.', 4 - $v4Bytes).str_repeat('0.', $v4Bytes), '.');
         } elseif (str_starts_with($packedAddress, str_repeat("\0", 10)."\xff\xff")) {
-            $mask = '::ffff:ffff:ff00';
+            $mask = $mappedIpV4MaskGenerator('ffff', $v4Bytes);
         } elseif (str_starts_with($packedAddress, str_repeat("\0", 12))) {
-            $mask = '::ffff:ff00';
+            $mask = $mappedIpV4MaskGenerator('', $v4Bytes);
         } else {
-            $mask = 'ffff:ffff:ffff:ffff:0000:0000:0000:0000';
+            $mask = str_repeat('ff', 16 - $v6Bytes).str_repeat('00', $v6Bytes);
+            $mask = implode(':', str_split($mask, 4));
         }
         $ip = inet_ntop($packedAddress & inet_pton($mask));
 

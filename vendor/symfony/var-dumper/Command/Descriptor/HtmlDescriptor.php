@@ -24,12 +24,11 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
  */
 class HtmlDescriptor implements DumpDescriptorInterface
 {
-    private HtmlDumper $dumper;
     private bool $initialized = false;
 
-    public function __construct(HtmlDumper $dumper)
-    {
-        $this->dumper = $dumper;
+    public function __construct(
+        private HtmlDumper $dumper,
+    ) {
     }
 
     public function describe(OutputInterface $output, Data $data, array $context, int $clientId): void
@@ -51,7 +50,7 @@ class HtmlDescriptor implements DumpDescriptorInterface
             $title = '<code>$ </code>'.self::escape($context['cli']['command_line']);
             $dedupIdentifier = self::escape($context['cli']['identifier']);
         } else {
-            $dedupIdentifier = uniqid('', true);
+            $dedupIdentifier = bin2hex(random_bytes(4));
         }
 
         $sourceDescription = '';

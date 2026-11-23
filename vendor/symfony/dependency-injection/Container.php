@@ -52,16 +52,16 @@ class_exists(ArgumentServiceLocator::class);
  */
 class Container implements ContainerInterface, ResetInterface
 {
-    protected $parameterBag;
-    protected $services = [];
-    protected $privates = [];
-    protected $fileMap = [];
-    protected $methodMap = [];
-    protected $factories = [];
-    protected $aliases = [];
-    protected $loading = [];
-    protected $resolving = [];
-    protected $syntheticIds = [];
+    protected ParameterBagInterface $parameterBag;
+    protected array $services = [];
+    protected array $privates = [];
+    protected array $fileMap = [];
+    protected array $methodMap = [];
+    protected array $factories = [];
+    protected array $aliases = [];
+    protected array $loading = [];
+    protected array $resolving = [];
+    protected array $syntheticIds = [];
 
     private array $envCache = [];
     private bool $compiled = false;
@@ -81,16 +81,15 @@ class Container implements ContainerInterface, ResetInterface
      *
      *  * Parameter values are resolved;
      *  * The parameter bag is frozen.
-     *
-     * @return void
      */
-    public function compile()
+    public function compile(): void
     {
         $this->parameterBag->resolve();
 
         $this->parameterBag = new FrozenParameterBag(
             $this->parameterBag->all(),
-            $this->parameterBag instanceof ParameterBag ? $this->parameterBag->allDeprecated() : []
+            $this->parameterBag instanceof ParameterBag ? $this->parameterBag->allDeprecated() : [],
+            $this->parameterBag instanceof ParameterBag ? $this->parameterBag->allNonEmpty() : [],
         );
 
         $this->compiled = true;
@@ -115,11 +114,9 @@ class Container implements ContainerInterface, ResetInterface
     /**
      * Gets a parameter.
      *
-     * @return array|bool|string|int|float|\UnitEnum|null
-     *
      * @throws ParameterNotFoundException if the parameter is not defined
      */
-    public function getParameter(string $name)
+    public function getParameter(string $name): array|bool|string|int|float|\UnitEnum|null
     {
         return $this->parameterBag->get($name);
     }
@@ -129,10 +126,7 @@ class Container implements ContainerInterface, ResetInterface
         return $this->parameterBag->has($name);
     }
 
-    /**
-     * @return void
-     */
-    public function setParameter(string $name, array|bool|string|int|float|\UnitEnum|null $value)
+    public function setParameter(string $name, array|bool|string|int|float|\UnitEnum|null $value): void
     {
         $this->parameterBag->set($name, $value);
     }
@@ -142,10 +136,8 @@ class Container implements ContainerInterface, ResetInterface
      *
      * Setting a synthetic service to null resets it: has() returns false and get()
      * behaves in the same way as if the service was never created.
-     *
-     * @return void
      */
-    public function set(string $id, ?object $service)
+    public function set(string $id, ?object $service): void
     {
         // Runs the internal initializer; used by the dumped container to include always-needed files
         if (isset($this->privates['service_container']) && $this->privates['service_container'] instanceof \Closure) {
@@ -284,10 +276,7 @@ class Container implements ContainerInterface, ResetInterface
         return isset($this->services[$id]);
     }
 
-    /**
-     * @return void
-     */
-    public function reset()
+    public function reset(): void
     {
         $services = $this->services + $this->privates;
 
@@ -301,9 +290,17 @@ class Container implements ContainerInterface, ResetInterface
             }
         }
 
-        $this->services = $this->factories = $this->privates = [];
+        $this->envCache = $this->services = $this->factories = $this->privates = [];
         // the closures that reference the container itself are created again when needed
         unset($this->getEnv, $this->getService);
+    }
+
+    /**
+     * @internal
+     */
+    public function resetEnvCache(): void
+    {
+        $this->envCache = [];
     }
 
     /**
@@ -342,10 +339,8 @@ class Container implements ContainerInterface, ResetInterface
 
     /**
      * Creates a service by requiring its factory file.
-     *
-     * @return mixed
      */
-    protected function load(string $file)
+    protected function load(string $file): mixed
     {
         return require $file;
     }

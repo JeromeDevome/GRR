@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="{{ d.locale|default('fr-fr') }}">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="Robots" content="noindex" />
+		<title>GRR - {{ settings.company|raw }}</title>
+		<link rel="manifest" href="./manifest.webmanifest">
+		<meta name="theme-color" content="#1f5f8b">
+		<link rel="stylesheet" href="./css/pwa-install.css">
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="./jslib/bootstrap/css/bootstrap.min.css?v={{d.versionCache}}" />
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css?v={{d.versionCache}}" />
+		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}?v={{d.versionCache}}" />
+		<link rel="stylesheet" type="text/css" href="./css/grr-header.css?v={{d.versionCache}}-4" />
+		<link rel="stylesheet" type="text/css" href="./jslib/fontawesome-free/css/all.min.css">
+		{{ d.sheetcssperso|raw }}
+		{% block css %}{% endblock %}
+		{{ d.sheetcsspersocss|raw }}
+	</head>
+
+	<body>
+		{% if d.pview != 1 %}
+		{% include '_header.twig' %}
+		{% endif %}
+		<section>
+			{% block content %}{% endblock %}
+
+			<div id="popup_name" class="popup_block"></div>
+		</section>
+		<script type="text/javascript" src="./jslib/jquery/jquery.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/jquery-ui/jquery-ui.min.js?v={{d.versionCache}}"></script>
+    	<script type="text/javascript" src="./jslib/floatthead/jquery.floatThead.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/bootstrap/js/bootstrap.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/_grr/popup.js?v={{d.versionCache}}" charset="utf-8"></script>
+		<script type="text/javascript" src="./jslib/_grr/functions.min.js?v={{d.versionCache}}" ></script>
+		{% block javascript %}{% endblock %}
+		<script type="text/javascript" src="./jslib/_grr/clock.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/_grr/header.js?v={{d.versionCache}}-3"></script>
+		{% if d.gPopup %}
+			{% set modePage = 1 %}
+			<script type="text/javascript">
+				document.addEventListener('DOMContentLoaded', function() {
+					console.log('Appel request avec id=119, day={{ d.gDay }}, month={{ d.gMonth }}, year={{ d.gYear }}');
+					request_popup(119, {{ d.gDay }}, {{ d.gMonth }}, {{ d.gYear }}, 0, 'jour', function(data) {
+						console.log('Données reçues et affichage popup');
+						readData(data);
+						// Déclencher l'affichage de la popup jQuery
+						var popID = 'popup_name';
+						var popWidth = 675;
+						jQuery('#' + popID).fadeIn().css({ 'width': popWidth});
+						var popMargTop = (jQuery('#' + popID).height() + 80) / 2;
+						var popMargLeft = (jQuery('#' + popID).width() + 80) / 2;
+						jQuery('#' + popID).css({
+							'margin-top' : -popMargTop,
+							'margin-left' : -popMargLeft,
+							'top' : '280px',
+							'left' : '600px'
+						});
+						jQuery('body').append('<div id="fade"></div>');
+						jQuery("body,html").animate({scrollTop:0},800);
+					}); 
+				});
+			</script>
+		{% endif %}
+		{% include '_pwa_install.twig' %}
+	</body>
+</html>

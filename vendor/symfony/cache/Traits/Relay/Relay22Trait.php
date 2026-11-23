@@ -19,7 +19,7 @@ if (version_compare(phpversion('relay'), '0.22.0', '>=')) {
     {
         public function jsonStrAppend($key, $value, $path = null, $fpha = null): \Relay\Relay|array|false
         {
-            return ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->jsonStrAppend(...\func_get_args());
+            return $this->initializeLazyObject()->jsonStrAppend(...\func_get_args());
         }
     }
 } else {
@@ -30,7 +30,7 @@ if (version_compare(phpversion('relay'), '0.22.0', '>=')) {
     {
         public function jsonStrAppend($key, $value, $path = null): \Relay\Relay|array|false
         {
-            return ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->jsonStrAppend(...\func_get_args());
+            return $this->initializeLazyObject()->jsonStrAppend(...\func_get_args());
         }
     }
 }

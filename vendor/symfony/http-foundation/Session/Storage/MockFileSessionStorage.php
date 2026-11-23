@@ -73,10 +73,7 @@ class MockFileSessionStorage extends MockArraySessionStorage
         return parent::regenerate($destroy, $lifetime);
     }
 
-    /**
-     * @return void
-     */
-    public function setId(string $id)
+    public function setId(string $id): void
     {
         // the id is turned into a file name, so keep it to the charset PHP allows for session ids
         // and to the 255 bytes a file name can hold once the ".mocksess" suffix is added
@@ -87,10 +84,7 @@ class MockFileSessionStorage extends MockArraySessionStorage
         parent::setId($id);
     }
 
-    /**
-     * @return void
-     */
-    public function save()
+    public function save(): void
     {
         if (!$this->started) {
             throw new \RuntimeException('Trying to save a session that was not started yet or was already closed.');
@@ -120,7 +114,7 @@ class MockFileSessionStorage extends MockArraySessionStorage
             $this->data = $data;
         }
 
-        // this is needed when the session object is re-used across multiple requests
+        // this is needed when the session object is reused across multiple requests
         // in functional tests.
         $this->started = false;
     }

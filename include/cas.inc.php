@@ -19,10 +19,62 @@
 // charger le script CAS.php, désormais inclus dans GRR
 include_once('vendor/autoload.php');
 //include_once('./include/CAS.php');
-// Enable debugging
-phpCAS::setDebug();
-// Enable verbose error messages. Disable in production!
-phpCAS::setVerbose(true);
+// Journal et messages détaillés phpCAS uniquement si APP_DEBUG est actif (cf. .htaccess / public/index.php)
+$grrCasDebug = filter_var(
+	$_SERVER['APP_DEBUG'] ?? $_SERVER['REDIRECT_APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? getenv('APP_DEBUG') ?: false,
+	FILTER_VALIDATE_BOOL
+);
+if ($grrCasDebug) {
+	phpCAS::setDebug(dirname(__DIR__).'/var/log/phpCAS.log');
+}
+phpCAS::setVerbose($grrCasDebug);
+
+/**
+ * Affiche une page d'erreur CAS proposant la connexion locale, puis termine le script.
+ */
+function grr_cas_echec(Throwable $e, string $casOutput, bool $debug): void
+{
+	// Redirection normale de phpCAS (vers le serveur CAS ou nettoyage du ticket)
+	// ou requête de déconnexion envoyée par le serveur CAS : ce n'est pas une erreur
+	$redirection = false;
+	foreach (headers_list() as $header) {
+		if (stripos($header, 'Location:') === 0) {
+			$redirection = true;
+			break;
+		}
+	}
+	if ($e instanceof CAS_GracefullTerminationException && ($redirection || isset($_POST['logoutRequest']))) {
+		echo $casOutput;
+		exit;
+	}
+
+	error_log('GRR - Erreur CAS : '.$e->getMessage());
+
+	// Détail technique affiché uniquement si APP_DEBUG est actif
+	$detail = '';
+	if ($debug) {
+		$detail = trim(preg_replace('/\s+/', ' ', strip_tags($casOutput)));
+		if (!($e instanceof CAS_GracefullTerminationException) || $detail === '')
+			$detail = trim($detail.' '.$e->getMessage());
+	}
+
+	echo begin_page(get_vocab("mrbs"), "no_session");
+	echo '<div class="container" style="max-width:640px;margin:40px auto;text-align:center;">';
+	echo '<div class="alert alert-danger"><strong>'.get_vocab("echec_authentification_cas").'</strong>';
+	if ($detail !== '')
+		echo '<pre style="white-space:pre-wrap;text-align:left;margin-top:10px;">'.htmlspecialchars($detail, ENT_QUOTES, 'UTF-8').'</pre>';
+	echo '</div>';
+	echo '<p>'.get_vocab("proposition_connexion_locale").'</p>';
+	echo '<p><a class="btn btn-primary" href="./login?local">'.get_vocab("se_connecter_localement").'</a></p>';
+	echo '</div>';
+	echo '</body></html>';
+	exit;
+}
+
+// phpCAS lève une exception au lieu d'appeler exit(), afin de pouvoir proposer la connexion locale en cas d'erreur
+CAS_GracefullTerminationException::throwInsteadOfExiting();
+ob_start();
+try {
 // paramètres du serveur SSO
 // désormais les paramètres sont définis en page d'administration admin_config_sso.php
 $serveurSSO = Settings::get("cas_serveur");
@@ -90,7 +142,10 @@ else
 		if (isset($_GET['force_authentification']))
 			phpCAS::forceAuthentication();
 		else
+		{
 			header("Location: ".htmlspecialchars_decode(page_accueil())."");
+			exit;
+		}
 	}
 	else
 	{
@@ -104,4 +159,10 @@ if (file_exists("./personnalisation/config_CAS.inc.php"))
 	include("./personnalisation/config_CAS.inc.php");
 else
 	include("./include/config_cas.inc.php");
+
+} catch (Throwable $e) {
+	grr_cas_echec($e, (string) ob_get_clean(), $grrCasDebug);
+}
+ob_end_flush();
+unset($grrCasDebug);
 ?>

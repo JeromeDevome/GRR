@@ -18,8 +18,6 @@
 
 require_once("settings.class.php");
 $settings = new Settings();
-if (!$settings)
-	die("Erreur chargement settings");
 /**
  * Open a new session
  *
@@ -819,8 +817,7 @@ function ControleSession()
 	{
 		if ((Settings::get("authentification_obli") == 1) || ((Settings::get("authentification_obli") == 0) && (isset($_SESSION['login']))))
 		{
-			header("Location: ./app.php?p=deconnexion&auto=1&url=$url");
-			die();
+			grr_redirection("./deconnexion?auto=1&url=$url");
 		}
 	}
 }
@@ -1010,7 +1007,6 @@ Obsolete function signature and it doesn't allow to use LDAPS
 		{
 			if ($msg_error != "no") return "error_1";
 				return "error_1";
-			die();
 		}
 			 // Option LDAP_OPT_REFERRALS à désactiver dans le cas d'active directory
 		@ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);

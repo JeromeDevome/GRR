@@ -19,7 +19,7 @@ if (version_compare(phpversion('relay'), '0.50.0', '>=')) {
     {
         public function himport($op, $hash = null, $fieldset = null, $fields = []): \Relay\Relay|bool|int
         {
-            return ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->himport(...\func_get_args());
+            return $this->initializeLazyObject()->himport(...\func_get_args());
         }
     }
 } else {

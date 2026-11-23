@@ -1,0 +1,1587 @@
+# Catalogue de traductions GRR (source unique : utilisé par Symfony et par include/language.inc.php hors Symfony).
+a_acces_au_domaine: 'Questo utente ha accesso a questo dominio ristretto.'
+a_acces_au_site: 'Questo utente ha accesso a questo sito ristretto.'
+accepter_resa: 'Accettare la prenotazione'
+accepter_resa_serie: 'Accettare la prenotazione e tutte le prenotazioni collegate per periodicità che non sono state ancora moderate.'
+acces_config_msg: 'Chi può accedere alla pagina di modifica di una risorsa?'
+acces_fiche_reservation_msg: 'Chi ha accesso alla scheda di prenotazione dettagliata di una risorsa?'
+accesAnonyme: 'Accesso anonimo.'
+accesLdapNonConfigure: "L'accesso alla directory LDAP non è configurato."
+access: 'Accesso ristretto'
+accessdenied: 'Accesso negato'
+accessdeniedtoomanybooking: 'Accesso negato: la vostra richiesta di prenotazione è stata respinta perché supererebbe il numero massimo di prenotazioni consentito!'
+action: Azione
+activ_no_activ: Stato
+activ_user: Attivo
+activation: Attivazione
+active_btn_primary_: 'Pulsanti primari attivi'
+active_lcs: 'Attivate la presa in conto del servizio SSO di LCS'
+Activer: Abilitare
+Activer_export_plus_xml: 'Attivare la funzionalità "Esporta XML +"'
+Activer_export_xml: 'Attivare la funzionalità "Esporta XML"'
+activer_fonctionalite_gestion_cle: 'Attivare la funzionalità "gestione delle chiavi"'
+activer_fonctionalite_participant: 'Chi può utilizzare la funzionalità "partecipante" durante la creazione di una prenotazione'
+activer_fonctionalite_ressource_empruntee_restituee: 'Attivare la funzionalità "risorsa in prestito/restituita"'
+Activer_log_email: 'Attivare i log sulle email'
+Activer_module_jours_cycles: 'Giorni ciclo'
+Activer_module_multisite: Multisito
+adapter_fichiers_langue: 'Adattare i file di lingua'
+adapter_fichiers_langue_explain: 'GRR utilizza file di lingua per la visualizzazione. È possibile sostituire i propri testi alle etichette ufficiali. Consultare la guida per saperne di più.'
+add: Aggiungere
+add_multi_user_succeed: "Gli utenti sono stati aggiunti all'elenco."
+add_multiple_user_to_list: "Aggiungere più utenti all'elenco"
+add_user_succeed: "Un utente è stato aggiunto all'elenco."
+add_user_to_list: "Aggiungere un utente all'elenco:"
+addarea: 'Aggiungere un dominio'
+addentry: 'Aggiungere una prenotazione'
+addroom: 'Aggiungere una risorsa'
+addsite: 'Aggiungere un sito'
+adm_cfg5_err1: "Errore 1 - Impossibile importare il modulo: l'unica estensione consentita è zip."
+adm_cfg5_err2: "Errore 2 - Impossibile importare il modulo: l'unica estensione consentita è zip."
+adm_cfg5_err3d: 'Errore 3 - Impossibile importare il modulo: problema di trasferimento. Il file '
+adm_cfg5_err3f: |2
+   non può essere trasferito nella directory "temp". Segnalare il problema all'amministratore del server.
+adm_cfg5_err5: |
+  Errore 5 - Impossibile registrare il modulo: problema di scrittura nella directory "temp". Segnalare il problema all'amministratore del server.
+adm_cfg5_err6: |
+  Errore 6 - Impossibile registrare il modulo: il file selezionato non è valido!
+adm_cfg5_err7: |
+  Errore 7 - Impossibile registrare il modulo!
+adm_cfg5_err8: |
+  Errore 8 - Impossibile installare il modulo
+adm_cfg5_err9: |
+  Errore 9 - Installazione riuscita, ma archivio non eliminato. Questo errore può essere ignorato.
+adm_cfg5_msg0: 'Impossibile trovare il file di installazione o di informazioni!'
+admin: Amministrazione
+admin_access_area: 'Accesso ai domini ristretti'
+admin_access_site: 'Accesso ai siti ristretti'
+admin_accueil: 'Pannello di controllo'
+admin_admin_site: 'Amministrazione dei siti'
+admin_admin_site_explain: "Oltre ai suoi diritti normali, l'amministratore di un sito ha la possibilità di gestire interamente un sito: creazione, cancellazione, modifica di un dominio o di una risorsa, aggiunta e rimozione di gestori delle prenotazioni, amministratore di domini, gestione delle email automatiche."
+admin_backup_recommande: 'Si raccomanda di effettuare preventivamente un backup del database'
+admin_book_room: 'Accesso alla prenotazione di risorse ristrette'
+admin_calend: 'Prenotazione a blocchi'
+admin_calend_feries: 'Calendario dei giorni festivi'
+admin_calend_ignore: 'Calendario fuori prenotazione'
+admin_calend_ignore_feries: 'Selezionare tutti i giorni festivi'
+admin_calend_ignore_vacances: 'Selezionare tutti i giorni di vacanza'
+admin_calend_jour_cycle1: 'Calendario dei "giorni ciclo"'
+admin_calend_vacances: 'Calendario delle vacanze'
+admin_calend_vacances_feries: 'Vacanze e giorni festivi'
+admin_calendar_explain_1: "Questa procedura consente di prenotare o liberare molto rapidamente fasce orarie simultaneamente su più risorse di più domini e secondo un calendario.\r\n\r\nEsempio: è possibile bloccare per l'anno determinati giorni come i fine settimana, le vacanze, i giorni festivi...\r\nAttenzione: in caso di conflitto con prenotazioni esistenti, queste saranno automaticamente e irrimediabilmente eliminate a favore della nuova prenotazione. Inoltre, le persone interessate dalle eliminazioni non saranno avvisate via email.\r\n\r\nQuesta procedura si svolge in tre fasi:\r\nScelta del/i dominio/i e del tipo di azione\r\nScelta delle risorse da prenotare, nome, descrizione e tipo di prenotazioni\r\nScelta delle date e degli orari da prenotare su un calendario\r\nLe modifiche effettive alle prenotazioni avvengono solo al termine della terza fase."
+admin_calendar_title: 'Prenotazione/Cancellazione in blocco'
+admin_cgu: CGU
+admin_cgu_accueil: 'La pagina iniziale'
+admin_cgu_accueil_explain: "Definendo una home page, gli utenti verranno reindirizzati a questa pagina quando effettuano l'accesso o durante un reindirizzamento."
+admin_cgu_cgu: 'La pagina CGU'
+admin_cgu_choix: 'Scegli la pagina da modificare'
+admin_cgu_h2: 'Gestione CGU e home page'
+admin_cgu_h3_accueil: 'Modifica la pagina iniziale'
+admin_cgu_record_error: 'Errore nel salvataggio della pagina'
+admin_clean_accounts_desc: "L'azione seguente consente di pulire tutte le tabelle di collegamento degli account utente. Si tratta di un'operazione di manutenzione, normalmente non necessaria e senza conseguenze sul funzionamento di GRR. Per precauzione, effettuare preventivamente un backup del database"
+admin_config: 'Configurazione generale'
+admin_config1: Contenuto
+admin_config11.php: Presentazione
+admin_config12.php: Visualizzazioni
+admin_config2: 'Accesso e diritti'
+admin_config3: Interattività
+admin_config4: 'Sicurezza / Connessioni'
+admin_config6: Aspetto
+admin_config7: Funzionalità
+admin_config_calend1: 'Parametri del calendario'
+admin_config_calend2: 'Creazione/Rigenerazione del calendario "giorni ciclo"'
+admin_config_calend3: 'Modifica/Visualizzazione del calendario "Giorni ciclo"'
+admin_config_imap: 'Configurazione IMAP'
+admin_config_imap_pop: "Configuration de l'authentification IMAP/POP"
+admin_config_ldap: 'Configurazione LDAP'
+admin_config_lemon.php: 'Configuration Lemonldap (SSO)'
+admin_config_sso: 'Configurazione SSO'
+admin_confirm_change_date_bookings: 'Conferma del cambio delle date di inizio e fine delle prenotazioni'
+admin_corresp_statut: 'Corrispondenze SSO'
+admin_corresp_statut_desc: "Questa pagina consente all'amministratore di definire le corrispondenze tra il profilo dell'utente nella directory LDAP (la sua funzione) e lo stato che gli verrà assegnato all'interno di GRR alla sua prima connessione. Affinché questa funzionalità sia operativa, è necessario configurare anche il server CAS e il file config_CAS.inc.php di GRR. Nota: questa azione non ha alcun impatto sugli utenti già presenti nel database GRR (fare riferimento alla documentazione)"
+admin_couleurs: 'Gestione dei colori'
+admin_couleurs_explications: "In questa pagina è possibile definire un certo numero di colori che modificheranno lo stile personalizzato.\r\nAltre modifiche allo stile possono essere apportate modificando il file di stile personnalisation/css/perso.css\r\nI colori iniziali riproducono il modello predefinito."
+admin_delete_entry_after.php: 'Supprimer les réservations après une date donnée'
+admin_delete_entry_before.php: 'Supprimer les réservations avant une date donnée'
+admin_email_manager: 'Email automatiche'
+admin_groupe: Gruppi
+admin_import: Importazione
+admin_import_entries_csv_direct.php: 'Importer un fichier de réservations au format CSV'
+admin_import_entries_csv_udt.php: 'Importer un fichier CSV issu de UnDeuxTemps'
+admin_import_users_csv0: 'File CSV da importare:'
+admin_import_users_csv1: 'Il file da importare ha una prima riga di intestazione, da ignorare'
+admin_import_users_csv10: "L'importazione è fallita!"
+admin_import_users_csv11: 'Nessun file selezionato!'
+admin_import_users_csv12: "L'utente è stato creato!"
+admin_import_users_csv2: "\r\nIl file di importazione deve essere in formato csv (separatore: punto e virgola, codifica: UTF-8)\r\nIl file deve contenere i seguenti campi:\r\n--> Identificativo: l'identificativo dell'utente\r\n--> Cognome\r\n--> Nome\r\n--> Password\r\n--> Indirizzo email\r\n--> Tipo di utente: tre valori ammessi: \"visiteur\", \"utilisateur\", \"administrateur\"\r\n--> Stato: due valori ammessi: \"actif\" o \"inactif\"\r\n--> Tipo di autenticazione: due valori ammessi: \"local\" o \"ext\"\r\n--> Cambio password alla prossima connessione: due valori ammessi: \"0\" = no o \"1\" = sì\r\n"
+admin_import_users_csv3: "\r\nALCUNE PRECISAZIONI:\r\n\r\nIdentificativo\r\nMassimo 40 caratteri. Può essere qualsiasi sequenza di caratteri e/o cifre senza spazi. Anche il carattere _ è consentito. Se questo formato non viene rispettato, apparirà la sequenza ??? al posto dell'identificativo. Gli identificativi che appaiono in rosso corrispondono a nomi utente già esistenti nel database GRR. I dati esistenti verranno quindi sovrascritti dai dati presenti nel file importato!\r\n\r\nCognome\r\nCognome dell'utente. Massimo 30 caratteri. Può essere qualsiasi sequenza di caratteri e/o cifre con eventuali spazi e apostrofi.\r\n\r\nNome\r\nNome dell'utente. Stessa nota del cognome. I nomi e i cognomi che appaiono in blu corrispondono a utenti esistenti nel database GRR con lo stesso nome e cognome.\r\n\r\nPassword\r\nLasciare vuoto se il tipo di autenticazione è \"ext\". Altrimenti, minimo %pass_leng% caratteri e massimo 30 caratteri.\r\n\r\nIndirizzo Email\r\nMassimo 100 caratteri. Inserire il simbolo \"-\" se non è presente l'indirizzo email\r\n\r\nTipo di autenticazione\r\nInserire \"local\" nel caso generale e \"ext\" se si tratta di un utente che si connette tramite una directory LDAP o un sistema di autenticazione (CAS, LemonLdap, ...)\r\n\r\n"
+admin_import_users_csv4: 'Impossibile aprire il file CSV'
+admin_import_users_csv5: "Prima fase dell'importazione:"
+admin_import_users_csv6: 'voci rilevate!'
+admin_import_users_csv7: 'I login che appaiono in arancione corrispondono a login già esistenti nel database GRR. I dati esistenti verranno quindi sovrascritti dai dati presenti nel file da importare!'
+admin_import_users_csv8: "\r\nATTENZIONE : i nomi e nomi che appaiono in blu corrispondono ad utenti che esistono già nella base GRR e che portano gli stessi nomi e nomi.\r\n\r\n"
+admin_import_users_csv9: "I simboli ??? indicano che il campo in questione non è valido. L'operazione di importazione dei dati non può continuare normalmente. Correggere il file da importare."
+admin_import_users_fichier: 'Importare un file utenti'
+admin_import_xml_edt.php: 'Importer un fichier XML issu de EDT'
+admin_infos: 'Informazioni GRR e Server'
+admin_log_resa_liste: 'Log prenotazioni'
+admin_mail_serveur: 'Server di posta'
+admin_mails: 'Personalizzazione email'
+admin_maj: 'Versione e aggiornamento'
+admin_menu_arearoom: 'Campi e risorse'
+admin_menu_auth: 'Autenticazione e ldap'
+admin_menu_connexion_externe: 'Connessioni esterne'
+admin_menu_general: Generale
+admin_menu_mail: Email
+admin_menu_resa: Prenotazione
+admin_menu_site_area_room: 'Siti, domini e risorse'
+admin_menu_user: 'Utenti e accessi'
+admin_menu_various: Varie
+admin_module: Moduli
+admin_nettoyage_bdd: 'Pulizia database'
+admin_overload: 'Campi aggiuntivi'
+admin_page: 'Pagine varie'
+admin_purge_accounts: 'Epurazione dei account e delle prenotazioni associate'
+admin_purge_accounts_confirm: 'ATTENZIONE: Questa azione cancellerà tutti gli utenti (tranne gli amministratori generali) esterni a GRR e i loro privilegi. Le prenotazioni associate a questi account non verranno rimosse. Sei sicuro di voler eseguire questa azione?'
+admin_purge_accounts_confirm2: 'ATTENZIONE: Questa azione cancellerà tutti gli utenti (tranne gli amministratori generali) esterni a GRR e i loro privilegi, nonché tutte le prenotazioni associate (passate e future). Sei sicuro di voler eseguire questa azione?'
+admin_purge_accounts_confirm4: 'ATTENZIONE: Questa azione cancellerà tutti gli utenti esterni a GRR, tranne gli amministratori generali e gli utenti con privilegi. Le prenotazioni associate a questi account non verranno rimosse. Sei sicuro di voler eseguire questa azione?'
+admin_purge_accounts_desc: "Le azioni seguenti consentono di cancellare tutti gli account utente aggiunti tramite una fonte esterna a GRR e che non sono amministratori generali, nonché, a seconda dell'opzione scelta, tutte le prenotazioni associate.\r\nAttenzione, queste azioni sono irreversibili, assicurati di voler procedere con questa cancellazione. Effettua preventivamente un backup del database\r\n\r\nNota: assicurati di eseguire questa operazione senza utenti connessi a GRR (tranne l'amministratore).\r\nPromemoria: puoi disabilitare temporaneamente le connessioni a GRR (menu \"configurazione generale\")."
+admin_purge_accounts_sauf_privileges: 'Epurazione solo dei account esterni senza privilegi'
+admin_purge_accounts_with_bookings: 'Epurazione dei account esterni e delle prenotazioni associate'
+admin_purge_tables_confirm: 'Questa azione pulirà le tabelle di collegamento degli utenti. Confermi questa azione?'
+admin_purge_tables_liaison: 'Pulizia delle tabelle di collegamento'
+admin_right: 'Gestione delle risorse'
+admin_right_admin: 'Amministrazione dei domini'
+admin_right_admin_explain: "Oltre ai suoi diritti normali, l'amministratore di un dominio ha la possibilità di gestire interamente un dominio: creazione, cancellazione, modifica di una risorsa, aggiunta e rimozione di gestori delle prenotazioni, gestione delle email automatiche."
+admin_right_explain: 'Oltre ai suoi diritti normali, il gestore di una risorsa ha la possibilità di modificare o cancellare qualsiasi prenotazione di tale risorsa. Inoltre, le restrizioni relative al numero massimo di prenotazioni della risorsa non si applicano.'
+admin_room: 'Domini e risorse'
+admin_site: Siti
+admin_site_err1: 'Si è verificato un errore durante il conteggio dei siti.'
+admin_site_err2: 'Si è verificato un errore durante la preparazione della query per il conteggio dei siti.'
+admin_site_err3: 'Si è verificato un errore durante la preparazione della query per la lettura dei siti.'
+admin_site_explications: 'Un sito corrisponde alla posizione geografica di un dominio;'
+admin_type: 'Tipi di prenotazione'
+admin_type_explications: 'Per impostazione predefinita, quando si crea un nuovo tipo di prenotazione, questo è comune a tutti i domini. È poi possibile specificare, per ciascun dominio, quali tipi siano validi o meno.'
+admin_type_modify_create: 'Aggiunta di un nuovo tipo di prenotazione'
+admin_type_modify_modify: 'Modifica di un tipo di prenotazione'
+admin_type_msg1: 'Eliminazione impossibile: sono state registrate prenotazioni con questo tipo.'
+admin_type_msg2: 'ATTENZIONE: la tabella dei tipi di prenotazione non è aggiornata!'
+admin_type_msg3: 'Uno o più tipi di prenotazione sono attualmente in uso ma non sono elencati nella tabella dei tipi. Ciò potrebbe causare messaggi di errore.'
+admin_type_msg4: 'I tipi sono i seguenti:'
+admin_type_msg5: 'È necessario definire i tipi mancanti sopra indicati.'
+admin_type_msg6: 'Almeno una prenotazione ha un tipo non specificato.'
+admin_type_msg7: 'Dovresti controllare e correggere la tabella delle prenotazioni.'
+admin_type_msg8: 'Correggere la prenotazione n.'
+admin_user: Utenti
+admin_user1: "Diritti generali dell'utente"
+admin_user_demandes: Richieste
+admin_user_mdp_facile: 'Utenti con una password facile'
+admin_user_mdp_facile_description: 'Consideriamo come password semplici: identificativo come password, azerty, vuoto, 123456, 12345678, 000000, 00000000... . Tuttavia altre password sono semplici: spetta a voi sensibilizzare gli utenti.'
+admin_user_modify_create: 'Aggiunta di un nuovo utente'
+admin_user_modify_modify: 'Modifica di un utente esistente'
+admin_view_connexions: 'Monitoraggio connessioni'
+admin_view_emails: 'Monitoraggio email'
+administrateur_du_domaine: 'Amministratore del dominio'
+administrateur_du_site: 'Amministratore del sito'
+administrateur_general: 'Amministratore generale'
+administration1: 'Gestione della risorsa: '
+administration2: 'Gestione delle risorse seguenti: '
+administration_domaine: 'Amministrazione del settore: '
+administration_site: 'Amministrazione del sito'
+administrator_contact: "Contattare l'amministratore"
+adresseServeurImap: 'Indirizzo del server IMAP/POP'
+advanced_search: 'Ricerca avanzata'
+affichage_calendriers: 'Visualizzazione dei calendari'
+affichage_calendriers_msg: 'Numero di calendari da visualizzare su ogni planning'
+affichage_pdf: 'Visualizzazione del pulsante "Genera PDF"'
+affichage_reservation_date_heure: 'la data/ora di fine prenotazione'
+affichage_reservation_duree: ' la durata della prenotazione'
+affichage_type: 'Mostra la tipologia di prenotazione nelle pianificazioni settimanali e mensili.'
+affichages_divers: 'Vari display'
+affichages_divers_explain: 'Seleziona per attivare le opzioni'
+affiche_dans_les_mails: 'Visualizzare il contenuto nelle email automatiche'
+affiche_dans_les_vues: 'Visualizzare il contenuto nelle viste giornaliere, settimanali e mensili'
+Afficher_description_complete_dans_titre_plannings: 'Visualizzare la descrizione completa nel titolo dei planning.'
+afficher_non: 'Non visualizzare'
+afficher_oui: Visualizzare
+afficher_popup: Info-Bolla
+ajout_correspondance_profil_statut: 'Aggiungere una corrispondenza Profilo / Stato'
+ajout_fichier_joint: 'Configurazione della funzionalità "File allegato"'
+ajout_fichier_joint_explain: "La funzionalità \"File allegato\" consente agli utenti autorizzati di caricare file allegati a una prenotazione e agli utenti autorizzati di consultare i file allegati, secondo i diritti definiti di seguito.\r\nIl caricamento e la consultazione avvengono dalla pagina di consultazione di una prenotazione."
+all: Tutti
+all_areas: 'Tutte le prenotazioni'
+all_but_visitors: 'Tutti (tranne visitatori)'
+all_day: 'Tutto il giorno'
+all_day2: '=========='
+all_entries_in_conflict: 'Tutte le richieste sono in conflitto: non è possibile effettuare la prenotazione.'
+all_rooms: 'Tutte le risorse'
+all_rooms_of_area: 'Per tutte le risorse del dominio'
+allday: Giorno
+allow_action_in_past: 'Consentire le prenotazioni nel passato nonché le modifiche/cancellazioni di prenotazioni passate.'
+allow_action_in_past_explain: "Se la casella non è spuntata, un utente (nemmeno un gestore o un amministratore ristretto) non può effettuare una prenotazione nel passato, né modificare o eliminare una prenotazione passata. Solo l'amministratore generale ha questa possibilità."
+allow_gestionnaire_modify_del0: "Un gestore di una risorsa non può eliminare o modificare le prenotazioni effettuate sulla risorsa, tranne quelle di cui è l'autore."
+allow_gestionnaire_modify_del1: 'Un gestore di una risorsa può eliminare o modificare qualsiasi prenotazione effettuata sulla risorsa'
+allow_search_level0: 'Chiunque acceda al sito può accedere allo strumento di ricerca, anche se non connesso'
+allow_search_level1: 'È obbligatorio connettersi per accedere allo strumento di ricerca'
+allow_search_level2: 'È obbligatorio connettersi e avere lo stato "utente" per accedere allo strumento di ricerca'
+allow_search_level5: 'È obbligatorio connettersi ed essere amministratore generale per accedere allo strumento di ricerca.'
+allow_search_level_msg: 'Accesso allo strumento di ricerca e statistiche'
+allow_user_delete_after_beginning0: 'Un utente non può eliminare o modificare una prenotazione in corso né creare una prenotazione su una fascia oraria "iniziata".'
+allow_user_delete_after_beginning1: 'Un utente può eliminare o modificare in determinate condizioni una prenotazione in corso (di cui è beneficiario) e creare una prenotazione su una fascia oraria "iniziata"'
+allow_user_delete_after_beginning2: 'Un utente può modificare in determinate condizioni una prenotazione in corso (di cui è beneficiario), ma non può né creare né eliminare una prenotazione su una fascia oraria "iniziata"'
+allow_user_delete_after_beginning_msg: 'Cancellazione/Modifica di prenotazioni'
+Alphanumericeric: 'Valore alfanumerico'
+alterseries: 'La modifica di una serie di prenotazioni a cui sono iscritti dei partecipanti annullerà le iscrizioni!'
+any_area: 'Tutti i domini'
+any_day: ' qualsiasi giorno'
+archive_not_deleted: |
+  Installazione completata con successo, tuttavia l'archivio non è stato eliminato. Questo errore può essere ignorato.
+archiver: Archiviare
+areas: 'Domini:'
+attention: Attenzione
+attention_mail_automatique_desactive: "ATTENZIONE: l'invio di email automatiche è attualmente disabilitato. Configura"
+attention_mail_desactive: 'ATTENZIONE: il server di invio email è attualmente disabilitato. Configura'
+aucun_utilisateur: 'Nessuno utente dispone di privilegi'
+aucun_utilisateur_reservant: 'Nessun utente senza privilegi può prenotare.'
+aucune_correspondance: 'Nessuna corrispondenza profilo / stato GRR attualmente registrata'
+aucune_periodicite_associe: 'Nessuna periodicità è associata a questa prenotazione.'
+auteur: Autore
+authentification: Autenticazione
+authentification_base_externe: 'Esterna (SSO, LDAP, ...)'
+authentification_base_locale: 'Locale (database GRR)'
+authentification_CAS: 'Autenticarsi tramite CAS SSO'
+authentification_http: 'Autenticarsi tramite HTTP presso il server'
+authentification_lasso: 'Autenticarsi presso il fornitore di identità Lasso'
+authentification_lcs: 'Autenticare direttamente Si al vostro spazio perso LCS'
+authentification_lemon: 'Autenticarsi presso il Servizio di Autenticazione LemonLdap'
+authentification_locale: 'Oppure connettersi qui sotto a GRR con un account locale'
+authentification_obli0: "Non è necessario connettersi per vedere le prenotazioni (ma la connessione è obbligatoria se l'utente vuole prenotare o modificare una prenotazione)"
+authentification_obli1: 'È obbligatorio connettersi per accedere al sito'
+authentification_obli_msg: 'Accesso a GRR'
+automatic_mail_save_err: 'Errore durante il salvataggio di automatic_mail!'
+autor_contact: "Contattare l'autore"
+autres_parametres_sso: 'Parametri vari'
+avertissement_actions_irreverssibles: 'ATTENZIONE: le azioni eseguite in questa pagina sono irreversibili!'
+avertissement_change_type: 'ATTENZIONE: i due tipi di configurazione delle fasce orarie sono incompatibili tra loro: un cambio del tipo di fasce orarie comporta quindi, dopo la convalida, la cancellazione di tutte le prenotazioni di questo dominio.'
+avertissement_effacement: 'Sei sicuro di voler creare o rigenerare il calendario? Tutte le modifiche manuali apportate verranno cancellate.'
+avertissement_reservation_a_confirmer: '(le prenotazioni non confermate vengono eliminate automaticamente)'
+avertissement_suppression_champ_additionnel: 'La soppressione di un campo addizionale è definitiva e trascini la soppressione dei dati corrispondenti nelle prenotazioni già effettuate.'
+back: Indietro
+backup_pwd_save_err: 'Errore durante il salvataggio di motdepasse_backup !'
+bdd_informations: 'Informazioni sul database'
+bdd_nom_table: 'Nome della tabella'
+bdd_nombre_enregistrement: 'Numero di record'
+begin_bookings: 'Data di inizio delle prenotazioni:'
+begin_bookings_explain: 'Nessuna prenotazione possibile al di fuori di queste date. Inoltre le prenotazioni già effettuate al di fuori di queste date saranno cancellate dal database.'
+begining_of_session: 'Inizio sessione'
+bgcolor: Sfondo
+booking_in_past: 'Prenotazione anteriore alla data attuale'
+booking_in_past_explain: 'La data di inizio della nuova prenotazione è passata. Scegliere una data di inizio prenotazione successiva alla data attuale:'
+booking_in_past_explain_with_periodicity: "Una o più prenotazioni presentano un problema perché si trovano nel passato.\r\nScegliere date di fine prenotazione successive alla data attuale:"
+booking_range: 'Ambito (in giorni) della restrizione nel numero massimo di prenotazioni per utente'
+booking_room_out: 'Prenotazione non possibile'
+bookingsfor: 'Prenotazione per '
+bordcolor: Bordo
+brief_description: 'la descrizione breve.'
+btn_primary_: 'Pulsanti primari'
+cacher_page_login: "È possibile specificare qui sotto un link (http://...) per impedire l'accesso alla pagina di login indirizzando l'utente non autenticato all'indirizzo specificato.\r\nNota: sarà comunque possibile accedere alla pagina di login tramite un indirizzo del tipo http://.../grr/login.php?local:"
+cal_cell: 'Cella (calendario)'
+cal_cellhover: 'Cella (passaggio del mouse)'
+cal_current_day_: 'Giorno corrente (calendario)'
+cal_jours: 'Giorni (calendario)'
+cal_sem: 'Settimane (calendario)'
+cal_semhovercolor: 'Settimana (passaggio del mouse)'
+cal_titre: 'Titolo calendario'
+cal_week: 'Settimana selezionata (calendario)'
+calendrier_des_jours_hors_reservation: 'Calendario dei giorni fuori prenotazione'
+calendrier_feries: 'Calendario giorni festivi'
+calendrier_jours/cycles: 'Calendario "Cicli giornalieri"'
+calendrier_vacances: 'Calendario vacanze'
+calendriers: Calendari
+cancel: Annulla
+cant_create: 'Impossibile creare il file'
+cant_record: 'Impossibile salvare il file'
+cantDeleteFile: 'Impossibile eliminare il file'
+cantDeleteFileComm: ' esistente. È necessario modificare i permessi di questo file e quindi ricaricare la pagina.'
+capacity: 'Numero massimo di persone consentito nella sala (0 se non si tratta di una sala)'
+capacity_2: 'Capacità:'
+captcha_incorrect: 'Captcha errato!'
+captcha_utiliser: 'Utilizzare il captcha'
+cas_code_fonction: 'Codice della funzione'
+cas_fonctionnalite_mail_actif: 'Nel caso in cui la funzione mail/smtp sia attivata.'
+cas_language: Lingua
+cas_libelle_fonction: 'Etichetta della funzione'
+cas_logout: 'Se hai attivato la presa in considerazione del servizio CAS, fornendo di seguito un indirizzo di reindirizzamento, la disconnessione del GRR si disconnette dal portale CAS (Single-Sign-Out).'
+cas_logout2: 'Indirizzo di reindirizzamento dopo il logout Single-Sign-Out:'
+cas_port: Porta
+cas_proxy_explain: 'Se il server che ospita GRR è dietro un proxy, potrebbe essere necessario inserire i seguenti valori:'
+cas_proxy_port: Porta
+cas_proxy_server: 'Indirizzo IP del server proxy'
+cas_racine: Radice
+cas_serveur: 'Server CAS'
+CAS_SSO_explain: 'Se disponi di un ambiente CAS (Central Authentication Service), puoi attivare il supporto a questo servizio da parte di GRR qui sotto. Fai riferimento alla documentazione di GRR per saperne di più.'
+cas_version: 'Versione del protocollo CAS'
+causes_possibles: 'Cause possibili:'
+Cette_journee_ne_correspond_pas_a_un_jour_cycle: 'Questa giornata non corrisponde a un giorno ciclo'
+cgu: CGU
+cgu_grr: 'È possibile modificare la pagina CGU. Siete responsabili del contenuto. Per le informazioni legali di GRR: Né GRR, né gli sviluppatori sono responsabili del contenuto. GRR è un software Open Source sotto licenza GPL. Nessun dato viene recuperato dal vostro GRR dall''editore. Le password degli utenti sono criptate. Le informazioni personali degli utenti sono limitate a nome, cognome e indirizzo email, consultabili nella pagina "Gestisci il mio account"'
+cgu_titre: "CGU: Condizioni Generali d'Uso"
+champ_confidentiel: 'Campo riservato'
+champ_obligatoire: 'Campo obbligatorio'
+champ_vide_mot_de_passe_inchange: 'Se si lasciano i campi seguenti vuoti, la password non verrà cambiata.'
+champNonVide: 'Il campo sottostante non deve essere vuoto.'
+champs_non_remplis: 'Non tutti i campi sono stati compilati.'
+change: Modifica
+change_pwd: 'Cambiare el password'
+change_view: 'Cambiare il modo di visualizzazione'
+changer_statut_lorsque_ressource_restituee: 'Quando la risorsa sarà stata restituita, recarsi al seguente indirizzo per cambiare lo stato della prenotazione'
+check_all_the: 'Selezionare tutti i '
+check_right: "Si desidera verificare i permessi per l'identificativo:"
+cheminFiltreOKetResultatKO: 'Problema: il percorso e il filtro aggiuntivo selezionati sembrano validi, ma la ricerca su questo percorso non restituisce risultati.'
+cheminNonValide: 'Problema: il percorso selezionato non sembra essere valido'
+cheminOKetResultatKO: 'Problema: il percorso selezionato sembra essere valido, ma la ricerca su questo percorso non restituisce risultati.'
+cheminOuFiltreNonValide: 'Problema: il percorso e/o il filtro aggiuntivo selezionati non sembrano essere validi'
+choisir_image_login: "Scegliere un'immagine da far apparire nella pagina di connessione (solo Template 2)"
+choisir_image_logo: "Scegliere un logo da far apparire nell'angolo sinistro della fascia superiore (solo png, jpg e gif)."
+choisir_image_ressource: "Scegliere un'immagine della risorsa per la scheda di presentazione (solo png, jpg e gif)."
+choix_action: 'Scegliere il tipo di azione:'
+choix_domaines: 'Scegliere il o i domini su cui verteranno le prenotazioni o le cancellazioni di prenotazioni:'
+choix_statut_CAS_SSO: 'Attivare il supporto del servizio CAS scegliendo qui sotto lo stato che verrà assegnato alle persone quando si connettono a GRR per la prima volta utilizzando il servizio CAS. Sarà possibile in seguito modificare questo valore per ogni utente.'
+choix_statut_http_SSO: 'Attivare il supporto del servizio di autenticazione HTTP scegliendo lo stato che verrà assegnato alle persone quando si connettono a GRR per la prima volta utilizzando questo servizio. Sarà possibile in seguito modificare questo valore per ogni utente.'
+choix_statut_lasso_SSO: 'Attivare il supporto del servizio Lasso scegliendo qui sotto lo stato che verrà assegnato alle persone quando si connettono a GRR per la prima volta utilizzando il servizio Lasso. Sarà possibile in seguito modificare questo valore per ogni utente.'
+choix_statut_lcs_SSO: 'Attivate la presa in conto del servizio SSO di LCS e scegliete sotto lo statuto che sarà attribuito alle persone quando si connettono a GRR per la prima volta utilizzando il servizio Caso. Potrete modificare questo valore per ogni utente in seguito.'
+choix_statut_lemon_SSO: 'Attivare il supporto del servizio Lemonldap scegliendo lo stato che verrà assegnato alle persone quando si connettono a GRR per la prima volta utilizzando il servizio lemonldap. Sarà possibile in seguito modificare questo valore per ogni utente.'
+choixStatutDefaut: 'Scegli lo stato che verrà assegnato alle persone nella directory LDAP quando accedono per la prima volta. Puoi modificare questo valore in seguito per ciascun utente.'
+choose: (scegliere)
+Choose: Scegliere
+choose_a_day: 'Scegliere almeno un giorno della settimana.'
+choose_a_room: 'Devi scegliere almeno una risorsa.'
+choose_a_site: '(Scegliere un sito)'
+choose_a_type: 'Devi scegliere un tipo di prenotazione.'
+choose_an_area: '(Scegliere un dominio)'
+choose_css: 'Scegliere dalla lista a fianco:'
+choose_date: 'Scegli la data'
+choose_language: 'Scelta della lingua predefinita'
+choose_room: 'Selezionare una risorsa o cliccare su questo '
+cleaning_log: 'Pulizia del log'
+clef: 'Chiave prestata'
+click_here_for_series_close: '>>>Cliccare qui per chiudere le opzioni di periodicità<<<'
+click_here_for_series_open: '>>>Cliccare qui per aprire le opzioni di periodicità<<<'
+click_here_to_hide_connexions: 'Clicca qui per nascondere la cronologia degli accessi'
+click_here_to_modify_pwd: '>>>Premete qui per modificare el vostro password<<<'
+click_here_to_see_connexions: 'Clicca qui per visualizzare la cronologia degli accessi.'
+clickToSave: 'Per salvare le informazioni, fai clic sul pulsante.'
+cliquez_pour_effectuer_une_reservation: 'Cliccare per effettuare una prenotazione'
+cocher_jours_a_afficher: "Selezionare i giorni da visualizzare sui vari planning.\r\nNota: le prenotazioni sono impossibili per i giorni non selezionati."
+code_fonction: 'Identificativo del profilo LDAP'
+company: "Nome dell'istituto"
+config_cas_attributs: 'Attributi CAS da recuperare e far corrispondere con i campi del database GRR (affinché il supporto del servizio CAS sia operativo, è necessario configurare anche il server CAS):'
+config_cas_title: 'Supporto di un ambiente CAS (SSO)'
+config_http_title: "Supporto di un'autenticazione HTTP"
+config_lasso_title: 'Supporto di un ambiente Lasso (SSO)'
+config_lcs_title: 'Prende in conto di un ambiente naturale SSO di un server LCS'
+config_lemon_title: 'Supporto di un ambiente Lemonldap (SSO)'
+configuration_liens_adresses: 'Configurazione dei link email'
+configuration_plages_horaires: 'Configurazione della visualizzazione dei planning delle risorse di questo dominio'
+configuration_ressource: 'Configurazione delle funzionalità'
+configurationActuelle: 'Configuration actuelle'
+configureImap: 'Configura IMAP/POP'
+configureLdap: 'Configura LDAP'
+'Configurer la ressource': 'Configurare la risorsa'
+configurerLdap: "Configurazione dell'accesso LDAP"
+confirm_del: 'Confermare la cancellazione'
+confirm_pwd: 'Password (per conferma)'
+confirmdel: "Sei sicuro di voler eseguire l'azione seguente?"
+confirmer: Confermare
+confirmer_reservation: 'Selezionare la casella per confermare la prenotazione'
+conflict: 'La nuova prenotazione è in conflitto con la/le seguente/i prenotazione/i:'
+conn: 'I miei collegamenti'
+connect: Connettersi
+connect_local: 'Connettersi localmente'
+connexion_a_grr_ip: 'IP non autorizzato.'
+connexion_a_grr_non_autorisee: 'Non sei autorizzato ad accedere a questa applicazione.'
+connexionTest: 'Test di connessione:'
+connKO: 'Impossibile stabilire la connessione'
+connOK_idKO: 'Connessione stabilita, ma autenticazione con il server non riuscita'
+contient: contiene
+copie_cachee: 'Mettere i destinatari in copia nascosta quando un messaggio è indirizzato a più persone.'
+copy_clipboard: 'Copia negli appunti'
+copyentry: 'Copiare questa prenotazione'
+courrier: Posta
+courrier_msg: 'Visualizzare la gestione delle sale per posta'
+crea_compte_inscrivez: Iscrivetevi
+created_by: 'Prenotazione effettuata da '
+created_by_you: ' che avevate effettuato.'
+createdby: 'Creata da :'
+creation_booking: ' ha prenotato '
+creation_booking_for_you: ' ha prenotato per voi '
+Creneau_initial: 'Fascia oraria iniziale'
+creneaux_de_reservation_pre_definis: 'Le fasce di prenotazione sono basate su titoli predefiniti.'
+creneaux_de_reservation_temps: 'Le fasce di prenotazione sono basate sul tempo.'
+ctrl_click: 'CTRL + click del mouse per selezionare più di una risorsa'
+ctrl_click_area: 'CTRL + clic del mouse per selezionare più di un dominio'
+cycle_cplt: 'Seleziona tutti i giorni del ciclo'
+'dans les champs suivants :': 'Nei campi seguenti : '
+database: 'Database:'
+date: 'Inizio della prenotazione'
+Date: ' Data'
+date2: Data
+datefin: 'Fine della prenotazione'
+dayafter: 'Vedere il giorno seguente '
+daybefore: ' Vedere il giorno precedente'
+days: giorno(i)
+debut_Jours_Cycles: 'Numero del giorno che inizia il primo ciclo di giorni'
+declarer_ressource_indisponible: 'Dichiarare questa risorsa temporaneamente non disponibile. Le prenotazioni saranno quindi impossibili.'
+deconnect_changing_pwd: 'Staccare cambiando el password'
+def_type_non_valide: 'Devi definire almeno un tipo valido!'
+default: 'Valori predefiniti'
+default_area: 'Dominio predefinito:'
+default_parameter_values_title: 'Scelta dei parametri di visualizzazione predefiniti'
+default_report_days_explain: "Valore predefinito dell'intervallo di tempo tra la data di inizio ricerca e la data di fine (in numero di giorni)"
+default_report_days_msg: 'Configurazione dello strumento "Ricerca e Statistiche"'
+default_room: 'Risorsa(e) visualizzata(e):'
+default_room_all: "Tutte le risorse (vista 'giorno')"
+default_room_month_all: "Tutte le risorse (vista 'mese')"
+default_room_month_all_bis: "Tutte le risorse (vista 'mese' bis)"
+default_room_week_all: "Tutte le risorse (vista 'settimana')"
+default_site: 'Sito predefinito'
+Definir: Fissare
+definir_par_defaut: 'Definire come predefinito'
+del: Cancellare
+del_entry_in_conflict: 'Eliminare la/le prenotazione/i sopra indicate per convalidare la nuova prenotazione.'
+del_group_succeed: 'Il gruppo è stato eliminato con successo.'
+del_user_succeed: 'Un utente è stato rimosso dalla lista.'
+delais_max_resa_room: "Numero massimo di giorni oltre il quale l'utente non può prenotare o modificare una prenotazione (-1 se nessuna restrizione). Esempio: un valore uguale a 30 significa che un utente può prenotare una risorsa solo con un massimo di 30 giorni di anticipo. Questa limitazione non riguarda i gestori della risorsa né gli amministratori del dominio."
+delais_max_resa_room_2: "Numero massimo di giorni oltre il quale l'utente non può prenotare o modificare una prenotazione:"
+delais_min_resa_room: "Tempo in minuti entro il quale l'utente non può prenotare o modificare una prenotazione (0 se nessuna restrizione). Esempio: un valore uguale a 60 significa che un utente non può prenotare una risorsa o modificare una prenotazione meno di 60 minuti prima dell'inizio della stessa. Questa limitazione non riguarda i gestori della risorsa né gli amministratori del dominio."
+delais_min_resa_room_2: "Tempo in minuti entro il quale l'utente non può prenotare o modificare una prenotazione:"
+delarea: 'Devi eliminare tutte le risorse di questo dominio prima di poterlo eliminare.'
+delete: Cancellare
+delete_booking: ' ha eliminato la prenotazione di '
+delete_entry_after: 'Elimina le prenotazioni a partire da una data specificata'
+delete_entry_after1: 'Prenotazioni a partire da '
+delete_entry_after_confirm: 'Conferma di voler eliminare le prenotazioni nelle seguenti aree dopo questa data'
+delete_entry_after_expl: "Utilizza questo script per eliminare le prenotazioni in domini specifici dopo una determinata data:\r\nTutte le prenotazioni che iniziano dopo la mezzanotte della data specificata nei domini selezionati verranno eliminate."
+delete_entry_after_report: 'Informe de eliminación de reservas después de esta fecha'
+delete_entry_areas: 'Seleziona i domini interessati dalla cancellazione'
+delete_entry_before: 'Elimina le prenotazioni che iniziano prima di una data specificata'
+delete_entry_before1: 'Prenotazioni precedenti a '
+delete_entry_before2: ' nella camera '
+delete_entry_before3: ' sono state eliminate.'
+delete_entry_before_confirm: 'Conferma di voler eliminare le prenotazioni nelle seguenti aree prima di questa data'
+delete_entry_before_expl: "Utilizza questo script per eliminare le prenotazioni in domini specifici prima di una determinata data:\r\nTutte le prenotazioni effettuate prima della mezzanotte della data specificata nei domini selezionati verranno eliminate."
+delete_entry_before_report: 'Segnalazione di cancellazione delle prenotazioni prima di questa data'
+delete_entry_end: 'Data di fine eliminazione (questa operazione è irreversibile!)'
+delete_entry_error: "Errore durante l'eliminazione delle prenotazioni nella camera"
+delete_entry_go: 'Eliminazione delle prenotazioni in corso!'
+delete_entry_start: 'Data di inizio eliminazione (questa operazione è irreversibile!)'
+delete_entry_warn: "Si consiglia di eseguire un backup del database prima di procedere con l'eliminazione"
+delete_up_to: 'Cancellare fino al'
+deleteentry: 'Cancellare questa prenotazione'
+deletefollowing: 'Stai per eliminare le seguenti prenotazioni'
+deleteseries: 'Cancellare la periodicità (e tutte le prenotazioni associate)'
+deleteseriesafter: 'Cancellare la periodicità dopo '
+deleteseriesposterieure: 'Cancellare tutte le prenotazioni associate successive a questa data'
+demo_info_cache: '**DEMO**'
+depot_grr_officiel: 'Repository GRR Officiel su Github'
+derniere_version_publiee: 'Ultima versione pubblicata'
+desactiverLDAPauth: "Disabilita l'autenticazione LDAP"
+description: Descrizione
+description_complete: 'Descrizione completa (visibile nella scheda di presentazione)'
+description_complete2: ' Potete utilizzare segnali HTML'
+deux_points: ':'
+dirURI: 'URI della directory'
+dirURIexpl: "Lascia 'ldap://localhost' se la directory è installata sulla stessa macchina di GRR. Altrimenti, specifica l'indirizzo del server.\r\nIn questo caso, utilizza il protocollo ldaps://."
+dirURIPort: 'Numero di porta della directory'
+dirURIPortExpl: "In caso di dubbio, lascia il valore predefinito: 389\r\n(3268 per il server del catalogo globale di Active Directory, 636 per LDAPS (LDAP su SSH))\r\n"
+disable_login_off: 'Attivare le connessioni'
+disable_login_on: 'Disattivare le connessioni'
+disable_login_save_err: 'Errore durante la registrazione di disable_login !'
+disconnect: Disconnettersi
+disconnect2: Disconnettere
+Display: Display
+display_add_site: 'Aggiungere un sito'
+display_add_type: 'Aggiungere un tipo di prenotazione'
+display_add_user: 'Aggiungere un utente'
+display_add_user_list_csv: 'Importare in GRR un archivio di utenti (formato CSV)'
+display_all_user.php: 'Pubblicare: tutti gli utenti'
+display_file: "Autorizzare l'invio di file"
+display_file1: 'Consentire di collegare file alle prenotazioni'
+display_file2: "L'invio di file è autorizzato"
+display_file3: "L'invio di file non è autorizzato"
+display_full_description0: 'la descrizione completa non viene visualizzata'
+display_full_description1: 'la descrizione completa viene visualizzata'
+display_full_description_msg: 'Visualizzazione della descrizione completa della prenotazione nelle viste giornaliere, settimanali e mensili.'
+display_info_bulle_msg: 'Visualizzazione e contenuto di "descrizioni comandi" quando si passa con il mouse sulle celle di pianificazione'
+display_level_email_msg1: 'Visualizzazione dei link email nelle schede dettagliate di prenotazione'
+display_level_email_msg2: "Nelle schede dettagliate di prenotazione, dei \"link email\" consentono di contattare via email gli autori della prenotazione.\r\nIndicare qui sotto chi beneficia di questa funzionalità."
+display_level_view_entry: 'Visualizzazione delle informazioni delle prenotazioni in forma di pagina o di popup'
+display_level_view_entry_0: 'Visualizzazione in forma di popup.'
+display_level_view_entry_1: 'Visualizzazione in forma di pagina.'
+display_mail_destinataire: 'Indirizzo email del destinatario:'
+display_mail_etat_destinataire: 'Modulo di contatto per la prenotazione'
+display_mail_etat_destinataire_1: 'Scegliere se il modulo di contatto per le richieste di prenotazione è disponibile per i visitatori.'
+display_mail_etat_destinataire_2: 'Il modulo di contatto prenotazione è disabilitato'
+display_mail_etat_destinataire_3: 'Il modulo di contatto prenotazione è abilitato per le persone non connesse e per lo stato visitatore'
+display_mail_etat_destinataire_4: 'Il modulo di contatto prenotazione è abilitato per lo stato visitatore (connessi)'
+display_mail_etat_destinataire_5: 'Il modulo di contatto per la prenotazione è abilitato ed accessibile dalla pagina di login'
+display_menu: 'Visualizzazione del menu'
+display_menu_1: 'Affichage du menu (calendario, dominios y recursos)'
+display_menu_2: 'Il menu non viene visualizzato'
+display_menu_3: 'Il menu viene visualizzato a sinistra'
+display_menu_4: 'Il menu viene visualizzato in alto'
+display_planning_resa: 'Visualizzazione delle informazioni sulle prenotazioni nelle viste giornaliere, settimanali e mensili'
+display_planning_resa_msg: 'Se non viene scelta alcuna informazione, verrà visualizzato il numero di prenotazione.'
+display_short_description0: 'la breve descrizione non viene visualizzata'
+display_short_description1: 'la breve descrizione viene visualizzata'
+display_short_description_msg: 'Visualizzazione della breve descrizione della prenotazione nelle viste giornaliere, settimanali e mensili.'
+display_type_order_identifiant: 'Ordina per identificativo'
+display_type_order_nom: 'Ordina per nome'
+display_user_off.php: 'gli utenti inattivi'
+display_user_on.php: 'gli utenti attivi'
+display_week: "(vista 'settimana')"
+disponible_pour: 'Disponibile per'
+dlcsv2: 'File CSV2'
+dlcsv2_explain: 'Il formato del file CSV2 è il formato di importazione delle prenotazioni.'
+dlrapportcsv: 'File CSV delle prenotazioni'
+dlresumecsv: 'File CSV del riepilogo'
+domaines_de_type_incompatibles: 'Nota: è possibile solo la prenotazione di intere giornate poiché le risorse selezionate appartengono a domini di tipo diverso.'
+donner_droits: 'e concedergli diritti sufficienti.'
+dont_allow_modify: 'Non consentire agli utenti (tranne gestori e amministratori) di modificare o eliminare le proprie prenotazioni.'
+dontDisplay: 'Non visualizzare'
+drag_drop: 'Trascina e rilascia le prenotazioni'
+droits_insuffisants_pour_voir_ressources: 'Non disponi di diritti sufficienti per accedere alle risorse di questo dominio.'
+duplicate_field: "Esiste già un campo con lo stesso nome nell'area"
+duplicate_sitecode_name: 'Il codice e il nome del sito devono essere univoci'
+duplique_domaine: 'Duplicare il dominio'
+duplique_ressource: 'Duplicare la risorsa'
+duration: Durata
+duree_heures: 'Durata in ore'
+duree_max_resa_aera: 'La prenotazione richiesta è troppo lunga'
+duree_max_resa_area: 'Durata massima in minuti (un giorno = 1440 minuti) per una prenotazione (-1 se nessuna restrizione).'
+duree_max_resa_area2: 'Durata massima in giorni per una prenotazione (-1 se nessuna restrizione).'
+duree_par_defaut_reservation_area: 'Durata predefinita di una prenotazione, in secondi (deve essere un multiplo del valore precedente)'
+Désactiver: Désactiver
+'E-mail pour la reponse': 'Email per la risposta'
+Echec: Errore
+echec_authentification_cas: "Autenticazione CAS fallita."
+echec_authentification_horaire: 'La connessione è consentita tra'
+echec_authentification_imap: 'Autenticazione IMAP fallita'
+echec_authentification_ip: 'Autenticazione fallita, IP non autorizzato'
+echec_authentification_ldap: 'Autenticazione LDAP fallita'
+echec_connexion_GRR: 'Connessione a GRR fallita.'
+edit: Modifica
+editarea: 'Modificare il dominio'
+editentry: 'Modificare questa prenotazione'
+editroom: 'Modificare la risorsa'
+editseries: 'Modificare la periodicità (e tutte le prenotazioni associate)'
+edittype: 'Tipi di prenotazione'
+email: "Email dell'utente"
+email_beneficiaire: 'Email del beneficiario'
+Email_expediteur_messages_automatiques: 'Email mittente delle email automatiche'
+Email_pour_la_reponse: 'Il tuo indirizzo email'
+en: en
+en_attente_moderation: 'In attesa di accettazione'
+end_bookings: 'Data di fine delle prenotazioni:'
+end_bookings_explain: 'Non un prenotazione possibile dopo questa data. Più delle prenotazioni già effettuate dopo questa data saranno cancellate della base.'
+end_date: 'Data di fine:'
+end_of_session: 'Fine sessione'
+end_time: 'Ora di fine'
+enregistrerConfig: 'Salvataggio della configurazione.'
+entres_supprimees: ' voce(i) eliminata(e)'
+entries_found: 'prenotazioni trovate'
+entry: Prenotazione
+entry_found: 'prenotazione trovata'
+entryid: 'Prenotazione n° '
+Envoi_d_un_courriel: "Invio di un'email"
+envoie_mail_spec_exp: "Nel caso in cui il campo sia compilato o diverso da zero, invia un'email al destinatario specificato."
+envoie_mail_specifique: "Invia un'email specifica"
+'envoyer maintenant mail retard': "Invia immediatamente un'email di notifica di ritardo (mancato rientro in tempo)"
+Envoyer_demande: 'Invia la richiesta di prenotazione'
+envoyer_email_avec_formulaire_non: 'Utilizzare i tag "mailto": in questo caso, un clic su un "link email" apre il software di posta predefinito della macchina client e prepara un nuovo messaggio completando automaticamente il campo dei destinatari (si noti che, sebbene gli indirizzi email appaiano in chiaro in GRR, un meccanismo di codifica impedisce che questi vengano recuperati dai robot spammer).'
+envoyer_email_avec_formulaire_oui: 'Utilizzare il modulo di invio email: in questo caso, un clic su un "link email" visualizza un modulo che consente di inviare un''email ai destinatari, senza divulgare il loro indirizzo email.'
+envoyer_email_avec_formulaire_save_err: 'Errore durante il salvataggio di envoyer_email_avec_formulaire !'
+envoyer_maintenant_mail_retard: "Inviare immediatamente un'email di notifica di ritardo (mancata restituzione entro i termini)"
+erase_log: 'Le voci del log anteriori alla data qui sotto saranno eliminate.'
+errCorruptedFile: "Impossibile salvare l'immagine: file danneggiato."
+erreur_caract_login: "L'identificativo può contenere solo i seguenti caratteri: A-Z a-z 0-9 _ @ . - (Spazio vietato)"
+erreur_choix_statut: 'Non disponi di diritti sufficienti per modificare o creare un utente con stato di amministratore o di gestore di utenti.'
+Erreur_lecture: 'Errore di lettura'
+errImgTransfer: "Impossibile salvare l'immagine: problema di trasferimento. Il file non è stato trasferito nella directory IMMAGINI. Si prega di segnalare questo problema all'amministratore del server."
+errInvalidFile: "Impossibile salvare l'immagine: il file immagine selezionato non è valido!"
+error: Errore
+error_area: 'Errore: dominio '
+error_begin_end_date: 'Errore nella data di inizio o di fine della prenotazione'
+error_chevauchement: 'Attenzione, prenotazione impossibile,: gli interstizi di prenotazione e la periodicità sono come certi interstizi si chevaussent.'
+error_date_confirm_reservation: 'Devi scegliere una data di conferma anteriore alla data di inizio della prenotazione.'
+error_delais_max_resa_room: 'Non sei autorizzato a prenotare questa risorsa con così tanto anticipo.'
+error_delais_min_resa_room: 'Non sei autorizzato a prenotare questa risorsa o ad effettuare questa modifica: il tempo minimo di anticipo per la prenotazione di questa risorsa è superato.'
+error_duree_max_resa_area: "Non sei autorizzato a prenotare questa risorsa per così tanto tempo, riduci la durata della prenotazione o contatta l'amministratore.\r\n\r\nDurata massima della prenotazione:"
+error_end_date: 'Errore nella data di fine prenotazione'
+error_exist_login: 'Un utente con lo stesso login esiste già. Registrazione impossibile!'
+error_heure_debut_fin: "Attenzione, prenotazione impossibile: l'ora di inizio o l'ora di fine della prenotazione è al di fuori delle fasce consentite."
+error_qui_peut_reserver_pour: "Attenzione, prenotazione impossibile: stai tentando di prenotare una risorsa a nome di un'altra persona senza avere diritti sufficienti."
+error_room: 'Errore: risorsa '
+error_settings_load: 'Errore durante il caricamento delle impostazioni'
+errRecLogo: 'Errore durante il salvataggio del logo!'
+errRecMimeLogo: "Impossibile salvare l'immagine: tipo MIME incompatibile."
+errSuppLogo: "Impossibile eliminare l'immagine: problema durante la scrittura nella directory. Si prega di segnalare il problema all'amministratore del server."
+errTempLogo: 'Errore durante il salvataggio del logo! (eliminazione del file temporaneo)'
+errTypeLogo: "Impossibile salvare l'immagine: le uniche estensioni consentite sono GIF, PNG e JPG."
+est_prevenu_par_mail: 'Questo utente viene avvisato automaticamente via email per la/le seguente/i risorsa/e.'
+et: e
+etape_n: 'Fase n° '
+eveningends_area: "Ora di fine giornata (successiva all'ora di inizio giornata)"
+eveningends_minutes_area: "Numero di minuti da aggiungere all'ora di fine giornata per avere la fine reale della giornata."
+every_week: 'ogni settimana'
+exclude_type_in_views_all: 'Qui puoi definire un tipo che non verrà visualizzato nelle viste per dominio (week_all, month_all, month_all2, year e year_all).'
+execution_automatique_backup: 'Esecuzione automatica del backup'
+execution_automatique_backup_explications: "Un backup automatico può essere attivato dall'esecuzione dello script « admin_save_mysql.php », ad esempio programmando la sua esecuzione tramite un'attività « cron ».\r\nPer attivare questa funzionalità, è necessario definire una password qui sotto.\r\nAd esempio, se la password è jamesbond007, l'URL del tipo: http://mio-sito.it/grr/admin_save_mysql.php?mdp=jamesbond007 attiverà il backup.\r\nSi consiglia vivamente di scegliere una password complessa con lettere, cifre e caratteri speciali!"
+execution_automatique_backup_mdp: "Password utilizzata per l'esecuzione dello script « admin_save_mysql.php »"
+explain_area_list_format: 'Tipo di visualizzazione delle liste dei domini e delle risorse'
+explain_automatic_mail: 'In un certo numero di casi (creazione di una prenotazione, cancellazione/modifica, moderazione, ...), GRR può inviare automaticamente email ad alcuni utenti. Consultare la guida per saperne di più a questo proposito.'
+explain_automatic_mail1: "Quando un utente prenota una risorsa, modifica o cancella una prenotazione per se stesso (di cui è beneficiario), seleziona la casella a fianco affinché venga sistematicamente inviata un'email di conferma."
+explain_automatic_mail2: 'Inoltre, quando un utente prenota una risorsa, modifica o cancella una prenotazione, alcuni utenti possono essere avvisati via email. Per ogni risorsa, è possibile designare uno o più utenti da avvisare:'
+explain_automatic_mail3: "Quando un utente prenota una risorsa, modifica o cancella una prenotazione a nome di un altro utente, quest'ultimo (se il campo email è stato compilato) viene avvisato automaticamente tramite un messaggio email."
+explain_backup: 'Creazione di un file di backup completo del database GRR. In caso di problemi sul database GRR, utilizzare la funzione "Restaurare il backup".'
+explain_champs_recherche: "Nel caso di un'autenticazione HTTP, è possibile tentare di recuperare i cognomi, i nomi e gli indirizzi email degli utenti grazie alle informazioni contenute nell'array $_SERVER e trasmesse dal sistema di autenticazione.\r\n\r\nAd esempio, se $_SERVER[\"sn\"] contiene il cognome dell'utente, indicare \"sn\" nel primo campo qui sotto. Allo stesso modo indicare \"givenName\" nella seconda riga se $_SERVER[\"givenName\"] contiene il nome e indicare \"mail\" nella terza riga se $_SERVER[\"mail\"] contiene l'email."
+explain_css: 'Scelta dello stile/tema'
+explain_default_area_and_room: 'Dominio e risorsa predefiniti'
+explain_default_area_and_room_and_site: 'Sito, dominio e risorsa predefiniti'
+explain_default_parameter: "Scegliere in questa sezione la visualizzazione predefinita della home page. Questi sono i parametri che si applicheranno se l'utente non ha scelto personalmente dei parametri di visualizzazione predefiniti."
+explain_disable_login: "Disabilitando le connessioni, rendi impossibile la connessione al sito per gli utenti, tranne che per gli amministratori. Inoltre, gli utenti attualmente connessi vengono disconnessi automaticamente. Tuttavia, se la connessione non è obbligatoria per l'accesso al sito in visualizzazione, tale accesso rimane possibile."
+explain_horaire_autorise: 'È possibile limitare la connessione a GRR tra determinati orari. Lasciare vuoto per non limitare la connessione a degli orari o inserire la fascia oraria consentita (Formato HH:MM). Gli amministratori non sono interessati da questa restrizione.'
+explain_ip_autorise: 'Limita la connessione degli utenti tramite un IP (esclusi gli amministratori). Se GRR è ospitato, inserire un IP pubblico, altrimenti gli IP interni. Separare i diversi IP con punti e virgola.'
+explain_max_booking: 'La restrizione non si applica ai gestori della risorsa.'
+explain_multisite: 'Consente di gestire un livello supplementare. I domini sono collegati ai siti.'
+explain_restore: 'In caso di perdita di dati o di un problema con il database GRR, questa funzione consente di ripristinarlo allo stato precedente utilizzando un backup. È necessario selezionare un file creato tramite la funzione "Avvia backup".'
+explain_session_max_length: 'Questa durata indica il tempo massimo di inattività dopo il quale un utente viene disconnesso automaticamente.'
+explication_champs_additionnels: 'In questa pagina è possibile definire, dominio per dominio, dei campi aggiuntivi a scelta che appariranno nei moduli di inserimento delle prenotazioni come ulteriori campi facoltativi.'
+explication_debut_Jours_Cycles: 'Durante la creazione del calendario "giorni cicli", numero del primo giorno della prima data valida.'
+explication_Jours_Cycles1: 'I seguenti parametri vengono utilizzati durante la creazione o la rigenerazione del calendario dei "giorni ciclo". Se si modificano i parametri in questa pagina, verranno presi in considerazione solo se si crea o si rigenera il calendario "giorni ciclo".'
+explication_Jours_Cycles2: "Una volta generato il calendario, è possibile modificare manualmente l'assegnazione dei giorni ciclo per ogni data del calendario."
+explication_Jours_Cycles3: 'Nel calendario qui sotto, sotto ogni data figura il numero del "giorno ciclo" corrispondente. Cliccando sul link, è possibile eliminare o modificare l''assegnazione di un "giorno ciclo". È inoltre possibile assegnare un testo anziché un numero.'
+explication_Jours_Cycles4: 'È inoltre possibile, nella scheda precedente, creare o rigenerare rapidamente un calendario di "giorni ciclo", per poi modificare manualmente i "giorni ciclo" così generati.'
+explications_active_type: "Nota: quando un tipo viene deselezionato, questo non viene più proposto all'utente che effettua o modifica una prenotazione, ma le prenotazioni già effettuate continuano ad apparire sui planning con quel tipo, sebbene disabilitato."
+Explications_des_Parametres_configuration_envoi_automatique_mails: "GRR utilizza PHPMailer per l'invio di email. Con PHPMailer, esistono due metodi per l'invio di email:\r\n\r\n1) Il metodo \"smtp\", che consente di connettersi a un server di posta remoto;\r\n\r\n2) Il metodo \"mail\", quando il server di posta è locale.\r\nIl metodo \"smtp\" può essere utilizzato anche con un server locale, ma è preferibile utilizzare il metodo \"mail\" perché è più veloce."
+Explications_methode_mail_1: 'Server Mail'
+Explications_methode_smtp_1: 'Server SMTP'
+Explications_methode_smtp_2: 'Se si sceglie il metodo "smtp" e il server richiede l''autenticazione, specificare nome utente e password.'
+explications_signaler_reservation_en_cours: 'È possibile segnalare che una risorsa è in prestito. Selezionando la 2ª o la 3ª opzione, il gestore segnala che la risorsa è in prestito e non è quindi stata restituita.'
+Explications_suppression_automatique_des_reservations: "L'attivazione di alcune funzionalità di GRR richiede la possibilità di impostare l'esecuzione automatica di attività.\r\nAd esempio la cancellazione automatica di alcune prenotazioni nel caso delle « prenotazioni con riserva », o ancora l'invio di una notifica di ritardo in caso di mancata restituzione di una risorsa.\r\nPer eseguire queste attività automatiche di cancellazione, ci sono due configurazioni possibili, ognuna con i suoi svantaggi e vantaggi. Consultare la guida per maggiori dettagli."
+failed_connect_db: 'Errore grave: Fallimento del collegamento alla database'
+failed_to_acquire: "Errore, impossibile ottenere l'accesso esclusivo al database"
+familyName: 'Cognome :'
+fiche_ressource: 'Scheda di presentazione della risorsa'
+fieldname: 'Titolo del campo'
+fieldtype: 'Tipo del campo'
+filtreLdapSupp: 'Filtro LDAP aggiuntivo'
+fin_reservation: 'Fine della prenotazione'
+first_name: Nome
+firstofmonth: 1°
+fiveofmonth: 5°
+focus_btn_primary_: 'Pulsanti primari (passaggio del mouse)'
+following_year: 'Anno successivo'
+format_identifiant_incorrect: "L'identificativo contiene caratteri non autorizzati."
+formulaire_reservation: 'Modulo di prenotazione'
+fouthofmonth: 4°
+from: 'A partire da'
+From_: 'From '
+fulldescription: 'Descrizione completa'
+Generer_pdf: 'Genera un PDF'
+'Gestion lien aide bandeau superieur': 'Gestione del link di aiuto nella barra superiore'
+gestionnaire_des_ressources_suivantes: 'Gestore della/e seguente/i risorsa/e:'
+gestionnaires_et_administrateurs: 'I gestori e gli amministratori'
+goBackVerify: 'Torna alla pagina precedente e verifica le informazioni fornite.'
+goto: ' Visualizza'
+gototoday: Oggi
+groupe_add: 'Aggiungere un gruppo'
+groupe_exist: 'Esiste già un gruppo con questo nome!'
+groupe_modifier: 'Modificare un gruppo'
+groupes: Gruppi
+grr_mail_Bcc_save_err: 'Errore durante la registrazione di grr_mail_Bcc !'
+grr_mail_from_save_err: 'Errore durante la registrazione di grr_mail_from !'
+grr_mail_fromname_save_err: 'Errore durante la registrazione di grr_mail_fromname !'
+grr_mail_method_save_err: 'Errore durante la registrazione di grr_mail_method !'
+grr_mail_Password_save_err: 'Errore durante la registrazione di grr_mail_Password !'
+grr_mail_sender: "Invia sempre le email dall'account SMTP"
+grr_mail_sender_explain: "Alcuni server di posta si rifiutano di inviare email da mittenti sconosciuti. In questo caso, seleziona la casella in modo che le email vengano inviate dall'account sopra indicato."
+grr_mail_smtp_save_err: 'Errore durante la registrazione di grr_mail_smtp !'
+grr_mail_Username_save_err: 'Errore durante la registrazione di grr_mail_Username !'
+grr_url: 'Indirizzo (URL) esatto di GRR'
+grr_url_explain: 'Utilizzare l''indirizzo sopra indicato per alcuni link, in particolare i link "formato stampabile". Se non si seleziona la casella, o se il campo sopra è vuoto, GRR tenterà di determinare autonomamente l''indirizzo del sito.'
+grr_version: 'Versione '
+help: Aiuto
+hide_left_menu: 'Nascondi il menu a sinistra'
+hide_header: 'Nascondi l''intestazione'
+holidays: ' giorni festivi'
+Holidays: Vacanze
+holidays_msg: 'Visualizzare le vacanze scolastiche e i giorni festivi'
+holidays_zone_msg: 'Scelta della zona delle vacanze scolastiche (Francia)'
+horaires: Orari
+hours: ora(e)
+hover_text: Sopra
+http_domaine_particulier: 'Nome di dominio'
+http_explain_statut_domaine: 'Se hai compilato il campo "Email" sopra, puoi specificare qui sotto un nome di dominio (esempio "mio-dominio.it") e uno stato. I nuovi utenti il cui indirizzo email appartiene al dominio indicato (esempio "f.rossi@mio-dominio.it") si vedranno assegnare lo stato specificato qui sotto.'
+http_SSO_explain: 'Se autentichi i tuoi utenti via HTTP, puoi attivare qui sotto il supporto del sistema di autenticazione da parte di GRR. Fai riferimento alla documentazione di GRR per saperne di più.'
+icons_color: 'Colore delle icone'
+identification: Identificazione
+Image_de_la_ressource: 'Immagine della risorsa '
+imap_record_success: "I dati relativi all'accesso alla directory IMAP/POP sono ora registrati nel file"
+imapActive: 'Autenticazione IMAP/POP abilitata.'
+imapActiverExplain: "Abilita l'autenticazione IMAP/POP scegliendo lo stato che verrà assegnato agli utenti della directory IMAP/POP al primo accesso. Puoi quindi modificare questo valore per ciascun utente."
+imapDesactiver: "Disabilita l'autenticazione IMAP/POP"
+imapImpossible: 'La configurazione IMAP/POP è quindi attualmente impossibile.'
+imapInactive: 'Autenticazione IMAP/POP non abilitata.'
+imapNonConfigure: "L'accesso alla directory IMAP/POP non è configurato."
+imapPort: 'IMAP, porta predefinita: 143'
+imapSPort: 'IMAP sicuro, porta predefinita: 993'
+importation_impossible: "Identificazione corretta ma l'importazione del profilo è impossibile. Segnalare il problema all'amministratore GRR"
+Impossible: Impossibile
+imprimante_msg: 'Visualizzazione della stampante'
+in: 'da:'
+include: 'Presentazione dei risultati'
+incomplete_date: 'Data incompleta'
+incomplete_end_date: 'Data di fine incompleta'
+index_msg1: 'La connessione al server %dbsys% è stata stabilita, ma mancano alcune tabelle nel database %dbDb%.'
+index_msg2: 'La connessione al server %dbsys% è stata stabilita, ma non è possibile selezionare il database contenente le tabelle GRR.'
+index_msg3: 'Errore durante la connessione al server %dbsys%. Il file "connect.inc.php" potrebbe non contenere le informazioni di connessione corrette.'
+index_msg4: 'Impossibile trovare il file "connect.inc.php" contenente le informazioni di connessione.'
+index_msg5: 'È necessario aggiornare GRR a una nuova versione. In tal caso, è necessario aggiornare il database MySQL.'
+index_msg6: 'Aggiorna il database MySQL'
+index_msg7: "L'installazione di GRR potrebbe non essere completa. È possibile eseguire un'installazione/reinstallazione del database."
+index_msg8: 'Installa il database %dbsys%'
+index_msg9: 'Causa sconosciuta.'
+info_bulle0: 'Nessuna info-bolla'
+info_bulle1: 'Visualizzazione dei nomi e cognomi del beneficiario della prenotazione'
+info_bulle2: 'Visualizzazione della descrizione completa della prenotazione'
+infosinFile: 'Informations contenues dans le fichier'
+Installer: Installare
+intitule_creneau: 'Titolo della fascia oraria n° '
+invalid_entry_id: 'N° di prenotazione non valido: potrebbe trattarsi di una prenotazione che è stata eliminata.'
+invalid_file: |
+  Il file selezionato non è valido!
+invalid_owner_email_address: 'Indirizzo email del destinatario errato'
+invalid_parameters: 'Dati errati'
+invalid_search: 'Ricerca non valida.'
+invalid_test_mail_address: "L'indirizzo email di prova non è valido"
+ip_adr: 'Dominio predefinito per il seguente indirizzo IP client'
+ip_adr_explain: "Note sull'indirizzo IP del client:\r\n1) Sono accettati intervalli di indirizzi del tipo 192.168.1.0/24.\r\n2) Se l'indirizzo IP della macchina client corrisponde a questo indirizzo, questo dominio diventa il dominio predefinito.\r\nCiò presuppone inoltre che:\r\n- l'amministratore non abbia definito un dominio predefinito nella pagina di configurazione generale,\r\n- l'utente non abbia definito un dominio predefinito proprio nella pagina di gestione del suo account."
+ip_adress: 'Indirizzo IP'
+ip_autorise_save_err: 'Errore durante la registrazione di ip_autorise !'
+is_not_numeric: 'devi specificare un numero.'
+item_area_list_format: 'Visualizzazione in forma di pulsanti'
+javascript_info_admin_disabled0: 'Abilita i messaggi JavaScript'
+javascript_info_admin_disabled1: 'Disabilita i messaggi JavaScript'
+javascript_info_admin_disabled_msg: 'Visualizzazione dei "pop-up" di conferma nei menu di amministrazione'
+javascript_info_admin_disabled_save_err: 'Errore durante la registrazione di javascript_info_admin_disabled !'
+javascript_info_disabled0: 'Attivare i messaggi JavaScript'
+javascript_info_disabled1: 'Disattivare i messaggi JavaScript'
+javascript_info_disabled_msg: 'Visualizzazione dei "pop-up" di conferma dopo la creazione/modifica/cancellazione di una prenotazione'
+javascript_info_disabled_save_err: 'Errore durante la registrazione di javascript_info_disabled !'
+jour_cycle: 'giorno ciclo'
+Journee_du: 'Giornata del '
+justifier_decision_moderation: 'Indicare a fianco il motivo della decisione (facoltativo)'
+langue_de-de: Tedesco
+langue_en-gb: Inglese
+langue_es-es: Spagnolo
+langue_fr-fr: Francese
+langue_it-it: Italiano
+lasso_already_federated: 'Sei già federato.'
+lasso_defederate_this_account: 'Defederare questo account da Lasso'
+lasso_defederated: 'Sei defederato.'
+lasso_federate_this_account: 'Federare questo account a Lasso'
+lasso_federated: 'Sei federato.'
+lasso_local_user: 'Utente locale'
+lasso_nameid_for_idp: 'NameID per il provider di identità'
+lasso_please_connect: 'Accedi a GRR.'
+lasso_SSO_explain: 'Se disponi di un ambiente Lasso (ID-FF 1.2 o SAML 2.0), puoi attivare il supporto di questo servizio da parte di GRR qui sotto. Fai riferimento alla documentazione di GRR per saperne di più.'
+last_name: Cognome
+lastofmonth: ultimo
+lastupdate: 'Ultimo aggiornamento'
+lcs_SSO_explain: 'Se installate GRR su un server LCS , potete attivare sotto la presa in conto del sistema di autenticazione per GRR . Riportatevi alla documentazione di GRR per sapere ne più.'
+lcs_SSO_explain_2: 'Nota: i parametri sopra indicati si applicano solo al primo accesso e quindi solo agli utenti i cui profili non sono ancora stati importati nel database GRR.'
+lcs_SSO_explain_3: 'Nel campo sottostante è possibile specificare l''elenco dei gruppi LCS autorizzati ad accedere a GRR. Se il campo viene lasciato vuoto, non ci sono restrizioni. In caso contrario, solo gli utenti appartenenti ad almeno uno dei gruppi elencati potranno accedere a GRR. (Inserire i gruppi separati da un punto e virgola: "gruppo1;gruppo1;gruppo3").'
+ldap_chemin_invalide: "La ricerca nella directory non è andata a buon fine (problema di filtro o di percorso di accesso). Contattare l'amministratore per segnalare il problema."
+ldap_doublon_identifiant: "La ricerca nella directory con l'identificativo utilizzato ha restituito più risultati. Contattare l'amministratore per segnalare il problema."
+ldap_recherche_identifiant_aucun_resultats: "La ricerca nella directory con l'identificativo utilizzato non ha restituito alcun risultato. Contattare l'amministratore per segnalare il problema."
+ldap_record_success: "I dati relativi all'accesso alla directory LDAP sono ora registrati nel file"
+ldapAddFilter: 'Filtro LDAP aggiuntivo (opzionale):'
+LDAPadresse: 'Indirizzo della directory LDAP'
+LDAPauthActive: 'Autenticazione LDAP abilitata.'
+ldapAuthImpossible: 'Autenticazione LDAP non attualmente possibile.'
+ldapAuthInactive: 'Autenticazione LDAP non abilitata.'
+ldapConnectSuccess: 'Connessione LDAP riuscita.'
+ldapConnexion: 'Connessione alla directory LDAP in corso.'
+ldapConnFailed: 'Connessione al server LDAP non riuscita.'
+ldapConnInfo: 'Informazioni di connessione alla directory LDAP.'
+ldapFieldExpl: "Il valore da specificare sopra varia a seconda del tipo di directory utilizzata e della sua configurazione.\r\nEsempi di campi comunemente utilizzati per le directory LDAP: \"uid\", \"cn\", \"sn\".\r\nEsempi di campi comunemente utilizzati per Active Directory: \"samaccountname\", \"userprincipalname\".\r\nSebbene non sia consigliato, è possibile specificare più attributi separati dal carattere | (esempio: uid|sn|cn)."
+LDAPimpossible: 'La configurazione LDAP è pertanto attualmente impossibile.'
+LDAPinactive: 'Avviso: le funzioni di autenticazione LDAP non sono abilitate sul server PHP.'
+ldapLogin: "Account per l'accesso"
+ldapPath: 'Percorso della directory'
+LDAPpossible: 'Se si ha accesso a una directory LDAP, è possibile configurare GRR per utilizzare tale directory per importare automaticamente gli utenti.'
+ldapPwdWarning: 'Nota: sono stati riscontrati problemi relativi a password contenenti uno o più caratteri accentati.'
+ldapSE3Expl: 'Caso speciale per i server SE3: nel campo sottostante è possibile specificare l''elenco dei gruppi SE3 autorizzati ad accedere a GRR. Se il campo viene lasciato vuoto, non ci sono restrizioni. In caso contrario, solo gli utenti appartenenti ad almeno uno dei gruppi elencati saranno autorizzati ad accedere a GRR. Scrivere i gruppi separati da un punto e virgola, ad esempio: "Profs;Administrative". Sono supportati solo i gruppi di tipo "posixGroup" (i gruppi di tipo "groupOfNames" non sono supportati).'
+LDAPstatutExpl: "Abilita l'autenticazione LDAP scegliendo lo stato che verrà assegnato agli utenti nella directory LDAP al primo accesso. Puoi quindi modificare questo valore per ciascun utente."
+LDAPV3impossible: 'Impossibile utilizzare lo standard LDAP V3'
+le: ' il '
+legend_msg: 'Visualizzazione della legenda'
+lemon_SSO_explain: 'Se disponi di un ambiente Lemonldap, puoi attivare il supporto di questo servizio da parte di GRR qui sotto. Fai riferimento alla documentazione di GRR per saperne di più.'
+les_administrateurs_restreints: 'solo gli amministratori ristretti'
+les_gestionnaires_de_la_ressource: 'i gestori della risorsa'
+les_journees_cochees_sont_ignorees: 'Le giornate selezionate corrispondono a giorni in cui non è possibile prenotare. Per quanto riguarda le prenotazioni con periodicità, queste giornate vengono ignorate durante la convalida della prenotazione.'
+les_journees_cochees_sont_ignorees_warning: 'Se sono già state registrate prenotazioni nelle giornate selezionate, queste saranno automaticamente e irrimediabilmente eliminate. Inoltre, le persone interessate dalle eliminazioni non saranno avvisate via email.'
+les_journees_cochees_sont_valides: 'Le giornate selezionate corrispondono ai giorni secondo i quali vogliamo creare un calendario di "giorni cicli" in base ai parametri seguenti (modificabili nella prima scheda di questa pagina)'
+les_jours_feries: ' i giorni festivi'
+les_vacances: ' i giorni di vacanza'
+liaisonsGrrLdap: 'Collegamenti GRR/LDAP'
+libelle_fonction: 'Etichetta del profilo LDAP'
+licence: Licenza
+'lien aide pointe vers adresse perso': 'Il link "help" nel banner in alto rimanda all''indirizzo qui indicato'
+'lien aide pointe vers documentation officielle site GRR': 'Il link "help" nel banner in alto rimanda alla documentazione ufficiale sul sito web del GRR'
+link: Link
+liste_area_list_format: 'Visualizzazione in forma di struttura ad albero'
+Liste_des_champs: "Elenco delle possibili scelte separate dal carattere |\r\ne la scelta predefinita preceduta dal carattere &\r\n(esempio: scelta1|&scelta2|scelta3)"
+liste_nouveaux_utilisateurs: 'Elenco dei nuovi utenti inseriti nella base locale: '
+liste_pb_insertion: 'Problema: i seguenti utenti non sono potuti essere inseriti nella base locale: '
+liste_pb_update: 'Problema: i seguenti utenti non sono potuti essere misi aggiornati nella base locale: '
+liste_privileges: "Elenco dei privilegi dell'utente "
+liste_utilisateurs_modifie: 'Liste in lista degli utenti mettesti aggiornato nella base locale: '
+log: 'Log delle connessioni dal '
+log_mail: 'Log degli invii email dal '
+login: Identificativo
+login_name: 'Nome di login'
+logo_msg: 'Scelta di un logo'
+logs_number: 'Numero di voci attualmente presenti nel log di connessione: '
+longueur_liste_ressources: 'Altezza massima della lista a discesa delle risorse'
+mail_a: A
+mail_admin_off: "Non attivare l'invio automatico di email"
+mail_admin_on: 'Prevenire per mail gli utenti'
+mail_de: Da
+mail_demandeur: 'Indirizzo email del candidato'
+mail_desc_admin_test: "Email di test inviata dall'amministrazione di GRR."
+mail_desc_compte_creation: "Email al richiedente e ai gestori degli utenti durante la richiesta di creazione dell'account."
+mail_desc_compte_decision1: 'Email al beneficiario per una risposta favorevole alla richiesta.'
+mail_desc_compte_decision2: 'Email al beneficiario per una risposta negativa alla richiesta.'
+mail_desc_dest_adm: "Email per le persone notificate tramite l'amministrazione e/o un campo aggiuntivo."
+mail_desc_dest_beneficiaire: 'Email al beneficiario della prenotazione.'
+mail_desc_dest_gestionnaire: 'Email al gestore della risorsa'
+mail_desc_dest_supauto: "Email di cancellazione automatica per il beneficiario e le persone notificate tramite l'amministrazione e/o un campo aggiuntivo."
+mail_message: Messaggio
+mail_not_sent: 'Impossibile inviare il tuo messaggio!'
+mail_raison_1: 'Ricevi questa email perché sei il gestore delle risorse.'
+mail_raison_2: "Ricevi questa email perché sei l'amministratore di dominio e non è stato definito alcun gestore di risorse con un indirizzo email."
+mail_raison_3: "Ricevi questa email perché sei l'amministratore del sito e non è stato definito alcun gestore di risorse o di dominio con un indirizzo email."
+mail_raison_4: "Ricevi questa email perché sei l'amministratore e non è stato definito alcun gestore con un indirizzo email."
+mail_raison_5: "Ricevi questa email perché il tuo indirizzo email è stato inserito in un campo aggiuntivo o dall'amministratore."
+mail_raison_6: 'Ricevi questa email perché sei il beneficiario della prenotazione.'
+mail_sending_impossible: "Impossibile inviare il messaggio perché l'indirizzo email del destinatario non è stato inserito."
+mail_sent: 'Il tuo messaggio è stato inviato!'
+mail_sujet: Oggetto
+mail_test: 'Email di test'
+mail_type_adm_test: Test
+mail_type_compte_demande: 'Richiesta account'
+mail_type_resa_creation: 'Creazione prenotazione'
+mail_type_resa_moderation: 'Prenotazione e Moderazione'
+mail_type_resa_moderation_decision: 'Decisione di moderazione'
+mail_type_resa_modif: 'Modifica prenotazione'
+mail_type_resa_resultat: Risultato
+mail_type_resa_retard: Ritardo
+mail_type_resa_sup: 'Cancellazione prenotazione'
+mail_type_resa_sup_auto: 'Cancellazione automatica prenotazione'
+mail_user: Email
+mail_user_destinataire: "Inviare una copia all'utente"
+mail_user_list: 'Elenco degli utenti avvisati via email:'
+mail_user_obligatoire: "L'indirizzo email è obbligatorio nell'account utente"
+mail_user_unique: "L'indirizzo email deve essere unico"
+mail_user_unique_error: "L'indirizzo email è già in uso"
+mail_user_unique_error_admin: 'Una o più indirizzi email sono duplicati, si prega di correggerli.'
+maj_base_locale: 'Pulizia del database locale'
+maj_bdd: 'Aggiornamento del database'
+maj_bdd_not_update: 'ATTENZIONE: Il vostro database non sembra essere aggiornato.'
+maj_dispo: 'Un aggiornamento è disponibile.'
+maj_dispo_aucune: 'Nessun aggiornamento disponibile.'
+maj_do_update: "Cliccare sul pulsante seguente per effettuare l'aggiornamento alla versione "
+maj_go_www: "Recarsi sul sito di GRR per conoscere l'ultima versione: "
+maj_good: "Aggiornamento effettuato (leggete attentamente il risultato dell'aggiornamento, in fondo pagina)"
+maj_impossible_rechercher: 'Impossibile cercare un aggiornamento.'
+maj_no_update_to_do: 'Non hai aggiornamenti del database da effettuare.'
+maj_recherche_desactive: 'La ricerca di aggiornamenti è disabilitata.'
+maj_recherche_grr: 'Ricerca di aggiornamenti con il server ufficiale di GRR'
+maj_submit_update: Aggiornare
+maj_version_bdd: 'Numero di versione del database:'
+manage_my_account: 'Gestire il mio account'
+match_area: Dominio
+match_descr: 'Descrizione completa'
+match_entry: ''
+match_login: 'Beneficiario (identificativo)'
+match_room: ''
+match_site: Sito
+max_booking: 'Numero max di prenotazioni per utente (-1 se nessuna restrizione)'
+max_booking_on_range: 'Massimo. prenotazioni per utente oltre il numero di giorni definito di seguito (-1 se nessuna restrizione)'
+max_resa_affiche: 'Numero max di prenotazioni da visualizzare'
+max_resa_affiche_explain: 'Oltre questo limite, in alcune visualizzazioni del calendario verrà visualizzato come "..." '
+mdp_taille: 'La lunghezza della password deve essere uguale o superiore a '
+mentions_legal_connexion: "Connettendoti accetti le CGU e la creazione di un cookie per l'identificazione."
+menuG: 'Menu sinistro (pagina planning)'
+mess2_maj_base_locale: 'I seguenti utenti sono stati soppressi della base locale perché non erano più presenti nel base LCS'
+mess3_maj_base_locale: "non c'è nessuno utente a sopprimere della base locale."
+mess_avertissement_config: 'Osservazione: ne più dei parametri sotto altri parametri di configurazione di GRR sono a vostra disposizione nello schedario " config.inc.php" (Consultare la documentazione di GRR).'
+mess_maj_base_locale: 'Ricerca e soppressione della base locale di GRR, degli utenti LCS che non sono più presenti nel base LCS. Clicca su OK per continuare.'
+mess_synchro_base_locale: 'Collocamento aggiornato degli utenti della base locale di GRR a partire dalle notizie del base LCS ed inserzione nella base locale di GRR degli utenti LCS che non sono localmente presenti. Cliccate su OK per continuare, questa operazione può essere lunga!).'
+message_home_page: 'Messaggio di avviso della pagina di login'
+message_mail_retard: 'La seguente risorsa non è stata restituita'
+message_perso: 'Messaggio personalizzato'
+message_perso_explain: 'Il messaggio qui sotto viene visualizzato appena sotto la fascia superiore.'
+Message_poste_par: 'Messaggio postato da'
+message_records: 'Le modifiche sono state salvate!'
+message_records_error: 'Errore durante il salvataggio dei dati'
+methode_mail: 'Utilizzare il metodo "mail" (server mail locale)'
+methode_mail_bloque: "L'invio di email è disabilitato"
+methode_mail_desactive: 'Il metodo "mail" è disabilitato sul server, utilizzare il metodo SMTP'
+methode_smtp: 'Utilizzare il metodo "smtp" (server mail remoto)'
+minutes: minuto(i)
+miscellaneous: 'Informazioni varie'
+missing_end_period: 'Parametro di fine slot mancante'
+missing_period: 'Parametro di slot mancante'
+modeDiagnostic: 'Abilita la modalità diagnostica in caso di errori di connessione; i messaggi restituiti da GRR sono più espliciti. In questo modo, è più facile determinare la causa del problema.'
+moderate_entry: 'Moderare una prenotazione'
+moderation: Moderazione
+moderation_acceptee: 'La richiesta è stata accettata.'
+moderation_acceptee_par: 'Richiesta accettata da'
+moderation_refusee: 'La richiesta è stata rifiutata.'
+modification_mdp: 'Utenti autorizzati a modificare la propria password'
+modification_parametre_affichage: 'Utenti autorizzati a modificare la propria visualizzazione'
+modification_parametre_domaine: 'Utenti autorizzati a modificare il proprio dominio e risorsa predefiniti'
+modification_parametre_email: 'Utenti autorizzati a modificare il proprio indirizzo email'
+modification_parametre_langue: 'Utenti autorizzati a modificare la propria lingua'
+modification_parametre_theme: 'Utenti autorizzati a modificare il proprio tema'
+modification_parametres_personnels: 'Utenti autorizzati a modificare il proprio nome e cognome'
+modifier_droits: 'È necessario modificare i permessi della directory include.'
+modifier_site: 'Modificare un sito'
+modify_booking: ' ha modificato la prenotazione di '
+modify_succeed: 'Le modifiche sono state salvate con successo.'
+Module_Ext_Gestion: 'Gestione dei moduli esterni'
+Module_Ext_Import: 'Importazione di un modulo esterno'
+Module_Ext_Import_Description: "È possibile importare un modulo, tuttavia non possiamo garantire: la compatibilità con GRR, le conseguenze dell'installazione (lentezza, pirateria, bug...), siate vigili. Selezionare un file:"
+module_info_missing: |
+  Impossibile trovare il file di installazione o il file informativo!
+Module_Int_Gestion: 'Gestione dei moduli interni'
+module_not_installed: |
+  Impossibile installare il modulo
+module_not_recorded: 'Impossibile registrare il modulo!'
+module_transfer_err: 'Impossibile importare il modulo: problema di trasferimento.'
+moi: 'I miei dati personali'
+month: Mese
+monthafter: 'Vedere il mese successivo'
+monthbefore: 'Vedere il mese precedente'
+montrer_fiche_presentation_ressource: "Rendere visibile la scheda di presentazione della risorsa nell'interfaccia pubblica."
+morningstarts_area: 'Ora di inizio giornata'
+motif: Motivo
+mrbs: 'GRR (Gestione e Prenotazione di Risorse)'
+msg_booking_range: 'Per ogni utente, le prenotazioni per questa risorsa sono limitate a un intervallo di'
+msg_clef: 'Selezionare se la chiave è in prestito'
+msg_courrier: 'Selezionare se posta di convalida'
+msg_del_bookings: 'Attenzione, le modifiche alle date di inizio e fine delle prenotazioni effettuate comporteranno la cancellazione definitiva delle prenotazioni già effettuate al di fuori delle nuove date consentite! Sei sicuro di voler continuare?'
+msg_explain_log: 'Le date che appaiono in rosso indicano gli utenti disconnessi automaticamente dopo un periodo di inattività troppo lungo. Le righe che appaiono in verde indicano gli utenti attualmente connessi.'
+msg_login1: "GRR è sotto licenza GPL, adattato da MRBS.\r\nPer qualsiasi informazione riguardante GRR:"
+msg_login3: 'Il sito è momentaneamente inaccessibile. Ci scusiamo per il disagio!'
+msg_login_created: 'Hai appena creato un nuovo utente. Per impostazione predefinita, questo utente è considerato attivo.'
+msg_login_created_error: 'Si è verificato un problema durante la creazione di un nuovo utente! Contattare il supporto tecnico.'
+msg_logout1: 'Hai chiuso la tua sessione GRR.'
+msg_logout2: "La tua sessione GRR è scaduta, oppure sei stato disconnesso,\r\noppure non eri connesso."
+msg_logout3: 'Aprire una sessione'
+msg_max_booking: 'Il numero massimo di prenotazioni di questa risorsa per utente è stato fissato a'
+msg_max_booking_all: 'Il numero massimo di prenotazioni per utente, per tutte le risorse e tutti i domini, è stato fissato a'
+msg_max_booking_area: 'Il numero massimo di prenotazioni in questo dominio per utente è stato fissato a'
+msg_moderation_reservation: 'Moderare le prenotazioni di questa risorsa: una prenotazione è effettiva solo dopo la convalida da parte di un amministratore del dominio o di un gestore della risorsa.'
+msg_no_email: 'Se non desideri più ricevere questi messaggi automatici, scrivi in tal senso al gestore di GRR:'
+msg_option_de_reservation: 'Effettuare prenotazioni "con riserva": indicare un valore diverso da 0 per attivare questa funzionalità. Il valore indicato indica il numero massimo di giorni a disposizione del prenotante per confermare una prenotazione.'
+msg_ressource_empruntee: 'Controlla se la risorsa è presa in prestito'
+msg_type_created: 'Ha appena creato un nuovo tipo di prenotazione.'
+my_data: 'I miei dati'
+name: Nome
+namebooker: 'Breve descrizione'
+names: 'Nome e cognome'
+navigator: Browser
+nb_max_resa_form: 'Numero massimo di prenotazioni in sospeso tramite modulo di contatto (-1 se non ci sono restrizioni):'
+nb_participant_max: 'Numero max di partecipanti'
+nb_participant_zero: "(0 = Non attivare l'opzione)"
+ne_contient_pas: 'non contiene'
+Ne_pas_activer_Service_sso: 'Non attivare il supporto di un SSO.'
+necessite_fonction_mail_automatique: 'richiede che la funzione di invio automatico di email sia attivata e che il campo "email" del mutuatario sia compilato.'
+new_pwd1: 'Nuova password (minimo %pass_leng% caratteri)'
+new_pwd2: 'Nuova password (per conferma)'
+newImapConfig: 'È possibile eseguire una nuova configurazione IMAP/POP.'
+newLdapConfig: 'È possibile eseguire una nuova configurazione LDAP.'
+next: Successivo
+'NO': 'NO'
+no_activ_user: 'Non attivo'
+no_admin: 'Attualmente nessuno, eccetto gli amministratori, non è autorizzato a gestire la risorsa qui di fronte!'
+no_admin_all: 'Attualmente nessuno, eccetto gli amministratori, non è autorizzato a gestire tutte le risorse a fianco!'
+no_admin_this_area: 'Attualmente nessuno, eccetto gli amministratori, non è autorizzato a dirigere il settore qui di fronte!'
+no_admin_this_site: "Actuellement personne, hormis les administrateurs généraux, n'est autorisé à administrer le site ci-contre !"
+no_area: 'Nessun dominio selezionato.'
+no_compatibility_n-weekly_value: 'Non potete definire un intervallo di settimane se scegliete questo tipo di periodicità.'
+no_compatibility_with_repeat_type: 'Il tipo di periodicità scelto è incompatibile con la scelta: giorno (per n-settimane).'
+no_entry_deleted: 'Nessuna prenotazione è stata cancellata.'
+no_mail_user_list: 'Non ci sono attualmente utenti nella lista!'
+no_restricted_area: 'Nessun settore ad accesso ristretto è stato definito.'
+no_restricted_room: 'Nessuna risorsa ristretta definita'
+no_room: 'Nessuna risorsa selezionata in questo dominio.'
+no_room_selected: 'Nessuna risorsa selezionata'
+no_rooms_for_area: 'Nessuna risorsa definita per questo dominio.'
+no_site: 'Non è stato selezionato alcun sito.'
+no_user_area: 'Attualmente nessuno, eccetto gli amministratori, non ha accesso a questo settore!'
+no_userbook_room: 'Nessun utente può prenotare questa risorsa'
+no_validate_cert_explain: ' : non convalidare i certificati provenienti dal server TLS/SSL; questa operazione è necessaria se il server utilizza certificati autofirmati.'
+noAdminRestrict: 'Le limitazioni non riguardano gli amministratori e i gestori delle risorse del dominio.'
+noarea: 'Selezionare prima un dominio a fianco cliccando sul nome.'
+noareas: 'Nessun dominio'
+nobody: (nessuno)
+nobookings: 'Nessuna prenotazione possibile per la data:'
+noImapOnPhp: "Attenzione: le funzioni di autenticazione IMAP/POP non sono abilitate sul tuo server PHP.\r\n"
+nom_beneficiaire: 'Nome del beneficiario'
+nom_complet_demandeur: 'Nome e cognome del richiedente'
+nom_emprunteur: 'Nome del mutuatario'
+Nom_expediteur_messages_automatiques: 'Nome mittente delle email automatiche'
+nom_prenom_valides: 'Il campo "cognome" o il campo "nome" non è compilato. Questi campi sono obbligatori.'
+nombre_de_creneaux: 'Numero di fasce orarie'
+nombre_jours_Jours_Cycles: 'Numero di giorni in un ciclo'
+nomDomaineImap: 'Nome di dominio IMAP/POP'
+nomDomaineImapComm: "(Utilizzato per completare l'indirizzo email)"
+Nommer_journee_par_le_titre_suivant: 'Nominare la giornata con il seguente titolo (deve iniziare con una lettera)'
+non_preciso: 'non specificato'
+nonattivo: 'Non attivare'
+noreservation: 'La prenotazione richiesta non esiste. Probabilmente è stata eliminata.'
+norights: 'Non disponi di diritti sufficienti per eseguire questa operazione.'
+norooms: 'Nessuna risorsa è creata per questo settore.'
+noSSL: 'Non utilizzare SSL'
+not_found: ' non trovato'
+not_php: 'ATTENZIONE: Questa applicazione potrebbe non funzionare correttamente con una versione precedente a PHP 8.3 '
+not_writable_and_reload: " non è scrivibile.\r\n\r\nÈ necessario modificare i permessi di questo file e quindi ricaricare la pagina."
+nothing_found: 'Nessuna prenotazione trovata.'
+nouveau_jour_cycle: '"giorno ciclo" N° '
+num_version: 'Numero di versione GRR file:'
+num_version_title: Informazioni
+num_versionbdd: 'Numero di versione GRR database:'
+number_max: ' persona max.'
+number_max2: ' persone max.'
+Objet_du_message: 'Oggetto del messaggio'
+of: ' su '
+ofmonth: 'del mese.'
+OK: Convalida
+old_pwd: 'Vecchia password'
+older_date_log: 'Attualmente, il log contiene lo storico dal '
+one_connected: ' persona'
+only_administrators: 'Solo gli amministratori'
+only_letters_and_numbers: "L'identificativo dell'utente deve essere composto solo da lettere e cifre!"
+optionsConnexion: 'Opzioni di connessione:'
+order_display: 'Ordine di visualizzazione'
+OU: OPPURE
+Ou_bien: ' o '
+page_header: 'Inizio pagina'
+page_header_hover: 'Inizio pagina (passaggio del mouse)'
+pagePrecedente: 'Pagina precedente'
+param: 'I miei parametri'
+Parametres_configuration_envoi_automatique_mails: 'Parametri server di invio email'
+participant_annulation: 'Annulla la mia partecipazione'
+participant_confirm_annulation: 'Sei sicuro di voler ritirare la tua partecipazione?'
+participant_confirm_validation: 'Sei sicuro di voler partecipare?'
+participant_inscrit: 'Partecipanti iscritti'
+participant_list: 'Elenco dei partecipanti'
+participant_list_hide: 'Nascondi la lista'
+participant_register_form: 'Iscrivere dei partecipanti'
+participant_register_form_hide: 'Chiudi il modulo'
+participant_validation: 'Mi iscrivo'
+participants: Partecipanti
+pas_de_privileges: 'Nessun privilegio'
+Pas_image_disponible: 'Nessuna immagine disponibile'
+pass_change_conditions: "Qualora una qualsiasi delle regole non venga rispettata, l'utente dovrà cambiare la propria password."
+pass_faciles: 'Vietate le password semplici.'
+pass_leng_error: 'Lunghezza minima della password troppo piccola secondo i criteri!'
+pass_leng_explain: 'Lunghezza minima della password'
+pass_leng_save_err: 'Errore durante la registrazione di pass_leng !'
+pass_nb_ch: 'Numero minimo di cifre'
+pass_nb_maj: 'Numero minimo di maiuscole'
+pass_nb_min: 'Numero minimo di minuscole'
+pass_nb_sp: 'Numero minimo di caratteri speciali'
+pass_x_ch: cifra
+pass_x_chs: cifre
+pass_x_maj: maiuscola
+pass_x_majs: maiuscole
+pass_x_min: minuscola
+pass_x_mins: minuscole
+pass_x_sp: 'carattere speciale'
+pass_x_sps: 'caratteri speciali'
+passwd_error: "Errore durante l'inserimento della password, riprova!"
+period: 'Fascia oraria'
+periodicite_associe: 'Questa prenotazione è collegata a una periodicità'
+periodicite_msg: 'Autorizzare la periodicità nelle prenotazioni'
+periodicite_msg1: 'Verifica per attivare la periodicità'
+periods: 'fascia(e) oraria(e)'
+personne: persona
+personne_exterieure: '(persona esterna)'
+pl2_cell: 'Cella planning'
+pl2_entete: 'Intestazione planning'
+pl2_titre: 'Titolo planning'
+please_contact: 'Contattate '
+please_enter_name: "Inserire un cognome e un nome per l'utente!"
+please_go_to_admin_maj: 'Si consiglia vivamente di aggiornare il database recandosi nella sezione GESTIONE.'
+plusieurs_adresses_separees_points_virgules: 'È possibile indicare più indirizzi separati da punti e virgola'
+'pop3 Port': 'POP3, porta predefinita 110'
+'pop3 SPort': 'POP3 sicuro, porta predefinita'
+Portail_accueil: 'Portale home'
+portNo: 'Numero di porta'
+portUtilise: 'Porta in uso'
+ppreview: 'Formato stampabile'
+preciserChemin: 'Specificare il percorso: '
+prefixe: Prefisso
+previous: Precedente
+previous_year: 'Anno precedente'
+previsualisation: Anteprima
+privileges: Privilegi
+pview_new_windows0: 'Non aprire le pagine in una nuova finestra del browser'
+pview_new_windows1: 'Aprire le pagine in una nuova finestra del browser'
+pview_new_windows_msg: 'Apertura delle pagine in formato stampabile'
+pwd: Password
+pwd_change: 'Cambio della password'
+pwd_msg_warning: 'Attenzione: la password deve contenere almeno %pass_leng% caratteri (lettere, cifre, ...). Si consiglia vivamente di non scegliere una password troppo semplice.'
+pwd_msg_warning2: 'Per ragioni di sicurezza, volete utilizzare il modulo "Gestire il mio conto " accessibile a partire dalla pagina d''accoglienza per cambiare la vostra parola d''ordine!'
+pwd_strength: 'Complessità della password'
+pwd_too_short: 'Password (a confermare)'
+pwd_toot_short: 'Minimo: %pass_leng% caratteri'
+qui_peut_reserver_pour_autre_utilisateur: 'A parte gli amministratori, specificare qui a fianco quali tipi di utenti hanno il diritto di effettuare prenotazioni a nome di altri utenti.'
+qui_peut_voir_ressource: 'Chi può vedere questa risorsa (ed eventualmente prenotare secondo i diritti assegnati)?'
+rappel_de_la_demande: 'Riepilogo della richiesta'
+recherche_choix_r: 'Cerca una risorsa disponibile'
+recherche_choix_s: 'Cerca tra le prenotazioni'
+recherche_res1: 'Dal '
+recherche_res2: 'all '
+recherche_res3: ' risorse disponibili su '
+recherche_res4: 'occupato fino al '
+recherche_res5: 'ultima prenotazione'
+recherche_titre: 'Cerca le risorse disponibili'
+records: 'Registrazioni '
+Redigez_votre_message_ci_dessous: 'Scrivi il tuo messaggio qui sotto'
+redirection_https: 'Reindirizzare gli utenti verso https'
+refer_to_admin: |2
+   Si prega di segnalare questo problema all'amministratore del server.
+referer: Provenienza
+refuser_resa: 'Rifiutare e cancellare la prenotazione'
+refuser_resa_serie: 'Rifiutare e cancellare la prenotazione e tutte le prenotazioni collegate per periodicità che non sono ancora state moderate.'
+Remarques: Remarques
+remplissage_description_breve0: 'La compilazione della sezione "breve descrizione" è facoltativa'
+remplissage_description_breve1: 'La compilazione della sezione "breve descrizione" è obbligatoria'
+remplissage_description_breve2: 'La sezione "breve descrizione" contiene, per impostazione predefinita, il nome dell''utente'
+remplissage_description_breve_msg: 'Compilazione della sezione "breve descrizione" nel modulo di prenotazione'
+remplissage_description_complete0: 'La compilazione della sezione "descrizione completa" è facoltativa'
+remplissage_description_complete1: 'La compilazione della sezione "descrizione completa" è obbligatoria'
+remplissage_description_complete2: 'La sezione "descrizione completa" è nascosta'
+remplissage_description_complete_msg: 'Compilazione della sezione "descrizione completa" nel modulo di prenotazione'
+renommer: 'È possibile rinominare il file manualmente'
+rep_end_date: 'Data di fine periodicità:'
+rep_freq: 'Frequenza :'
+rep_rep_day: 'Giorno per la periodicità:'
+rep_rep_days: 'Giorni per la periodicità:'
+rep_type: 'Tipo di periodicità:'
+rep_type_0: Nessuna
+rep_type_1: 'Ogni giorno'
+rep_type_2: 'Ogni settimana'
+rep_type_3: 'Ogni mese, stessa data'
+rep_type_4: 'Ogni anno, stessa data'
+rep_type_5: 'Ogni mese, stesso giorno della settimana'
+rep_type_6: 'Giorni Ciclo'
+rep_type_7: 'X Y del mese'
+repeat_id: 'periodicità n° '
+report: 'Ricerca e Statistiche'
+report_and_summary: 'Dettagli delle prenotazioni e riepilogo'
+report_end: 'Data di fine della ricerca'
+report_only: 'Dettagli delle prenotazioni'
+report_start: 'Data di inizio della ricerca'
+required: 'I campi contrassegnati con * sono obbligatori.'
+resa: 'Le mie prenotazioni'
+resa_menu_explain: 'Elenco delle prenotazioni di cui sei beneficiario.'
+resas_a_venir: 'prenotazioni future.'
+resas_toutes: 'tutte le prenotazioni, '
+resasToModerate: ' prenotazioni da moderare'
+resaToModerate: ' prenotazione da moderare'
+'Reservation confirmee': 'Prenotazione confirmate'
+reservation_a_confirmer_au_plus_tard_le: 'Prenotazione da confermare entro il:'
+reservation_au_nom_de: 'Prenotazione a nome di '
+reservation_confirmee: 'Prenotazione confermata'
+reservation_en_attente_de_moderation: 'La seguente prenotazione è in attesa di moderazione per '
+reservation_en_bloc: Prenotazione
+reservation_en_bloc_result: 'La procedura di prenotazione è terminata.'
+reservation_en_bloc_result2: 'Le prenotazioni in conflitto con le nuove prenotazioni sono state eliminate nel numero di:'
+reservation_en_cours: 'Risorsa in prestito.'
+reservation_impossible: 'Prenotazione impossibile'
+reservations_et_logs: 'Prenotazioni e log di prenotazione'
+reservations_moderees: 'Prenotazioni moderate'
+reservations_supprimes: 'Prenotazioni eliminate'
+reservee_au_nom_de: 'Prenotazione a nome di '
+reserver: Prenotare
+reset: 'Valori predefiniti'
+resolution_area: 'Blocco minimo prenotabile, in secondi (1800 secondi = 1/2 ora)'
+ressource_actuellement_empruntee: 'La risorsa è attualmente in prestito.'
+ressource_empruntee_non_restituee: 'Salvo errore, la seguente risorsa che hai preso in prestito non è stata restituita. Se si tratta di un errore, ignora questa email.'
+ressource_ou_domaine_non_defini: 'Risorsa o dominio non definito'
+ressource_temporairement_indisponible: 'Temporaneamente non disponibile'
+Restauration_de_la_base_GRR: 'Ripristino del database GRR'
+Restaurer_la_sauvegarde: 'Ripristinare il backup'
+restricted: ristretto
+retour_planning: 'Ritorna al planning'
+returnprev: 'Torna alla pagina precedente'
+room: Risorsa
+rooms: Risorse
+save: Salva
+save_and_back: 'Salva e Torna'
+save_err: 'Errore durante la registrazione di '
+saveInfos: 'Registra le informazioni'
+saveInfosLDAPWarning: 'Nota: per il momento, nessuna modifica è stata apportata al file di configurazione "config_ldap.inc.php".'
+saveInfosLDAPWarning2: 'Le informazioni non saranno registrate alla fine della procedura di configurazione.'
+sched_conflict: 'Conflitto tra prenotazioni '
+School_holidays: 'Vacanze scolastiche'
+school_holidays: ' vacanze scolastiche'
+search_button: Ricerca
+search_for: Cercare
+search_report_stats: 'Ricerca - Report - Statistiche'
+search_results: 'Risultati della ricerca per: '
+searchAttr: "Attributo utilizzato per la ricerca nell'anno"
+secondofmonth: 2°
+seconds: secondo(i)
+see_all_the_rooms_for_several_months: 'Vedere le prenotazioni su più mesi per tutte le risorse del dominio'
+see_all_the_rooms_for_the_day: 'Vedere tutte le risorse del dominio per questa giornata'
+see_all_the_rooms_for_the_month: 'Vedere le prenotazioni del mese per tutte le risorse'
+see_connexions_explain: 'Una connessione in corso è visualizzata in verde, una connessione chiusa per timeout è visualizzata in rosso'
+see_day_for_this_room: 'Vedere le prenotazioni della giornata per questa risorsa'
+see_month_for_this_room: 'Vedere le prenotazioni del mese per questa risorsa'
+see_week_for_this_area: 'Vedere le prenotazioni della settimana per tutte le risorse'
+see_week_for_this_room: 'Vedere le prenotazioni della settimana per questa risorsa'
+select: (Seleziona)
+select_all: (tutte)
+SELECT_AREA: 'SELEZIONA UN DOMINIO'
+select_area_list_format: 'Visualizzazione in forma di lista a discesa'
+select_date_directe: 'Selezione diretta della data'
+select_fichier: 'Selezionare un file'
+SELECT_ROOM: 'SELEZIONA UNA RISORSA'
+select_specific_days: 'Seleziona giorni specifici'
+selectLdapPath: "Selezionare qui il percorso di accesso all'anno:"
+semaine: Sett
+send_a_mail: "Inviare un'email"
+session_max_length: 'Durata massima di inattività (in minuti):'
+sessionMaxLength_save_err: 'Errore durante la registrazione di sessionMaxLength !'
+several_connected: ' connesse'
+show_all_rooms: 'Vedere tutte le risorse di tutti i domini'
+show_color_key: 'Legenda delle prenotazioni'
+show_left_menu: 'Mostra il menu a sinistra'
+show_header: 'Mostra l''intestazione'
+signaler_reservation_en_cours: 'Segnalare che la risorsa è in prestito'
+signaler_reservation_en_cours_option_0: "La risorsa è stata restituita.\r\n(Selezionare questa opzione anche se non si utilizza questa funzionalità)"
+signaler_reservation_en_cours_option_1: "Segnalare che la risorsa è in prestito nell'ambito di questa prenotazione."
+signaler_reservation_en_cours_option_2: "Segnalare che la risorsa è in prestito nell'ambito di questa prenotazione e inviare quotidianamente un'email di notifica ritardo."
+site: Sito
+site_access: 'Accesso ristretto'
+site_adresse_ligne1: Indirizzo
+site_adresse_ligne2: Indirizzo
+site_adresse_ligne3: Indirizzo
+site_code: Codice
+site_cp: Cap
+site_fax: Fax.
+site_id: Identificativo
+site_name: Nome
+site_pays: Paese
+site_tel: Tel.
+site_ville: Città
+sites: Siti
+skip_entry_in_conflict: 'Effettuare le nuove prenotazioni tranne quelle in conflitto'
+skip_holidays: ' salta le festività pubbliche'
+skip_school_holidays: ' salta le vacanze scolastiche'
+smtp_allow_self_signed: 'Consente certificati auto-firmati (Default false)'
+smtp_auth: 'Autenticazione SMTP (SMTP-AUTH)'
+smtp_param_sup: 'Di seguito, parametri aggiuntivi riservati a utenti esperti.'
+smtp_port: 'Porta del server SMTP'
+smtp_port_save_err: 'Errore durante la registrazione di smtp_port !'
+smtp_secure: 'Connessione crittografata (vuoto, ssl, tls)'
+smtp_secure_save_err: 'Errore durante la registrazione di smtp_secure !'
+smtp_verify_depth: 'Profondità della catena (Default 3)'
+smtp_verify_peer: 'Verifica del nome del peer (Default true)'
+smtp_verify_peer_name: 'Verifica del certificato SSL utilizzato (Default true)'
+SSL: 'Utilizza SSL'
+SSLExplain: 'SSL: utilizza il Secure Socket Layer per crittografare la sessione'
+ssmenuadm_actif: 'Voce di sottomenu attiva'
+sso_actif_cacher_lien_deconnecter: 'Hai attivato il supporto di un SSO. Seleziona la casella a fianco se desideri che il link "Disconnetti" nella fascia superiore non appaia per le persone autenticate a GRR tramite SSO.'
+sso_active_correspondance_profil_statut: "Visualizzare l'interfaccia di corrispondenza LDAP <--> Stato in GRR."
+sso_active_correspondance_profil_statut_text: "Puoi anche attivare qui sotto la visualizzazione nel menu di sinistra di un'opzione che consente la corrispondenza tra un profilo utente definito da un attributo LDAP (la sua funzione) e lo stato in GRR. Dovrai quindi configurare anche il tuo server CAS e il file config_CAS.inc.php di GRR (Vedere la documentazione)."
+sso_environnement: 'Ambiente SSO'
+sso_IsNotAllowedModify: 'Gli utenti esterni non possono modificare il proprio cognome, nome ed email in GRR.'
+sso_redirection_accueil_grr_text1: 'Se hai attivato il supporto del servizio CAS, hai la possibilità, selezionando la casella qui sotto, di reindirizzare un utente non autenticato alla home page di GRR anziché al portale di autenticazione CAS.'
+sso_redirection_accueil_grr_text2: 'Reindirizzare un utente non autenticato CAS alla home page di GRR.'
+start_date: 'Data di inizio'
+start_history: 'Inizio della cronistoria'
+start_of_the_booking: 'Inizio della prenotazione: '
+start_time: 'Ora di inizio'
+status_clef: 'Stato della chiave'
+status_courrier: 'Posta di convalida'
+statut: Stato
+statut_administrator: Amministratore
+statut_eleve: 'Statuto degli alunni'
+statut_grr: 'Stato GRR'
+statut_grr_modif: 'Modifica dello stato'
+statut_non_connecte: 'Non connesso'
+statut_non_eleve: 'Statuto degli altri utenti, non alunno,'
+Statut_par_defaut_utilisateurs_importes: 'Attivazione e stato predefinito degli utenti importati'
+Statut_pour_domaine_particulier: 'Assegnare uno stato a un nome di dominio'
+statut_user: Utente
+statut_user_administrator: 'Gestore degli utenti'
+statut_user_gestionnaire: Gestore
+statut_visitor: Visitatore
+statutDefaut: 'Stato predefinito degli utenti importati: '
+subject_a_moderer: 'Una richiesta di prenotazione deve essere moderata:'
+subject_mail1: 'GRR: avviso '
+subject_mail_creation: ' - Nuova prenotazione'
+subject_mail_decision_moderation: ' - Trattamento di una prenotazione in attesa di moderazione'
+subject_mail_delete: ' - Cancellazione di una prenotazione'
+subject_mail_moderation: ' - Prenotazione in attesa di moderazione'
+subject_mail_modify: ' - Modifica di una prenotazione'
+subject_mail_retard: ' - Notifica di ritardo'
+submit: Inviare
+submit_backup: 'Avviare un backup'
+Sujet: Oggetto
+sum_by_creator: Beneficiario
+sum_by_descrip: 'Breve descrizione'
+summarize_by: 'Riepilogo per '
+summarize_by_precisions: '(riguarda solo i riepiloghi)'
+summary_header: 'Conteggio delle ore prenotate'
+summary_header_per: 'Conteggio delle fasce prenotate'
+summary_header_resa: 'Conteggio delle prenotazioni'
+summary_only: 'Riepilogo statistico'
+suppression_automatique: 'Il termine per la conferma della prenotazione è stato superato. Cancellazione automatica della prenotazione di '
+suppression_automatique_des_reservations: 'Metodo di esecuzione automatica delle attività'
+suppression_en_bloc: 'Cancellazione di prenotazioni'
+suppression_en_bloc_result: 'La procedura di cancellazione delle prenotazioni è terminata. Numero di cancellazioni effettuate:'
+supprimer_avant_date: 'Cancellare prima di una data'
+supprimer_image_ressource: "Eliminare l'immagine attuale della risorsa"
+supprimer_logo: 'Eliminare il logo attuale'
+supprimer_site: 'Eliminare un sito'
+supprimer_tout: 'Eliminare tutto'
+sure: 'Sei sicuro?'
+swap_entry: 'Scambiare due prenotazioni'
+swap_entry_choose: "Nella tabella qui sotto, seleziona la riga corrispondente alla prenotazione che vuoi scambiare con la prenotazione corrente\r\npoi Convalida, o Annulla per tornare al planning.\r\n"
+swap_entry_confirm: ' Sei sicuro di voler scambiare la prenotazione '
+swap_entry_confirm1: ' con la prenotazione '
+swapentry: 'Scambiare due prenotazioni'
+synchro_base_locale: 'Aggiornamento del database locale'
+system: 'Sistema operativo: '
+table_utilisateurs: 'Tabella degli utenti'
+tables_liaison: 'Tabelle di collegamento'
+tables_reservations: 'Tabelle delle prenotazioni'
+technical_contact: 'Contattare il supporto tecnico'
+technical_support_email: 'Indirizzo email del supporto tecnico'
+temp_access: ' Problema durante la scrittura nella directory "temp".'
+tentative_reservation_ressource_indisponible: 'PROBLEMA: Hai tentato di prenotare una risorsa non autorizzata o temporaneamente non disponibile!'
+Terminer: Fine
+Test: Test
+testConnAnnuaire: "Test di connessione all'annuario"
+testConnChemAnnErr1: 'Problema: il percorso scelto non sembra essere valido.'
+testConnChemAnnErr1bis: 'Problema: il percorso e/o il filtro aggiuntivo scelti non sembrano essere validi.'
+testConnChemAnnErr2: 'Problema: il percorso scelto sembra essere valido, ma la ricerca su questo percorso non restituisce risultati.'
+testConnChemAnnErr2bis: 'Problema: il percorso e il filtro aggiuntivo scelti sembrano essere validi, ma la ricerca su questo percorso non restituisce risultati.'
+testRechChemAnn: 'Test di ricerca nella directory con il percorso specificato'
+text: Testo
+texte_en_attente_de_moderation: 'La tua richiesta è in attesa di moderazione. Sarai informato non appena il gestore della risorsa prenderà una decisione.'
+the_file: 'Il file '
+the_room: 'la risorsa: '
+the_user: "L'utente "
+theme_perso: 'Colori personalizzati'
+thirdofmonth: 3°
+through: ' a '
+time: Ora
+title_automatic_mail: 'Invio di email automatiche'
+title_backup: 'Backup del database GRR'
+title_begin_end_bookings: 'Inizio e fine delle prenotazioni'
+title_disable_login: 'Attivazione/disattivazione delle connessioni'
+title_home_page: 'Titolo principale della pagina di login'
+title_horaire_autorise: 'Orario di connessione'
+title_ip_autorise: 'Restrizione delle connessioni tramite IP'
+title_mail: 'Messaggio automatico inviato dal sito GRR: '
+title_mail_creation: 'Una prenotazione su GRR è stata registrata : '
+title_mail_delete: 'Una prenotazione su GRR è stata cancellata : '
+title_mail_modify: 'Una prenotazione su GRR è stata modificata : '
+title_session_max_length: 'Durata di una sessione'
+titre_config_Jours_Cycles: 'Configurazione dei "giorni cicli"'
+titreLdap: "Configurazione dell'autenticazione LDAP"
+TLSexplain: "TLS: impone l'utilizzo di start-TLS per crittografare la sessione e rifiuta le connessioni ai server che non lo supportano."
+TLSimpossible: 'TCL non può essere utilizzato'
+to: ' a '
+too_may_entrys: "Le opzioni scelte creerebbero troppe prenotazioni.\r\nScegliere opzioni diverse!"
+top_of_page: '^ Inizio pagina'
+total: Totale
+tous_les_utilisateurs: 'tutti gli utenti'
+traite_moderation: ' ha trattato la richiesta di prenotazione di '
+transfer_err: ' non è stato trasferito nella directory "temp".'
+trier_par: 'Ordina per'
+twentyfourhour_format_12: 'Visualizzazione 12 h.'
+twentyfourhour_format_24: 'Visualizzazione 24 h.'
+twentyfourhour_format_area: 'Formato di visualizzazione del tempo'
+type: Tipo
+type_affichage_reservation: "Per una nuova prenotazione o modifica di una prenotazione, l'utente specifica la data/ora di inizio prenotazione e"
+type_apercu: Preview
+type_area: 'Più righe (testo)'
+type_checkbox: 'Caselle di controllo'
+type_color: Colore
+type_color_actuel: 'Colore attuale'
+type_color_fond: 'Scelta del colore di sfondo in esadecimale'
+type_color_icone: 'Scelta del colore per le icone in esadecimale'
+type_color_predefinie: 'Scegli tra i colori predefiniti'
+type_color_text: 'Text color'
+type_color_texte: 'Scelta del colore del testo in esadecimale'
+type_de_creneaux: 'Configurazione del tipo di fasce orarie'
+type_list: Lista
+type_name: 'Nome del tipo'
+type_num: Identificativo
+type_numeric: 'Una riga (numerica)'
+type_order: 'Ordine di visualizzazione'
+type_par_defaut: 'Tipo selezionato per impostazione predefinita per una nuova prenotazione'
+type_resa_manquant_msg: 'Uno o più tipi sono attualmente utilizzati nelle prenotazioni ma non figurano nella tabella dei tipi. Ciò rischia di generare messaggi di errore. È necessario definire qui sotto il tipo o i tipi mancanti. Si tratta dei seguenti tipi: '
+type_resa_manquant_titre: 'ATTENZIONE: la tabella dei tipi di prenotazione non è aggiornata!'
+type_resa_vide_msg: 'Almeno una prenotazione ha un tipo non specificato. Dovresti verificare e correggere la tabella delle prenotazioni.'
+type_text: 'Una riga (testo)'
+type_valide_domaine: 'Tipo valido per il dominio'
+typeAcces: 'Tipo di accesso'
+typeAccesExpl: 'Se il server LDAP non accetta l''accesso anonimo, specificare un identificativo (ad esempio, "cn=jean, o=lycée, c=fr"). In caso di dubbio, lasciare vuoti i seguenti campi per l''accesso anonimo.'
+un_email_envoye: "Un'email di notifica ritardo è stata inviata all'indirizzo "
+uncheck_all_: 'Deseleziona tutto'
+uncheck_all_the: 'Deseleziona tutti i '
+unknown_area: 'Area sconosciuta'
+unknown_room: 'Risorsa sconosciuta'
+update_area_failed: "L'aggiornamento del dominio è fallito: "
+update_pwd_failed: "Errore durante l'aggiornamento della password!"
+update_pwd_succeed: 'La password è stata cambiata!'
+update_room_failed: "L'aggiornamento della risorsa è fallito: "
+update_type_failed: "L'aggiornamento del tipo di prenotazione è fallito: "
+Url_de_deconnexion: 'URL di disconnessione'
+Url_de_deconnexion_explain: 'Quando un utente si disconnette, dopo la chiusura della sessione, il browser viene reindirizzato alla pagina il cui URL è specificato qui sotto.'
+Url_de_deconnexion_explain2: "Se il campo è vuoto, a seconda della configurazione dell'accesso a GRR, l'utente viene indirizzato alla home page o alla pagina di disconnessione."
+url_disconnect_save_err: 'Errore durante la registrazione di url_disconnect !'
+Url_portail_sso_explain: 'È possibile specificare qui sotto un link (http://...) per far apparire, nella fascia superiore, un link "Portale home" che punta a questo indirizzo.'
+use_fckeditor0: 'Non utilizzare il modulo di formattazione "wysiwyg"'
+use_fckeditor1: 'Utilizza il modulo di formattazione "wysiwyg"'
+use_fckeditor_explain: 'Il modulo "ckEditor" consente la formattazione "wysiwyg" (come un elaboratore di testi). Se il modulo è abilitato, è possibile accedere a questo strumento nel pannello di amministrazione per compilare determinati campi, come ad esempio il modulo di descrizione di una risorsa.'
+use_fckeditor_msg: 'Modulo ckEditor'
+useCert: 'Utilizza certificato'
+useful_n-weekly_value: 'un intervallo di settimane valido.'
+user_admin_area_list: 'Elenco delle persone autorizzate a gestire il dominio a fianco (esclusi gli amministratori):'
+user_admin_site_list: 'Elenco delle persone autorizzate a gestire il sito a fianco (esclusi gli amministratori generali)'
+user_area_list: 'Elenco delle persone che hanno accesso a questo dominio (esclusi gli amministratori):'
+user_book_room_list: 'Utenti autorizzati a prenotare questa risorsa'
+user_can_book: 'può prenotare le risorse ristrette:'
+user_change_pwd_connexion: "L'utente deve cambiare la propria password alla prossima connessione"
+user_change_pwd_interdit: 'Non sei autorizzato a cambiare la tua password!'
+user_change_pwd_obligatoire: 'Devi cambiare la tua password'
+user_list: 'Elenco delle persone autorizzate a gestire la/le risorsa/e a fianco (esclusi gli amministratori):'
+user_name: "Nome e cognome dell'utente:"
+user_site_list: 'Elenco delle persone che hanno accesso a questo sito (esclusi gli amministratori):'
+userName: 'Nome utente: '
+userPwd: 'Password utente: '
+users_connected: 'Utenti attualmente connessi'
+useTLS: 'Utilizza TLS'
+UTF8storage: 'I dati (nomi, cognomi, ecc.) vengono memorizzati in UTF-8 nella directory (configurazione predefinita)'
+duplicate_user: "Diversi utenti hanno lo stesso nome utente dell'utente sopra indicato. Segnala questo problema all'amministratore."
+utilisateur_inconnu: 'Utente sconosciuto (identificativo: '
+utilisateur_inconnu_droits_insuffisants: 'Utente sconosciuto o diritti insufficienti'
+utilisateur_rendu_inactif: "Avviso: l'utente selezionato sopra è stato disattivato dall'amministratore."
+utilisateur_simple_visiteur: 'Avviso: l''utente selezionato sopra ha lo stato di "visitatore".'
+utilisateur_smtp: utente_smtp
+utilisateur_supprime: 'Attenzione: il beneficiario attualmente registrato è un utente che è stato rimosso dal database degli utenti. '
+utilisateurs_acces_restreint: 'I seguenti utenti sono autorizzati ad accedere a questa risorsa:'
+utilisateurs_acces_restreint_domaine: 'I seguenti utenti sono autorizzati ad accedere a questo dominio:'
+utilisateurs_administrateurs: 'I seguenti utenti sono amministratori del dominio contenente questa risorsa:'
+utilisateurs_administrateurs_domaine: 'I seguenti utenti sono amministratori del dominio:'
+utilisateurs_administrateurs_site: 'Questi utenti fanno gli amministratori del sito :'
+utilisateurs_ayant_privileges: 'Elenco degli utenti con privilegi su questa risorsa (esclusi gli amministratori generali):'
+utilisateurs_ayant_privileges_sur_domaine: 'Elenco degli utenti con privilegi su questo dominio (esclusi gli amministratori generali):'
+utilisateurs_ayant_privileges_sur_site: 'Elenco degli utenti che hanno dei privilegi su questo sito (eccetto gli amministratori generali):'
+utilisateurs_gestionnaires_ressource: 'I seguenti utenti sono gestori di questa risorsa:'
+utilisateurs_mail_automatique: 'I seguenti utenti sono avvisati via email:'
+utilisateurs_reservant: 'La risorsa è ristretta. I seguenti utenti possono prenotare questa risorsa:'
+vacances_feries_description: 'I giorni selezionati saranno evidenziati sul planning se l''opzione "Visualizzare le Vacanze scolastiche" è impostata su SÌ.'
+vacances_feries_description2: 'I giorni selezionati saranno evidenziati sul planning se l''opzione "Visualizzare i giorni festivi" è impostata su SÌ.'
+vacances_feries_FR: 'Selezionare i giorni festivi francesi'
+vacances_FR: 'Selezionare i giorni di vacanza scolastica della zona '
+valid_time_of_day: 'un ora valida.'
+validate_cert_explain: ' : convalida i certificati dal server TLS/SSL (questo è il comportamento predefinito)'
+valide_au_moins_une_des_conditions_suivantes: 'Valida almeno una delle seguenti condizioni'
+valide_toutes_les_conditions_suivantes: 'Valida tutte le seguenti condizioni'
+valide_toutes_moderation: 'Convalidare tutte le prenotazioni in attesa di moderazione'
+verif_reservation_auto0: "L'attività automatica viene attivata una volta al giorno alla connessione del primo utente"
+verif_reservation_auto1: "L'attività automatica viene attivata dall'esecuzione dello script « verif_auto_grr.php ». (richiede la possibilità di programmare l'esecuzione automatica e periodica dello script verif_auto_grr.php)"
+verif_reservation_auto2: "Password utilizzata per l'esecuzione dello script verif_auto_grr.php (solo se hai scelto la 2ª opzione)"
+verif_reservation_auto3: 'Percorso completo della cartella di installazione di GRR (solo se hai scelto la 2ª opzione e se utilizzi lo script verif_auto_grr.php come attività cron)'
+verif_reservation_auto_save_err: 'Errore durante la registrazione di verif_reservation_auto !'
+version: Versione
+via_fichier: 'Tramite un file'
+view: Vedere
+viewday: 'Vedere la giornata'
+viewmonth: 'Vedere il mese'
+viewweek: 'Vedere la settimana'
+viewyear: 'Plusieurs mois'
+visu_fiche_description0: 'Chiunque acceda al sito anche se non connesso'
+visu_fiche_description1: 'È obbligatorio essere connessi, anche come semplice visitatore.'
+visu_fiche_description2: 'È obbligatorio essere connessi e avere lo stato "utente" '
+visu_fiche_description3: 'È obbligatorio essere connessi ed essere almeno gestore di una risorsa'
+visu_fiche_description4: 'È obbligatorio connettersi ed essere almeno amministratore del dominio'
+visu_fiche_description5: 'È obbligatorio essere connessi ed essere amministratore di sito'
+visu_fiche_description6: 'È obbligatorio essere connessi ed essere amministratore generale'
+visu_fiche_description_msg: 'Chi ha accesso alla scheda di descrizione di una risorsa?'
+voir_details: 'Vedere i dettagli'
+voir_resa: 'Visualizza prenotazione'
+Vos_coordonnees: 'I tuoi dati di contatto'
+Votre_message: 'Il tuo messaggio'
+Votre_nom: 'Il tuo cognome'
+Votre_prenom: 'Il tuo nome'
+Vous_avez_modifie: 'Hai modificato '
+Vous_avez_reserve: 'Hai prenotato'
+Vous_avez_supprime: 'Hai eliminato '
+warning_exist: "L'utente che hai tentato di aggiungere appartiene già alla lista!"
+warning_message_backup: 'Se appare un messaggio del tipo "Maximum execution time exceeded" pochi istanti dopo aver avviato il backup, significa che il backup è fallito!'
+warning_message_mail: "Alcuni provider disabilitano l'invio automatico di email dai loro server. In questo caso, la seguente funzionalità non funzionerà."
+warning_restore: "Attenzione! Il ripristino del database cancellerà tutti i dati attualmente memorizzati. Inoltre, tutti gli utenti attualmente connessi, incluso te, verranno disconnessi. Pertanto, si consiglia vivamente di creare prima un backup e di assicurarsi di essere l'unico utente connesso."
+webmaster_email: 'Indirizzo email del gestore del sito'
+webmaster_name: 'Nome e cognome del gestore del sito'
+week: Settimana
+week_1_of_2: 'una settimana su 2'
+week_1_of_3: 'una settimana su 3'
+week_1_of_4: 'una settimana su 4'
+week_1_of_5: 'una settimana su 5'
+weekafter: 'Vedere la settimana successiva '
+weekbefore: ' Vedere la settimana precedente'
+weeks: settimana(e)
+weekstarts_area: 'Inizio della settimana'
+welcome: Home
+welcome_to: 'Benvenuto '
+who_can_book_explain: 'Se la casella è selezionata, solo gli utenti autorizzati possono prenotare questa risorsa.'
+wrong_old_pwd: 'La vecchia password non è corretta!'
+wrong_pwd: 'Identificativo o password errati'
+wrong_pwd2: "Errore durante l'inserimento della password, riprova!"
+wrong_pwd3: 'Devi inserire una password diversa da quella attuale!'
+years: anni
+'YES': SÌ
+you_have_not_entered: 'Non hai inserito '
+Your_email: 'Il tuo indirizzo email'
+YourPhoneNr: 'Il tuo numero di telefono'
+zip_import_err: |
+  Impossibile importare il modulo: l'unica estensione consentita è zip.
+pwa_install_title: "Installa GRR sul tuo dispositivo"
+pwa_install_description: "Aggiungi GRR alla schermata iniziale o al desktop per accedervi più rapidamente."
+pwa_install_button: Installa
+pwa_install_later: "Più tardi"
+pwa_install_instructions: "Installa GRR"
+pwa_install_windows_title: "Windows (Chrome o Edge)"
+pwa_install_windows_steps: "In Edge apri il menu ⋯ e scegli «App > Installa questo sito come app». In Chrome seleziona l’icona di installazione nella barra degli indirizzi. Per creare un collegamento normale in Chrome, scegli «Trasmetti, salva e condividi > Crea collegamento» dal menu ⋮."
+pwa_install_android_title: "Android (Chrome)"
+pwa_install_android_steps: "Apri il menu ⋮ di Chrome e scegli «Installa app» oppure «Aggiungi a schermata Home»."
+pwa_install_close: Chiudi
+proposition_connexion_locale: "Il servizio di autenticazione centralizzata (CAS) non è disponibile o ha restituito un errore. È possibile accedere con un account locale GRR."
+se_connecter_localement: "Accedi localmente"

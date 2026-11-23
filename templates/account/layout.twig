@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="{{ d.locale|default('fr-fr') }}">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="Robots" content="noindex" />
+		<title>GRR - {{ settings.company }}</title>
+		<link rel="manifest" href="./manifest.webmanifest">
+		<meta name="theme-color" content="#1f5f8b">
+		<link rel="stylesheet" href="./css/pwa-install.css">
+		<link rel="shortcut icon" href="./favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="./jslib/bootstrap/css/bootstrap.min.css?v={{d.versionCache}}" />
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css?v={{d.versionCache}}" />
+		<link rel="stylesheet" type="text/css" href="./{{ d.sheetcss }}?v={{d.versionCache}}" />
+		<link rel="stylesheet" type="text/css" href="./css/grr-header.css?v={{d.versionCache}}-4" />
+		{{ d.sheetcssperso|raw }}
+		<link rel="stylesheet" type="text/css" href="./jslib/fontawesome-free/css/all.min.css">
+		{% block css %}{% endblock %}
+		{{ d.sheetcsspersocss|raw }}
+	</head>
+
+	<body>
+		{% include '_header.twig' %}
+		
+		<section>
+			<div id="menu-compte" class="col col-lg-2 col-md-2 col-xs-12">
+				<br><br><a href="./account?pc=moncompte" class="btn btn-primary col-lg-12">Mon compte</a>
+				{% if settings.allow_my_connections == 1 %}
+					<br><br><a href="./account?pc=mesconnexions" class="btn btn-primary col-lg-12">Mes connexions</a>
+				{% endif %}
+				{% if settings.allow_my_reservations == 1 %}
+					<br><br><a href="./account?pc=mesreservations" class="btn btn-primary col-lg-12">Mes réservations</a>
+				{% endif %}
+					<br><br><a href="{{ d.pageAccueil|raw }}" class="btn btn-info col-lg-12">Retour au planning</a>
+			</div>
+
+			<div id="page-compte" class="col col-lg-10 col-md-10 col-xs-12">
+				{% block content %}{% endblock %}
+			</div>
+
+			<div id="popup_name" class="popup_block"></div>
+		</section>
+		
+
+		<script type="text/javascript" src="./jslib/jquery/jquery.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/bootstrap/js/bootstrap.min.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/_grr/popup.js?v={{d.versionCache}}" charset="utf-8"></script>
+		<script type="text/javascript" src="./jslib/_grr/functions.min.js?v={{d.versionCache}}" ></script>
+		<script type="text/javascript" src="./jslib/_grr/clock.js?v={{d.versionCache}}"></script>
+		<script type="text/javascript" src="./jslib/_grr/header.js?v={{d.versionCache}}-3"></script>
+		{% block javascript %}{% endblock %}
+		{% include '_pwa_install.twig' %}
+
+	</body>
+</html>

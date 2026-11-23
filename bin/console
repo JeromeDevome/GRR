@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+use Devome\Grr\AppSecret;
+use Devome\Grr\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+AppSecret::load(dirname(__DIR__));
+
+$environment = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'dev';
+$debug = filter_var($_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? ($environment !== 'prod'), FILTER_VALIDATE_BOOL);
+
+$kernel = new Kernel($environment, $debug);
+$application = new Application($kernel);
+$application->run();

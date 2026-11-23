@@ -37,7 +37,13 @@ class Publish {
         console.log('Cleaning plugins directory...')
       }
 
-      fse.emptyDirSync(path.resolve('jslib'))
+      const jslibDir = path.resolve('jslib')
+      const keep = ['_grr']
+
+      fse.ensureDirSync(jslibDir)
+      fse.readdirSync(jslibDir)
+        .filter(name => !keep.includes(name))
+        .forEach(name => fse.removeSync(path.join(jslibDir, name)))
 
       if (this.options.verbose) {
         console.log('jslib directory cleaned.')

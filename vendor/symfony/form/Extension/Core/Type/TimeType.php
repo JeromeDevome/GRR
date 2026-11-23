@@ -11,10 +11,11 @@
 
 namespace Symfony\Component\Form\Extension\Core\Type;
 
+use Symfony\Component\Clock\DatePoint;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Exception\LogicException;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DatePointToDateTimeTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeImmutableToDateTimeTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
@@ -56,10 +57,7 @@ class TimeType extends AbstractType
         'Zulu',
     ];
 
-    /**
-     * @return void
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $parts = ['hour'];
         $format = 'H';
@@ -84,7 +82,6 @@ class TimeType extends AbstractType
 
         if ('single_text' === $options['widget']) {
             $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $e) use ($options) {
-                /** @var PreSubmitEvent $event */
                 $data = $e->getData();
                 if ($data && preg_match('/^(?P<hours>\d{2}):(?P<minutes>\d{2})(?::(?P<seconds>\d{2})(?:\.\d+)?)?$/', $data, $matches)) {
                     if ($options['with_seconds']) {
@@ -216,7 +213,12 @@ class TimeType extends AbstractType
             $builder->addViewTransformer(new DateTimeToArrayTransformer($options['model_timezone'], $options['view_timezone'], $parts, 'text' === $options['widget'], $options['reference_date']));
         }
 
-        if ('datetime_immutable' === $options['input']) {
+        if ('date_point' === $options['input']) {
+            if (!class_exists(DatePoint::class)) {
+                throw new LogicException(\sprintf('The "symfony/clock" component is required to use "%s" with option "input=date_point". Try running "composer require symfony/clock".', self::class));
+            }
+            $builder->addModelTransformer(new DatePointToDateTimeTransformer());
+        } elseif ('datetime_immutable' === $options['input']) {
             $builder->addModelTransformer(new DateTimeImmutableToDateTimeTransformer());
         } elseif ('string' === $options['input']) {
             $builder->addModelTransformer(new ReversedTransformer(
@@ -232,7 +234,7 @@ class TimeType extends AbstractType
             ));
         }
 
-        if (\in_array($options['input'], ['datetime', 'datetime_immutable'], true) && null !== $options['model_timezone']) {
+        if (\in_array($options['input'], ['datetime', 'datetime_immutable', 'date_point'], true) && null !== $options['model_timezone']) {
             $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $event) use ($options): void {
                 $date = $event->getData();
 
@@ -243,17 +245,13 @@ class TimeType extends AbstractType
                 $timezone = $date->getTimezone()->getName();
 
                 if ($timezone !== $options['model_timezone'] && !(\in_array($timezone, self::UTC_EQUIVALENT_TIMEZONES, true) && \in_array($options['model_timezone'], self::UTC_EQUIVALENT_TIMEZONES, true))) {
-                    trigger_deprecation('symfony/form', '6.4', \sprintf('Using a "%s" instance with a timezone ("%s") not matching the configured model timezone "%s" is deprecated.', $date::class, $timezone, $options['model_timezone']));
-                    // throw new LogicException(sprintf('Using a "%s" instance with a timezone ("%s") not matching the configured model timezone "%s" is not supported.', $date::class, $timezone, $options['model_timezone']));
+                    throw new LogicException(\sprintf('Using a "%s" instance with a timezone ("%s") not matching the configured model timezone "%s" is not supported.', get_debug_type($date), $timezone, $options['model_timezone']));
                 }
             });
         }
     }
 
-    /**
-     * @return void
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars = array_replace($view->vars, [
             'widget' => $options['widget'],
@@ -281,10 +279,7 @@ class TimeType extends AbstractType
         }
     }
 
-    /**
-     * @return void
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $compound = static fn (Options $options) => 'single_text' !== $options['widget'];
 
@@ -309,10 +304,8 @@ class TimeType extends AbstractType
 
         $choiceTranslationDomainNormalizer = static function (Options $options, $choiceTranslationDomain) {
             if (\is_array($choiceTranslationDomain)) {
-                $default = false;
-
                 return array_replace(
-                    ['hour' => $default, 'minute' => $default, 'second' => $default],
+                    ['hour' => false, 'minute' => false, 'second' => false],
                     $choiceTranslationDomain
                 );
             }
@@ -352,11 +345,7 @@ class TimeType extends AbstractType
             'hours' => range(0, 23),
             'minutes' => range(0, 59),
             'seconds' => range(0, 59),
-            'widget' => static function (Options $options) {
-                trigger_deprecation('symfony/form', '6.3', 'Not configuring the "widget" option of form type "time" is deprecated. It will default to "single_text" in Symfony 7.0.');
-
-                return 'choice';
-            },
+            'widget' => 'single_text',
             'input' => 'datetime',
             'input_format' => 'H:i:s',
             'with_minutes' => true,
@@ -395,6 +384,7 @@ class TimeType extends AbstractType
         $resolver->setAllowedValues('input', [
             'datetime',
             'datetime_immutable',
+            'date_point',
             'string',
             'timestamp',
             'array',

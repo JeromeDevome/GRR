@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="./themes/default/css/style.css?v={{d.versionCache}}" />
+		<link rel="stylesheet" type="text/css" href="./jslib/fontawesome-free/css/all.min.css">
+	</head>
+	<body>
+		<div id="container">
+			<h1>{{'Envoi_d_un_courriel'|trans}}</h1>
+			{% if d.action == 'envoi' %}
+				<p style="text-align: center">{{d.resultat}}</p>
+			{% else %}
+			<form method="post" class="contact-us" id="doc" action="contact">
+
+				{% if d.UserNomPrenomEmail %}
+				<p>{{'Message_poste_par'|trans}}{{'deux_points'|trans}}<b>{{d.UserNomPrenomEmail}}</b></p>
+				{% endif %}
+
+				<p>{{'webmaster_name'|trans}}{{'deux_points'|trans}}<b>{{settings.webmaster_name}}</b></p>
+				<p>{{'company'|trans}}{{'deux_points'|trans}}<b>{{settings.company|raw}}</b></p>
+
+				<input type="hidden" name="action" value="envoi" />
+				<input type="hidden" name="cible" value="{{d.cible}}" />
+				<input type="hidden" name="type_cible" value="{{d.type_cible}}" />
+
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa-solid fa-at"></i> {{'Email_pour_la_reponse'|trans}}</span>
+					<input class="form-control" type="email" name="email_reponse" value="{{d.MailReponse}}" required>
+				</div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa-solid fa-heading"></i> {{'Objet_du_message'|trans}}</span>
+					<input class="form-control" name="objet_message" type="text" value="" required>
+				</div>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa-solid fa-align-left"></i></span>
+					<textarea class="form-control" name="message" placeholder="Votre message" cols="50" rows="5" value="" required></textarea>
+				</div>
+				<br>
+				<p style="text-align:center;">
+					<input type="submit" value="{{'submit'|trans}}" class="btn btn-primary" />
+				</p>
+
+			</form>
+			{% endif %}
+		</div>
+
+	</body>
+</html>

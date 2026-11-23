@@ -23,7 +23,6 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class DateTimeToArrayTransformer extends BaseDateTimeTransformer
 {
-    private bool $pad;
     private array $fields;
     private \DateTimeInterface $referenceDate;
 
@@ -33,22 +32,19 @@ class DateTimeToArrayTransformer extends BaseDateTimeTransformer
      * @param string[]|null $fields         The date fields
      * @param bool          $pad            Whether to use padding
      */
-    public function __construct(?string $inputTimezone = null, ?string $outputTimezone = null, ?array $fields = null, bool $pad = false, ?\DateTimeInterface $referenceDate = null)
-    {
+    public function __construct(
+        ?string $inputTimezone = null,
+        ?string $outputTimezone = null,
+        ?array $fields = null,
+        private bool $pad = false,
+        ?\DateTimeInterface $referenceDate = null,
+    ) {
         parent::__construct($inputTimezone, $outputTimezone);
 
         $this->fields = $fields ?? ['year', 'month', 'day', 'hour', 'minute', 'second'];
-        $this->pad = $pad;
         $this->referenceDate = $referenceDate ?? new \DateTimeImmutable('1970-01-01 00:00:00');
     }
 
-    /**
-     * Transforms a normalized date into a localized date.
-     *
-     * @param \DateTimeInterface $dateTime A DateTimeInterface object
-     *
-     * @throws TransformationFailedException If the given value is not a \DateTimeInterface
-     */
     public function transform(mixed $dateTime): array
     {
         if (null === $dateTime) {
@@ -92,14 +88,6 @@ class DateTimeToArrayTransformer extends BaseDateTimeTransformer
         return $result;
     }
 
-    /**
-     * Transforms a localized date into a normalized date.
-     *
-     * @param array $value Localized date
-     *
-     * @throws TransformationFailedException If the given value is not an array,
-     *                                       if the value could not be transformed
-     */
     public function reverseTransform(mixed $value): ?\DateTime
     {
         if (null === $value) {

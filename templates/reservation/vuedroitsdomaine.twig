@@ -1,0 +1,43 @@
+{% extends 'layoutsimple.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+		<div id="container">
+
+			<h3 style="text-align:center;">{{'match_area'|trans}}{{'deux_points'|trans}} {{domaine.area_name}} {% if domaine.access == "r" %} (<span class="avertissement">{{'access'|trans}}</span>){% endif %}</h3>
+
+			<h2>{{'utilisateurs_ayant_privileges_sur_domaine'|trans}}</h2>
+
+			{% if admindomaine or accesdomaine %}
+				{% if admindomaine %}
+					<!-- Utilisateurs : administrateur du domaine -->
+					<h3>{{'utilisateurs_administrateurs_domaine'|trans}}</h3>
+					<ul>
+					{% for adminD in admindomaine %}
+						<li>{{adminD.nom}} {{adminD.prenom}} ({{adminD.login}}) {% if adminD.etat == "inactif" %} - <i>{{'no_activ_user'|trans}}</i> {% endif %}</li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+
+				{% if accesdomaine %}
+					<!-- Utilisateurs : ayant accès au domaine restreint-->
+					<h3>{{'utilisateurs_acces_restreint_domaine'|trans}}</h3>
+					<ul>
+					{% for accesD in accesdomaine %}
+						<li>{{accesD.nom}} {{accesD.prenom}} ({{accesD.login}}) {% if accesD.etat == "inactif" %} - <i>{{'no_activ_user'|trans}}</i> {% endif %}</li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+			{% else %}
+				<p>{{'aucun_utilisateur'|trans}}</p>
+			{% endif %}
+		</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

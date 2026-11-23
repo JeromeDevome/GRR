@@ -50,10 +50,7 @@ class CompiledUrlMatcherDumper extends MatcherDumper
             EOF;
     }
 
-    /**
-     * @return void
-     */
-    public function addExpressionLanguageProvider(ExpressionFunctionProviderInterface $provider)
+    public function addExpressionLanguageProvider(ExpressionFunctionProviderInterface $provider): void
     {
         $this->expressionLanguageProviders[] = $provider;
     }
@@ -484,11 +481,10 @@ class CompiledUrlMatcherDumper extends MatcherDumper
         if (null === $value) {
             return 'null';
         }
+        if (\is_object($value)) {
+            throw new \InvalidArgumentException(\sprintf('Symfony\Component\Routing\Route cannot contain objects, but "%s" given.', get_debug_type($value)));
+        }
         if (!\is_array($value)) {
-            if (\is_object($value)) {
-                throw new \InvalidArgumentException('Symfony\Component\Routing\Route cannot contain objects.');
-            }
-
             return str_replace("\n", '\'."\n".\'', var_export($value, true));
         }
         if (!$value) {

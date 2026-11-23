@@ -60,15 +60,18 @@ class RedisTagAwareAdapter extends AbstractTagAwareAdapter
      * detected eviction policy used on Redis server.
      */
     private string $redisEvictionPolicy;
-    private string $namespace;
 
-    public function __construct(\Redis|Relay|\RedisArray|\RedisCluster|\Predis\ClientInterface $redis, string $namespace = '', int $defaultLifetime = 0, ?MarshallerInterface $marshaller = null)
-    {
+    public function __construct(
+        \Redis|Relay|\Relay\Cluster|\RedisArray|\RedisCluster|\Predis\ClientInterface $redis,
+        private string $namespace = '',
+        int $defaultLifetime = 0,
+        ?MarshallerInterface $marshaller = null,
+    ) {
         if ($redis instanceof \Predis\ClientInterface && $redis->getConnection() instanceof ClusterInterface && !$redis->getConnection() instanceof PredisCluster) {
             throw new InvalidArgumentException(\sprintf('Unsupported Predis cluster connection: only "%s" is, "%s" given.', PredisCluster::class, get_debug_type($redis->getConnection())));
         }
 
-        $isRelay = $redis instanceof Relay;
+        $isRelay = $redis instanceof Relay || $redis instanceof \Relay\Cluster;
         if ($isRelay || \defined('Redis::OPT_COMPRESSION') && \in_array($redis::class, [\Redis::class, \RedisArray::class, \RedisCluster::class], true)) {
             $compression = $redis->getOption($isRelay ? Relay::OPT_COMPRESSION : \Redis::OPT_COMPRESSION);
 
@@ -80,7 +83,6 @@ class RedisTagAwareAdapter extends AbstractTagAwareAdapter
         }
 
         $this->init($redis, $namespace, $defaultLifetime, new TagAwareMarshaller($marshaller));
-        $this->namespace = $namespace;
     }
 
     protected function doSave(array $values, int $lifetime, array $addTagData = [], array $delTagData = []): array
@@ -233,7 +235,7 @@ class RedisTagAwareAdapter extends AbstractTagAwareAdapter
             EOLUA;
 
         $results = $this->pipeline(function () use ($tagIds, $lua) {
-            $isRelay = $this->redis instanceof Relay;
+            $isRelay = $this->redis instanceof Relay || $this->redis instanceof \Relay\Cluster;
 
             if ($this->redis instanceof \Predis\ClientInterface) {
                 $prefix = $this->redis->getOptions()->prefix ? $this->redis->getOptions()->prefix->getPrefix() : '';

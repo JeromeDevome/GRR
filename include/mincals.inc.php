@@ -59,8 +59,8 @@
 		{
 			global $vocab;
             if (isset($this->room) && $this->room != 0 && $this->room <> 0)
-                return "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"app.php?p=jour&amp;year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
-            return "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"app.php?p=jour&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
+                return "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_day_for_this_room"))."\" href=\"jour?year=$year&amp;month=$month&amp;day=$day&amp;room=".$this->room."\"";
+            return "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_day"))."\" href=\"jour?year=$year&amp;month=$month&amp;day=$day&amp;area=".$this->area."\"";
         }
 
 		/**
@@ -78,9 +78,9 @@
 			$lastmonth = date("m", $tmp);
 			$lastyear = date("Y", $tmp);
 			if (($dmy != 'jour') && ($dmy != 'semaine_all') && ($dmy != 'mois_all') && ($dmy != 'mois2_all'))
-				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois&year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$this->area&amp;room=$room';\"><i class=\"$glyph\"></i></button>\n";
+				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='mois?year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$this->area&amp;room=$room';\"><i class=\"$glyph\"></i></button>\n";
 			else
-				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois_all&year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$area';\"><i class=\"$glyph\"></i></button>\n";
+				return "<button type=\"button\" title=\"".htmlspecialchars(get_vocab($text))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='mois_all?year=$lastyear&amp;month=$lastmonth&amp;day=1&amp;area=$area';\"><i class=\"$glyph\"></i></button>\n";
 		}
 
 		private function getNumber($weekstarts, $d, $daysInMonth)
@@ -133,9 +133,9 @@
 				if (($week_today == $week) && ($this->h) && (($this->dmy == 'semaine_all') || ($this->dmy == 'semaine')))
 					$bg_lign = " class=\"week\"";
 				$s .= "<tr ".$bg_lign."><td class=\"calendarcol1\">";
-				$t = "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_area"))."\" href=\"app.php?p=semaine_all&amp;year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area\">".sprintf("%02d",$week)."</a>";
+				$t = "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_area"))."\" href=\"semaine_all?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area\">".sprintf("%02d",$week)."</a>";
 				if (($this->dmy != 'jour') && ($this->dmy != 'semaine_all') && ($this->dmy != 'mois_all') && ($this->dmy != 'mois2_all'))
-					$t = "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_room"))."\" href=\"app.php?p=semaine&amp;year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area&amp;room=$this->room\">".sprintf("%02d",$week)."</a>";
+					$t = "<a onclick=\"\" class=\"cellcalendar\" title=\"".htmlspecialchars(get_vocab("see_week_for_this_room"))."\" href=\"semaine?year=$this->year&amp;month=$this->month&amp;day=$temp&amp;area=$this->area&amp;room=$this->room\">".sprintf("%02d",$week)."</a>";
 				$s .= $t;
 				$temp = $temp + 7;
 				while ((!checkdate($this->month, $temp, $this->year)) && ($temp > 0))
@@ -153,7 +153,7 @@
 
 		private function GetAction()
 		{
-			$action = "app.php?p=jour&amp;year=".date('Y',time())."&amp;month=".date('m',time())."&amp;day=".date('d',time());
+			$action = "jour?year=".date('Y',time())."&amp;month=".date('m',time())."&amp;day=".date('d',time());
 			if (isset($_GET['area']) && $_GET['area'] != null)
 				$action .= "&amp;area=".intval($_GET['area']) ;
 			if (isset($_GET['room']) && $_GET['room'] != null)
@@ -221,9 +221,9 @@
 			$s .= $this->createlink(0, -1, $this->month, $this->year, $this->dmy, $this->room, $this->area, "previous_year", "fa-solid fa-angles-left");
 			$s .= $this->createlink(-1, 0, $this->month, $this->year, $this->dmy, $this->room, $this->area, "monthbefore", "fa-solid fa-angle-left");
 			if (($this->dmy != 'jour') && ($this->dmy != 'semaine_all') && ($this->dmy != 'mois_all') && ($this->dmy != 'mois2_all'))
-				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_month_for_this_room"))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois&year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area&amp;room=$this->room';\">$monthName $this->year</button>\n";
+				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_month_for_this_room"))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='mois?year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area&amp;room=$this->room';\">$monthName $this->year</button>\n";
 			else
-				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_month"))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='app.php?p=mois_all&year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area';\">$monthName $this->year</button>\n";
+				$s .= "<button type=\"button\" title=\"".htmlspecialchars(get_vocab("see_all_the_rooms_for_the_month"))."\" class=\"btn btn-default btn-xs\" onclick=\"javascript: location.href='mois_all?year=$this->year&amp;month=$this->month&amp;day=1&amp;area=$this->area';\">$monthName $this->year</button>\n";
 			$s .= $this->createlink(1, 0, $this->month, $this->year, $this->dmy, $this->room, $this->area, "monthafter", "fa-solid fa-angle-right");
 			$s .= $this->createlink(0, 1, $this->month, $this->year, $this->dmy, $this->room, $this->area, "following_year", "fa-solid fa-angles-right");
 			$s .= "</div>";

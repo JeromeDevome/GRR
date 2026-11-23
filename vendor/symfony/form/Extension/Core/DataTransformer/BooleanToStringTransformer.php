@@ -25,29 +25,18 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class BooleanToStringTransformer implements DataTransformerInterface
 {
-    private string $trueValue;
-
-    private array $falseValues;
-
     /**
      * @param string $trueValue The value emitted upon transform if the input is true
      */
-    public function __construct(string $trueValue, array $falseValues = [null])
-    {
-        $this->trueValue = $trueValue;
-        $this->falseValues = $falseValues;
+    public function __construct(
+        private string $trueValue,
+        private array $falseValues = [null],
+    ) {
         if (\in_array($this->trueValue, $this->falseValues, true)) {
             throw new InvalidArgumentException('The specified "true" value is contained in the false-values.');
         }
     }
 
-    /**
-     * Transforms a Boolean into a string.
-     *
-     * @param bool $value Boolean value
-     *
-     * @throws TransformationFailedException if the given value is not a Boolean
-     */
     public function transform(mixed $value): ?string
     {
         if (null === $value) {
@@ -61,13 +50,6 @@ class BooleanToStringTransformer implements DataTransformerInterface
         return $value ? $this->trueValue : null;
     }
 
-    /**
-     * Transforms a string into a Boolean.
-     *
-     * @param string $value String value
-     *
-     * @throws TransformationFailedException if the given value is not a string
-     */
     public function reverseTransform(mixed $value): bool
     {
         if (\in_array($value, $this->falseValues, true)) {

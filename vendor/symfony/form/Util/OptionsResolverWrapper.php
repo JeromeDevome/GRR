@@ -115,10 +115,10 @@ class OptionsResolverWrapper extends OptionsResolver
     /**
      * @return $this
      */
-    public function setDeprecated(string $option, string $package = '', string $version = '', string|\Closure $message = 'The option "%name%" is deprecated.'): static
+    public function setDeprecated(string $option, string $package, string $version, string|\Closure $message = 'The option "%name%" is deprecated.'): static
     {
         try {
-            parent::setDeprecated(...\func_get_args());
+            parent::setDeprecated($option, $package, $version, $message);
         } catch (UndefinedOptionsException) {
             $this->undefined[$option] = true;
         }

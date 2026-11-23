@@ -1,0 +1,79 @@
+{% extends 'layoutsimple.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+		<div id="container">
+
+			<h3 style="text-align:center;">{{'room'|trans}}{{'deux_points'|trans}} {{ressource.room_name}}</h3>
+            <h3 style="text-align:center;">({{d.area_name}}{% if d.area_access == "r" %} - <span class="avertissement">{{'access'|trans}}</span>{% endif %})</h3>
+
+			<h2>{{'utilisateurs_ayant_privileges'|trans}}</h2>
+
+			{% if admindomaine or adminressource or mailressource or accesdomaine %}
+				{% if admindomaine %}
+					<!-- 1 - Utilisateurs : administrateur du domaine -->
+					<h3>{{'utilisateurs_administrateurs_domaine'|trans}}</h3>
+					<ul>
+					{% for adminD in admindomaine %}
+						<li>{{adminD.nom}} {{adminD.prenom}} ({{adminD.login}}) {% if adminD.etat == "inactif" %} - <i>{{'no_activ_user'|trans}}</i> {% endif %}</li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+
+				{% if adminressource %}
+					<!-- 2 - Utilisateurs : administrateur ressource -->
+					<h3>{{'utilisateurs_gestionnaires_ressource'|trans}}</h3>
+					<ul>
+					{% for adminR in adminressource %}
+						<li>{{adminR.nom}} {{adminR.prenom}} ({{adminR.login}}) {% if adminR.etat == "inactif" %} - <i>{{'no_activ_user'|trans}}</i> {% endif %}</li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+
+				{% if mailressource %}
+					<!-- 3 - Utilisateurs : Notification par mail -->
+					<h3>{{'utilisateurs_mail_automatique'|trans}}</h3>
+					<ul>
+					{% for usermail in mailressource %}
+						<li>{{usermail.nom}} {{usermail.prenom}} ({{usermail.login}}) {% if usermail.etat == "inactif" %} - <i>{{'no_activ_user'|trans}}</i> {% endif %}</li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+
+				{% if accesdomaine %}
+					<!-- 4 - Utilisateurs : Accés domaine restreint -->
+					<h3>{{'utilisateurs_acces_restreint'|trans}}</h3>
+					<ul>
+					{% for accesD in accesdomaine %}
+						<li>{{accesD.nom}} {{accesD.prenom}} ({{accesD.login}}) {% if accesD.etat == "inactif" %} - <i>{{'no_activ_user'|trans}}</i> {% endif %}</li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+
+			{% else %}
+				<p>{{'aucun_utilisateur'|trans}}</p>
+			{% endif %}
+
+            {% if ressource.who_can_book == 0 %}
+                {% if accesressource %}
+                    <!-- 5 - Utilisateurs : Accès ressource restreinte -->
+                    <h3>{{'utilisateurs_reservant'|trans}}</h3>
+                    <ul>
+                    {% for accesR in accesressource %}
+                        <li>{{accesR.nom}} {{accesR.prenom}} ({{accesR.login}}) {% if accesR.etat == "inactif" %} - <i>{{'no_activ_user'|trans}}</i> {% endif %}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>{{'aucun_utilisateur_reservant'|trans}}</p>
+                {% endif %}
+            {% endif %}
+		</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

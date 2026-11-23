@@ -58,17 +58,43 @@ function is_safe_redirect($redirect_url)
 }
 
 /**
+ * Redirige vers $url et termine la page (remplace « header('Location: …'); exit; »).
+ * Sous Symfony, lève une PageInterruption que le noyau transforme en réponse de redirection ;
+ * hors Symfony (administration, installation…), comportement historique.
+ *
+ * À ne pas appeler pendant le démarrage (include/grr_application_bootstrap.inc.php et ce qu'il
+ * inclut) : y lever une PageInterruption fait planter PHP quand Xdebug est en mode « develop ».
+ * Le démarrage renvoie ses redirections par « return » (voir print_header_twig()).
+ */
+function grr_redirection(string $url): never
+{
+	if (!empty($GLOBALS['grr_symfony']))
+		throw \Devome\Grr\Http\PageInterruption::redirect($url);
+	header("Location: ".$url);
+	exit;
+}
+
+/**
+ * Termine la page en l'état (remplace « echo …; exit; ») : ce qui a déjà été affiché, plus $html,
+ * constitue la réponse. Sous Symfony, la sortie mise en tampon est transmise au noyau par une
+ * PageInterruption au lieu d'être perdue par un arrêt du script.
+ */
+function grr_fin_page(string $html = ''): never
+{
+	echo $html;
+	if (!empty($GLOBALS['grr_symfony']))
+		throw \Devome\Grr\Http\PageInterruption::withBufferedOutput((int) ($GLOBALS['grr_ob_niveau_base'] ?? 0));
+	exit;
+}
+
+/**
  * Valide et redirige vers une URL interne sûre
  * @param string $redirect_url L'URL de redirection
  * @param string $default_url L'URL par défaut si la redirection n'est pas sûre
  */
 function safe_redirect($redirect_url, $default_url = './')
 {
-	if (is_safe_redirect($redirect_url))
-		header("Location: " . $redirect_url);
-	else
-		header("Location: " . $default_url);
-	exit();
+	grr_redirection(is_safe_redirect($redirect_url) ? $redirect_url : $default_url);
 }
 
 function getDaysInMonth($month, $year)
@@ -388,7 +414,7 @@ function affiche_lien_contact($_cible, $_type_cible, $option_affichage)
 				$affichage = "";
 		}
 		else
-            $affichage = '<a href="javascript:centrerpopup(\'app.php?p=contact&cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
+            $affichage = '<a href="javascript:centrerpopup(\'contact?cible='.$_cible.'&amp;type_cible='.$_type_cible.'\',600,480,\'scrollbars=yes,statusbar=no,resizable=yes\')" title="'.$_identite.'\">'.$_identite.'</a>'.PHP_EOL;
 	}
 	else
 	{   // Il s'agit de calculer une balise mailto
@@ -468,7 +494,7 @@ function affiche_ressource_empruntee_twig($id_room, $type = "logo")
 		if ($id_resa != -1)
 		{
 			if ($type == "logo")
-				$valeur = '<a href="app.php?p=vuereservation&id='.$id_resa.'" style="color: red;" title="'.get_vocab("reservation_en_cours").'"><i class="icone fa-solid fa-hand" title="'.get_vocab("ressource_actuellement_empruntee").'"></i></a>'.PHP_EOL;
+				$valeur = '<a href="vuereservation?id='.$id_resa.'" style="color: red;" title="'.get_vocab("reservation_en_cours").'"><i class="icone fa-solid fa-hand" title="'.get_vocab("ressource_actuellement_empruntee").'"></i></a>'.PHP_EOL;
 			else if ($type == "texte")
 			{
 				$beneficiaire = grr_sql_query1("SELECT beneficiaire FROM ".TABLE_PREFIX."_entry WHERE room_id = '".$id_room."' AND statut_entry='y'");
@@ -476,7 +502,7 @@ function affiche_ressource_empruntee_twig($id_room, $type = "logo")
 				$valeur = '<br /><b><span class="avertissement">'.PHP_EOL;
 				$valeur .= '<i class="icone fa-solid fa-hand" title="'.get_vocab("ressource_actuellement_empruntee").'"></i>'.PHP_EOL;
 				$valeur .= get_vocab("ressource_actuellement_empruntee").' '.get_vocab("nom_emprunteur").get_vocab("deux_points").affiche_nom_prenom_email($beneficiaire,$beneficiaire_ext,"withmail");
-				$valeur .= ' <a href="app.php?p=vuereservation&id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
+				$valeur .= ' <a href="vuereservation?id='.$id_resa.'&amp;mode=page">'.get_vocab("entryid").$id_resa.'</a>'.PHP_EOL.'</span></b>'.PHP_EOL;
 			}
 			else
 				$valeur = "yes";
@@ -982,18 +1008,18 @@ function page_accueil($param = 'no')
 		$defaultarea = get_default_area($defaultsite);
 	// Calcul de $page_accueil
 	if ($defaultarea == - 1)
-		$page_accueil = 'app.php?p=jour&noarea=';
+		$page_accueil = 'jour?noarea=';
 	// le paramètre noarea ne sert à rien, il est juste là pour éviter un cas particulier à traiter avec &amp;id_site= et $param
 	else if ($defaultroom == - 1)
-		$page_accueil = 'app.php?p=jour&area='.$defaultarea;
+		$page_accueil = 'jour?area='.$defaultarea;
 	else if ($defaultroom == - 2)
-		$page_accueil = 'app.php?p=semaine_all&area='.$defaultarea;
+		$page_accueil = 'semaine_all?area='.$defaultarea;
 	else if ($defaultroom == - 3)
-		$page_accueil = 'app.php?p=mois_all&area='.$defaultarea;
+		$page_accueil = 'mois_all?area='.$defaultarea;
 	else if ($defaultroom == -4)
-		$page_accueil = 'app.php?p=mois2_all&area='.$defaultarea;
+		$page_accueil = 'mois2_all?area='.$defaultarea;
 	else
-		$page_accueil = 'app.php?p=semaine&area='.$defaultarea.'&amp;room='.$defaultroom;
+		$page_accueil = 'semaine?area='.$defaultarea.'&amp;room='.$defaultroom;
 	if ((Settings::get("module_multisite") == 1) && ($defaultsite > 0))
 		$page_accueil .= '&amp;id_site='.$defaultsite;
 	if ($param == 'yes')
@@ -1022,14 +1048,10 @@ function begin_page($title, $page = "with_session")
 	if (isset($_GET['default_language']))
 	{
 		$_SESSION['default_language'] = SecuChaine::Alphanumeric(SecuChaine::CleanInput($_GET['default_language']));
-		if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-			header("Location: ".$_SESSION['chemin_retour']);
-		else
-			header("Location: ".traite_grr_url());
-		die();
+		grr_redirection((isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != '')) ? $_SESSION['chemin_retour'] : traite_grr_url());
 	}
 
-	global $vocab, $charset_html, $clock_file, $gcDossierCss, $version_grr;
+	global $vocab, $charset_html, $gcDossierCss, $version_grr;
 	header('Content-Type: text/html; charset=utf-8');
 
     if (!isset($_COOKIE['open']))
@@ -1062,10 +1084,8 @@ function begin_page($title, $page = "with_session")
 	$a .= '<script type="text/javascript" src="jslib/jquery/jquery.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="jslib/jquery-ui/jquery-ui.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
 	$a .= '<script type="text/javascript" src="bootstrap/js/bootstrap.min.js?v='.$version_grr.'"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/popup.js?v='.$version_grr.'" charset="utf-8"></script>'.PHP_EOL;
-	$a .= '<script type="text/javascript" src="js/functions.min.js?v='.$version_grr.'" ></script>'.PHP_EOL;
-	if (@file_exists('js/'.$clock_file))
-		$a .= '<script type="text/javascript" src="js/'.$clock_file.'?v='.$version_grr.'"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="jslib/_grr/popup.js?v='.$version_grr.'" charset="utf-8"></script>'.PHP_EOL;
+	$a .= '<script type="text/javascript" src="jslib/_grr/functions.min.js?v='.$version_grr.'" ></script>'.PHP_EOL;
 	if (substr(phpversion(), 0, 1) < 7)
 		$a .= get_vocab('not_php');
 
@@ -1076,15 +1096,18 @@ function begin_page($title, $page = "with_session")
 
 function print_header_twig($day = '', $month = '', $year = '', $type_session = 'with_session')
 {
-	global $niveauDossier, $vocab, $search_str, $grrSettings, $clock_file, $desactive_VerifNomPrenomUser,$grr_script_name, $page;
+	global $niveauDossier, $vocab, $search_str, $grrSettings, $locale, $desactive_VerifNomPrenomUser,$grr_script_name, $page;
 	global $use_prototype, $use_admin, $desactive_bandeau_sup, $id_site, $d, $gcDossierImg, $gcDossierCss, $version_grr;
+
+	// Langue de la page (<html lang>, utilisée aussi par l'horloge jslib/_grr/clock.js)
+	$d['locale'] = $locale ?: 'fr-fr';
 
 	$area = SecuChaine::GetFormVar("area","int",0);
 	$room = SecuChaine::GetFormVar("room","int",0);
 	$id_site = SecuChaine::GetFormVar("id_site","int",0);
 	
 	if( isset($_SESSION['changepwd']) && $_SESSION['changepwd'] == 1 && $page != 'changemdp'){
-		header("Location: ./compte/compte.php?pc=changemdp");
+		header("Location: ./account?pc=changemdp");
 	}
 
 	if ($niveauDossier == 1)
@@ -1096,7 +1119,8 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	if (!($desactive_VerifNomPrenomUser))
 		$desactive_VerifNomPrenomUser = 'n';
 	// On vérifie que les noms et prénoms ne sont pas vides
-	VerifNomPrenomUser($type_session);
+	if (nom_prenom_utilisateur_a_completer($type_session))
+		return "./account?pc=moncompte";
 
 	if(file_exists($racine."personnalisation/".$gcDossierCss."/perso-css.css"))
 		$d['sheetcsspersocss'] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$racine."personnalisation/".$gcDossierCss."/perso-css.css?".Settings::get("sp_time")."\" />";
@@ -1131,15 +1155,11 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 	{
 		$_SESSION['default_language'] = SecuChaine::Alphanumeric($_GET['default_language']);
 		if (isset($_SESSION['chemin_retour']) && ($_SESSION['chemin_retour'] != ''))
-			header("Location: ".$_SESSION['chemin_retour']);
-		else
-			header("Location: ".traite_grr_url());
-		die();
-	}
-
-	if (!isset($_COOKIE['open']))
-	{
-		setcookie("open", "true", time()+3600, "", "", true, false);
+			return $_SESSION['chemin_retour'];
+		// Pas de page mémorisée (première page, session nouvelle) : retour sur la page courante
+		parse_str($_SERVER['QUERY_STRING'] ?? '', $parametresRetour);
+		unset($parametresRetour['default_language']);
+		return grr_page_url($parametresRetour);
 	}
 
 	$resulHook = Hook::Appel("hookHeader2");
@@ -1166,7 +1186,9 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 		}
 
 		//Parametre url fixe compte / admin
-		$paramUrl = 'p='.$page.'&day='.$day.'&year='.$year.'&month='.$month;
+		// Sous Symfony, $page n'est pas renseigné : la page courante est le paramètre « p » de app.php
+		$pageCourante = ($page != '') ? $page : SecuChaine::Alphanumeric($_GET['p'] ?? '');
+		$paramUrl = 'p='.$pageCourante.'&day='.$day.'&year='.$year.'&month='.$month;
     if($room)
       $paramUrl .= "&room=".$room;
     if($area)
@@ -1219,30 +1241,29 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				}
 			}
 
-			// Heure selon la langue
-			if (@file_exists($racine.'js/'.$clock_file))
-				$d['jsHeure'] = $clock_file;
 
+			// URL de la page courante (route propre « /<page> ») : retour après changement de langue
 			$_SESSION['chemin_retour'] = '';
-			if (isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'] != ''))
-			{
-				$parametres_url = htmlspecialchars($_SERVER['QUERY_STRING'])."&amp;";
-				$_SESSION['chemin_retour'] = traite_grr_url($grr_script_name)."?". $_SERVER['QUERY_STRING'];
-				$d['urlLangue'] = traite_grr_url($grr_script_name);
-			}
+			parse_str($_SERVER['QUERY_STRING'] ?? '', $parametresPage);
+			unset($parametresPage['default_language']);
+			$urlPageCourante = grr_page_url($parametresPage);
+			if ($parametresPage !== [])
+				$_SESSION['chemin_retour'] = $urlPageCourante;
+			// Changement de langue : page courante + default_language (ajouté par le template)
+			$d['urlChangementLangue'] = $urlPageCourante.(str_contains($urlPageCourante, '?') ? '&' : '?');
 			if ($type_session == 'no_session')
 			{
 				$resulHook = Hook::Appel("hookLienConnexion2");
 				if ((Settings::get('sso_statut') == 'cas_visiteur') || (Settings::get('sso_statut') == 'cas_utilisateur'))
 				{
 					$d['lienConnexion'] =  '<br /> <a href="index.php?force_authentification=y">'.get_vocab("authentification").'</a>';
-					$d['lienConnexion'] .=  '<br /> <small><i><a href="app.php?p=login">'.get_vocab("connect_local").'</a></i></small>';
+					$d['lienConnexion'] .=  '<br /> <small><i><a href="login">'.get_vocab("connect_local").'</a></i></small>';
 				} elseif($resulHook['hookLienConnexion2'] != "")
 				{
 					$d['lienConnexion'] = $resulHook['hookLienConnexion2'];
 				}
 				else {
-					$d['lienConnexion'] = '<br /> <a href="app.php?p=login">'.get_vocab("connect").'</a>';
+					$d['lienConnexion'] = '<br /> <a href="login">'.get_vocab("connect").'</a>';
 				}
 			}
 			else
@@ -1260,9 +1281,9 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
 				{
 					$disconnect_link = true;
 					if (Settings::get("authentification_obli") == 1)
-						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'deconnexion?auto=0" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 					else
-						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'app.php?p=deconnexion&auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
+						$d['lienDeconnexion'] = '<br /> <a href="'.$racine.'deconnexion?auto=0&amp;redirect_page_accueil=yes" >'.get_vocab('disconnect').'</a>'.PHP_EOL;
 				}
 				if ((Settings::get("Url_portail_sso") != '') && (isset($_SESSION['est_authentifie_sso'])))
 				{
@@ -1286,19 +1307,25 @@ function print_header_twig($day = '', $month = '', $year = '', $type_session = '
  */
 function VerifNomPrenomUser($type)
 {
-	global $page;
+	if (nom_prenom_utilisateur_a_completer($type))
+		grr_redirection("./account?pc=moncompte");
+}
 
+/**
+ * Indique si l'utilisateur connecté doit d'abord compléter son nom ou son prénom (hors page « mon compte »).
+ * @param string $type
+ */
+function nom_prenom_utilisateur_a_completer($type): bool
+{
 	// ne pas prendre en compte la page my_account.php
 	global $desactive_VerifNomPrenomUser, $page;
 	if (($type == "with_session") && ($desactive_VerifNomPrenomUser != 'y') && (SecuAccess::IsAllowedToModifyProfil()))
 	{
 		$test = grr_sql_query1("SELECT login FROM ".TABLE_PREFIX."_utilisateurs WHERE (login = '".getUserName()."' AND (nom='' or prenom = ''))");
 		if (($test != -1) && ($page != 'moncompte'))
-		{
-			header("Location: ./compte/compte.php");
-			die();
-		}
+			return true;
 	}
+	return false;
 }
 
 // Transforme $dur en une durée exprimée en années, semaines, jours, heures, minutes et secondes
@@ -1583,7 +1610,7 @@ function fatal_error($need_header, $message, $show_form_data = true)
 	else
 		echo '<p>',$message,'</p>'.PHP_EOL;
 
-	exit;
+	grr_fin_page();
 }
 
 /**
@@ -2072,7 +2099,7 @@ function make_site_select_html($link, $current_site, $year, $month, $day, $user,
 					'area'	=> $default_area
 				];
 
-				$link2 ='app.php?'.http_build_query($queryUrl);
+				$link2 = grr_page_url($queryUrl);
 				if (SecuAccess::UserSite($user,$row[0]) == 1)		// DDE: on ne prend que les sites autorisés
 				{
 					$out[] = '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
@@ -2146,7 +2173,7 @@ function make_area_select_html( $link, $current_site, $current_area, $year, $mon
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			$selected = ($row[0] == $current_area) ? 'selected="selected"' : "";
-			$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+			$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
 			if (SecuAccess::UserArea($user,$row[0]) == 1)
 			{
 				$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
@@ -2207,7 +2234,7 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 	$out_html .= '<div><select class="form-control" name="area" ';
 	$out_html .= ' onchange="area_go()" ';
 	$out_html .= '>'.PHP_EOL;
-    $out_html .= "<option value=\"app.php?p=".$link."_all&amp;year=$year";
+    $out_html .= "<option value=\"".$link."_all?year=$year";
     if ($current_site != -1) 
         $out_html .= "&amp;site=$current_site";
     $out_html .= " \">".get_vocab("any_area")."</option>";
@@ -2217,7 +2244,7 @@ function make_area_select_all_html( $link, $current_site, $current_area, $year, 
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			$selected = ($row[0] == $current_area) ? 'selected="selected"' : "";
-			$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+			$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
 			if (SecuAccess::UserArea($user,$row[0]) == 1)
 			{
 				$out_html .= '<option '.$selected.' value="'.$link2.'">'.htmlspecialchars($row[1]).'</option>'.PHP_EOL;
@@ -2267,7 +2294,7 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 			$linkTout = $link;
 
         $out_html = "<b><i>".get_vocab('rooms').get_vocab("deux_points")."</i></b><br /><form id=\"room_".$pos."\" action=\"".$_SERVER['PHP_SELF']."\"><div><select class=\"form-control\" name=\"room\" onchange=\"room_go_".$pos."()\">";
-        $out_html .= "<option value=\"app.php?p=$linkTout&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
+        $out_html .= "<option value=\"{$linkTout}?year=$year&amp;month=$month&amp;day=$day&amp;area=$current_area\">".get_vocab("all_rooms")."</option>";
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
 			if (SecuAccess::UserResource(getUserName(),$row[0]))
@@ -2277,7 +2304,7 @@ function make_room_select_html($link, $current_area, $current_room, $year, $mont
 				else
 					$temp = "";
 				$selected = ($row[0] == $current_room) ? "selected=\"selected\"" : "";
-				$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
+				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
 				$out_html .= "<option $selected value=\"$link2\">" . htmlspecialchars($row[1].$temp)."</option>".PHP_EOL;
 			}
 		}
@@ -2359,7 +2386,7 @@ function make_site_list_html($link, $current_site, $year, $month, $day,$user)
 							'id_site'	=> $row[0]
 						];
 
-						$link2 ='app.php?'.http_build_query($queryUrl);
+						$link2 = grr_page_url($queryUrl);
 						// on affiche le site uniquement si au moins un domaine est visible par l'utilisateur
 						$nb_sites_a_afficher++;
 						if ($row[0] == $current_site)
@@ -2437,9 +2464,9 @@ function make_area_list_html($link, $current_site, $current_area, $year, $month,
 			{
 				if ($row[0] == $current_area)
 				{
-					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\"  href=\"app.php?p=".$link."&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
+					$out_html .= "<a id=\"liste_select\" onclick=\"charger();\"  href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\">&gt; ".htmlspecialchars($row[1])."</a></b><br />\n";
 				} else {
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p=".$link."&amp;year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;area=$row[0]\"> ".htmlspecialchars($row[1])."</a><br />\n";
 				}
 			}
 		}
@@ -2474,7 +2501,7 @@ function make_room_list_html($link,$current_area, $current_room, $year, $month, 
 				if ($row[0] == $current_room)
 					$out_html .= "<span id=\"liste_select\">&gt; ".htmlspecialchars($row[1])."</span><br />\n";
 				else
-					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"app.php?p=".$link."&amp;year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
+					$out_html .= "<a id=\"liste\" onclick=\"charger();\"  href=\"".$link."?year=$year&amp;month=$month&amp;day=$day&amp;&amp;room=$row[0]\">".htmlspecialchars($row[1]). "</a><br />\n";
 			}
 		}
 	}
@@ -2537,7 +2564,7 @@ function make_site_item_html($link, $current_site, $year, $month, $day, $user)
 				$nb_sites_a_afficher++;
 				$queryUrl['area'] = $default_area;
 			}
-			$link2 ='app.php?'.http_build_query( $queryUrl );
+			$link2 = grr_page_url($queryUrl);
 
 			if ($current_site != null)
 			{
@@ -2615,7 +2642,7 @@ function make_area_item_html( $link, $current_site, $current_area, $year, $month
 	{
 		for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
 		{
-			$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
+			$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$row[0];
 			if (SecuAccess::UserArea($user, $row[0]) == 1)
 			{
 				if ($current_area != null)
@@ -2658,10 +2685,10 @@ function make_room_item_html($link, $current_area, $current_room, $year, $month,
 		{
 			if (SecuAccess::UserResource(getUserName(),$row[0]))
 			{
-				$link2 = 'app.php?p='.$link.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
+				$link2 = $link.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;room='.$row[0];
                 $link_a = $link;
                 if (($link != 'jour')&&(!strpos($link,'all'))) {$link_a .= '_all';}
-				$link_all_room = 'app.php?p='.$link_a.'&amp;year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$current_area;
+				$link_all_room = $link_a.'?year='.$year.'&amp;month='.$month.'&amp;day='.$day.'&amp;area='.$current_area;
 				if (!isset($_GET['room']))
 				{
 					if (isset($all_ressource) && $all_ressource == 0)
@@ -2707,7 +2734,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 	require_once $prefixeChemin.'include/pages.class.php';
 
 	if (!Pages::load())
-		die('Erreur chargement pages');
+		grr_fin_page('Erreur chargement pages');
 
 	$sql = "SELECT ".TABLE_PREFIX."_entry.name,
 	".TABLE_PREFIX."_entry.description,
@@ -2863,7 +2890,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		'%resaduree%' => $duration." ".$dur_units,
 		'%resatype%' => "?".$row[5]."?",
 		'%resachampsadditionnels%' =>  affichage_champ_add_mails($id_entry),
-		'%urldetail%' => "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_entry,
+		'%urldetail%' => "\n".traite_grr_url("","y")."vuereservation?id=".$id_entry,
 		'%resaperiodique%' => "",
 		'%resaconfirmation%' => "",
 		'%resadescription%' => "",
@@ -2956,7 +2983,7 @@ function send_mail($id_entry, $action, $dformat, $tab_id_moderes = array(), $old
 		if (count($tab_id_moderes) != 0 )
 		{
 			foreach ($tab_id_moderes as $id_moderes)
-				$codes['%urldetail%'] =  "\n".traite_grr_url("","y")."app.php?p=vuereservation&id=".$id_moderes;
+				$codes['%urldetail%'] =  "\n".traite_grr_url("","y")."vuereservation?id=".$id_moderes;
 		}
 	}
 	elseif ($action == 7){ // Notification d'un retard dans la restitution d'une ressource
@@ -3619,7 +3646,7 @@ function VerifyModeDemo($force = true) {
 			<p>Vous êtes dans une <b>version de démonstration de GRR</b>.
 				<br />Certaines fonctions ont été volontairement bridées. C'est le cas pour l'opération que vous avez tenté d'effectuer.</p>
 			</body></html>";
-			die();
+			grr_fin_page();
 		}
 		else // Cas dans certaines fonctions (Paramètres settings) sont bridées mais pas toutes, on retourne juste false pour que la fonction appelante puisse gérer le cas.
 		{
@@ -3652,8 +3679,7 @@ function MajMysqlModeDemo() {
 			fclose($fd);
 			if (!Settings::set("date_verify_demo", $date_now))
 			{
-				echo $vocab['save_err']." date_verify_demo !<br />";
-				die();
+				throw new \RuntimeException("GRR : enregistrement du réglage date_verify_demo impossible.");
 			}
 		}
 	}
@@ -3670,8 +3696,7 @@ function showAccessDenied($back, $infodebug = '')
 
 	$ch = cheminDetermination($niveauDossier);
 
-	header('Location: ' . $ch . 'erreur.php?code=403&grr_script_name='.$grr_script_name.'&infosdebug='.$infodebug);
-	exit;
+	grr_redirection($ch . 'erreur.php?code=403&grr_script_name='.$grr_script_name.'&infosdebug='.$infodebug);
 }
 function showAccessDenied_twig($back, $infodebug = '')
 {
@@ -3848,9 +3873,9 @@ function get_planning_area_values($id_area)
 	$res = grr_sql_query($sql);
 	if (!$res)
 	{
-		// fatal_error(0, grr_sql_error());
-		include "trailer.inc.php";
-		exit;
+		// Une erreur explicite plutôt qu'un arrêt silencieux (page blanche) : le plus souvent,
+		// la structure de la table _area ne correspond pas à la version du code.
+		throw new \RuntimeException("GRR : lecture des réglages du domaine ".$id_area." impossible (".grr_sql_error()."). La base de données est peut-être à mettre à jour.");
 	}
 	$row_ = grr_sql_row($res, 0);
 	$nb_display_day = 0;
@@ -3933,9 +3958,7 @@ function verify_confirm_reservation()
 		$res = grr_sql_query("select id from ".TABLE_PREFIX."_room where delais_option_reservation > 0");
 		if (!$res)
 		{
-			//fatal_error(0, grr_sql_error());
-			include "trailer.inc.php";
-			exit;
+			throw new \RuntimeException("GRR : vérification des réservations impossible (".grr_sql_error().").");
 		}
 		else
 		{
@@ -3944,9 +3967,7 @@ function verify_confirm_reservation()
 				$res2 = grr_sql_query("select id from ".TABLE_PREFIX."_entry where option_reservation < '".$date_now."' and option_reservation != '-1' and room_id='".$row[0]."' and supprimer != 1");
 				if (!$res2)
 				{
-					//fatal_error(0, grr_sql_error());
-					include "trailer.inc.php";
-					exit;
+					throw new \RuntimeException("GRR : vérification des réservations impossible (".grr_sql_error().").");
 				}
 				else
 				{
@@ -3966,8 +3987,7 @@ function verify_confirm_reservation()
 		}
 		if (!Settings::set("date_verify_reservation", $date_now))
 		{
-			echo $vocab['save_err']." date_verify_reservation !<br />";
-			die();
+			throw new \RuntimeException("GRR : enregistrement du réglage date_verify_reservation impossible.");
 		}
 	}
 }
@@ -3986,8 +4006,7 @@ function verify_retard_reservation()
 		$res = grr_sql_query("SELECT id FROM ".TABLE_PREFIX."_room");
 		if (!$res)
 		{
-			include "trailer.inc.php";
-			exit;
+			throw new \RuntimeException("GRR : vérification des réservations impossible (".grr_sql_error().").");
 		}
 		else
 		{
@@ -3996,8 +4015,7 @@ function verify_retard_reservation()
 				$res2 = grr_sql_query("SELECT id from ".TABLE_PREFIX."_entry WHERE statut_entry='e' AND end_time < '".$date_now."' AND room_id='".$row[0]."'");
 				if (!$res2)
 				{
-					include "trailer.inc.php";
-					exit;
+					throw new \RuntimeException("GRR : vérification des réservations impossible (".grr_sql_error().").");
 				}
 				else
 				{
@@ -4008,8 +4026,7 @@ function verify_retard_reservation()
 		}
 		if (!Settings::set("date_verify_reservation2", $date_now))
 		{
-			echo $vocab['save_err']." date_verify_reservation2 !<br />";
-			die();
+			throw new \RuntimeException("GRR : enregistrement du réglage date_verify_reservation2 impossible.");
 		}
 	}
 }
@@ -4428,6 +4445,30 @@ function grrDelOverloadFromEntries($id_field)
 	}
 }
 // Traite l'url à utiliser pour les liens dans les pages, en fonction de la configuration et des éventuels reverse proxy'
+/**
+ * URL d'une page de l'application en route propre (« /GitHub/GRR/jour?area=1 »), à partir de
+ * paramètres contenant « p ». Sans page connue, retombe sur app.php avec les mêmes paramètres.
+ *
+ * @param array<string, mixed> $parametres
+ */
+function grr_page_url(array $parametres): string
+{
+	$scriptUrl = traite_grr_url('app.php');
+	// Hors app.php (cas non prévu) : URL relative à la page courante
+	$racineUrl = str_ends_with($scriptUrl, 'app.php') ? substr($scriptUrl, 0, -strlen('app.php')) : '';
+	$page = is_string($parametres['p'] ?? null) ? $parametres['p'] : '';
+	if (\Devome\Grr\Routing\Pages::exists($page))
+	{
+		unset($parametres['p']);
+		$cible = $page;
+	}
+	else
+		$cible = 'app.php';
+	$requete = http_build_query($parametres);
+
+	return $racineUrl.$cible.($requete !== '' ? '?'.$requete : '');
+}
+
 function traite_grr_url($grr_script_name = "", $force_use_grr_url = "n")
 {
 	// Dans certaines configuration (reverse proxy, ...) les variables $_SERVER["SCRIPT_NAME"] ou $_SERVER['PHP_SELF']

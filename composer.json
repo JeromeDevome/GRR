@@ -1,5 +1,6 @@
 {
-    "name": "devome/twig",
+    "name": "devome/grr",
+    "type": "project",
     "authors": [
         {
             "name": "JeromeDevome",
@@ -12,19 +13,30 @@
       }
     },
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.3",
         "twig/twig": "^3.22",
         "phpmailer/phpmailer": "^7.0",
         "tecnickcom/tcpdf": "^6.10",
         "apereo/phpcas": "^1.6",
         "gregwar/captcha-bundle": "^2.4",
-        "psr/container": "^2.0"
+        "psr/container": "^2.0",
+        "symfony/console": "~7.4",
+        "symfony/framework-bundle": "~7.4",
+        "symfony/twig-bundle": "~7.4",
+        "symfony/yaml": "~7.4",
+        "symfony/translation": "~7.4"
+    },
+    "scripts": {
+        "test": "php tests/symfony_smoke.php"
     },
     "config": {
       "platform": {
-        "php": "8.1.0"
+        "php": "8.3.0"
       }
     },
-    "description": "Librairies pour GRR",
-    "license": ["GPL-3.0-or-later"]
+    "description": "GRR resource reservation application",
+    "license": ["GPL-3.0-or-later"],
+    "require-dev": {
+        "symfony/web-profiler-bundle": "~7.4"
+    }
 }

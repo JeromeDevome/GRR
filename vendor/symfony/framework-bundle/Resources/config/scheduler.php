@@ -13,6 +13,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Symfony\Component\Scheduler\EventListener\DispatchSchedulerEventListener;
 use Symfony\Component\Scheduler\Messenger\SchedulerTransportFactory;
+use Symfony\Component\Scheduler\Messenger\Serializer\Normalizer\SchedulerTriggerNormalizer;
 use Symfony\Component\Scheduler\Messenger\ServiceCallMessageHandler;
 
 return static function (ContainerConfigurator $container) {
@@ -21,7 +22,7 @@ return static function (ContainerConfigurator $container) {
             ->args([
                 tagged_locator('scheduler.task'),
             ])
-            ->tag('messenger.message_handler')
+            ->tag('messenger.message_handler', ['sign' => true])
         ->set('scheduler.messenger_transport_factory', SchedulerTransportFactory::class)
             ->args([
                 tagged_locator('scheduler.schedule_provider', 'name'),
@@ -35,5 +36,7 @@ return static function (ContainerConfigurator $container) {
                 service('messenger.receiver_locator'),
             ])
             ->tag('kernel.event_subscriber')
+        ->set('serializer.normalizer.scheduler_trigger', SchedulerTriggerNormalizer::class)
+            ->tag('serializer.normalizer', ['built_in' => true, 'priority' => -880])
     ;
 };

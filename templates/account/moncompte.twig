@@ -1,0 +1,273 @@
+{% extends '@account/layout.twig' %}
+
+{% import '@account/messagesysteme.twig' as msgSyst %}
+{% import '@account/champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div>
+	<form id="param_account" action="./account?pc=moncompte" method="post">
+
+    {% if d.AvertissementNomPrenom %}
+      <h2 class="avertissement">{{ 'nom_prenom_valides'|trans }}</h2>
+    {% endif %}
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="login">{{ 'login'|trans }}</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8"><input class="form-control" id="login" type="text" name="login" value="{{ d.identifiant }}" size="30" disabled/>
+      </div>
+    </div>
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="nom">{{ 'last_name'|trans }}*</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8">
+        <input class="form-control" id="nom" type="text" name="reg_nom" value="{{ d.user_nom }}" size="30" 
+        {% if d.modificationNom %} required {% else %} disabled {% endif %}
+        />
+      </div>
+    </div>
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="prenom">{{ 'first_name'|trans }}*</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8">
+        <input class="form-control" id="prenom" type="text" name="reg_prenom" value="{{ d.user_prenom }}" size="30" 
+        {% if d.modificationNom %} required {% else %} disabled {% endif %}
+        />
+      </div>
+    </div>
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="mail">{{ 'mail_user'|trans }}{% if settings.mail_user_obligatoire == 1 %}*{%endif%}</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8">
+        <input class="form-control" id="mail" type="text" name="reg_email" value="{{ d.user_email }}" size="30" 
+        {% if settings.mail_user_obligatoire == 1 %} required {% endif %}
+        {% if not d.modificationMail %} disabled {% endif %}
+        />
+      </div>
+    </div>
+    <div class="form-group col-xs-12">
+      <label class="control-label col-md-2 col-sm-3 col-xs-4" for="statut">{{ 'statut'|trans }}</label>
+      <div class="col col-md-4 col-sm-6 col-xs-8"><input class="form-control" id="statut" type="text" name="statut" value="{{ d.text_user_statut }}" size="30" disabled/>
+      </div>
+    </div>
+    
+		{% if d.modificationNom %}
+			<p><em>{{ 'required'|trans }}</em></p>
+		{% endif %}
+		<hr>
+
+		{% if d.modificationMDP %}
+			<div>
+				<p>{{ 'pwd_msg_warning'|trans }}</p>
+
+				<div class="form-group">
+					<label class="control-label col-md-4 col-sm-6 col-xs-8" for="opwd">{{ 'old_pwd'|trans }}</label>
+					<div class="col col-md-8 col-sm-6 col-xs-6">
+					<input class="form-control" id="opwd" type="password" name="reg_password_a" size="20"  /></div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd1">{{ 'new_pwd1'|trans }}</label>
+					<div class="col col-md-8 col-sm-4 col-xs-6">
+					<input id="pwd1" class="form-control" for="pwd1" type="password" name="reg_password1" size="20" onkeyup="runPassword(this.value, 'pwd1');"  /></div>
+				</div>
+				<div class="form-group">
+					<div class="col col-md-4 col-sm-6 col-xs-8"></div>
+					<div class="col col-md-8 col-sm-6 col-xs-8">
+						{{'pwd_toot_short'|trans}} 
+						{% if settings.pass_nb_min == 1 %}, {{settings.pass_nb_min}} {{'pass_x_min'|trans}}{% endif %}
+						{% if settings.pass_nb_min > 1 %}, {{settings.pass_nb_min}}  {{'pass_x_mins'|trans}}{% endif %}
+						{% if settings.pass_nb_maj == 1 %}, {{settings.pass_nb_maj}} {{'pass_x_maj'|trans}}{% endif %}
+						{% if settings.pass_nb_maj > 1 %}, {{settings.pass_nb_maj}} {{'pass_x_majs'|trans}}{% endif %}
+						{% if settings.pass_nb_ch == 1 %}, {{settings.pass_nb_ch}}  {{'pass_x_ch'|trans}}{% endif %}
+						{% if settings.pass_nb_ch > 1 %}, {{settings.pass_nb_ch}}  {{'pass_x_chs'|trans}}{% endif %}
+						{% if settings.pass_nb_sp == 1 %}, {{settings.pass_nb_sp}} {{'pass_x_sp'|trans}}{% endif %}
+						{% if settings.pass_nb_sp > 1 %}, {{settings.pass_nb_sp}} {{'pass_x_sps'|trans}}{% endif %}
+					</div>
+
+					<div class="col col-md-4 col-sm-6 col-xs-0"></div>
+					<div class="col col-md-4 col-sm-3 col-xs-6"><p class="right">{{ 'pwd_strength'|trans }}</p></div>
+					<div class="col col-md-4 col-sm-3 col-xs-6">&nbsp;
+						<div id="pwd1_text" style="font-size: 11px;">&nbsp;</div>
+						<div id="pwd1_bar" style="font-size: 1px; height: 3px; width: 0px; border: 1px solid white;"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-md-4 col-sm-6 col-xs-8" for="pwd2">{{ 'new_pwd2'|trans }}</label>
+					<div class="col col-md-8 col-sm-4 col-xs-6">
+					<input class="form-control" id="pwd2" type="password" name="reg_password2" size="20"  /></div>
+				</div>
+			</div>
+		{% else %}
+			<p>{{ 'user_change_pwd_interdit'|trans }}</p>
+		{% endif %}
+
+		<hr>
+
+		<h3>{{ 'default_parameter_values_title'|trans }}</h3>
+
+		<h4>{{ 'explain_area_list_format'|trans }}</h4>
+		
+		<table>
+			<tr>
+				<td>{{ 'liste_area_list_format'|trans }}</td>
+				<td><input type="radio" name="area_item_format" value="list" {%if d.default_list_type == 'list' %}checked{% endif %} {% if d.levelUser < settings.allow_users_modify_affichage %}disabled{% endif %} /></td>
+			</tr>
+			<tr>
+				<td>{{ 'select_area_list_format'|trans }}</td>
+				<td><input type="radio" name="area_item_format" value="select" {%if d.default_list_type == 'select' %}checked{% endif %} {% if d.levelUser < settings.allow_users_modify_affichage %}disabled{% endif %} /></td>
+			</tr>
+			<tr>
+				<td>{{ 'item_area_list_format'|trans }}</td>
+				<td><input type="radio" name="area_item_format" value="item" {%if d.default_list_type == 'item' %}checked{% endif %} {% if d.levelUser < settings.allow_users_modify_affichage %}disabled{% endif %} /></td>
+			</tr>
+		</table>
+
+    <div class="col-xs-12">
+		{% if d.levelUser < settings.allow_users_modify_domaine %}
+
+		{% else %}
+			{% if settings.module_multisite == 1 %}
+			<h4>{{ 'explain_default_area_and_room_and_site'|trans }}</h4>
+
+			<div class="col-xs-12" id="div_liste_sites">
+				<div class="form-group row col-sm-12">
+					<label class="col-md-6" for="p_id_site">{{ 'default_site'|trans }}</label>
+					<div class="col-md-6">
+						<select class="form-control" id="p_id_site" name="p_id_site" onchange="modifier_liste_domaines();modifier_liste_ressources(2)">
+							<option value="-1">{{ 'choose_a_site'|trans }}</option>
+							{% for site in sites %}
+								<option value="{{ site.idsite }}" {% if site.idsite == d.default_site %} selected {% endif %}>{{ site.nomsite }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+      </div>
+			{% else %}
+				<h4>{{ 'explain_default_area_and_room'|trans }}</h4>
+				<input type="hidden" id="p_id_site" name="p_id_site" value="-1" />
+
+			{% endif %}
+
+        <div class="col-xs-12" id="div_liste_domaines">{{ domainOptions|raw }}</div>
+        
+				<div class="col-xs-12" id="div_liste_ressources">{{ resourceOptions|raw }}</div>
+
+		{% endif %}
+    </div>
+
+		<h4>{{ 'explain_css'|trans }}</h4>
+		<table>
+			<tr>
+				<td>{{ 'choose_css'|trans }}</td>
+				<td>
+					<select class="form-control" name="default_css" {% if d.levelUser < settings.allow_users_modify_theme %}disabled{% endif %}>
+						<option value="">Choix Admin</option>
+						{% for theme in themes %}
+							<option value="{{ theme.idtheme }}" {% if theme.idtheme == d.default_css %} selected {% endif %}>{{ theme.nomtheme }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+		</table>
+
+		<h4>{{ 'choose_language'|trans }}</h4>
+		<table>
+			<tr>
+				<td>{{ 'choose_css'|trans }}</td>
+				<td>
+					<select class="form-control" name="default_language" {% if d.levelUser < settings.allow_users_modify_langue %}disabled{% endif %}>
+						<option value="">Choix Admin</option>
+						{% for langue in langues %}
+							<option value="{{ langue.idlangue }}" {% if langue.idlangue == d.default_language %} selected {% endif %}>{{ langue.nomlangue }}</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+		</table>
+
+		<div id="fixe">
+			<div>
+				<input type="hidden" name="valid" value="yes" />
+				<input type="hidden" name="day" value="{{ d.dDay }}" />
+				<input type="hidden" name="month" value="{{ d.dMonth }}" />
+				<input type="hidden" name="year" value="{{ d.dYear }}" />
+				<input class="btn btn-primary" type="submit" value="{{ 'save'|trans }}" />
+			</div>
+		
+	</form>
+	<form id="reset" action="./account?pc=moncompte" method="post">
+
+		<div>
+			<input type="hidden" name="valid" value="reset" />
+			<input type="hidden" name="day" value="{{ d.dDay }}" />
+			<input type="hidden" name="month" value="{{ d.dMonth }}" />
+			<input type="hidden" name="year" value="{{ d.dYear }}" />
+			<input type="hidden" name="p_id_site" value="-1" />
+			<input type="hidden" name="p_id_area" value="-1" />
+			<input type="hidden" name="p_id_room" value="-1" />
+			<input type="hidden" name="default_css" value="" />
+			<input type="hidden" name="area_item_format" value="item" />
+			<input type="hidden" name="default_language" value="" />
+			<input class="btn btn-primary" type="submit" value="{{ 'reset'|trans }}" />
+		</div>
+	</form>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript" src="./jslib/_grr/pwd_strength.js"></script>
+	<script type="text/javascript">
+		function modifier_liste_domaines(){
+			$.ajax({
+				url: "./account?action=lists",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_site: $('#p_id_site').val(),
+					// default_area : '<?php echo Settings::get("default_area"); ?>',
+					default_area : '{{d.default_area}}',
+					session_login:'{{d.identifiant}}',
+					use_site:{{ d.use_site }},
+					type:'domaine',
+				},
+				success: function(returnData){
+					$("#div_liste_domaines").html(returnData);
+					modifier_liste_ressources(1);
+				},
+				error: function(e){
+					gerer_erreur_liste(e);
+				}
+			});
+		}
+
+		function modifier_liste_ressources(action){
+			$.ajax({
+				url: "./account?action=lists",
+				type: "get",
+				dataType: "html",
+				data: {
+					id_area:$('#p_id_area').val(),
+					// default_room : '<?php echo Settings::get("default_room"); ?>',
+					default_room : '{{d.default_room}}',
+					type:'ressource',
+					action:+action,
+					},
+				success: function(returnData){
+					$("#div_liste_ressources").html(returnData);
+				},
+				error: function(e){
+					gerer_erreur_liste(e);
+				}
+			});
+		}
+
+		function gerer_erreur_liste(xhr){
+			var redirect = xhr.getResponseHeader('X-GRR-Redirect');
+			if (redirect) {
+				window.location.assign(new URL(redirect, xhr.responseURL).toString());
+				return;
+			}
+			alert('Impossible de charger la liste (HTTP ' + xhr.status + ').');
+		}
+	</script>
+{% endblock %}

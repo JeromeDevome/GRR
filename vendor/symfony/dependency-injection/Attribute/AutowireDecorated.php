@@ -11,6 +11,9 @@
 
 namespace Symfony\Component\DependencyInjection\Attribute;
 
+/**
+ * Autowires the inner object of decorating services.
+ */
 #[\Attribute(\Attribute::TARGET_PARAMETER | \Attribute::TARGET_PROPERTY)]
 class AutowireDecorated
 {

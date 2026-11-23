@@ -19,6 +19,8 @@
 #####################
 # gestion des langues
 #####################
+global $dbDb, $dbsys, $pass_leng;
+
 # Les "locales" sont un système permettant de gérer le plus proprement possible les différences de langue et de style
 # des utilisateurs. Vous pouvez connaître les locales installées sur votre système linux avec la commande "locale -a"
 # (les noms semblent peu standardisés, vous aurez des chaînes du genre "fr_FR" ou "fr_FR.ISO8859-1")
@@ -51,16 +53,89 @@ if (isset($fichier_mysql_inc_est_present))
 	$pass_leng = grr_sql_query1("select VALUE from ".TABLE_PREFIX."_setting where NAME = 'pass_leng'");
 
 $prefixeChemin = cheminDetermination($niveauDossier);
-// Fichier de traduction
-if (@file_exists($prefixeChemin."langue/".$locale.".php"))
-	$lang_file = $prefixeChemin."langue/".$locale.".php";
-else
-	$lang_file =  $prefixeChemin."langue/fr-fr.php";
-
 // Dans le cas où le script verif_auto_grr.php est utilisé en tâche cron, il faut ici, donner le chemin complet.
 if (defined("CHEMIN_COMPLET_GRR"))
 	chdir(CHEMIN_COMPLET_GRR);
-include $lang_file;
+
+if (!function_exists('grr_load_translation_catalogue')) {
+	/**
+	 * Vocabulaire de translations/messages.<locale>.yaml, complété par fr-fr comme le traducteur Symfony.
+	 * Le résultat est mis en cache dans var/cache/translations/ et régénéré si un YAML change.
+	 *
+	 * @param array<string, string> $parameters remplacements %dbDb%, %dbsys%, %pass_leng%
+	 * @return array<string, string>
+	 */
+	function grr_load_translation_catalogue(string $locale, array $parameters): array
+	{
+		$projectDir = dirname(__DIR__);
+		$fallbackLocale = 'fr-fr';
+		if (preg_match('/^[a-z]{2}-[a-z]{2}$/D', $locale) !== 1 || !is_file($projectDir.'/translations/messages.'.$locale.'.yaml'))
+			$locale = $fallbackLocale;
+
+		$sources = array_unique([
+			$projectDir.'/translations/messages.'.$fallbackLocale.'.yaml',
+			$projectDir.'/translations/messages.'.$locale.'.yaml',
+		]);
+		$cacheFile = $projectDir.'/var/cache/translations/messages.'.$locale.'.php';
+		$cacheTime = @filemtime($cacheFile);
+		$messages = null;
+		if ($cacheTime !== false && $cacheTime >= max(array_map('filemtime', $sources)))
+			$messages = include $cacheFile;
+
+		if (!is_array($messages)) {
+			require_once $projectDir.'/vendor/autoload.php';
+			$messages = [];
+			foreach ($sources as $source)
+				$messages = array_replace($messages, \Symfony\Component\Yaml\Yaml::parseFile($source));
+			$messages = array_map('strval', $messages);
+			if (is_dir(dirname($cacheFile)) || @mkdir(dirname($cacheFile), 0775, true))
+				@file_put_contents($cacheFile, '<?php return '.var_export($messages, true).';', LOCK_EX);
+		}
+
+		return array_map(static fn (string $message): string => strtr($message, $parameters), $messages);
+	}
+}
+
+$symfonyCatalogueLoaded = false;
+$symfonyTranslator = $GLOBALS['grr_symfony_translator'] ?? null;
+if ($symfonyTranslator instanceof \Symfony\Contracts\Translation\TranslatorInterface && method_exists($symfonyTranslator, 'getCatalogue')) {
+	$catalogue = $symfonyTranslator->getCatalogue($locale);
+	if ($catalogue instanceof \Symfony\Component\Translation\MessageCatalogueInterface) {
+		$vocab = [];
+		$catalogues = [];
+		for ($currentCatalogue = $catalogue; $currentCatalogue !== null; $currentCatalogue = $currentCatalogue->getFallbackCatalogue()) {
+			$catalogues[] = $currentCatalogue;
+		}
+
+		foreach (array_reverse($catalogues) as $catalogueInFallbackOrder)
+			$vocab = array_replace($vocab, $catalogueInFallbackOrder->all('messages'));
+
+		$charset_html = $GLOBALS['charset_html'] = 'utf-8';
+		$translationParameters = [
+			'%dbDb%' => (string) ($dbDb ?? ''),
+			'%dbsys%' => (string) ($dbsys ?? ''),
+			'%pass_leng%' => (string) ($pass_leng ?? ''),
+		];
+
+		foreach ($vocab as $tag => $message) {
+			if (preg_match('/%(?:dbDb|dbsys|pass_leng)%/', $message)) {
+				$vocab[$tag] = $symfonyTranslator->trans($tag, $translationParameters, 'messages', $locale);
+			}
+		}
+
+		$symfonyCatalogueLoaded = true;
+	}
+}
+
+if (!$symfonyCatalogueLoaded) {
+	// Hors Symfony (admin, installation, cron…) : mêmes catalogues translations/messages.<locale>.yaml
+	$charset_html = $GLOBALS['charset_html'] = 'utf-8';
+	$vocab = grr_load_translation_catalogue($locale, [
+		'%dbDb%' => (string) ($dbDb ?? ''),
+		'%dbsys%' => (string) ($dbsys ?? ''),
+		'%pass_leng%' => (string) ($pass_leng ?? ''),
+	]);
+}
 
 // Fichiers de personnalisation de langue
 if (@file_exists($prefixeChemin."personnalisation/".$gcDossierLangue."/lang_subst.".$locale.".php"))
@@ -81,8 +156,6 @@ if (isset($subst_id_area))
 	if (@file_exists($prefixeChemin."personnalisation/".$gcDossierLangue."/lang_subst_".$subst_id_area."_".$locale.".php"))
 		include $prefixeChemin."personnalisation/".$gcDossierLangue."/lang_subst_".$subst_id_area."_".$locale.".php";
 }
-// Pour l'affichage de la pendule javascript
-$clock_file = "clock_".$locale.".js";
 
 //Format de la date : 'en-gb' pour afficher des dates sous la forme "Jul 10", sinon sous la forme "10 Jul"
 //Pourrait être amélioré pour 'de', 'es' et 'it'
@@ -518,7 +591,8 @@ function get_server_os()
 // Si $unicode_encoding a pour valeur 1, on teste si iconv est activé
 if (($unicode_encoding) && (!function_exists('iconv')))
 {
-	exit("
+	$grrFinIconv = function_exists('grr_fin_page') ? 'grr_fin_page' : static function (string $message): never { exit($message); };
+	$grrFinIconv("
 		<p><B>Erreur:</B> Le module iconv, qui permet le support Unicode par PHP, n'est pas installé le serveur.</p>\n
 		<p>Pour éviter cette erreur, suivez une des deux possibilités ci-dessous :</p>
 		<UL>
@@ -533,6 +607,17 @@ function get_vocab($tag)
 {
 	global $vocab, $charset_html, $unicode_encoding;
 
+	// Sous Symfony : le traducteur (Devome\Grr\Service\Translation\GrrTranslator) fait tout le travail —
+	// langue de l'utilisateur, variables, textes personnalisés. get_vocab() n'est plus qu'un raccourci
+	// conservé pour le code de include/ et de l'administration.
+	$translator = $GLOBALS['grr_symfony_translator'] ?? null;
+	if ($translator instanceof \Symfony\Contracts\Translation\TranslatorInterface) {
+		$translation = $translator->trans((string) $tag);
+
+		return $translation !== (string) $tag ? $translation : "(".$tag.")";
+	}
+
+	// Hors Symfony (administration, installation, cron) : vocabulaire chargé depuis les mêmes catalogues YAML
 	if (class_exists('Hook') && method_exists('Hook', 'Appel')) {
 		$vocabModule = Hook::Appel("vocab");
 		if (isset($vocabModule["vocab"]) && is_array($vocabModule["vocab"])) {
@@ -540,51 +625,59 @@ function get_vocab($tag)
 		}
 	}
 
-	if (!isset($vocab[$tag]))
-		return "(".$tag.")";
-    else {
-		if ($unicode_encoding)
-		{
-			if(Settings::get("trad_".$tag) != "")
-				return Settings::get("trad_".$tag);
-            else
-				return iconv($charset_html,"utf-8",$vocab[$tag]);
-		}
-		else
-		{
-			if(Settings::get("trad_".$tag) != "")
-				return Settings::get("trad_".$tag);
-            else
-				return $vocab[$tag];
+	if (isset($vocab[$tag]) && Settings::get("trad_".$tag) != "")
+		return Settings::get("trad_".$tag);
+
+	if (isset($vocab[$tag])) {
+		return $unicode_encoding
+			? iconv($charset_html, "utf-8", $vocab[$tag])
+			: $vocab[$tag];
+	}
+
+	return "(".$tag.")";
+}
+
+/**
+ * Locale des catalogues GRR (translations/messages.<locale>.yaml) à utiliser pour la traduction.
+ * Ordre : locale demandée, langue de la session, langue par défaut du site, puis fr-fr.
+ * Les codes courts (« en », « fr »...) sont convertis vers le catalogue correspondant (en-gb, fr-fr...).
+ */
+function grr_translation_locale(?string $locale): string
+{
+	static $catalogues = null;
+	if ($catalogues === null) {
+		$catalogues = [];
+		foreach (glob(dirname(__DIR__).'/translations/messages.*.yaml') ?: [] as $file) {
+			if (preg_match('/^messages\.([a-z]{2}-[a-z]{2})\.yaml$/D', basename($file), $m) === 1)
+				$catalogues[] = $m[1];
 		}
 	}
+
+	$candidats = [$locale, $_SESSION['default_language'] ?? null];
+	if (class_exists('Settings'))
+		$candidats[] = Settings::get('default_language');
+
+	foreach ($candidats as $candidat) {
+		if (!is_string($candidat) || $candidat === '')
+			continue;
+		$candidat = strtolower(str_replace('_', '-', $candidat));
+		if (in_array($candidat, $catalogues, true))
+			return $candidat;
+		// Code court ou variante régionale inconnue : premier catalogue de la même langue
+		$langue = substr($candidat, 0, 2);
+		foreach ($catalogues as $catalogue) {
+			if (str_starts_with($catalogue, $langue.'-'))
+				return $catalogue;
+		}
+	}
+
+	return 'fr-fr';
 }
 
 function get_vocab_admin($tag)
 {
-	global $vocab, $charset_html, $unicode_encoding, $trad;
-
-	if (class_exists('Hook') && method_exists('Hook', 'Appel')) {
-		$vocabModule = Hook::Appel("vocab");
-		if (isset($vocabModule["vocab"]) && is_array($vocabModule["vocab"])) {
-			$vocab = array_merge($vocab, $vocabModule["vocab"]);
-		}
-	}
-
-	if (!isset($vocab[$tag])) {
-		$trad[$tag] = "(".$tag.")";
-	} 
-    else {
-        if(Settings::get("trad_".$tag) != ""){
-            $trad[$tag] = Settings::get("trad_".$tag);
-			}
-        else {
-            if ($unicode_encoding)
-                $trad[$tag] = iconv($charset_html,"utf-8",$vocab[$tag]);
-            else
-                $trad[$tag] = $vocab[$tag];
-        }
-	}
+	global $trad;
+	$trad[$tag] = get_vocab($tag);
 }
 
 if (isset($_SESSION['type_month_all']))

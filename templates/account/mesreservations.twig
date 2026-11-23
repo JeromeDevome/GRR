@@ -1,0 +1,73 @@
+{% extends '@account/layout.twig' %}
+
+{% import '@account/messagesysteme.twig' as msgSyst %}
+{% import '@account/champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+
+<div>
+
+	<p>{{ 'resa_menu_explain'|trans }}</p>
+
+	<form class="form-inline" action="./account?pc=mesreservations" method="POST">
+		<label class="radio-inline"><input type="radio" name="choix" value="0" {% if d.choix == 0 %}checked{% endif %} />{{ 'resas_toutes'|trans }}</label>
+		<label class="radio-inline"><input type="radio" name="choix" value="1" {% if d.choix == 1 %}checked{% endif %} />{{ 'resas_a_venir'|trans }}</label>
+		<input class="btn btn-default" type="submit" value="{{ 'goto'|trans }}" />
+	</form>
+
+	<table class="table-bordered table-condensed">
+		<thead>
+			<th class="col">{{ 'start_date'|trans }}</th>
+			<th class="col">{{ 'time'|trans }}</th>
+			<th class="col">{{ 'duration'|trans }}</th>
+			<th class="col">{{ 'match_area'|trans }}</th>
+			<th class="col">{{ 'room'|trans }}</th>
+			<th class="col">{{ 'sum_by_descrip'|trans }}</th>
+			<th class="col">{{ 'fulldescription'|trans }}</th>
+			<th class="col">{{ 'type'|trans }}</th>
+			<th class="col">{{ 'lastupdate'|trans }}</th>
+			<th class="col">{{ 'statut'|trans }}</th>
+		</thead>
+		<tbody>
+		{% for resa in reservations %}
+			<tr style="color:{{resa.couleur}};{%if resa.supprimer == 1 %}background-color:#FF91A0;{%endif%}">
+				<td class="col">{{ resa.datedebut }}</td>
+				<td class="col">{{ resa.heuredebut }}</td>
+				<td class="col">{{ resa.duree }}</td>
+				<td class="col" {% if resa.domainedesc %}title="{{ resa.domainedesc }}"{% endif %}>{{ resa.domaine }}</td>
+				<td class="col">{{ resa.ressource }}</td>
+				<td class="col">{{ resa.descriptionc | raw }}</td>
+				<td class="col">{{ resa.descriptionl }}</td>
+				<td class="col">{{ resa.type }}</td>
+				<td class="col">{{ resa.datemaj }}</td>
+				<td class="col">{%if resa.supprimer == 1 %}<i class="fa fa-trash"></i>{%endif%}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+		<footer>
+			<tr>
+				<td colspan="9">
+					<p class="center">
+						{% if d.nbResultat == 1 %}
+							{{ d.nbResultat }} {{ 'entry_found'|trans }}
+						{% elseif d.nbResultat > 1 %}
+							{{ d.nbResultat }} {{ 'entries_found'|trans }}
+						{% else %}
+							{{ 'nothing_found'|trans }}
+						{% endif %}
+					</p>
+				</td>
+			</tr>
+		</footer>
+	</table>
+
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

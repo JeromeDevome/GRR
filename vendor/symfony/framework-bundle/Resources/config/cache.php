@@ -28,6 +28,7 @@ use Symfony\Component\Cache\Marshaller\DefaultMarshaller;
 use Symfony\Component\Cache\Messenger\EarlyExpirationHandler;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\NamespacedPoolInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 return static function (ContainerConfigurator $container) {
@@ -52,11 +53,6 @@ return static function (ContainerConfigurator $container) {
             ->tag('cache.pool')
 
         ->set('cache.serializer')
-            ->parent('cache.system')
-            ->private()
-            ->tag('cache.pool')
-
-        ->set('cache.annotations')
             ->parent('cache.system')
             ->private()
             ->tag('cache.pool')
@@ -146,6 +142,16 @@ return static function (ContainerConfigurator $container) {
             ])
             ->tag('monolog.logger', ['channel' => 'cache'])
 
+        ->set('cache.adapter.valkey')
+            ->parent('cache.adapter.redis')
+            ->abstract()
+            ->tag('cache.pool', [
+                'provider' => 'cache.default_valkey_provider',
+                'clearer' => 'cache.default_clearer',
+                'reset' => 'reset',
+            ])
+            ->tag('monolog.logger', ['channel' => 'cache'])
+
         ->set('cache.adapter.redis_tag_aware', RedisTagAwareAdapter::class)
             ->abstract()
             ->args([
@@ -157,6 +163,16 @@ return static function (ContainerConfigurator $container) {
             ->call('setLogger', [service('logger')->ignoreOnInvalid()])
             ->tag('cache.pool', [
                 'provider' => 'cache.default_redis_provider',
+                'clearer' => 'cache.default_clearer',
+                'reset' => 'reset',
+            ])
+            ->tag('monolog.logger', ['channel' => 'cache'])
+
+        ->set('cache.adapter.valkey_tag_aware')
+            ->parent('cache.adapter.redis_tag_aware')
+            ->abstract()
+            ->tag('cache.pool', [
+                'provider' => 'cache.default_valkey_provider',
                 'clearer' => 'cache.default_clearer',
                 'reset' => 'reset',
             ])
@@ -252,6 +268,8 @@ return static function (ContainerConfigurator $container) {
         ->alias(CacheItemPoolInterface::class, 'cache.app')
 
         ->alias(CacheInterface::class, 'cache.app')
+
+        ->alias(NamespacedPoolInterface::class, 'cache.app')
 
         ->alias(TagAwareCacheInterface::class, 'cache.app.taggable')
     ;

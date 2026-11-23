@@ -19,7 +19,7 @@ if (version_compare(phpversion('relay'), '0.61.0', '>=')) {
     {
         public function reconnect(): bool
         {
-            return ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->reconnect(...\func_get_args());
+            return $this->initializeLazyObject()->reconnect(...\func_get_args());
         }
     }
 } else {

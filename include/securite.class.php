@@ -324,7 +324,7 @@ class SecuAccess {
         if (SecuAccess::UserLevel(getUserName(), -1, 'area') < $level)
         {
             showAccessDenied($back);
-            exit();
+            grr_fin_page();
         }
     }
 

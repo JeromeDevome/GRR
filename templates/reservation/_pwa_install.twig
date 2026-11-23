@@ -1,0 +1,26 @@
+<div id="grr-install-banner" class="grr-install-banner" hidden aria-live="polite">
+	<div class="grr-install-banner__copy">
+		<strong>{{ 'pwa_install_title'|trans }}</strong>
+		<p>{{ 'pwa_install_description'|trans }}</p>
+	</div>
+	<div class="grr-install-banner__actions">
+		<button type="button" class="grr-install-button" data-pwa-install>{{ 'pwa_install_button'|trans }}</button>
+		<button type="button" class="grr-install-later" data-pwa-later>{{ 'pwa_install_later'|trans }}</button>
+	</div>
+</div>
+
+<dialog id="grr-install-help" class="grr-install-dialog" aria-labelledby="grr-install-help-title">
+	<button type="button" class="grr-install-dialog__close" data-pwa-close aria-label="{{ 'pwa_install_close'|trans }}">&times;</button>
+	<h2 id="grr-install-help-title">{{ 'pwa_install_instructions'|trans }}</h2>
+	<section>
+		<h3>{{ 'pwa_install_windows_title'|trans }}</h3>
+		<p>{{ 'pwa_install_windows_steps'|trans }}</p>
+	</section>
+	<section>
+		<h3>{{ 'pwa_install_android_title'|trans }}</h3>
+		<p>{{ 'pwa_install_android_steps'|trans }}</p>
+	</section>
+	<button type="button" class="grr-install-button" data-pwa-close>{{ 'pwa_install_close'|trans }}</button>
+</dialog>
+
+<script defer src="./jslib/_grr/pwa-install.js"></script>

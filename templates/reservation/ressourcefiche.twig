@@ -1,0 +1,61 @@
+{% extends 'layoutsimple.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+		<div id="container">
+
+			<h3 style="text-align:center;">{{'room'|trans}}{{'deux_points'|trans}} {{ressource.room_name}}</h3>
+			<h3 style="text-align:center;">({{d.area_name}} {% if d.area_access == "r" %} - {{'access'|trans}}{% endif %})</h3>
+
+			{% if ressource.statut_room == 0 %}
+				<h2 style="text-align:center;"><span class="avertissement">{{'ressource_temporairement_indisponible'|trans}}</span></h2>
+			{% endif %}
+
+			{% if d.visuDescription == 1 %}
+				<h3>{{'description'|trans}}</h3>
+				<p>{{ressource.description}}</p>
+			{% endif %}
+
+			{% if d.visuDescriptionComplete == 1 %}
+				<h3>{{'match_descr'|trans}}</h3>
+				<p>{{ressource.comment_room | raw}}</p>
+			{% endif %}
+
+			{% if ressource.capacity > 0 %}
+				<h3>{{'capacity_2'|trans}} {{ressource.capacity}}</h3>
+			{% endif %}
+
+			{% if ressource.max_booking != -1 %}
+				<p>{{'msg_max_booking'|trans}}{{'deux_points'|trans}} {{ressource.max_booking}}</p>
+			{% endif %}
+
+			{% if d.max_booking_per_area >= 0 %}
+				<p>{{'msg_max_booking_area'|trans}}{{'deux_points'|trans}} {{d.max_booking_per_area}}</p>
+			{% endif %}
+
+			{% if ressource.delais_max_resa_room != -1 %}
+				<p>{{'delais_max_resa_room_2'|trans | raw}} <b>{{ressource.delais_max_resa_room}}</b></p>
+			{% endif %}
+
+			{% if ressource.delais_min_resa_room != 0 %}
+				<p>{{'delais_min_resa_room_2'|trans | raw}} <b>{{ressource.delais_min_resa_room}}</b></p>
+			{% endif %}
+
+			<div style="text-align:center; margin-top:30px">
+					{% if d.lienImage %}
+						<b>{{'Image_de_la_ressource'|trans}}{{'deux_points'|trans}}</b><br>
+						<img src="{{d.lienImage}}" alt="Image Ressource" />
+					{% else %}
+						<b>{{'Pas_image_disponible'|trans}}</b>
+					{% endif %}
+			</div>
+		</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

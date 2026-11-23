@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>GRR Admin - {{ settings.company }}</title>
+  <title>GRR Admin - {{ settings.company|raw }}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -80,7 +80,7 @@ Font Awesome -->
     <!-- Brand Logo -->
     <a href="admin.php?p=admin_accueil" class="brand-link">
       <span class="brand-text font-weight-light">GRR - Administration</span><br>
-      <h6 class="text-muted">{{settings.company}}</h6>
+      <h6 class="text-muted">{{settings.company|raw}}</h6>
     </a>
     <section class="sidebar">
 	 <nav class="mt-2">
@@ -206,7 +206,7 @@ Font Awesome -->
 /*  $.widget.bridge('uibutton', $.ui.button)*/
 </script>
 <script src="../jslib/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../js/adminlte.min.js"></script>
+<script src="../jslib/_grr/adminlte.min.js"></script>
 <script src="../jslib/summernote/summernote-lite.min.js"></script>
 <script src="../jslib/toastr/toastr.min.js"></script>
 <script src="../jslib/jquery-validation/jquery.validate.min.js"></script>

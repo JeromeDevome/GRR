@@ -11,4 +11,6 @@ $dbUser="grr";
 $dbPass="grr";
 # ligne suivante : Port MySQL laiss� par d�faut
 $dbPort="3306";
+# ligne suivante : secret Symfony (APP_SECRET), a generer : php -r "echo bin2hex(random_bytes(32));"
+$appSecret="";
 ?>

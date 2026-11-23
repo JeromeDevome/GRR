@@ -24,12 +24,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class ProfilerPass implements CompilerPassInterface
 {
-    /**
-     * @return void
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
-        if (false === $container->hasDefinition('profiler')) {
+        if (!$container->hasDefinition('profiler')) {
             return;
         }
 

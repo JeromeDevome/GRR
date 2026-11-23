@@ -459,7 +459,7 @@ else
 				if ((Settings::get("Url_cacher_page_login") != "") && ((!isset($sso_super_admin)) || ($sso_super_admin == false)))
 					header("Location: ".Settings::get("Url_cacher_page_login"));
 				else
-					header("Location: ./app.php?p=login");
+					header("Location: ./login");
 			}
 		}
 		else
@@ -467,7 +467,7 @@ else
 			if ((Settings::get("Url_cacher_page_login") != "") && ((!isset($sso_super_admin)) || ($sso_super_admin == false)))
 				header("Location: ".Settings::get("Url_cacher_page_login"));
 			else
-				header("Location: ./app.php?p=login");
+				header("Location: ./login");
 		}
 	}
 	else

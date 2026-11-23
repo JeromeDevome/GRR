@@ -57,11 +57,11 @@ function mrbsCheckFree($room_id, $starttime, $endtime, $ignore, $repignore, $lin
 		$starts = getdate($row[2]);
 		$param_ym = "area=$area&amp;year=$starts[year]&amp;month=$starts[mon]";
 		$param_ymd = $param_ym . "&amp;day=$starts[mday]";
-		$err .= "<li><a href=\"".$link."app.php?p=vuereservation&id=$row[0]\">".htmlspecialchars($row[1])."</a>"
+		$err .= "<li><a href=\"".$link."vuereservation?id=$row[0]\">".htmlspecialchars($row[1])."</a>"
 		. " ( " . utf8_strftime('%A %d %B %Y %T', $row[2]) . ") "
-		. "(<a href=\"".$link."app.php?p=jour&amp;$param_ymd\">".get_vocab("viewday")."</a>"
-			. " | <a href=\"".$link."app.php?p=semaine&amp;room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
-			. " | <a href=\"".$link."app.php?p=mois&amp;room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
+		. "(<a href=\"".$link."jour?$param_ymd\">".get_vocab("viewday")."</a>"
+			. " | <a href=\"".$link."semaine?room=$room_id&amp;$param_ymd\">".get_vocab("viewweek")."</a>"
+			. " | <a href=\"".$link."mois?room=$room_id&amp;$param_ym\">".get_vocab("viewmonth")."</a>)</li>\n";
 	}
 	return $err;
 }
@@ -808,12 +808,10 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 	$sanitizedId = filter_var($_id, FILTER_VALIDATE_INT, array('options' => array('min_range' => 1)));
 	if ($sanitizedId === false) {
 		fatal_error(0,"Opération interdite 1");
-		exit();
 	}
 	$_id = (int)$sanitizedId;
 	if (!in_array($_moderate, array(1, 0, "S1", "S0", "1", "0"), true)) {
 		fatal_error(0,"Opération interdite 2");
-		exit();
 	}
 
 	// On vérifie que l'utilisateur a bien le droit d'être ici
@@ -821,7 +819,6 @@ function moderate_entry_do($_id,$_moderate,$_description,$send_mail="yes")
 	if (SecuAccess::UserLevel(getUserName(),$room_id) < 3)
 	{
 		fatal_error(0,"Opération interdite 3");
-		exit();
 	}
 	// j'ai besoin de $repeat_id '
 	$sql = "SELECT repeat_id FROM ".TABLE_PREFIX."_entry WHERE id =".$_id;

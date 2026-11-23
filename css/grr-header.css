@@ -1,0 +1,565 @@
+/*
+ * Bandeau GRR (templates/reservation/_header.twig).
+ * Les couleurs suivent les variables des thèmes : --header-bgcolor, --header-text, --header-hover,
+ * --btn-primary-bgcolor / --btn-primary-color (valeurs par défaut pour le thème « default »).
+ */
+.grr-header {
+    --grr-h-bg: var(--header-bgcolor, #fff);
+    --grr-h-text: var(--header-text, #1f2933);
+    --grr-h-accent: var(--btn-primary-bgcolor, #1f5f8b);
+    --grr-h-accent-text: var(--btn-primary-color, #fff);
+    --grr-h-soft: rgba(127, 127, 127, .12);
+    --grr-h-border: rgba(127, 127, 127, .28);
+
+    position: relative;
+    width: 100%;
+    background: var(--grr-h-bg);
+    color: var(--grr-h-text);
+    border-bottom: 1px solid var(--grr-h-border);
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.grr-header a,
+.grr-header a:visited {
+    color: inherit;
+    background: transparent;
+    text-decoration: none;
+}
+
+.grr-header__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.grr-header__panel {
+    display: block;
+    padding: 10px 20px;
+}
+
+.grr-header__bar {
+    display: flex;
+    align-items: center;
+    gap: 16px 24px;
+}
+
+.grr-header.is-collapsed .grr-header__panel {
+    display: none;
+}
+
+/* ---- Marque : logo, nom, message ---- */
+.grr-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 0 1 auto;
+}
+
+.grr-header__logo img {
+    display: block;
+    max-height: 64px;
+    max-width: 180px;
+    width: auto;
+}
+
+.grr-header__title {
+    min-width: 0;
+}
+
+.grr-header__company {
+    display: block;
+    font-size: 1.45em;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.grr-header__message {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--grr-h-border);
+    font-size: .92em;
+    opacity: .85;
+}
+
+.grr-header__message p {
+    margin: 0;
+}
+
+.grr-header__menu-toggle {
+    display: none;
+}
+
+/* ---- Liens ---- */
+.grr-header__nav {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px 20px;
+}
+
+.grr-header__group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.grr-header__link,
+.grr-header__auth a,
+.grr-header__custom a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color .15s, color .15s;
+}
+
+.grr-header__link i,
+.grr-header__btn i {
+    width: 1.1em;
+    text-align: center;
+    opacity: .8;
+}
+
+.grr-header__link:hover,
+.grr-header__link:focus-visible,
+.grr-header__auth a:hover,
+.grr-header__auth a:focus-visible,
+.grr-header__custom a:hover,
+.grr-header__custom a:focus-visible {
+    background: var(--grr-h-soft);
+    color: var(--header-hover, var(--grr-h-accent));
+}
+
+.grr-header a:focus-visible,
+.grr-header button:focus-visible {
+    outline: 2px solid var(--grr-h-accent);
+    outline-offset: 2px;
+}
+
+/* Bouton « Réserver » */
+.grr-header .grr-header__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: var(--grr-h-accent);
+    color: var(--grr-h-accent-text);
+    font-weight: 600;
+}
+
+.grr-header .grr-header__btn:hover,
+.grr-header .grr-header__btn:focus-visible {
+    filter: brightness(1.1);
+    color: var(--grr-h-accent-text);
+}
+
+/* Réservations à modérer */
+.grr-header .grr-header__link--alert {
+    background: #fff3cd;
+    color: #7a4b00;
+}
+
+.grr-header .grr-header__link--alert:hover {
+    background: #ffe69c;
+    color: #5c3800;
+}
+
+/* Liens HTML fournis par PHP / modules (connexion, liens perso) :
+   font-size 0 masque les séparateurs texte (« - », espaces) entre les liens */
+.grr-header__auth,
+.grr-header__custom {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    font-size: 0;
+}
+
+.grr-header__auth > *,
+.grr-header__custom > * {
+    font-size: 14px;
+}
+
+.grr-header__auth br,
+.grr-header__custom br,
+.grr-dropdown__raw br {
+    display: none;
+}
+
+.grr-header__auth--login a {
+    border: 1px solid var(--grr-h-accent);
+}
+
+/* ---- Menus déroulants (compte, langues) ---- */
+.grr-dropdown {
+    position: relative;
+}
+
+.grr-header .grr-dropdown__toggle {
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.grr-dropdown__caret {
+    font-size: .7em;
+    opacity: .6;
+    transition: transform .15s;
+}
+
+.grr-dropdown.is-open .grr-dropdown__caret {
+    transform: rotate(180deg);
+}
+
+.grr-dropdown.is-open > .grr-dropdown__toggle {
+    background: var(--grr-h-soft);
+}
+
+.grr-dropdown__menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 1000;
+    min-width: 210px;
+    padding: 6px;
+    border: 1px solid var(--grr-h-border);
+    border-radius: 8px;
+    background: var(--grr-h-bg);
+    color: var(--grr-h-text);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .14);
+}
+
+.grr-dropdown--end .grr-dropdown__menu,
+.grr-header__account-menu .grr-dropdown__menu {
+    left: auto;
+    right: 0;
+}
+
+.grr-dropdown.is-open .grr-dropdown__menu {
+    display: block;
+}
+
+.grr-header .grr-dropdown__item,
+.grr-header .grr-dropdown__raw a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 36px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.grr-header .grr-dropdown__item:hover,
+.grr-header .grr-dropdown__item:focus-visible,
+.grr-header .grr-dropdown__raw a:hover,
+.grr-header .grr-dropdown__raw a:focus-visible {
+    background: var(--grr-h-soft);
+    color: var(--header-hover, var(--grr-h-accent));
+}
+
+.grr-dropdown__item i {
+    width: 1.1em;
+    text-align: center;
+    opacity: .75;
+}
+
+.grr-dropdown__item.is-current {
+    font-weight: 700;
+}
+
+.grr-dropdown__check {
+    margin-left: auto;
+    color: var(--grr-h-accent);
+}
+
+.grr-dropdown__separator {
+    height: 1px;
+    margin: 6px 4px;
+    background: var(--grr-h-border);
+}
+
+/* Déconnexion (HTML fourni par PHP) : icône ajoutée en CSS, rouge au survol */
+.grr-dropdown__raw {
+    font-size: 0;
+}
+
+.grr-dropdown__raw > * {
+    font-size: 14px;
+}
+
+.grr-header .grr-dropdown__raw--logout a::before {
+    content: "\f2f5";
+    font-family: "Font Awesome 7 Free", "Font Awesome 6 Free", "Font Awesome 5 Free";
+    font-weight: 900;
+    width: 1.1em;
+    text-align: center;
+    opacity: .75;
+}
+
+.grr-header .grr-dropdown__raw--logout a:hover,
+.grr-header .grr-dropdown__raw--logout a:focus-visible {
+    background: rgba(217, 45, 32, .12);
+    color: #d92d20;
+}
+
+/* Bouton du compte */
+.grr-header__account-icon {
+    font-size: 1.35em;
+}
+
+.grr-header__account-name {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Horloge et langues */
+.grr-header__group--meta {
+    gap: 10px;
+    font-size: .9em;
+}
+
+.grr-header__clock {
+    white-space: nowrap;
+    opacity: .8;
+}
+
+.grr-header__languages img {
+    display: block;
+    flex: 0 0 auto;
+}
+
+.grr-header__language-code {
+    font-size: .9em;
+}
+
+/* ---- Bouton masquer / afficher le bandeau ----
+   Même onglet centré sous le bandeau dans les deux états, icône seule (libellé en infobulle). */
+.grr-header__collapse {
+    position: absolute;
+    left: 50%;
+    bottom: -26px;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 26px;
+    margin-left: -22px;
+    padding: 0;
+    border: 1px solid var(--grr-h-border);
+    border-top: 0;
+    border-radius: 0 0 10px 10px;
+    background: var(--grr-h-bg);
+    color: var(--grr-h-text);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
+    transition: background-color .15s, color .15s;
+}
+
+.grr-header__collapse:hover,
+.grr-header__collapse:focus-visible {
+    background: var(--grr-h-accent);
+    border-color: var(--grr-h-accent);
+    color: var(--grr-h-accent-text);
+}
+
+.grr-header__collapse i {
+    transition: transform .2s;
+}
+
+/* Bandeau plié : un simple filet, l'onglet passe aux couleurs du thème pour rester bien visible */
+.grr-header.is-collapsed {
+    min-height: 4px;
+    border-bottom-width: 4px;
+    border-bottom-color: var(--grr-h-accent);
+}
+
+.grr-header.is-collapsed .grr-header__collapse {
+    bottom: -30px;
+    height: 30px;
+    border-color: var(--grr-h-accent);
+    background: var(--grr-h-accent);
+    color: var(--grr-h-accent-text);
+}
+
+.grr-header.is-collapsed .grr-header__collapse:hover {
+    filter: brightness(1.1);
+}
+
+.grr-header.is-collapsed .grr-header__collapse i {
+    transform: rotate(180deg);
+}
+
+/* ---- Tablette : liens sous la marque ---- */
+@media (max-width: 1100px) {
+    .grr-header__bar {
+        flex-wrap: wrap;
+    }
+
+    .grr-header__nav {
+        justify-content: flex-start;
+        flex-basis: 100%;
+    }
+}
+
+/* ---- Mobile : marque compacte + menu déroulant ---- */
+@media (max-width: 768px) {
+    .grr-header__panel {
+        padding: 8px 12px;
+    }
+
+    .grr-header__bar {
+        gap: 8px;
+    }
+
+    .grr-header__brand {
+        flex: 1 1 100%;
+    }
+
+    .grr-header__logo img {
+        max-height: 40px;
+        max-width: 96px;
+    }
+
+    .grr-header__title {
+        flex: 1 1 auto;
+    }
+
+    .grr-header__company {
+        font-size: 1.15em;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .grr-header__message {
+        font-size: .85em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .grr-header__menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--grr-h-border);
+        border-radius: 8px;
+        background: transparent;
+        color: inherit;
+        font-size: 18px;
+    }
+
+    .grr-header__nav {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding-top: 6px;
+        border-top: 1px solid var(--grr-h-border);
+    }
+
+    .grr-header__nav.is-open {
+        display: flex;
+    }
+
+    .grr-header__group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+        padding: 6px 0;
+    }
+
+    .grr-header__group + .grr-header__group {
+        border-top: 1px solid var(--grr-h-border);
+    }
+
+    .grr-header__link,
+    .grr-header .grr-header__btn,
+    .grr-header__auth a,
+    .grr-header__custom a {
+        min-height: 44px;
+        width: 100%;
+        padding: 8px 10px;
+    }
+
+    .grr-header__auth,
+    .grr-header__custom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .grr-header__group--meta {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 10px;
+    }
+
+    /* Menus déroulants : dépliés dans le flux (accordéon) */
+    .grr-dropdown {
+        width: 100%;
+    }
+
+    .grr-header__group--meta .grr-dropdown {
+        width: auto;
+    }
+
+    .grr-header .grr-dropdown__toggle {
+        justify-content: flex-start;
+    }
+
+    .grr-header__account-menu .grr-dropdown__caret {
+        margin-left: auto;
+    }
+
+    .grr-header__account-menu .grr-dropdown__menu {
+        position: static;
+        min-width: 0;
+        margin: 2px 0 4px 26px;
+        border: 0;
+        border-left: 2px solid var(--grr-h-border);
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .grr-header .grr-dropdown__item,
+    .grr-header .grr-dropdown__raw a {
+        min-height: 44px;
+    }
+}
+
+@media print {
+    .grr-header {
+        display: none;
+    }
+}

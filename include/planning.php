@@ -31,7 +31,7 @@ if ((Settings::get("authentification_obli") == 0) && (getUserName() == ''))
 else
 	$type_session = "with_session";
 
-if (!($desactive_VerifNomPrenomUser))
+if (!isset($desactive_VerifNomPrenomUser) || !($desactive_VerifNomPrenomUser))
     $desactive_VerifNomPrenomUser = 'n';
 
 if ((!isset($d['pview'])) || ($d['pview'] != 1))
@@ -44,8 +44,7 @@ if ((!isset($d['pview'])) || ($d['pview'] != 1))
 if ((Settings::get("authentification_obli") == 1) && (getUserName() == ''))
 {
 	$url = rawurlencode($_GET['url']);
-	header("Location: app.php?p=login&url=".$url);
-	exit;
+	grr_redirection("login?url=".$url);
 }
 
 // initialisation des paramètres de temps
@@ -72,8 +71,7 @@ if($test == -1) // $room ne définit pas une ressource
     $lien = page_accueil();
     $d['messageErreur'] = '<h1>'.get_vocab('ressource_ou_domaine_non_defini').'</h1>';
     $d['messageErreur'] .= '<a href="'.$lien.'">'.get_vocab('Portail_accueil').'</a>';
-    echo $twig->render('planningerreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
-	exit();
+    grr_fin_page($twig->render('planningerreur.twig', array('d' => $d, 'settings' => $AllSettings)));
   }
 }
 //Récupération des données concernant l'affichage du planning du domaine, $enable_periods
@@ -194,16 +192,14 @@ if ($area <= 0)
 {
     $d['messageErreur'] = '<h1>'.get_vocab("noareas").'</h1>';
     $d['messageErreur'] .= '<a href="./admin/admin_accueil.php">'.get_vocab("admin").'</a>';
-    echo $twig->render('planningerreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
-	exit();
+    grr_fin_page($twig->render('planningerreur.twig', array('d' => $d, 'settings' => $AllSettings)));
 }
 
 // vérifie si la date est dans la période réservable
 if (check_begin_end_bookings($day, $month, $year))
 {
     $d['messageErreur'] = showNoBookings_twig($day, $month, $year, $back);
-    echo $twig->render('planningerreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
-	exit();
+    grr_fin_page($twig->render('planningerreur.twig', array('d' => $d, 'settings' => $AllSettings)));
 }
 
 $user_name = getUserName();
@@ -214,7 +210,6 @@ $UserLevel = SecuAccess::UserLevel($user_name, -1);
 if ((($UserLevel < 1) && (Settings::get("authentification_obli") == 1)) || SecuAccess::UserArea($user_name, $area) == 0)
 {
 	$d['messageErreur'] = showAccessDenied_twig($back);
-  echo $twig->render('planningerreur.twig', array('trad' => $trad, 'd' => $d, 'settings' => $AllSettings));
-	exit();
+  grr_fin_page($twig->render('planningerreur.twig', array('d' => $d, 'settings' => $AllSettings)));
 }
 ?>

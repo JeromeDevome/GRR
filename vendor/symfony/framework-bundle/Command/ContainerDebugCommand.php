@@ -106,6 +106,9 @@ class ContainerDebugCommand extends Command
 
                   <info>php %command.full_name% --show-hidden</info>
 
+                The <info>--format</info> option specifies the format of the command output:
+
+                  <info>php %command.full_name% --format=json</info>
                 EOF
             )
         ;
@@ -148,6 +151,10 @@ class ContainerDebugCommand extends Command
             $tag = $this->findProperTagName($input, $errorIo, $object, $tag);
             $options = ['tag' => $tag];
         } elseif ($name = $input->getArgument('name')) {
+            if ($input->getOption('show-arguments')) {
+                $errorIo->warning('The "--show-arguments" option is deprecated, as arguments are now always shown.');
+            }
+
             $name = $this->findProperServiceName($input, $errorIo, $object, $name, $input->getOption('show-hidden'));
             $options = ['id' => $name];
         } elseif ($input->getOption('deprecations')) {
@@ -158,7 +165,6 @@ class ContainerDebugCommand extends Command
 
         $helper = new DescriptorHelper();
         $options['format'] = $input->getOption('format');
-        $options['show_arguments'] = $input->getOption('show-arguments');
         $options['show_hidden'] = $input->getOption('show-hidden');
         $options['raw_text'] = $input->getOption('raw');
         $options['output'] = $io;
@@ -362,6 +368,7 @@ class ContainerDebugCommand extends Command
         return class_exists($serviceId) || interface_exists($serviceId, false);
     }
 
+    /** @return string[] */
     private function getAvailableFormatOptions(): array
     {
         return (new DescriptorHelper())->getFormats();

@@ -21,6 +21,9 @@ else
 	$GLOBALS['db_c'] = mysqli_connect($dbHost, $dbUser, $dbPass, $dbDb, $dbPort);
 if (!$GLOBALS['db_c'] || !mysqli_select_db ($GLOBALS['db_c'], $dbDb))
 {
+	// Sous Symfony : une vraie erreur (page d'erreur) plutôt qu'un arrêt du script
+	if (!empty($GLOBALS['grr_symfony']))
+		throw new \RuntimeException('GRR : connexion à la base de données impossible.');
 	echo "\n<p>Database connection failure</p>\n";
 	exit;
 }
@@ -44,32 +47,58 @@ function grr_sql_free($r)
 	if (is_object($r) && $r instanceof mysqli_result && is_resource($r))
 		mysqli_free_result($r);
 }
+/**
+ * Signale une requête SQL en échec. L'erreur est toujours journalisée ; en mode debug sous Symfony
+ * ($GLOBALS['grr_debug'], posé par GrrApplicationContext), elle lève une exception pour s'afficher
+ * avec la page d'erreur de Symfony au lieu de passer inaperçue (valeur de retour 0 ou -1).
+ */
+function grr_sql_echec($sql, $message = null, ?\Throwable $cause = null)
+{
+	if ($message === null)
+		$message = $cause ? $cause->getMessage() : mysqli_error($GLOBALS['db_c']);
+	error_log('GRR - erreur SQL : '.$message.' -- '.$sql);
+	if (!empty($GLOBALS['grr_debug']))
+		throw new \RuntimeException("Erreur SQL : ".$message."\nRequête : ".$sql, 0, $cause);
+}
+
 /* Execute a non-SELECT SQL command (insert/update/delete).
  * Returns the number of tuples affected if OK (a number >= 0).
  * Returns -1 on error; use grr_sql_error to get the error message.
- * Parameters : 
+ * Parameters :
  * $sql : a prepared SQL command with $types as types and $params as parameters OR a non-prepared SQL command if $types == $params == NULL
 */
 function grr_sql_command($sql, $types=NULL, $params=NULL)
 {
+    $erreur = null;
     try{
         if(($types == NULL)&&($params == NULL)){
             $res = $GLOBALS['db_c']->query($sql);
+            if ($res === false)
+                $erreur = mysqli_error($GLOBALS['db_c']);
             $nb = $GLOBALS['db_c']->affected_rows;
         }
         elseif(($types != NULL)&&($params != NULL)){
             $stmt = $GLOBALS['db_c']->prepare($sql);
-            $stmt->bind_param($types, ...$params);
-            $stmt->execute();
-            $stmt->store_result();
-            $nb = $stmt->affected_rows;
-            $stmt->close();
+            if ($stmt === false)
+                $erreur = mysqli_error($GLOBALS['db_c']);
+            else {
+                $stmt->bind_param($types, ...$params);
+                if (!$stmt->execute())
+                    $erreur = $stmt->error;
+                $stmt->store_result();
+                $nb = $stmt->affected_rows;
+                $stmt->close();
+            }
         }
-        else 
+        else
             return -1;  // pourra être amélioré avec php8.2+ où $types peut être omis
     } catch(mysqli_sql_exception $e) {
-        error_log($e -> getMessage());
         $_SESSION['msg_a_afficher'] = $e -> getMessage();
+        grr_sql_echec($sql, null, $e);
+        return -1;
+    }
+    if ($erreur !== null) {
+        grr_sql_echec($sql, $erreur);
         return -1;
     }
     return $nb;
@@ -80,57 +109,86 @@ function grr_sql_command($sql, $types=NULL, $params=NULL)
  * exactly one value, so error checking is somewhat limited.
  * It also returns -1 if the query returns a single NULL value, such as from
  * a MIN or MAX aggregate function applied over no rows.
- * Parameters : 
+ * Parameters :
  * $sql : a prepared SQL command with $types as types and $params as parameters OR a non-prepared SQL command if $types == $params == NULL
  */
 function grr_sql_query1($sql, $types = NULL, $params = NULL)
 {
+    $erreur = null;
+    $r = -1;
     try{
         if(($types == NULL)&&($params == NULL)){
             $res = mysqli_query($GLOBALS['db_c'], $sql);
+            if ($res === false)
+                $erreur = mysqli_error($GLOBALS['db_c']);
             if(!$res || ($res->num_rows != 1) || ($res->field_count != 1) || (($r = $res->fetch_row()[0]) == ""))
               $r = -1;
             if($res) mysqli_free_result($res);
-            return($r);
         }
         elseif(($types != NULL)&&($params != NULL)){
             $stmt = $GLOBALS['db_c']->prepare($sql);
-            $stmt->bind_param($types, ...$params);
-            $stmt->execute();
-            $res = $stmt->get_result()->fetch_all(MYSQLI_NUM);
-            if((!$res)||(count($res) != 1))
-              $r = -1;
-            else 
-              $r = $res[0][0];
-            $stmt->close();
-            return($r);
+            if ($stmt === false)
+                $erreur = mysqli_error($GLOBALS['db_c']);
+            else {
+                $stmt->bind_param($types, ...$params);
+                if (!$stmt->execute())
+                    $erreur = $stmt->error;
+                else {
+                    $res = $stmt->get_result()->fetch_all(MYSQLI_NUM);
+                    if((!$res)||(count($res) != 1))
+                      $r = -1;
+                    else
+                      $r = $res[0][0];
+                }
+                $stmt->close();
+            }
         }
-    } catch(Exception $e) {
-        error_log($e -> getMessage());
+        else
+            return null;    // comportement historique : aucun retour si un seul de $types / $params est fourni
+    } catch(mysqli_sql_exception $e) {
+        grr_sql_echec($sql, null, $e);
         return -1;
     }
+    if ($erreur !== null) {
+        grr_sql_echec($sql, $erreur);
+        return -1;
+    }
+    return($r);
 }
 /* Execute an SQL query. Returns a database-dependent result handle,
  * which should be passed back to grr_sql_row or grr_sql_row_keyed to get the results.
  * Returns 0 on error; use grr_sql_error to get the error message.
- * Parameters : 
+ * Parameters :
  * $sql : a prepared SQL command with $types as types and $params as parameters OR a non-prepared SQL command if $types == $params == NULL
 */
 function grr_sql_query($sql, $types = NULL, $params = NULL)
 {
+    $erreur = null;
+    $res = null;
     try{
         if(($types == NULL)&&($params == NULL)){
             $res = mysqli_query($GLOBALS['db_c'], $sql);
+            if ($res === false)
+                $erreur = mysqli_error($GLOBALS['db_c']);
         }
         elseif(($types != NULL)&&($params != NULL)){
             $stmt = $GLOBALS['db_c']->prepare($sql);
-            $stmt->bind_param($types, ...$params);
-            $stmt->execute();
-            $res = $stmt->get_result();
-            $stmt->close();
+            if ($stmt === false)
+                $erreur = mysqli_error($GLOBALS['db_c']);
+            else {
+                $stmt->bind_param($types, ...$params);
+                if (!$stmt->execute())
+                    $erreur = $stmt->error;
+                $res = $stmt->get_result();
+                $stmt->close();
+            }
         }
-    } catch(Exception $e) {
-        error_log($e -> getMessage());
+    } catch(mysqli_sql_exception $e) {
+        grr_sql_echec($sql, null, $e);
+        return 0;
+    }
+    if ($erreur !== null) {
+        grr_sql_echec($sql, $erreur);
         return 0;
     }
     return($res);

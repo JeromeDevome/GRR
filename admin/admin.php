@@ -91,7 +91,7 @@ $d['version']		= $version_grr;
 $d['versionCache']	= hash('sha256', $version_grr.Settings::get("tokenpublic"));
 $d['nomAffichage']	= htmlspecialchars($_SESSION['prenom']).' '.htmlspecialchars($_SESSION['nom']);;
 $d['lienRetour']	= "../".page_accueil('yes')."day=".$day."&year=".$year."&month=".$month;
-$d['lienCompte']	= "../compte/compte.php?day=".$day."&year=".$year."&month=".$month;
+$d['lienCompte']	= "../app.php?p=account&pc=moncompte&day=".$day."&year=".$year."&month=".$month;
 $d['nomUtilisateur'] = getUserName();
 
 $AllSettings		= Settings::getAll();

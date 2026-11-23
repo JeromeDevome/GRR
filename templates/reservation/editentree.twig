@@ -1,0 +1,780 @@
+{% extends 'layout.twig' %}
+
+{% import 'messagesysteme.twig' as msgSyst %}
+{% import 'champs.twig' as form %}
+
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="jslib/select2/css/select2.min.css?v={{d.versionCache}}">
+	<link rel="stylesheet" type="text/css" href="jslib/clockpicker/bootstrap-clockpicker.min.css?v={{d.versionCache}}">
+	<link rel="stylesheet" type="text/css" href="jslib/jquery-ui/themes/base/jquery-ui.min.css?v={{d.versionCache}}">
+{% endblock %}
+
+{% block content %}
+
+	{% if d.msgErreur %}
+		<br>{{ msgSyst.messageDanger("", d.msgErreur) }}
+	{% endif %}
+	{% if d.msgOk %}
+		<br>{{ msgSyst.messageSuccess("", d.msgOk) }}
+	{% endif %}
+
+	<h2>{{d.titre}}</h2>
+	{% if settings.form_layout_centered == '1' %}
+        <div class="form-layout-wrapper">
+	{% endif %}
+	{% if d.moderate %}
+		<h3><span class="texte_ress_moderee">{{'reservations_moderees'|trans}}</span></h3>
+	{% endif %}
+
+
+	<form id="main" method="post" action="editentreetrt" enctype="multipart/form-data">
+		<input type="hidden" name="p" value="editentreetrt">
+		<input type="hidden" name="oldRessource" value="{{d.roomid}}">
+		<input type="hidden" name="rep_id"    value="{{d.rep_id}}" />
+		<input type="hidden" name="edit_type" value="{{d.edit_type}}" />
+		<input type="hidden" name="page" value="{{d.page}}" />
+		<input type="hidden" name="room_back" value="{{d.room_back}}" />
+		<input type="hidden" name="page_ret" value="{{d.page_ret}}" />
+		<input type="hidden" name="create_by" value="{{d.create_by}}" />
+		<input type="hidden" name="type_affichage_reser" value="{{d.type_affichage_reser}}" />
+		{% if d.idresa != 0 and d.copier != 1 %}
+			<input type="hidden" name="id" value="{{ d.idresa }}" />
+		{% endif %}
+		<div id="error"></div>
+		
+
+		<div class="row2{% if settings.form_layout_centered == '1' %} form-layout-centered{% endif %}">
+			<!-- Colonne de Gauche : Données de la réservation -->
+			<div class="col col-sm-6 col-xs-12">
+
+				{% if settings.grr_mail_method != "bloque" and d.levelUserRessource >= 3 %}
+					<div class="alert alert-info" role="alert">
+						<input name="envoyer_notif" type="checkbox" value="1" checked> <b>Notifier le bénéficiaire</b>
+					</div>
+				{% endif %}
+
+				<!-- Bénéficiare -->
+				{% if d.flag_qui_peut_reserver_pour %}
+					<div id="choix_beneficiaire" class="row">
+						<div class="col col-sm-9">
+							<div class="input-group">
+								<label for="beneficiaire">{{'reservation_au_nom_de'|trans}}{{ 'deux_points'|trans }}</label>
+								<select style="min-width:200px;" class="form-select" name="beneficiaire" id="beneficiaire" onchange="setdefault('beneficiaire_default','');check_4();">
+									{{d.selectBeneficiare|raw}}
+								</select>
+							</div>
+						</div>
+						<div class="col col-sm-3">
+							<input type="button" id="bnfdef" class="btn btn-primary" value="{{'definir_par_defaut'|trans}}" onclick="setdefault('beneficiaire_default',document.getElementById('main').beneficiaire.options[document.getElementById('main').beneficiaire.options.selectedIndex].value)" />
+						</div>
+					</div>
+
+					<div id="menu4" class="row" {% if d.selectBeneficiaireExt == "" %}style="display:none"{% endif %}>
+						<div class="form-group col-sm-6">
+							<div class="input-group">
+								<div class="input-group-addon"><i class="fa-regular fa-user"></i></div>
+								<input class="form-control" type="text" name="benef_ext_nom" value="{{d.selectBeneficiaireExt}}" placeholder="{{'nom_beneficiaire'|trans}}" required onchange="check_4()">
+							</div>
+						</div>
+
+						{% if settings.automatic_mail == 1 %}
+							<div class="form-group col-sm-6">
+								<div class="input-group">
+									<div class="input-group-addon"><i class="fa-solid fa-envelope"></i></div>
+									<input class="form-control" type="email" name="benef_ext_email" value="{{d.benef_ext_email}}" placeholder="{{'email_beneficiaire'|trans}}">
+								</div>
+							</div>
+						{% endif %}
+					</div>
+
+
+				{% else %}
+					<input type="hidden" name="beneficiaire" value="{{d.gNomUser}}" />
+				{% endif %}
+
+				<label for="name">{{ 'namebooker'|trans }}{% if d.description_breve != 0 %} *{% endif %}{{ 'deux_points'|trans }}</label>
+				<input id="name" class="pleine form-control" name="name" maxlength="80" size="60" autocomplete="on" value="{{d.resaBreveDescription}}" />
+
+				<!-- Description complète -->
+				<div id="div_description_container" style="{% if d.description_complete == 2 %}display:none;{% endif %}">
+					<label for="description">{{ 'fulldescription'|trans }}{% if d.description_complete == 1 %} *{% endif %}{{ 'deux_points'|trans }}</label>
+					<textarea id="description" name="description" class="pleine form-control" rows="4" columns="60" >{{d.resaDescription}}</textarea>
+				</div>
+
+				<!-- Section date & heure-->
+					<!-- Date & Heure de début -->
+					<div class="E form-inline">
+						<label for="start_day" class="form-label" >{{'date'|trans}}{{'deux_points'|trans}}</label>
+					
+							{{ d.selectionDateDebut |raw }}
+							<input type="hidden" id="mydate_start_" disabled>
+							{% if d.enable_periods == 'y' %}
+								<b>{{'period'|trans}}</b>
+								<select name="period">
+									{{d.optionHeureDebut |raw}}
+								</select>
+							{% else %}
+								<!--<b>{{'time'|trans}}</b>-->
+								{{ d.jQuery_TimePickerStart |raw }}
+							{% endif %}
+					</div>
+					<!-- Pour la fin : Si c'est une durée : -->
+					{% if d.type_affichage_reser == 0 %}
+						<div class="E form-inline">
+							<b>{{'duration'|trans}}</b>
+							<div class="form-group">
+								<input class="form-control" id="duree" name="duration" type="number" value="{{ d.duration }}" min="1">
+								<select class="form-control" name="dur_units">
+									{{d.option_unite_temps  |raw}}
+								</select>
+								<b>
+									<input name="all_day" type="checkbox" value="yes" /> {{'all_day'|trans}} 
+									{% if d.enable_periods != 'y' %}
+										( {{d.morningstarts}} H - {{d.af_fin_jour}} ) 
+									{% endif %}
+								</b>
+							</div>
+						</div>
+					<!-- Sinon date et heure de fin -->
+					{% else %}
+						<div class="E form-inline">
+							<label for="end_day" class="form-label">{{'fin_reservation'|trans}}{{'deux_points'|trans}}</label>
+								{{d.selectionDateFin |raw}}
+								<input type="hidden" id="mydate_end_" disabled>
+								{% if d.enable_periods == 'y' %}
+									<b>{{'period'|trans}}</b>
+									<select name="end_period">
+										{{d.optionHeureFin |raw}}
+									</select>
+								{% else %}
+									<!--<b>{{'time'|trans}}</b>-->
+									{{d.jQuery_TimePickerEnd |raw}}
+								{% endif %}
+						</div>
+					{% endif %}
+
+				<!-- Section domaine & ressource(s) -->
+					<div {% if d.nb_domaines == 1 %}style="display:none"{% endif %} class="E form-inline">
+						<label for="areas" class="control-label">{{'match_area'|trans}} {{'deux_points'|trans}}</label>
+
+						<select class="form-control" id="areas" name="areas" onchange="changeRooms(this.form);" >
+							{{d.optionsDomaine |raw}}
+						</select>
+					</div>
+
+					<div class="E form-inline">
+						<label for="rooms[]" class="control-label">{{'rooms'|trans}} {{'deux_points'|trans}}</label>
+						<select class="form-control" id="rooms[]" name="rooms[]" size="{{d.taille_champ_res}}" multiple="multiple">
+							{{d.optionsRessource |raw}}
+						</select>
+						&nbsp; {{'ctrl_click'|trans}}
+					</div>
+
+				<!-- Réservation conditionnelle -->
+					{% if d.resaAconfirmer >= 1 %}
+						<div class="E">
+							<div class="col col-xs-12">
+								<div class="alert alert-danger" role="alert"><b>{{'reservation_a_confirmer_au_plus_tard_le'|trans}}</div>
+									{% if d.resaAconfirmer == 2 %}
+										<select class="form-control" name="option_reservation" size="1">
+											<option value="-1">{{'reservation_confirmee'|trans}}</option>
+											{{d.optionsResaAconfirmer |raw}}
+										</select>
+									{% elseif d.resaAconfirmer == 3 %}
+										<input type="hidden" name="option_reservation" value="{{d.option_reservation}}" /><b>{{d.resaAconfirmerDate}}</b>
+										<br><input type="checkbox" name="confirm_reservation" value="y" />{{'confirmer_reservation'|trans}}
+									{% endif %}
+								<br><div class="alert alert-danger" role="alert">{{'avertissement_reservation_a_confirmer'|trans}}</b></div>
+							</div>
+						</div>
+					{% endif %}
+
+				<!-- Section type resa -->
+				<div class="E form-inline">
+					<div id="div_types"></div>
+				</div>
+					
+				<!-- Participants -->
+					{% if d.active_participant > 0 %}
+						<div class="E">
+							<label>{{'nb_participant_max'|trans}}{{'deux_points'|trans}}
+							<input name="nbparticipantmax" type="number" value="{{d.nbparticipantmax}}" ></label> {{'nb_participant_zero'|trans}}
+						</div>
+					{% else %}
+						<input name="nbparticipantmax" type="hidden" value="0" />	
+					{% endif %}
+
+				<!-- Clef -->
+					{% if d.active_cle == "y" %}
+						<div class="E">
+							<label for="clef">{{'status_clef'|trans}}{{'deux_points'|trans}}</label>
+							<input name="clef" id="clef" type="checkbox" value="1" {% if d.clef == 1%}checked{% endif %} > {{'msg_clef'|trans}}
+						</div>
+					{% endif %}
+				
+				<!-- Courrier -->
+					{% if settings.show_courrier == 1 %}
+						<div class="E">
+							<label for="courrier">{{'status_courrier'|trans}}{{'deux_points'|trans}}</label>
+							<input name="courrier" id="courrier" type="checkbox" value="1" {% if d.courrier == 1%}checked{% endif %} > {{'msg_courrier'|trans}}
+						</div>
+					{% endif %}
+
+				<!-- Ressource empruntée -->
+					{% if d.active_ressource_empruntee == "y" and d.levelUserRessource >= 3 %}
+						<div class="E">
+							<input name="statut_entry" type="checkbox" value="y" {% if d.statut_entry == 1%}checked{% endif %} > <b>{{'signaler_reservation_en_cours'|trans}}</b>
+						</div>
+					{% endif %}
+
+				<!-- Champs additionnels -->
+					<br>
+					<div id="div_champs_add"></div>
+
+				<!-- Infos -->
+					<br>
+					<div class="bg-info">
+						<p><b>{{'required'|trans}}</b></p>
+					</div>
+
+			</div>
+
+			<!-- Colonne de droite : Périodicité -->
+			<div class='col-sm-6 col-xs-12'>
+				{% if d.periodiciteAttache == 0 %}
+
+					{% if settings.periodicite == 1 %}
+					<div id="ouvrir" class="CC">
+						<input type="button" class="btn btn-primary" value="{{'click_here_for_series_open'|trans|raw}}" onclick="clicMenu(1);check_5();" />
+            		</div>
+					{% endif %}
+          			<div style="display:none" id="fermer" class="CC">
+							<input type="button" class="btn btn-primary" value="{{'click_here_for_series_close'|trans|raw}}" onclick="clicMenu(1);check_5();" />
+					</div>
+					<div id="menu1" style="display:none;">
+						<p class="F"><b>{{'rep_type'|trans}}</b></p>
+
+						<!-- 0: Aucune -->
+						<div>
+							<input name="rep_type" id="rep_type0" type="radio" value="0" class="form-check-input" onclick="check_1()" {% if d.rep_type == 0 %}checked{% endif %}/>
+							<label for="rep_type0" class="form-check-label">{{'rep_type_0'|trans}}</label>
+						</div>
+
+						<!-- 1: Chaque jour -->
+						<div>
+							<input name="rep_type" id="rep_type1" type="radio" value="1" class="form-check-input" onclick="check_1()" {% if d.rep_type == 1 %}checked{% endif %}/>
+							<label for="rep_type1" class="form-check-label">{{'rep_type_1'|trans}}</label>
+						</div>
+
+						<!-- 2: Chaque semaine -->
+						<div>
+							<div class="row">
+								<div class="col-lg-1">
+									<input name="rep_type" id="rep_type2" type="radio" value="2" class="form-check-input" onclick="check_1()" {% if d.rep_type == 2 %}checked{% endif %}/>
+								</div>
+
+								<div class="col-lg-11">
+									<select class="form-control" name="rep_num_weeks" size="1" onfocus="check_2()" onclick="check_2()">
+										<option value="1" {% if d.rep_num_weeks == 1 %}selected{% endif %}>{{'every_week'|trans}}</option>
+										<option value="2" {% if d.rep_num_weeks == 2 %}selected{% endif %}>{{'week_1_of_2'|trans}}</option>
+										<option value="3" {% if d.rep_num_weeks == 3 %}selected{% endif %}>{{'week_1_of_3'|trans}}</option>
+										<option value="4" {% if d.rep_num_weeks == 4 %}selected{% endif %}>{{'week_1_of_4'|trans}}</option>
+										<option value="5" {% if d.rep_num_weeks == 5 %}selected{% endif %}>{{'week_1_of_5'|trans}}</option>
+									</select>
+								</div>
+							</div>
+							<div style="display:none" id="menu2" width="100%">
+								<div class="F">
+									<b>{{'rep_rep_day'|trans}}</b>
+								</div>
+								<div class="CL">
+									{% for da in 0..6 %}
+										{% set wday = (da + d.weekstarts) % 7 %}
+										<input name="rep_day[{{ wday }}]" type="checkbox" class="form-check-input" {%if d.rep_day[wday] == 1 %}checked{%endif%} onclick="check_1()" {% if rep_day[wday] %} checked {% endif %} /> {{ d['day' ~ wday] }}
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+
+						<!-- 3&5: Chaque mois -->
+						<div>
+							<div class="row">
+								<div class="col-lg-1">
+									<input name="rep_type" type="radio" value="3" class="form-check-input" onclick="check_1()" {% if d.rep_type == 3 %}checked{% endif %}/>
+								</div>
+
+								<div class="col-lg-11">
+									<select class="form-control" name="rep_month" size="1" onfocus="check_3()" onclick="check_3();check_1()">
+										<option value="3" {% if d.rep_type == 3 %}selected{% endif %}>{{'rep_type_3'|trans}}</option>
+										<option value="5" {% if d.rep_type == 5 %}selected{% endif %}>{{'rep_type_5'|trans}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<!-- 4: Chaque annnée -->
+						<div>
+							<input name="rep_type" id="rep_type4" type="radio" value="4" class="form-check-input" onclick="check_1()" {% if d.rep_type == 4 %}checked{% endif %}/>
+							<label for="rep_type4" class="form-check-label">{{'rep_type_4'|trans}}</label>
+						</div>
+
+						<!-- 6: Chaque jour cycle -->
+						{% if settings.jours_cycles_actif == 1 %}
+						<div>
+							<input name="rep_type" id="rep_type6" type="radio" value="6" class="form-check-input" onclick="check_1()" {% if d.rep_type == 6 %}checked{% endif %}/>
+							<label for="rep_type6" class="form-check-label">{{'rep_type_6'|trans}}</label>
+							<div id='menuP'>
+								<div class='form-inline'>
+									{% for da in 1..settings.nombre_jours_Jours_Cycles %}
+										{% set wday = da %}
+										<input type="radio" name="rep_jour_" value="{{ wday }}" class="form-check-input" onclick="check_1()" {% if jours_c is defined and da == jours_c %} checked {% endif %} /> {{ 'rep_type_6'|trans }} {{ wday }} 
+									{% endfor %}
+								</div>
+							</div>
+
+						</div>
+						{% endif %}
+
+						<!-- 7: Chaque X Y du mois -->
+						<div>
+							<div class="row">
+								<div class="col-lg-2">
+									<input name="rep_type" id="rep_type7" type="radio" value="7" class="form-check-input" onclick="check_1()" {% if d.rep_type == 7 %}checked{% endif %}/>
+									<label for="rep_type7" class="form-check-label">{{'rep_type_7'|trans}}</label>
+								</div>
+
+								<div class="col-lg-2">
+									<select class="form-control" name="rep_month_abs1" size="1" onfocus="check_7()" onclick="check_7()">
+										<option value="0" {% if d.rep_month_abs1 == 0 %}selected{% endif %}>{{'firstofmonth'|trans}}</option>
+										<option value="1" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{'secondofmonth'|trans}}</option>
+										<option value="2" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{'thirdofmonth'|trans}}</option>
+										<option value="3" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{'fouthofmonth'|trans}}</option>
+										<option value="4" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{'fiveofmonth'|trans}}</option>
+										<option value="5" {% if d.rep_month_abs1 == 1 %}selected{% endif %}>{{'lastofmonth'|trans}}</option>
+									</select>
+								</div>
+
+								<div class="col-lg-3">
+								<select class="form-control" name="rep_month_abs2" size="1" onfocus="check_8()" onclick="check_8()">
+									{% for da in 0..6 %}
+										{% set wday = (da + d.weekstarts) % 7 %}
+										<option value="{{wday}}" {% if da == d.rep_month_abs2 %} selected {% endif %}>{{ d['day' ~ wday] }}</option>
+									{% endfor %}
+								</select>
+								</div>
+								<label for="rep_type7" class="col-lg-2 form-check-label">{{'ofmonth'|trans}}</label>
+							</div>
+						</div>
+
+						<div class="F">
+							<b>{{'rep_end_date'|trans}}</b>
+							{{d.jQuery_DatePickerRepEnd|raw}}
+						</div>
+					</div>
+				{% else %}
+					<p><b>{{ 'periodicite_associe'|trans}} {{'deux_points'|trans}}</b></p>
+					{{d.repHTML|raw}}
+				{% endif %}
+			</div>
+
+			<div id="fixe">
+				<input type="button" class="btn btn-primary" value="{{ 'cancel'|trans }}" onclick="window.location.href='{{ d.page_ret }}'" /> 
+				<input type="button" class="btn btn-primary" value="{{ 'save'|trans }}" onclick="validate_and_submit();" />
+			</div>
+		</div>
+	</form>
+	{% if settings.form_layout_centered == '1' %}
+        </div>
+	{% endif %}
+{% endblock %}
+
+{% block javascript %}
+<!-- Date & heure -->
+<script src="jslib/jquery-ui/jquery-ui.min.js"></script>
+<script src="jslib/jquery-ui/ui/i18n/datepicker-fr.js"></script>
+<script src="jslib/clockpicker/bootstrap-clockpicker.min.js"></script>
+<!-- Select2 JS -->
+<script src="jslib/select2/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#beneficiaire').select2({
+            placeholder: 'Sélectionnez une option',
+            allowClear: true
+        });
+    });
+</script>
+
+
+<script type="text/javascript" >
+	$(function() {
+		$.datepicker.setDefaults( $.datepicker.regional['fr'] );
+ 		$('#mydate_start_').datepicker({
+			beforeShow: readSelected, onSelect: updateSelected,
+			showOn: 'both', buttonImageOnly: true, buttonImage: 'img_grr/calendar.png',buttonText: "Choisir la date"});
+			function readSelected()
+			{
+				$('#mydate_start_').val($('#start_day').val() + '/' +
+				$('#start_month').val() + '/' + $('#start_year').val());
+				return {};
+			}
+			function updateSelected(date)
+			{
+				$('#start_day').val(date.substring(0, 2));
+				$('#start_month').val(date.substring(3, 5));
+				$('#start_year').val(date.substring(6, 10));
+			}
+    });
+
+	{% if d.type_affichage_reser != 0 %}
+	$(function() {
+		$.datepicker.setDefaults( $.datepicker.regional['fr'] );
+ 		$('#mydate_end_').datepicker({
+			beforeShow: readSelected, onSelect: updateSelected,
+			showOn: 'both', buttonImageOnly: true, buttonImage: 'img_grr/calendar.png',buttonText: "Choisir la date"});
+			function readSelected()
+			{
+				$('#mydate_end_').val($('#end_day').val() + '/' +
+				$('#end_month').val() + '/' + $('#end_year').val());
+				return {};
+			}
+			function updateSelected(date)
+			{
+				$('#end_day').val(date.substring(0, 2));
+				$('#end_month').val(date.substring(3, 5));
+				$('#end_year').val(date.substring(6, 10));
+			}
+    });
+	{% endif %}
+
+	$('.clockpicker').clockpicker({
+		align: 'left',
+		placement: 'top',
+		autoclose: true,
+		minuteStep: 15,
+		donetext: 'Valider'
+	});
+
+	document.getElementById('main').name.focus();
+
+	check_4();
+	{% if d.idresa != 0 and d.flag_periodicite %}
+		clicMenu('1');
+		check_5();
+	{% endif %}
+	{% if d.Err == yes %}
+		//timeoutID = window.setTimeout("Load_entry();check_5();",500);
+	{% endif %}
+
+
+	function validate_and_submit(){
+		var err;
+
+		$("#error").html("");
+		if (document.forms["main"].benef_ext_nom)
+		{
+			if ((document.forms["main"].beneficiaire.options[0].selected) && (document.forms["main"].benef_ext_nom.value == ""))
+			{
+				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{'you_have_not_entered'|trans}}{{'deux_points'|trans}}{{'nom_beneficiaire'|trans}}</div>');
+				err = 1;
+			}
+		}
+
+		{% if d.description_breve == 1 or d.description_breve == 2 %}
+			if (document.forms["main"].name.value == "")
+			{
+				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{'you_have_not_entered'|trans}}{{'deux_points'|trans}}{{'brief_description'|trans}}</div>');
+				err = 1;
+			}
+		{% endif %}
+
+		{% if d.description_complete == 1 %}
+		if (document.forms["main"].description.value == "")
+			{
+				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{'you_have_not_entered'|trans}}{{'deux_points'|trans}}{{'fulldescription'|trans}}</div>');
+				err = 1;
+			}
+		{% endif %}
+
+
+
+		if  (document.forms["main"].type.value=='0')
+		{
+			$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{'choose_a_type'|trans}}</div>');
+			err = 1;
+		}
+
+		{% if d.edit_type == "series" and settings.periodiciteConfig == 1 %}
+			i1 = parseInt(document.forms["main"].id.value);
+			i2 = parseInt(document.forms["main"].rep_id.value);
+			n = parseInt(document.forms["main"].rep_num_weeks.value);
+			if ((document.forms["main"].elements['rep_day[0]'].checked || document.forms["main"].elements['rep_day[1]'].checked || document.forms["main"].elements['rep_day[2]'].checked || document.forms["main"].elements['rep_day[3]'].checked || document.forms["main"].elements['rep_day[4]'].checked || document.forms["main"].elements['rep_day[5]'].checked || document.forms["main"].elements['rep_day[6]'].checked) && (!document.forms["main"].rep_type[2].checked))
+			{
+				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{'no_compatibility_with_repeat_type'|trans}}</div>');
+				err = 1;
+			}
+			if ((!document.forms["main"].elements['rep_day[0]'].checked && !document.forms["main"].elements['rep_day[1]'].checked && !document.forms["main"].elements['rep_day[2]'].checked && !document.forms["main"].elements['rep_day[3]'].checked && !document.forms["main"].elements['rep_day[4]'].checked && !document.forms["main"].elements['rep_day[5]'].checked && !document.forms["main"].elements['rep_day[6]'].checked) && (document.forms["main"].rep_type[2].checked))
+			{
+				$("#error").append('<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>{{'choose_a_day'|trans}}</div>');
+				err = 1;
+			}
+		{% endif %}
+
+		if (err == 1)
+			return false;
+
+		document.forms["main"].submit();
+
+		return true;
+	}
+
+
+	function insertBeneficiaires(area_,room_,user_,id_){
+		jQuery.ajax({
+			type: 'GET',
+			url: '{{ path('symfony_reservation_ajax', {'action': 'edit_entry_beneficiaire.php'}) }}',
+			data: {
+				area: area_,
+				room: room_,
+				user: user_,
+				id: id_
+			},
+			success: function(returnData)
+			{
+				$("#div_beneficiaire").html(returnData);
+			},
+			error: function(data)
+			{
+				alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_beneficiaire.php ');
+			}
+		});
+	}
+
+	function insertChampsAdd(areas_,id_,room_){
+		jQuery.ajax({
+			type: 'GET',
+			url: '{{ path('symfony_reservation_ajax', {'action': 'edit_entry_champs_add.php'}) }}',
+			data: {
+				areas: areas_,
+				id: id_,
+				room: room_,
+			},
+			success: function(returnData)
+			{
+				$("#div_champs_add").html(returnData);
+			},
+			error: function(data)
+			{
+				alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_champs_add.php ');
+			}
+		});
+	}
+
+	function changeRooms( formObj )
+	{
+		var formObj = document.getElementById('main');
+		areasObj = eval( "formObj.areas" );
+		area = areasObj[areasObj.selectedIndex].value
+		roomsObj = eval( "formObj.elements['rooms[]']" )
+		l = roomsObj.length;
+		for (i = l; i > 0; i-- )
+		{
+			roomsObj.options[i] = null
+		}
+		switch (area)
+		{		
+			{{d.complementJSchangeRooms |raw}}
+		}
+	
+		roomsObj = eval( "formObj.elements['rooms[]']" );
+		room = roomsObj[roomsObj.selectedIndex].value;
+		insertBeneficiaires(area,room,"{{d.beneficiaire}}",{{d.iderasa}});
+        insertChampsAdd(area,{{d.idresa}},room);
+        insertTypes(area,room);
+        insertDescriptionParams(area);
+	}
+
+	function changeRoom( formObj)
+    {	
+        areasObj = eval( "formObj.areas" );
+		area = areasObj[areasObj.selectedIndex].value
+        roomsObj = eval("formObj.elements['rooms[]']");
+        room = roomsObj[roomsObj.selectedIndex].value;       
+    }
+
+	function insertDescriptionParams(areas_){
+		jQuery.ajax({
+			type: 'GET',
+			url: '{{ path('symfony_reservation_ajax', {'action': 'edit_entry_description_params.php'}) }}',
+			data: {
+				area: areas_
+			},
+			dataType: 'json',
+			success: function(params){
+				updateDescriptionHTML(
+					params.description_breve,
+					params.description_complete
+				);
+			},
+			error: function(xhr, status, error){
+				console.error(error);
+			}
+		});
+	}
+
+	function updateDescriptionHTML(description_breve, description_complete){
+		var nameField = document.getElementById('name');
+		var nameLabel = document.querySelector('label[for="name"]');
+		var descriptionContainer = document.getElementById('div_description_container');
+
+		// Mettre à jour le label du champ "name" (namebooker)
+		if (nameLabel) {
+			if (description_breve != 0) {
+				nameLabel.innerHTML = '{{ 'namebooker'|trans }} *{{ 'deux_points'|trans }}';
+			} else {
+				nameLabel.innerHTML = '{{ 'namebooker'|trans }}{{ 'deux_points'|trans }}';
+			}
+		}
+
+		// Gérer l'affichage du champ description complète
+		if (descriptionContainer) {
+			if (description_complete != 2) {
+				// Afficher le champ description
+				descriptionContainer.style.display = '';
+				var descriptionLabel = descriptionContainer.querySelector('label[for="description"]');
+				if (descriptionLabel) {
+					if (description_complete == 1) {
+						descriptionLabel.innerHTML = '{{ 'fulldescription'|trans }} *{{ 'deux_points'|trans }}';
+					} else {
+						descriptionLabel.innerHTML = '{{ 'fulldescription'|trans }}{{ 'deux_points'|trans }}';
+					}
+				}
+			} else {
+				// Masquer le champ description
+				descriptionContainer.style.display = 'none';
+			}
+		}
+	}
+
+	function insertTypes(areas_,room_){
+		jQuery.ajax({
+			type: 'GET',
+			url: '{{ path('symfony_reservation_ajax', {'action': 'edit_entry_types.php'}) }}',
+			data: {
+				areas: areas_,
+				type: '{{d.etype}}',
+				room: room_,
+			},
+			success: function(returnData){
+				$('#div_types').html(returnData);
+			},
+			error: function(data){
+				alert('Erreur lors de l execution de la commande AJAX pour le edit_entry_types.php ');
+			}
+		});
+	}
+
+	function check_1(){
+		menu = document.getElementById('menu2');
+		if (menu)
+		{
+			if (!document.forms["main"].rep_type[2].checked)
+			{
+				document.forms["main"].elements['rep_day[0]'].checked=false;
+				document.forms["main"].elements['rep_day[1]'].checked=false;
+				document.forms["main"].elements['rep_day[2]'].checked=false;
+				document.forms["main"].elements['rep_day[3]'].checked=false;
+				document.forms["main"].elements['rep_day[4]'].checked=false;
+				document.forms["main"].elements['rep_day[5]'].checked=false;
+				document.forms["main"].elements['rep_day[6]'].checked=false;
+				menu.style.display = "none";
+			}
+			else
+			{
+				menu.style.display = "";
+			}
+		}
+		{% if settings.jours_cycles_actif == 1 %}
+			menu = document.getElementById('menuP');
+			if (menu)
+			{
+				if (!document.forms["main"].rep_type[5].checked)
+				{
+					menu.style.display = "none";
+				}
+				else
+				{
+					menu.style.display = "";
+				}
+			}
+		{% endif %}
+	}
+
+	function check_2 (){
+		document.forms["main"].rep_type[2].checked=true;
+		check_1 ();
+	}
+
+	function check_3 (){
+		document.forms["main"].rep_type[3].checked=true;
+	}
+
+	function check_4 (){
+		menu = document.getElementById('menu4');
+		if (menu)
+		{
+			if (!document.forms["main"].beneficiaire.options[0].selected)
+			//if (document.forms["main"].beneficiaire.value != '')
+			{
+				menu.style.display = "none";
+				{% if d.description_breve == 2 %}
+				document.forms["main"].name.value=document.forms["main"].beneficiaire.options[document.forms["main"].beneficiaire.options.selectedIndex].text;
+				// document.forms["main"].name.value=document.forms["main"].beneficiaire.value;
+				{% endif %}
+			}
+			else
+			{
+				menu.style.display = "block";
+				{% if d.description_complete == 2 %}
+					document.forms["main"].name.value=document.forms["main"].benef_ext_nom.value;
+				{% endif %}
+			}
+		}
+	}
+
+	function check_5 (){
+		var menu; var menup; var menu2;
+		menu = document.getElementById('menu1');	
+		menup = document.getElementById('menuP');
+		menu2 = document.getElementById('menu2');
+		if ((menu)&&(menu.style.display == "none"))
+		{
+			menup.style.display = "none";
+			menu2.style.display = "none";
+		}
+		else
+			check_1();
+	}
+
+	function setdefault (name,input){
+		document.cookie = escape(name) + "=" + escape(input) +
+		( "" ? ";expires=" + ( new Date( ( new Date() ).getTime() + ( 1000 * lifeTime ) ) ).toGMTString() : "" ) +
+		( "" ? ";path=" + path : "") +
+		( "" ? ";domain=" + domain : "") +
+		( "" ? ";secure" : "") +
+		"; SameSite=Strict";
+	}
+	insertBeneficiaires({{d.domaine}},{{d.roomid}},"{{d.beneficiaire|raw}}",{{d.idresa}});
+	insertChampsAdd({{d.domaine}},{{d.idresa}},{{d.roomid}});
+	insertTypes({{d.domaine}},{{d.roomid}})
+/*
+	$('#areas').on('change', function(){
+		//$('.multiselect').multiselect('destroy');
+		//$('.multiselect').multiselect();
+	});
+	$(document).ready(function() {
+		//$('.multiselect').multiselect();
+		//$("#select2").select2();
+	});
+*/
+</script>
+
+{% endblock %}

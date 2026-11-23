@@ -1,0 +1,15 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    default_locale: fr-fr
+    http_method_override: false
+    handle_all_throwables: true
+    property_info:
+        with_constructor_extractor: false
+    translator:
+        default_path: '%kernel.project_dir%/translations'
+        fallbacks:
+            - fr-fr
+    router:
+        utf8: true
+    php_errors:
+        log: true

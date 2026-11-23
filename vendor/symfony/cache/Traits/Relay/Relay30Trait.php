@@ -19,17 +19,17 @@ if (version_compare(phpversion('relay'), '0.30.0', '>=')) {
     {
         public function increx($key, $value = null, $options = null): \Relay\Relay|array|false
         {
-            return ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->increx(...\func_get_args());
+            return $this->initializeLazyObject()->increx(...\func_get_args());
         }
 
         public function unwatch(): \Relay\Relay|bool|string
         {
-            return ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->unwatch(...\func_get_args());
+            return $this->initializeLazyObject()->unwatch(...\func_get_args());
         }
 
         public function xnack($key, $group, $mode, $ids, $options = null): \Relay\Relay|false|int
         {
-            return ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->xnack(...\func_get_args());
+            return $this->initializeLazyObject()->xnack(...\func_get_args());
         }
     }
 } else {
@@ -40,7 +40,7 @@ if (version_compare(phpversion('relay'), '0.30.0', '>=')) {
     {
         public function unwatch(): \Relay\Relay|bool
         {
-            return ($this->lazyObjectState->realInstance ??= ($this->lazyObjectState->initializer)())->unwatch(...\func_get_args());
+            return $this->initializeLazyObject()->unwatch(...\func_get_args());
         }
     }
 }

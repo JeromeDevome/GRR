@@ -1,0 +1,111 @@
+{#
+ # Bandeau commun des pages Symfony (layouts reservation et account).
+ # Desktop : marque à gauche, liens sur une ligne. Mobile : marque + bouton menu, liens empilés.
+ # Identifiants volontairement différents des anciens #panel / #open : une version en cache de
+ # l'ancien functions.min.js s'y accrochait et inversait l'état du bandeau.
+ #}
+<header class="grr-header" id="grr-header">
+	<div id="grr-header-panel" class="grr-header__panel">
+		<div class="grr-header__bar">
+		<div class="grr-header__brand">
+			{% if d.logo|default('') != '' %}
+				<a class="grr-header__logo" href="{{ d.pageAccueil|raw }}"><img src="{{ d.logo }}" alt="{{ settings.company|raw }}"></a>
+			{% endif %}
+			<div class="grr-header__title">
+				<a class="grr-header__company" href="{{ d.pageAccueil|raw }}">{{ settings.company|raw }}</a>
+			</div>
+			<button type="button" class="grr-header__menu-toggle" aria-expanded="false" aria-controls="grr-header-nav" title="Menu">
+				<i class="fa-solid fa-bars" aria-hidden="true"></i><span class="grr-header__sr">Menu</span>
+			</button>
+		</div>
+
+		<nav id="grr-header-nav" class="grr-header__nav">
+			{% if d.lienFormaulaireResa|default(0) == 1 or d.lienAdmin|default('') != '' or d.nbConnecte|default('') or d.mess_resa|default('') %}
+			<div class="grr-header__group grr-header__group--actions">
+				{% if d.lienFormaulaireResa|default(0) == 1 %}
+					<a class="grr-header__btn" href="contactresa{{ d.paramUrlAccueil|default('')|raw }}"><i class="fa-solid fa-calendar-plus" aria-hidden="true"></i>{{ 'reserver'|trans }}</a>
+				{% endif %}
+				{% if d.mess_resa|default('') %}
+					<a class="grr-header__link grr-header__link--alert" href="./moderationsliste{% if d.area|default('') %}&amp;area={{ d.area }}{% endif %}"><i class="fa-solid fa-bell" aria-hidden="true"></i>{{ d.mess_resa }}</a>
+				{% endif %}
+				{% if d.lienAdmin|default('') != '' %}
+					<a class="grr-header__link" href="./{{ d.lienAdmin|raw }}"><i class="fa-solid fa-gear" aria-hidden="true"></i>{{ 'admin'|trans }}</a>
+				{% endif %}
+				{% if d.nbConnecte|default('') %}
+					<a class="grr-header__link" href="./admin/admin.php?p=admin_view_connexions"><i class="fa-solid fa-users" aria-hidden="true"></i>{{ d.nbConnecte }}</a>
+				{% endif %}
+			</div>
+			{% endif %}
+
+			<div class="grr-header__group grr-header__group--user">
+				{% if d.accesStats|default(false) %}
+					<a class="grr-header__link" href="./report"><i class="fa-solid fa-chart-column" aria-hidden="true"></i>{{ 'report'|trans }}</a>
+				{% endif %}
+				{% if d.liensPerso1|default('') %}
+					<span class="grr-header__custom">{{ d.liensPerso1|raw }}</span>
+				{% endif %}
+				{% if d.nomUtilisateur|default('') %}
+					{# Menu « mon compte » : gérer mon compte + déconnexion #}
+					<div class="grr-dropdown grr-header__account-menu">
+						<button type="button" class="grr-header__link grr-dropdown__toggle" aria-expanded="false" aria-haspopup="true" aria-controls="grr-account-menu">
+							<i class="fa-solid fa-circle-user grr-header__account-icon" aria-hidden="true"></i>
+							<span class="grr-header__account-name">{{ d.nomUtilisateur }}</span>
+							<i class="fa-solid fa-chevron-down grr-dropdown__caret" aria-hidden="true"></i>
+						</button>
+						<div id="grr-account-menu" class="grr-dropdown__menu">
+							<a class="grr-dropdown__item" href="account?pc=moncompte"><i class="fa-solid fa-user-gear" aria-hidden="true"></i>{{ 'manage_my_account'|trans }}</a>
+							{% if d.lienDeconnexion|default('') %}
+								<div class="grr-dropdown__separator" role="separator"></div>
+								<div class="grr-dropdown__raw grr-dropdown__raw--logout">{{ d.lienDeconnexion|raw }}</div>
+							{% endif %}
+						</div>
+					</div>
+				{% elseif d.lienDeconnexion|default('') %}
+					<span class="grr-header__auth">{{ d.lienDeconnexion|raw }}</span>
+				{% endif %}
+				{% if d.lienConnexion|default('') %}
+					<span class="grr-header__auth grr-header__auth--login">{{ d.lienConnexion|raw }}</span>
+				{% endif %}
+			</div>
+
+			<div class="grr-header__group grr-header__group--meta">
+				<!--<time class="grr-header__clock" data-grr-clock></time>-->
+				{% set langues = d.listeLangues|default([])|filter(l => l is not empty) %}
+				{% if langues|length > 0 %}
+					{% set currentLangue = d.locale|default('fr-fr') in langues ? d.locale|default('fr-fr') : langues|first %}
+					{# Menu des langues : drapeau de la langue courante, liste au clic #}
+					<div class="grr-dropdown grr-dropdown--end grr-header__languages">
+						<button type="button" class="grr-header__link grr-dropdown__toggle" aria-expanded="false" aria-haspopup="true" aria-controls="grr-language-menu" title="{{ d.nomsLangues[currentLangue]|default(currentLangue) }}">
+							<img src="./img_grr/{{ currentLangue }}_dp.png" alt="" width="20" height="13">
+							<span class="grr-header__language-code">{{ currentLangue|split('-')|first|upper }}</span>
+							<i class="fa-solid fa-chevron-down grr-dropdown__caret" aria-hidden="true"></i>
+						</button>
+						<div id="grr-language-menu" class="grr-dropdown__menu">
+							{% for langue in langues %}
+								<a class="grr-dropdown__item{% if langue == currentLangue %} is-current{% endif %}" href="{{ d.urlChangementLangue|default('./app.php?') }}default_language={{ langue }}" lang="{{ langue }}"{% if langue == currentLangue %} aria-current="true"{% endif %}>
+									<img src="./img_grr/{{ langue }}_dp.png" alt="" width="20" height="13">{{ d.nomsLangues[langue]|default(langue) }}
+									{% if langue == currentLangue %}<i class="fa-solid fa-check grr-dropdown__check" aria-hidden="true"></i>{% endif %}
+								</a>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</nav>
+		</div>
+		{# Message d'accueil sous la barre : un texte long ne réduit plus la place du menu #}
+		{% if settings.message_accueil|default('') != '' %}
+			<div class="grr-header__message">{{ settings.message_accueil|raw }}</div>
+		{% endif %}
+	</div>
+	{% set hideLabel = 'hide_header'|trans %}
+	{% set showLabel = 'show_header'|trans %}
+	<button type="button" id="grr-header-toggle" class="grr-header__collapse" aria-controls="grr-header-panel" aria-expanded="true"
+		data-label-hide="{{ hideLabel }}" data-label-show="{{ showLabel }}" title="{{ hideLabel }}" aria-label="{{ hideLabel }}">
+		<i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+	</button>
+	<script>
+		// Avant affichage : respecte le choix « bandeau masqué » mémorisé (évite un clignotement)
+		if (/(?:^|;\s*)grr_header=collapsed(?:;|$)/.test(document.cookie)) { document.getElementById('grr-header').classList.add('is-collapsed'); }
+	</script>
+</header>

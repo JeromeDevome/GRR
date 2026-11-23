@@ -6,18 +6,18 @@
 # ======================================================================
 # 1. GESTION DES ERREURS HTTP PERSONNALISÉES
 # ======================================================================
-ErrorDocument 400 /erreur.php
-ErrorDocument 401 /erreur.php
-ErrorDocument 403 /erreur.php
-ErrorDocument 404 /erreur.php
-ErrorDocument 405 /erreur.php
-ErrorDocument 408 /erreur.php
-ErrorDocument 410 /erreur.php
-ErrorDocument 500 /erreur.php
-ErrorDocument 501 /erreur.php
-ErrorDocument 502 /erreur.php
-ErrorDocument 503 /erreur.php
-ErrorDocument 504 /erreur.php
+ErrorDocument 400 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 401 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 403 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 404 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 405 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 408 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 410 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 500 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 501 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 502 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 503 /%{reqenv:GRR_BASE}erreur.php
+ErrorDocument 504 /%{reqenv:GRR_BASE}erreur.php
 
 # ======================================================================
 # 2. SÉCURITÉ - En-têtes HTTP de sécurité
@@ -51,12 +51,26 @@ ErrorDocument 504 /erreur.php
 
 # Interdire l'accès aux dossiers sensibles
 # Utiliser RewriteRule au lieu de DirectoryMatch (plus compatible)
+<IfModule mod_setenvif.c>
+    SetEnvIf Remote_Addr "^(127\.0\.0\.1|::1)$" APP_ENV=dev APP_DEBUG=1 APP_SECRET=grr-local-dev-only-not-for-production-2026
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    # Chemin de base de l'installation sans "/" initial (ex. SITE/GRR/), utilisé par ErrorDocument
+    RewriteCond %{REQUEST_URI}::$0 ^/(.*?)(.*)::\2$
+    RewriteRule ^.*$ - [E=GRR_BASE:%1]
+    RewriteRule ^compte(?:/.*)?$ public/index.php [QSA,L]
+    RewriteRule ^reservation(?:/.*)?$ public/index.php [QSA,L]
+    RewriteRule ^app\.php$ public/index.php [QSA,L]
+    # Routes propres des pages (liste = Devome\Grr\Routing\Pages::ROUTE_REQUIREMENT, vérifiée par tests/symfony_smoke.php)
+    RewriteRule ^(?:account|annee|annee_all|contact|contactresa|creationcompte|deconnexion|dragdrop|echangeresa|editentree|editentreetrt|gestionfichier|jour|login|moderationsliste|mois|mois2_all|mois_all|page|participation|pdfgenerator|report|resahistorique|ressourcefiche|semaine|semaine_all|supreservation|vuedroitsdomaine|vuedroitsressource|vuereservation)$ public/index.php [QSA,L]
+    RewriteRule ^_(?:symfony|profiler|wdt)(?:/.*)?$ public/index.php [QSA,L]
     RewriteRule ^\.git(/|$) - [F,L]
     RewriteRule ^\.env(/|$) - [F,L]
     RewriteRule ^\.svn(/|$) - [F,L]
-    RewriteRule ^(?:vendor|include|outils)(/|$) - [F,L,NC]
+    RewriteRule ^(?:vendor|include|outils|src|config|templates|translations|tests|bin|var|build|node_modules)(/|$) - [F,L,NC]
+    RewriteRule ^(?:composer\.(?:json|lock)|package(?:-lock)?\.json|[^/]+\.log)$ - [F,L,NC]
 </IfModule>
 
 # ======================================================================
@@ -113,6 +127,7 @@ ErrorDocument 504 /erreur.php
 <IfModule mod_mime.c>
     AddType application/javascript .js
     AddType application/json .json
+    AddType application/manifest+json .webmanifest
     AddEncoding gzip .svgz
     AddType image/svg+xml .svg
     AddType font/woff .woff

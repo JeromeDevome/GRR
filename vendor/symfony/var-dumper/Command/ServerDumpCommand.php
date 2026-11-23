@@ -38,14 +38,13 @@ use Symfony\Component\VarDumper\Server\DumpServer;
 #[AsCommand(name: 'server:dump', description: 'Start a dump server that collects and displays dumps in a single place')]
 class ServerDumpCommand extends Command
 {
-    private DumpServer $server;
-
     /** @var DumpDescriptorInterface[] */
     private array $descriptors;
 
-    public function __construct(DumpServer $server, array $descriptors = [])
-    {
-        $this->server = $server;
+    public function __construct(
+        private DumpServer $server,
+        array $descriptors = [],
+    ) {
         $this->descriptors = $descriptors + [
             'cli' => new CliDescriptor(new CliDumper()),
             'html' => new HtmlDescriptor(new HtmlDumper()),
@@ -64,7 +63,7 @@ class ServerDumpCommand extends Command
 
                   <info>php %command.full_name%</info>
 
-                You can consult dumped data in HTML format in your browser by providing the <comment>--format=html</comment> option
+                You can consult dumped data in HTML format in your browser by providing the <info>--format=html</info> option
                 and redirecting the output to a file:
 
                   <info>php %command.full_name% --format="html" > dump.html</info>

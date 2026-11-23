@@ -24,10 +24,7 @@ use Symfony\Component\DependencyInjection\Exception\RuntimeException;
  */
 class ResolveInstanceofConditionalsPass implements CompilerPassInterface
 {
-    /**
-     * @return void
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->getAutoconfiguredInstanceof() as $interface => $definition) {
             if ($definition->getArguments()) {
@@ -123,6 +120,16 @@ class ResolveInstanceofConditionalsPass implements CompilerPassInterface
                 $definition->setShared($shared);
             }
 
+            // Tags are added from the most specific type to the least specific one
+            if (1 < \count($instanceofTags)) {
+                $depths = [];
+                foreach ($instanceofTags as [$interface]) {
+                    $depths[$interface] ??= \count(class_parents($interface) ?: []) + \count(class_implements($interface) ?: []);
+                }
+                uasort($instanceofTags, static fn ($a, $b) => $depths[$a[0]] <=> $depths[$b[0]]);
+                $instanceofTags = array_values($instanceofTags);
+            }
+
             // Don't add tags to service decorators
             $i = \count($instanceofTags);
             while (0 <= --$i) {
@@ -130,7 +137,7 @@ class ResolveInstanceofConditionalsPass implements CompilerPassInterface
                 foreach ($tags as $k => $v) {
                     if (null === $definition->getDecoratedService() || $interface === $definition->getClass() || \in_array($k, $tagsToKeep, true)) {
                         foreach ($v as $v) {
-                            if ($definition->hasTag($k) && \in_array($v, $definition->getTag($k))) {
+                            if ($definition->hasTag($k) && \in_array($v, $definition->getTag($k), true)) {
                                 continue;
                             }
                             $definition->addTag($k, $v);
@@ -150,6 +157,11 @@ class ResolveInstanceofConditionalsPass implements CompilerPassInterface
                 ->setDecoratedService(null)
                 ->setTags([])
                 ->setAbstract(true);
+        }
+
+        if ($definition->isSynthetic()) {
+            // Ignore container.excluded tag on synthetic services
+            $definition->clearTag('container.excluded');
         }
 
         return $definition;

@@ -37,13 +37,10 @@ class EventDispatcherDebugCommand extends Command
 {
     private const DEFAULT_DISPATCHER = 'event_dispatcher';
 
-    private ContainerInterface $dispatchers;
-
-    public function __construct(ContainerInterface $dispatchers)
-    {
+    public function __construct(
+        private ContainerInterface $dispatchers,
+    ) {
         parent::__construct();
-
-        $this->dispatchers = $dispatchers;
     }
 
     protected function configure(): void
@@ -63,6 +60,11 @@ class EventDispatcherDebugCommand extends Command
                 To get specific listeners for an event, specify its name:
 
                   <info>php %command.full_name% kernel.request</info>
+
+                The <info>--format</info> option specifies the format of the command output:
+
+                  <info>php %command.full_name% --format=json</info>
+
                 EOF
             )
         ;
@@ -156,6 +158,7 @@ class EventDispatcherDebugCommand extends Command
         return $output;
     }
 
+    /** @return string[] */
     private function getAvailableFormatOptions(): array
     {
         return (new DescriptorHelper())->getFormats();

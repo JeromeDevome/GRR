@@ -13,6 +13,10 @@ namespace Symfony\Component\Form;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Flow\ButtonFlowBuilder;
+use Symfony\Component\Form\Flow\ButtonFlowTypeInterface;
+use Symfony\Component\Form\Flow\FormFlowBuilder;
+use Symfony\Component\Form\Flow\FormFlowTypeInterface;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,31 +27,28 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ResolvedFormType implements ResolvedFormTypeInterface
 {
-    private FormTypeInterface $innerType;
-
     /**
      * @var FormTypeExtensionInterface[]
      */
     private array $typeExtensions;
-
-    private ?ResolvedFormTypeInterface $parent;
 
     private OptionsResolver $optionsResolver;
 
     /**
      * @param FormTypeExtensionInterface[] $typeExtensions
      */
-    public function __construct(FormTypeInterface $innerType, array $typeExtensions = [], ?ResolvedFormTypeInterface $parent = null)
-    {
+    public function __construct(
+        private FormTypeInterface $innerType,
+        array $typeExtensions = [],
+        private ?ResolvedFormTypeInterface $parent = null,
+    ) {
         foreach ($typeExtensions as $extension) {
             if (!$extension instanceof FormTypeExtensionInterface) {
                 throw new UnexpectedTypeException($extension, FormTypeExtensionInterface::class);
             }
         }
 
-        $this->innerType = $innerType;
         $this->typeExtensions = $typeExtensions;
-        $this->parent = $parent;
     }
 
     public function getBlockPrefix(): string
@@ -92,10 +93,7 @@ class ResolvedFormType implements ResolvedFormTypeInterface
         return $this->newView($parent);
     }
 
-    /**
-     * @return void
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->parent?->buildForm($builder, $options);
 
@@ -106,10 +104,7 @@ class ResolvedFormType implements ResolvedFormTypeInterface
         }
     }
 
-    /**
-     * @return void
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $this->parent?->buildView($view, $form, $options);
 
@@ -120,16 +115,12 @@ class ResolvedFormType implements ResolvedFormTypeInterface
         }
     }
 
-    /**
-     * @return void
-     */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $this->parent?->finishView($view, $form, $options);
 
         $this->innerType->finishView($view, $form, $options);
 
-        /** @var FormTypeExtensionInterface $extension */
         foreach ($this->typeExtensions as $extension) {
             $extension->finishView($view, $form, $options);
         }
@@ -167,6 +158,14 @@ class ResolvedFormType implements ResolvedFormTypeInterface
 
         if ($this->innerType instanceof SubmitButtonTypeInterface) {
             return new SubmitButtonBuilder($name, $options);
+        }
+
+        if ($this->innerType instanceof ButtonFlowTypeInterface) {
+            return new ButtonFlowBuilder($name, $options);
+        }
+
+        if ($this->innerType instanceof FormFlowTypeInterface) {
+            return new FormFlowBuilder($name, $dataClass, new EventDispatcher(), $factory, $options);
         }
 
         return new FormBuilder($name, $dataClass, new EventDispatcher(), $factory, $options);

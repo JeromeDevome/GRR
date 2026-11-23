@@ -59,9 +59,11 @@ personnalisation/config_CAS.inc.php
 
 # Fichiers en cours de développement à ignorer
 node_modules/
+/var/
 /edit_entry_handler.ori.php
 /test_date.php
 /year-dev.php
 /year-dev_all.php
 /year2.php
 phpCAS.log
+/.vscode

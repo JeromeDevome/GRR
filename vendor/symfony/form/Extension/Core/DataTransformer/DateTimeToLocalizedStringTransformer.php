@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Form\Extension\Core\DataTransformer;
 
+use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -35,23 +36,27 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
 
     private int $dateFormat;
     private int $timeFormat;
-    private ?string $pattern;
-    private int $calendar;
 
     /**
      * @see BaseDateTimeTransformer::formats for available format options
      *
-     * @param string|null $inputTimezone  The name of the input timezone
-     * @param string|null $outputTimezone The name of the output timezone
-     * @param int|null    $dateFormat     The date format
-     * @param int|null    $timeFormat     The time format
-     * @param int         $calendar       One of the \IntlDateFormatter calendar constants
-     * @param string|null $pattern        A pattern to pass to \IntlDateFormatter
+     * @param string|null       $inputTimezone  The name of the input timezone
+     * @param string|null       $outputTimezone The name of the output timezone
+     * @param int|null          $dateFormat     The date format
+     * @param int|null          $timeFormat     The time format
+     * @param int|\IntlCalendar $calendar       One of the \IntlDateFormatter calendar constants or an \IntlCalendar instance
+     * @param string|null       $pattern        A pattern to pass to \IntlDateFormatter
      *
      * @throws UnexpectedTypeException If a format is not supported or if a timezone is not a string
      */
-    public function __construct(?string $inputTimezone = null, ?string $outputTimezone = null, ?int $dateFormat = null, ?int $timeFormat = null, int $calendar = \IntlDateFormatter::GREGORIAN, ?string $pattern = null)
-    {
+    public function __construct(
+        ?string $inputTimezone = null,
+        ?string $outputTimezone = null,
+        ?int $dateFormat = null,
+        ?int $timeFormat = null,
+        private int|\IntlCalendar $calendar = \IntlDateFormatter::GREGORIAN,
+        private ?string $pattern = null,
+    ) {
         parent::__construct($inputTimezone, $outputTimezone);
 
         $dateFormat ??= \IntlDateFormatter::MEDIUM;
@@ -65,20 +70,14 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
             throw new UnexpectedTypeException($timeFormat, implode('", "', self::$formats));
         }
 
+        if (\is_int($calendar) && !\in_array($calendar, [\IntlDateFormatter::GREGORIAN, \IntlDateFormatter::TRADITIONAL], true)) {
+            throw new InvalidArgumentException('The "calendar" option should be either an \IntlDateFormatter constant or an \IntlCalendar instance.');
+        }
+
         $this->dateFormat = $dateFormat;
         $this->timeFormat = $timeFormat;
-        $this->calendar = $calendar;
-        $this->pattern = $pattern;
     }
 
-    /**
-     * Transforms a normalized date into a localized date string/array.
-     *
-     * @param \DateTimeInterface $dateTime A DateTimeInterface object
-     *
-     * @throws TransformationFailedException if the given value is not a \DateTimeInterface
-     *                                       or if the date could not be transformed
-     */
     public function transform(mixed $dateTime): string
     {
         if (null === $dateTime) {
@@ -98,14 +97,6 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
         return self::normalizeWhitespace($value);
     }
 
-    /**
-     * Transforms a localized date string/array into a normalized date.
-     *
-     * @param string $value Localized date string
-     *
-     * @throws TransformationFailedException if the given value is not a string,
-     *                                       if the date could not be parsed
-     */
     public function reverseTransform(mixed $value): ?\DateTime
     {
         if (!\is_string($value)) {
@@ -160,8 +151,6 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
      * Returns a preconfigured IntlDateFormatter instance.
      *
      * @param bool $ignoreTimezone Use UTC regardless of the configured timezone
-     *
-     * @throws TransformationFailedException in case the date formatter cannot be constructed
      */
     protected function getIntlDateFormatter(bool $ignoreTimezone = false): \IntlDateFormatter
     {
@@ -179,12 +168,6 @@ class DateTimeToLocalizedStringTransformer extends BaseDateTimeTransformer
         }
 
         $intlDateFormatter = new \IntlDateFormatter(\Locale::getDefault(), $dateFormat, $timeFormat, $timezone, $calendar, $pattern ?? '');
-
-        // new \intlDateFormatter may return null instead of false in case of failure, see https://bugs.php.net/66323
-        if (!$intlDateFormatter) {
-            throw new TransformationFailedException(intl_get_error_message(), intl_get_error_code());
-        }
-
         $intlDateFormatter->setLenient(false);
 
         return $intlDateFormatter;

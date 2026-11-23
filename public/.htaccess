@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Accès direct au contrôleur frontal (anciens liens « public/index.php?… », « public/ ») :
+    # redirection vers app.php à la racine, paramètres conservés.
+    # REDIRECT_STATUS vide = requête du navigateur, et non la réécriture interne app.php -> public/index.php.
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+    RewriteCond %{REQUEST_URI} ^(.*)/public/(?:index\.php)?$
+    RewriteRule ^(?:index\.php)?$ %1/app.php [QSA,R=301,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
