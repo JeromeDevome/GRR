@@ -67,7 +67,11 @@ foreach($form_vars as $var => $params)
 	$trad['TitrePage']	= $trad['admin_groupe'];
 	$groupes = array();
 	$i = 0;
-	$sql = "SELECT idgroupes, nom, description, archive FROM ".TABLE_PREFIX."_groupes ORDER BY nom ASC";
+	$sql = "SELECT g.idgroupes, g.nom, g.description, g.archive, COUNT(ug.login) AS nbmembres
+		FROM ".TABLE_PREFIX."_groupes g
+		LEFT JOIN ".TABLE_PREFIX."_utilisateurs_groupes ug ON ug.idgroupes = g.idgroupes
+		GROUP BY g.idgroupes, g.nom, g.description, g.archive
+		ORDER BY g.nom ASC";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
@@ -78,6 +82,7 @@ foreach($form_vars as $var => $params)
 			$groupes[$i][2] = $row['description'];
 			if ($row['archive'] == 1)
 				$groupes[$i][3] = "<span class=\"text-red\">".get_vocab("archiver")."</span>";
+			$groupes[$i][4] = (int) $row['nbmembres'];
 			$i++;
 		}
 	}

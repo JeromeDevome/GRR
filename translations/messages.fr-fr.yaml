@@ -134,6 +134,7 @@ admin_menu_auth: 'Authentification et ldap'
 admin_menu_connexion_externe: 'Connexions externes'
 admin_menu_general: Général
 admin_menu_mail: Mails
+admin_menu_page: 'Paramétrage'
 admin_menu_resa: Réservations
 admin_menu_site_area_room: 'Sites, domaines et ressources'
 admin_menu_user: 'Utilisateurs et accès'
@@ -142,6 +143,11 @@ admin_module: Modules
 admin_nettoyage_bdd: 'Nettoyage BDD'
 admin_overload: 'Champs additionnels'
 admin_page: 'Pages divers'
+admin_page_compte: 'Compte utilisateur'
+admin_page_connexion: 'Connexion'
+admin_page_generale: 'Général'
+admin_page_reservation: 'Réservation'
+admin_page_stat: 'Statistiques'
 admin_purge_accounts: 'Purge des comptes et des réservations associées'
 admin_purge_accounts_confirm: 'ATTENTION : Cette action va effacer tous les utilisateurs (sauf les administrateurs généraux), externes à GRR et leurs privilèges. Les réservations associées à ces comptes ne seront pas supprimées. Etes-vous certain de vouloir effectuer cette action ?'
 admin_purge_accounts_confirm2: 'ATTENTION : Cette action va effacer tous les utilisateurs (sauf les administrateurs généraux), externes à GRR et leurs privilèges, ainsi que toutes les réservations associées (passées et à venir). Etes-vous certain de vouloir effectuer cette action ?'
@@ -698,7 +704,11 @@ goto: ' Afficher'
 gototoday: "Aujourd'hui"
 groupe_add: 'Ajouter un groupe'
 groupe_exist: 'Un groupe existe déjà avec ce nom !'
+groupe_membre_inactif: 'inactif'
+groupe_membres: 'Membres du groupe'
+groupe_membres_explain: 'Sélectionnez les utilisateurs membres de ce groupe. À l''enregistrement, les droits du groupe (sites, domaines, ressources) sont mis à jour pour ses membres.'
 groupe_modifier: 'Modifier un groupe'
+groupe_utilisateurs_disponibles: 'Utilisateurs disponibles'
 groupes: Groupes
 grr_mail_Bcc_save_err: "Erreur lors de l'enregistrement de grr_mail_Bcc !"
 grr_mail_from_save_err: "Erreur lors de l'enregistrement de grr_mail_from !"

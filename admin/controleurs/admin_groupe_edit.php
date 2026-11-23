@@ -32,7 +32,9 @@ $form_vars = array(
 	'p_submit' => array('int', 0),
 	'p_nom' => array('string', ''),
 	'p_description' => array('string', ''),
-	'p_archive' => array('int', 0)
+	'p_archive' => array('int', 0),
+	'p_membres_submit' => array('int', 0), // 1 : enregistrement des membres du groupe
+	'p_utilisateurs' => array('array', array()) // logins sélectionnés dans la duallist
 
 );
 // récupération des valeurs des variables passées en paramètres
@@ -74,7 +76,11 @@ $retry = false;
 					if (grr_sql_command($sql) < 0)
 						fatal_error(0, get_vocab("msg_login_created_error") . grr_sql_error());
 					else
+					{
 						$d['enregistrement'] = 1;
+						// On reste sur le groupe créé (modification, gestion des membres) au lieu d'un nouveau formulaire vide
+						$p_idgroupe = (int) grr_sql_insert_id();
+					}
 				}
 			}
 			else // Modification
@@ -104,6 +110,70 @@ $retry = false;
 	}
 
 
+/** Utilisateurs proposés : comptes actifs, plus les membres actuels quel que soit leur état **/
+	$utilisateursMembres = array();
+	$utilisateursAjoutables = array();
+	if ($p_idgroupe != 0)
+	{
+		$chargerUtilisateurs = function () use ($p_idgroupe) {
+			$liste = array();
+			$sql = "SELECT u.login, u.nom, u.prenom, u.etat, ug.idgroupes FROM ".TABLE_PREFIX."_utilisateurs u
+				LEFT JOIN ".TABLE_PREFIX."_utilisateurs_groupes ug ON ug.login = u.login AND ug.idgroupes = '".intval($p_idgroupe)."'
+				WHERE u.etat = 'actif' OR ug.idgroupes IS NOT NULL
+				ORDER BY u.nom, u.prenom";
+			$res = grr_sql_query($sql);
+			if (!$res)
+				fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+			for ($i = 0; ($row = grr_sql_row($res, $i)); $i++)
+				$liste[$row[0]] = array('login' => $row[0], 'nom' => $row[1], 'prenom' => $row[2], 'actif' => ($row[3] == 'actif'), 'membre' => ($row[4] !== null));
+			grr_sql_free($res);
+			return $liste;
+		};
+		$utilisateurs = $chargerUtilisateurs();
+
+		/** Enregistrement des membres **/
+		if ($p_membres_submit == 1)
+		{
+			VerifyModeDemo();
+
+			// Seuls les logins proposés dans la liste sont pris en compte
+			$selection = array_intersect(array_unique(array_map(array('SecuChaine', 'CleanLogin'), $p_utilisateurs)), array_keys($utilisateurs));
+			$membresActuels = array_keys(array_filter($utilisateurs, function ($u) { return $u['membre']; }));
+			$aAjouter = array_diff($selection, $membresActuels);
+			$aRetirer = array_diff($membresActuels, $selection);
+
+			foreach ($aRetirer as $login)
+			{
+				$sql = "DELETE FROM ".TABLE_PREFIX."_utilisateurs_groupes WHERE login='".SecuChaine::ProtectDataSql($login)."' AND idgroupes='".intval($p_idgroupe)."'";
+				if (grr_sql_command($sql) < 0)
+					fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+			}
+			foreach ($aAjouter as $login)
+			{
+				$sql = "INSERT INTO ".TABLE_PREFIX."_utilisateurs_groupes SET login='".SecuChaine::ProtectDataSql($login)."', idgroupes='".intval($p_idgroupe)."'";
+				if (grr_sql_command($sql) < 0)
+					fatal_error(0, get_vocab('message_records_error') . grr_sql_error());
+			}
+
+			// Répercute les droits du groupe (sites, domaines, ressources) sur ses membres
+			if (!empty($aAjouter) || !empty($aRetirer))
+			{
+				synchro_groupe(intval($p_idgroupe), 0);
+				$utilisateurs = $chargerUtilisateurs();
+			}
+
+			$d['enregistrement'] = 1;
+		}
+
+		foreach ($utilisateurs as $utilisateur)
+		{
+			if ($utilisateur['membre'])
+				$utilisateursMembres[] = $utilisateur;
+			else
+				$utilisateursAjoutables[] = $utilisateur;
+		}
+	}
+
 /** Affichage de la page **/
 	$trad['TitrePage']	= $trad['admin_groupe'];
 
@@ -130,5 +200,5 @@ $retry = false;
 		$groupe["archive"] = $p_archive;
 	}
 
-	echo $twig->render('admin_groupe_edit.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'groupe' => $groupe));
+	echo $twig->render('admin_groupe_edit.twig', array('liensMenu' => $menuAdminT, 'liensMenuN2' => $menuAdminTN2, 'd' => $d, 'trad' => $trad, 'settings' => $AllSettings, 'groupe' => $groupe, 'utilisateursmembres' => $utilisateursMembres, 'utilisateursajoutables' => $utilisateursAjoutables));
 ?>

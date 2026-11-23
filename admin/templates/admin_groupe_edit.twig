@@ -4,6 +4,12 @@
 {% import 'champs.twig' as form %}
 
 {% block css %}
+	<link rel="stylesheet" href="../jslib/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+	<style>
+		.bootstrap-duallistbox-container select {
+			height: 400px !important;
+		}
+	</style>
 {% endblock %}
 
 {% block content %}
@@ -27,10 +33,46 @@
 
 		</div>
 	</div>
+
+	{% if groupe.idgroupes > 0 %}
+		<div class="row">
+			<div class="card col-12">
+				<form method="post">
+					<input type="hidden" name="p" value="admin_groupe_edit" />
+					<input type="hidden" name="p_idgroupe" value="{{ groupe.idgroupes }}" />
+					<input type="hidden" name="p_membres_submit" value="1" />
+
+					<div class="card-header">
+						<h3 class="card-title"><i class="fas fa-users"></i> {{ trad.groupe_membres }} ({{ utilisateursmembres|length }})</h3>
+					</div>
+					<div class="card-body">
+						<p>{{ trad.groupe_membres_explain }}</p>
+						<select name="p_utilisateurs[]" id="p_utilisateurs" multiple="multiple">
+							{% for user in utilisateursajoutables %}
+								<option value="{{ user.login }}">{{ user.nom }} {{ user.prenom }} ({{ user.login }})</option>
+							{% endfor %}
+							{% for user in utilisateursmembres %}
+								<option value="{{ user.login }}" selected>{{ user.nom }} {{ user.prenom }} ({{ user.login }}){% if not user.actif %} - {{ trad.groupe_membre_inactif }}{% endif %}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="card-footer">
+						<button type="submit" class="btn btn-success btn-md float-right"><i class="fas fa-save"></i> {{ trad.save }}</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	{% endif %}
 {% endblock %}
 
 {% block javascript %}
+	<script src="../jslib/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 	<script>
+		$('#p_utilisateurs').bootstrapDualListbox({
+			nonSelectedListLabel: '{{ trad.groupe_utilisateurs_disponibles|e('js') }}',
+			selectedListLabel: '{{ trad.groupe_membres|e('js') }}'
+		});
+
 		$(function () {
 			{%if d.enregistrement == 1 %}
 				toastr.success("{{trad.message_records}}")

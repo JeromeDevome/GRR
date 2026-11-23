@@ -133,6 +133,7 @@ admin_menu_auth: 'Autenticazione e ldap'
 admin_menu_connexion_externe: 'Connessioni esterne'
 admin_menu_general: Generale
 admin_menu_mail: Email
+admin_menu_page: 'Impostazioni'
 admin_menu_resa: Prenotazione
 admin_menu_site_area_room: 'Siti, domini e risorse'
 admin_menu_user: 'Utenti e accessi'
@@ -141,6 +142,11 @@ admin_module: Moduli
 admin_nettoyage_bdd: 'Pulizia database'
 admin_overload: 'Campi aggiuntivi'
 admin_page: 'Pagine varie'
+admin_page_compte: 'Account utente'
+admin_page_connexion: 'Accesso'
+admin_page_generale: 'Generale'
+admin_page_reservation: 'Prenotazione'
+admin_page_stat: 'Statistiche'
 admin_purge_accounts: 'Epurazione dei account e delle prenotazioni associate'
 admin_purge_accounts_confirm: 'ATTENZIONE: Questa azione cancellerà tutti gli utenti (tranne gli amministratori generali) esterni a GRR e i loro privilegi. Le prenotazioni associate a questi account non verranno rimosse. Sei sicuro di voler eseguire questa azione?'
 admin_purge_accounts_confirm2: 'ATTENZIONE: Questa azione cancellerà tutti gli utenti (tranne gli amministratori generali) esterni a GRR e i loro privilegi, nonché tutte le prenotazioni associate (passate e future). Sei sicuro di voler eseguire questa azione?'
@@ -697,7 +703,11 @@ goto: ' Visualizza'
 gototoday: Oggi
 groupe_add: 'Aggiungere un gruppo'
 groupe_exist: 'Esiste già un gruppo con questo nome!'
+groupe_membre_inactif: 'inattivo'
+groupe_membres: 'Membri del gruppo'
+groupe_membres_explain: 'Seleziona gli utenti membri di questo gruppo. Al salvataggio, i diritti del gruppo (siti, domini, risorse) vengono aggiornati per i suoi membri.'
 groupe_modifier: 'Modificare un gruppo'
+groupe_utilisateurs_disponibles: 'Utenti disponibili'
 groupes: Gruppi
 grr_mail_Bcc_save_err: 'Errore durante la registrazione di grr_mail_Bcc !'
 grr_mail_from_save_err: 'Errore durante la registrazione di grr_mail_from !'

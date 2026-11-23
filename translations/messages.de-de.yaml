@@ -127,6 +127,7 @@ admin_menu_auth: 'Authentifizierung und LDAP'
 admin_menu_connexion_externe: 'Externe Verbindungen'
 admin_menu_general: Allgemeines
 admin_menu_mail: E-Mails
+admin_menu_page: 'Einstellungen'
 admin_menu_resa: Reservierungen
 admin_menu_site_area_room: 'Seiten, Bereiche und Ressourcen'
 admin_menu_user: 'Benutzer und Zugriff'
@@ -135,6 +136,11 @@ admin_module: Module
 admin_nettoyage_bdd: Datenbankbereinigung
 admin_overload: 'eigene Felder'
 admin_page: 'diverse Seiten '
+admin_page_compte: 'Benutzerkonto'
+admin_page_connexion: 'Anmeldung'
+admin_page_generale: 'Allgemein'
+admin_page_reservation: 'Reservierung'
+admin_page_stat: 'Statistiken'
 admin_purge_accounts: 'Löschen von Konten und zugehörigen Reservierungen'
 admin_purge_accounts_confirm: 'ACHTUNG: Durch diese Aktion werden alle Benutzer (außer den allgemeinen Administratoren) außerhalb von GRR und deren Berechtigungen gelöscht. Die mit diesen Konten verbundenen Reservierungen werden nicht gelöscht. Möchten Sie diese Aktion wirklich ausführen?'
 admin_purge_accounts_confirm2: 'ACHTUNG: Diese Aktion löscht alle Benutzer (außer Generaladministratoren) außerhalb von GRR und deren Berechtigungen sowie alle damit verbundenen Reservierungen (vergangene und zukünftige). Möchten Sie diese Aktion wirklich ausführen?'
@@ -690,7 +696,11 @@ goto: ' Zeigen'
 gototoday: Heute
 groupe_add: 'Gruppe hinzufügen'
 groupe_exist: 'Es gibt bereits eine Gruppe mit diesem Namen!'
+groupe_membre_inactif: 'inaktiv'
+groupe_membres: 'Gruppenmitglieder'
+groupe_membres_explain: 'Wählen Sie die Benutzer aus, die Mitglied dieser Gruppe sind. Beim Speichern werden die Rechte der Gruppe (Standorte, Bereiche, Ressourcen) für ihre Mitglieder aktualisiert.'
 groupe_modifier: 'Gruppe bearbeiten'
+groupe_utilisateurs_disponibles: 'Verfügbare Benutzer'
 groupes: Gruppen
 grr_mail_Bcc_save_err: 'Fehler beim Speichern grr_mail_Bcc !'
 grr_mail_from_save_err: 'Fehler beim Speichern grr_mail_from !'

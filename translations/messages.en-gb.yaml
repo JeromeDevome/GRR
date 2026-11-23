@@ -127,6 +127,7 @@ admin_menu_auth: 'Authentification and ldap'
 admin_menu_connexion_externe: 'External connections'
 admin_menu_general: General
 admin_menu_mail: Emails
+admin_menu_page: 'Settings'
 admin_menu_resa: Reservations
 admin_menu_site_area_room: 'Sites, areas and resources'
 admin_menu_user: 'Users and access'
@@ -135,6 +136,11 @@ admin_module: Modules
 admin_nettoyage_bdd: 'Database Cleanup'
 admin_overload: 'Additional Fields'
 admin_page: 'Miscellaneous Pages'
+admin_page_compte: 'User account'
+admin_page_connexion: 'Login'
+admin_page_generale: 'General'
+admin_page_reservation: 'Booking'
+admin_page_stat: 'Statistics'
 admin_purge_accounts: 'Purge external accounts and associated reservations'
 admin_purge_accounts_confirm: 'WARNING: This action will erase all users (except general administrators), external to GRR and their privileges. Reservations associated with these accounts will not be deleted. Are you sure you want to perform this action?'
 admin_purge_accounts_confirm2: 'WARNING: This action will erase all users (except general administrators), external to GRR and their privileges, as well as all associated reservations (past and future). Are you sure you want to perform this action?'
@@ -690,7 +696,11 @@ goto: ' Display'
 gototoday: Today
 groupe_add: 'Add a group'
 groupe_exist: 'A group already exists with this name!'
+groupe_membre_inactif: 'inactive'
+groupe_membres: 'Group members'
+groupe_membres_explain: 'Select the users who are members of this group. When saved, the group rights (sites, areas, resources) are updated for its members.'
 groupe_modifier: 'Edit a group'
+groupe_utilisateurs_disponibles: 'Available users'
 groupes: Groups
 grr_mail_Bcc_save_err: 'Error saving grr_mail_Bcc !'
 grr_mail_from_save_err: 'Error saving grr_mail_from !'
