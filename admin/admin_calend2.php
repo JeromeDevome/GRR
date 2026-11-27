@@ -3,9 +3,9 @@
  * admin_calend2.php
  * interface permettant la réservation en bloc d'un créneau sur plusieurs Jours ou ressources
  * Ce script fait partie de l'application GRR
- * Dernière modification : $Date: 2024-03-02 12:12$
+ * Dernière modification : $Date: 2026-11-27 18:30$
  * @author    JeromeB & Laurent Delineau & Marc-Henri PAMISEUX & Yan Naessens
- * @copyright Copyright 2003-2024 Team DEVOME - JeromeB
+ * @copyright Copyright 2003-2026 Team DEVOME - JeromeB
  * @link      http://www.gnu.org/licenses/licenses.html
  *
  * This file is part of GRR.
@@ -45,7 +45,7 @@ if (isset($_POST['record']) && ($_POST['record'] == 'yes'))
 	$etape = 4;
 	$end_bookings = Settings::get("end_bookings");
 	// On reconstitue le tableau des ressources
-	$sql = "SELECT id, area_id, id_site FROM ".TABLE_PREFIX."_room JOIN ".TABLE_PREFIX."_j_site_area ON area_id = id_area ";
+	$sql = "SELECT id, area_id FROM ".TABLE_PREFIX."_room ";
 	$res = grr_sql_query($sql);
 	if ($res)
 	{
